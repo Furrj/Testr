@@ -142,8 +142,8 @@ func TestRoutes(t *testing.T) {
 		if !responseData.Valid {
 			t.Errorf("Invalid response, expected valid: %+v\n", responseData)
 		}
-		if responseData.UserData.UserID != testHelpers.TestUserData.UserID {
-			t.Errorf("First name is incorrect: got %d, want %d\n", responseData.UserData.UserID, testHelpers.TestUserData.UserID)
+		if responseData.UserData.UserID != testHelpers.TestUserDataJackson.UserID {
+			t.Errorf("First name is incorrect: got %d, want %d\n", responseData.UserData.UserID, testHelpers.TestUserDataJackson.UserID)
 		}
 		if responseData.UserData.FirstName != testUserRegisterPayload.FirstName {
 			t.Errorf("First name is incorrect: got %s, want %s\n", responseData.UserData.FirstName, testUserRegisterPayload.FirstName)

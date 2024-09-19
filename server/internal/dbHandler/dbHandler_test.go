@@ -22,7 +22,10 @@ func TestDBHandler(t *testing.T) {
 	dbHandler := InitDBHandler(os.Getenv("DB_URL_TEST"))
 	defer dbHandler.Conn.Close()
 
-	testUserData := testHelpers.TestUserData
+	testUserDataJackson := testHelpers.TestUserDataJackson
+	testUserDataMichele := testHelpers.TestUserDataMichele
+	testStudentData := testHelpers.TestStudentData
+	testTeacherData := testHelpers.TestTeacherData
 	testGameSessionData := testHelpers.TestGameSession
 
 	t.Run("Ping connection", func(t *testing.T) {
@@ -41,37 +44,41 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("InsertUser", func(t *testing.T) {
-		userId, err := dbHandler.InsertUser()
-		if err != nil {
-			t.Errorf("Error in InsertUser: %+v\n", err)
-		}
-		if userId != 1 {
-			t.Errorf("Inserted user id should be %d, but got %d\n", testUserData.UserID, userId)
+	t.Run("InsertUserIds", func(t *testing.T) {
+		for range 2 {
+			_, err := dbHandler.InsertUser()
+			if err != nil {
+				t.Errorf("Error in InsertUser: %+v\n", err)
+			}
 		}
 	})
 
-	t.Run("InsertUserData", func(t *testing.T) {
-		if err := dbHandler.InsertUserData(testUserData); err != nil {
+	t.Run("InsertUserDataTeacher", func(t *testing.T) {
+		if err := dbHandler.InsertUserData(testUserDataMichele); err != nil {
+			t.Errorf("Error in InsertUserData: %+v\n", err)
+		}
+	})
+	t.Run("InsertUserDataStudent", func(t *testing.T) {
+		if err := dbHandler.InsertUserData(testUserDataJackson); err != nil {
 			t.Errorf("Error in InsertUserData: %+v\n", err)
 		}
 	})
 	t.Run("GetUserDataByUserID", func(t *testing.T) {
-		userData, err := dbHandler.GetUserDataByUserID(testUserData.UserID)
+		userData, err := dbHandler.GetUserDataByUserID(testUserDataJackson.UserID)
 		if err != nil {
 			t.Errorf("Error in GetUserDataByUserID: %+v\n", err)
 		}
-		if userData != testUserData {
-			t.Errorf("Mismatch in GetUserDataByUserID: got %+v, want %+v", userData, testUserData)
+		if userData != testUserDataJackson {
+			t.Errorf("Mismatch in GetUserDataByUserID: got %+v, want %+v", userData, testUserDataJackson)
 		}
 	})
 	t.Run("GetUserIDByUsernameValid", func(t *testing.T) {
-		userID, err := dbHandler.GetUserIDByUsername(testUserData.Username)
+		userID, err := dbHandler.GetUserIDByUsername(testUserDataJackson.Username)
 		if err != nil {
 			t.Errorf("Error in GetUserIDByUsername: %+v\n", err)
 		}
-		if userID != testUserData.UserID {
-			t.Errorf("Invalid UserID: got %d, want %d", userID, testUserData.UserID)
+		if userID != testUserDataJackson.UserID {
+			t.Errorf("Invalid UserID: got %d, want %d", userID, testUserDataJackson.UserID)
 		}
 	})
 	t.Run("GetUserIDByUsernameInvalid", func(t *testing.T) {
@@ -98,13 +105,13 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("Error inserting game session: %+v", err)
 		}
 	})
-	t.Run("UpdateGameSessionIDByUserID", func(t *testing.T) {
-		if err := dbHandler.UpdateUserGameSessionIDByUserID(testGameSessionData.GameSessionID, testUserData.UserID); err != nil {
+	t.Run("InsertUserGameSessionIDByUserID", func(t *testing.T) {
+		if err := dbHandler.InsertUserGameSession(testGameSessionData); err != nil {
 			t.Errorf("error in InsertGameSessionIDByUserID: %+v", err)
 		}
 	})
 	t.Run("GetGameSessionIDByUserID", func(t *testing.T) {
-		gameSessionID, err := dbHandler.GetGameSessionIDByUserID(testUserData.UserID)
+		gameSessionID, err := dbHandler.GetUserGameSessionIDByUserID(testUserDataJackson.UserID)
 		if err != nil {
 			t.Errorf("%+v\n", err)
 		}
@@ -113,7 +120,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetGameSessionByUserID", func(t *testing.T) {
-		gameSession, err := dbHandler.GetGameSessionByUserID(testUserData.UserID)
+		gameSession, err := dbHandler.GetUserGameSessionByUserID(testUserDataJackson.UserID)
 		if err != nil {
 			t.Errorf("Error getting game session: %+v", err)
 		}
@@ -128,6 +135,36 @@ func TestDBHandler(t *testing.T) {
 		}
 		if gameSession.GameSessionID != testGameSessionData.GameSessionID {
 			t.Errorf("Mismatch in GetGameSessionByGameID: got %+v, want %+v", gameSession.GameSessionID, testGameSessionData.GameSessionID)
+		}
+	})
+
+	t.Run("InsertTeacherData", func(t *testing.T) {
+		if err := dbHandler.InsertTeacherData(testTeacherData); err != nil {
+			t.Errorf("Error inserting teacher: %+v\n", err)
+		}
+	})
+	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
+		data, err := dbHandler.GetTeacherDataByUserID(testTeacherData.UserID)
+		if err != nil {
+			t.Errorf("error getting teacher: %+v\n", err)
+		}
+		if data != testTeacherData {
+			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
+		}
+	})
+
+	t.Run("InsertStudentData", func(t *testing.T) {
+		if err := dbHandler.InsertStudentData(testStudentData); err != nil {
+			t.Errorf("Error inserting teacher: %+v\n", err)
+		}
+	})
+	t.Run("GetStudentDataByUserID", func(t *testing.T) {
+		data, err := dbHandler.GetStudentDataByUserID(testStudentData.UserID)
+		if err != nil {
+			t.Errorf("error getting teacher: %+v\n", err)
+		}
+		if data != testStudentData {
+			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
 		}
 	})
 

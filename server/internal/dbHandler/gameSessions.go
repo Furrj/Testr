@@ -28,43 +28,6 @@ func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID types.Ga
 	return gameSession, nil
 }
 
-const QGetGameSessionByUserID = `
-  SELECT game_session_id, user_id
-	FROM users.data u
-	NATURAL JOIN game_sessions.data g
-  WHERE user_id=$1
-	AND u.game_session_id=g.game_session_id
-`
-
-func (dbHandler *DBHandler) GetGameSessionByUserID(userID types.UserID) (types.GameSession, error) {
-	var gameSession types.GameSession
-
-	err := dbHandler.Conn.QueryRow(context.Background(), QGetGameSessionByUserID, userID).Scan(
-		&gameSession.GameSessionID,
-		&gameSession.UserID,
-	)
-	if err != nil {
-		return gameSession, err
-	}
-
-	return gameSession, nil
-}
-
-const QGetGameSessionIDByUserID = `
-  SELECT game_session_id
-  FROM users.data
-  WHERE user_id=$1
-`
-
-func (dbHandler *DBHandler) GetGameSessionIDByUserID(userID types.UserID) (types.GameSessionID, error) {
-	var gameSessionID types.GameSessionID
-	if err := dbHandler.Conn.QueryRow(context.Background(), QGetGameSessionIDByUserID, userID).Scan(&gameSessionID); err != nil {
-		return gameSessionID, err
-	}
-
-	return gameSessionID, nil
-}
-
 // INSERTS
 
 const EInsertGameSessionID = `
@@ -98,23 +61,4 @@ func (dbHandler *DBHandler) InsertGameSession(session types.GameSession) error {
 	}
 
 	return nil
-}
-
-// UPDATES
-
-const EUpdateUserGameSessionIDByUserID = `
-	UPDATE users.data
-  SET game_session_id = $1
-	WHERE user_id = $2
-`
-
-func (dbHandler *DBHandler) UpdateUserGameSessionIDByUserID(gameSessionID types.GameSessionID, userID types.UserID) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EUpdateUserGameSessionIDByUserID,
-		gameSessionID,
-		userID,
-	)
-
-	return err
 }
