@@ -1,0 +1,4 @@
+config.env
+.idea
+.vscode
+.DS_Store
