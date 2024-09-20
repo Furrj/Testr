@@ -39,7 +39,11 @@ func main() {
 	// }
 
 	// Conn
-	db := dbHandler.InitDBHandler(os.Getenv("DB_URL"))
+	db, err := dbHandler.InitDBHandler(os.Getenv("DB_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error initializing db conn: %+v\n", err)
+		os.Exit(1)
+	}
 	defer db.Conn.Close()
 
 	// ROUTING

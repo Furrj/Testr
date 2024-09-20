@@ -20,7 +20,10 @@ func TestRoutes(t *testing.T) {
 	}
 
 	// Init DBHandler
-	db := dbHandler.InitDBHandler(os.Getenv("DB_URL_TEST"))
+	db, err := dbHandler.InitDBHandler(os.Getenv("DB_URL_TEST"))
+	if err != nil {
+		t.Errorf("error initializing db conn: %+v\n", err)
+	}
 	defer db.Conn.Close()
 
 	// Set up vars

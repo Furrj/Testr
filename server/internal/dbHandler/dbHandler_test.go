@@ -19,7 +19,10 @@ func TestDBHandler(t *testing.T) {
 		os.Exit(1)
 	}
 
-	dbHandler := InitDBHandler(os.Getenv("DB_URL_TEST"))
+	dbHandler, err := InitDBHandler(os.Getenv("DB_URL_TEST"))
+	if err != nil {
+		t.Errorf("error initializing db conn: %+v\n", err)
+	}
 	defer dbHandler.Conn.Close()
 
 	testUserDataJackson := testHelpers.TestUserDataJackson
