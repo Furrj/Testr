@@ -12,7 +12,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
-	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 
 	"github.com/gin-gonic/gin"
@@ -84,6 +83,7 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
+		// create UserData
 		UserData := types.UserData{
 			UserID:    userID,
 			Username:  registerPayload.Username,
@@ -91,29 +91,13 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 			Salt:      salt,
 			FirstName: registerPayload.FirstName,
 			LastName:  registerPayload.LastName,
-			Role:      "S",
+			Role:      registerPayload.Role,
 		}
 
 		// Insert UserData
 		if err := db.InsertUserData(UserData); err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("Error inserting user: %+v\n", err)
-			return
-		}
-
-		// create and insert game session
-		gameSession, err := utils.SpawnNewGameSession(userID, db)
-		fmt.Printf("created game session: %+v\n", gameSession)
-		if err := db.InsertGameSession(gameSession); err != nil {
-			ctx.JSON(http.StatusInternalServerError, response)
-			fmt.Printf("error spawning game session: %+v", err)
-			return
-		}
-
-		// update user gameSessionID
-		if err := db.UpdateUserGameSessionByUserID(gameSession.GameSessionID, userID); err != nil {
-			ctx.JSON(http.StatusInternalServerError, response)
-			fmt.Printf("Error updating user gameSessionID: %+v\n", err)
 			return
 		}
 
