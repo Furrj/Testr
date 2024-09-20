@@ -1,0 +1,23 @@
+@mixin full-size-percent {
+  width: 100%;
+  height: 100%;
+}
+
+@mixin full-size-view {
+  width: 100dvw;
+  height: 100dvh;
+}
+
+@mixin flex-center {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

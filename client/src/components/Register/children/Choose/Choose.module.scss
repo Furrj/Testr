@@ -1,0 +1,22 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.root {
+  @include flex-center;
+  flex-direction: row;
+  gap: 10px;
+
+  .link {
+    text-decoration: none;
+    color: white;
+    div {
+      border: 1px solid white;
+      padding: 10px;
+      border-radius: $border-radius;
+
+      &:hover {
+        background-color: $color-btn-hover;
+      }
+    }
+  }
+}
