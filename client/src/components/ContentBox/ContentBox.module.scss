@@ -4,24 +4,28 @@
 .root {
   width: 100%;
   height: 100%;
-  @include flex-center;
-  margin-top: $height-navbar;
   overflow-y: auto;
   background: $main_bg;
-
   //border: 1px solid red;
 
-  &.showingPopup {
-    overflow: hidden;
-  }
-
-  .content {
+  .spacer {
+    height: 20px;
     width: 100%;
-    flex: 1;
-    @include flex-center;
-
-    overflow-y: auto;
-
-    //border: 1px solid red;
   }
+
+  // .content {
+  // 	width: 100%;
+  // 	height: fit-content;
+
+  // 	border: 1px solid red;
+
+  // 	@include flex-center;
+
+  // 	overflow-y: hidden;
+
+  // 	.spacer {
+  // 		height: 20px;
+  // 		width: 100%;
+  // 	}
+  // }
 }

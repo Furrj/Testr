@@ -89,6 +89,7 @@ const Student: React.FC = () => {
             <h2>First Name</h2>
             <input
               name={field.name}
+              autoComplete="first_name"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -121,6 +122,7 @@ const Student: React.FC = () => {
             <h2>Last Name</h2>
             <input
               name={field.name}
+              autoComplete="last_name"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -153,6 +155,7 @@ const Student: React.FC = () => {
             <h2>Username</h2>
             <input
               name={field.name}
+              autoComplete="username"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -187,6 +190,7 @@ const Student: React.FC = () => {
             <h2>Password</h2>
             <input
               name={field.name}
+              autoComplete="new-password"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -218,6 +222,7 @@ const Student: React.FC = () => {
             <h2>Confirm Password</h2>
             <input
               name={field.name}
+              autoComplete="new-password"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -257,6 +262,7 @@ const Student: React.FC = () => {
             <h2>Teacher ID</h2>
             <input
               name={field.name}
+              autoComplete="off"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -296,6 +302,7 @@ const Student: React.FC = () => {
             <h2>Period</h2>
             <input
               name={field.name}
+              autoComplete="off"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}

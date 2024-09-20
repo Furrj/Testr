@@ -5,14 +5,7 @@ interface IProps {
 }
 
 const ContentBox: React.FC<IProps> = (props) => {
-  return (
-    <div className={styles.root}>
-      <div className={styles.content}>
-        {props.children}
-        <div className={styles.spacer}></div>
-      </div>
-    </div>
-  );
+  return <div className={styles.root}>{props.children}</div>;
 };
 
 export default ContentBox;

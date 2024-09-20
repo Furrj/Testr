@@ -58,55 +58,57 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <h2>Username:</h2>
-      <input
-        type="text"
-        name="username"
-        value={userInput.username}
-        onChange={inputHandler}
-        autoComplete="on"
-      />
-      <br />
-      <div className={styles.passwordBox}>
-        <h2>Password:</h2>
+      <div className={styles.content}>
+        <h2>Username:</h2>
         <input
-          type="password"
-          name="password"
-          id="passwordBox"
-          value={userInput.password}
+          type="text"
+          name="username"
+          value={userInput.username}
           onChange={inputHandler}
           autoComplete="on"
         />
-        <i
-          className={`fa-solid fa-eye fa-eye-slash ${styles.eye}`}
-          id={"eye"}
-          onClick={togglePasswordLogin}
-        />
+        <br />
+        <div className={styles.passwordBox}>
+          <h2>Password:</h2>
+          <input
+            type="password"
+            name="password"
+            id="passwordBox"
+            value={userInput.password}
+            onChange={inputHandler}
+            autoComplete="on"
+          />
+          <i
+            className={`fa-solid fa-eye fa-eye-slash ${styles.eye}`}
+            id={"eye"}
+            onClick={togglePasswordLogin}
+          />
+        </div>
+        {incorrectInfo && (
+          <div style={{ color: "red", marginTop: "10px" }}>
+            Information was incorrect
+          </div>
+        )}
+        {error && (
+          <div>
+            <div>Error, Please Try Again</div>
+            <br />
+          </div>
+        )}
+        <button
+          className={styles.login}
+          style={{ marginTop: "10px" }}
+          onClick={() => {
+            mutation.mutate(userInput);
+          }}
+        >
+          Login
+        </button>
+        or
+        <Link to={"/register"}>
+          <button className={styles.register}>Register</button>
+        </Link>
       </div>
-      {incorrectInfo && (
-        <div style={{ color: "red", marginTop: "10px" }}>
-          Information was incorrect
-        </div>
-      )}
-      {error && (
-        <div>
-          <div>Error, Please Try Again</div>
-          <br />
-        </div>
-      )}
-      <button
-        className={styles.login}
-        style={{ marginTop: "10px" }}
-        onClick={() => {
-          mutation.mutate(userInput);
-        }}
-      >
-        Login
-      </button>
-      or
-      <Link to={"/register"}>
-        <button className={styles.register}>Register</button>
-      </Link>
     </div>
   );
 };
