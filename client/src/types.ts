@@ -69,7 +69,7 @@ export const INIT_USERINPUT_REGISTER: T_USERINPUT_REGISTER = {
   role: "",
   teacher_id: "",
   period: "",
-  periods: -1,
+  periods: "",
 };
 
 export enum E_REGISTER_RESULT {

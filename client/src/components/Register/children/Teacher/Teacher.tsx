@@ -10,7 +10,7 @@ import {
   E_REGISTER_RESULT,
   INIT_USERINPUT_REGISTER,
 } from "../../../../types";
-import { QUERY_KEYS } from "../../../../utils/consts";
+import { QUERY_KEYS, USER_ROLES } from "../../../../utils/consts";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
 import { apiRequestRegister } from "../../../../utils/requests";
 
@@ -57,17 +57,19 @@ const Teacher: React.FC = () => {
       ...INIT_USERINPUT_REGISTER,
     },
     onSubmit: ({ value }) => {
-      mutate({
+      const obj = {
         first_name: value.first_name.trim(),
         last_name: value.last_name.trim(),
         username: value.username.trim(),
         password: value.password.trim(),
         confirm_password: value.password.trim(),
-        role: value.role,
-        teacher_id: value.teacher_id,
-        period: value.period,
-        periods: -1,
-      });
+        role: USER_ROLES.TEACHER,
+        teacher_id: 0,
+        period: 0,
+        periods: Number.parseInt(value.periods as string),
+      };
+      console.log(obj);
+      mutate(obj);
     },
   });
 
@@ -242,6 +244,45 @@ const Teacher: React.FC = () => {
               return "Cannot be empty";
             } else if (value !== fieldApi.form.getFieldValue("password")) {
               return "Passwords must match";
+            }
+
+            return undefined;
+          },
+        }}
+      />
+      <form.Field
+        name="periods"
+        children={(field) => (
+          <>
+            <h2># Of Periods</h2>
+            <input
+              name={field.name}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              className={field.state.meta.errors.length > 0 ? styles.err : ""}
+              type="number"
+            />
+            {field.state.meta.errors ? (
+              <div className={styles.err}>
+                {field.state.meta.errors.join(", ")}
+              </div>
+            ) : null}
+          </>
+        )}
+        validators={{
+          onChange: ({ value }) => {
+            if (Number.parseInt(value as string) < 0) {
+              return "Cannot be negative";
+            }
+
+            return undefined;
+          },
+          onSubmit: ({ value }) => {
+            if (value === "") {
+              return "Cannot be empty";
+            } else if (Number.isNaN(value as string)) {
+              return "Invalid value";
             }
 
             return undefined;
