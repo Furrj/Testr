@@ -23,17 +23,6 @@ const (
 	RESULT_VALID           int = 1
 )
 
-type requestPayloadRegister struct {
-	Username  string       `json:"username"`
-	Password  string       `json:"password"`
-	FirstName string       `json:"first_name"`
-	LastName  string       `json:"last_name"`
-	Role      string       `json:"role"`
-	TeacherID types.UserID `json:"teacher_id,omitempty"`
-	Period    uint         `json:"period,omitempty"`
-	Periods   uint         `json:"periods,omitempty"`
-}
-
 type responseRegister struct {
 	Tokens types.AllTokens `json:"tokens"`
 	Result int             `json:"result"`
@@ -43,7 +32,7 @@ type responseRegister struct {
 // inserts into user_info, generates tokens, then sends a ResponseRegisterLogin
 func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var registerPayload requestPayloadRegister
+		var registerPayload types.RequestPayloadRegister
 		response := responseRegister{
 			Result: RESULT_NULL,
 		}
