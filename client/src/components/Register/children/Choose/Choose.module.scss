@@ -2,9 +2,12 @@
 @import "../../../../styles/vars";
 
 .root {
+  @include full-size-percent;
   @include flex-center;
   flex-direction: row;
   gap: 10px;
+
+  //border: 1px solid white;
 
   .link {
     text-decoration: none;

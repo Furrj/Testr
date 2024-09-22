@@ -17,7 +17,7 @@ const Navbar: React.FC<IProps> = (props) => {
   return (
     <div className={styles.root}>
       <span className={styles.title}>
-        <h1>Spelldle</h1>
+        <h1>Mathy</h1>
       </span>
       <span className={styles.username}>
         {props.data !== undefined && props.data.valid && (
