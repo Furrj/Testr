@@ -2,11 +2,17 @@ import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import {
   type T_GAME_SETTINGS,
+  E_GAME_STATUS,
   INIT_GAME_SETTINGS,
 } from "../../../../types/game";
 import styles from "./Settings.module.scss";
 
-const Settings: React.FC = () => {
+interface IProps {
+  setGameSettings: React.Dispatch<React.SetStateAction<T_GAME_SETTINGS>>;
+  setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
+}
+
+const Settings: React.FC<IProps> = (props) => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
 
   const form = useForm<T_GAME_SETTINGS>({
@@ -45,7 +51,9 @@ const Settings: React.FC = () => {
       else obj.limits.time = 0;
 
       console.log(obj);
-      console.log("hello");
+
+      props.setGameSettings(obj);
+      props.setGameStatus(E_GAME_STATUS.ACTIVE);
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
