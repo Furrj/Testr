@@ -1,7 +1,7 @@
 export type T_GAME_SETTINGS = {
   range: {
-    min: number | string;
-    max: number | string;
+    min: number;
+    max: number;
   };
   ops: {
     add: boolean;
@@ -10,14 +10,14 @@ export type T_GAME_SETTINGS = {
     div: boolean;
   };
   limits: {
-    time: number | string;
-    count: number | string;
+    time: number;
+    count: number;
   };
 };
 export const INIT_GAME_SETTINGS: T_GAME_SETTINGS = {
   range: {
-    min: "",
-    max: "",
+    min: 0,
+    max: 0,
   },
   ops: {
     add: false,
@@ -26,8 +26,8 @@ export const INIT_GAME_SETTINGS: T_GAME_SETTINGS = {
     div: false,
   },
   limits: {
-    time: "",
-    count: "",
+    time: 0,
+    count: 0,
   },
 };
 
@@ -35,4 +35,17 @@ export enum E_GAME_STATUS {
   PRE = 0,
   ACTIVE,
   POST,
+}
+
+export type T_QUESTION = {
+  operands: number[];
+  operator: E_OPERATIONS;
+  result: number;
+};
+
+export enum E_OPERATIONS {
+  ADD = 0,
+  SUB,
+  MULT,
+  DIV,
 }

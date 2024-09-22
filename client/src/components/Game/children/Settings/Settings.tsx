@@ -1,11 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
-import {
-  type T_GAME_SETTINGS,
-  E_GAME_STATUS,
-  INIT_GAME_SETTINGS,
-} from "../../../../types/game";
+import { type T_GAME_SETTINGS, E_GAME_STATUS } from "../../../../types/game";
 import styles from "./Settings.module.scss";
+import Locals, { type T_SETTINGS_FORM } from "./Locals";
+import { deepCopyObject } from "../../../../utils/methods";
 
 interface IProps {
   setGameSettings: React.Dispatch<React.SetStateAction<T_GAME_SETTINGS>>;
@@ -15,9 +13,9 @@ interface IProps {
 const Settings: React.FC<IProps> = (props) => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
 
-  const form = useForm<T_GAME_SETTINGS>({
+  const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
-      ...INIT_GAME_SETTINGS,
+      ...deepCopyObject(Locals.INIT_SETTINGS_FORM),
     },
     validators: {
       onSubmit({ value }) {
@@ -30,7 +28,7 @@ const Settings: React.FC<IProps> = (props) => {
       },
     },
     onSubmit: ({ value }) => {
-      const obj = {
+      const obj: T_GAME_SETTINGS = {
         range: {
           min: Number.parseInt(value.range.min as string) | 0,
           max: Number.parseInt(value.range.max as string) | 0,
