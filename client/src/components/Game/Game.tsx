@@ -10,7 +10,7 @@ import { generateQuestions, type T_QUESTION } from "../../types/questions";
 import Active from "./children/Active/Active";
 import Loading from "../Loading/Loading";
 
-const QUESTION_CHUNK_SIZE: number = 25;
+const QUESTION_CHUNK_SIZE: number = 12;
 
 const Game: React.FC = () => {
   const [gameStatus, setGameStatus] = useState<E_GAME_STATUS>(
@@ -45,7 +45,7 @@ const Game: React.FC = () => {
   // check if more questions need to be generated
   useEffect(() => {
     if (
-      Math.abs(currentQuestionIndex - questions.length) < 5 &&
+      Math.abs(questions.length - currentQuestionIndex) < 5 &&
       gameSettings.current.limits.time > 0
     ) {
       setQuestions((curr) => {
@@ -69,6 +69,7 @@ const Game: React.FC = () => {
           setCurrentQuestionIndex={setCurrentQuestionIndex}
           questions={questions}
           userAnswers={userAnswers}
+          settings={gameSettings.current}
         />
       ) : (
         <Loading />

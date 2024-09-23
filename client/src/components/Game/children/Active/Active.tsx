@@ -2,12 +2,14 @@ import styles from "./Active.module.scss";
 import type { T_QUESTION } from "../../../../types/questions";
 import { useEffect, useRef, useState } from "react";
 import Locals from "./Locals";
+import type { T_GAME_SETTINGS } from "../../../../types/game";
 
 interface IProps {
   questions: T_QUESTION[];
   currentQuestionIndex: number;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
   userAnswers: React.MutableRefObject<number[]>;
+  settings: T_GAME_SETTINGS;
 }
 
 const Active: React.FC<IProps> = (props) => {
@@ -31,11 +33,15 @@ const Active: React.FC<IProps> = (props) => {
     }
   }, [props.currentQuestionIndex]);
 
-  // handle timer
-  const [timeInSeconds, setTimeInSeconds] = useState(0);
+  // setup timer
+  const [timeInSeconds, setTimeInSeconds] = useState(
+    props.settings.limits.time > 0 ? props.settings.limits.time : 0,
+  );
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeInSeconds((prevSeconds) => prevSeconds + 1);
+      setTimeInSeconds((prevSeconds) =>
+        props.settings.limits.time > 0 ? prevSeconds - 1 : prevSeconds + 1,
+      );
     }, 1000);
 
     // clean up on unmount
@@ -45,8 +51,19 @@ const Active: React.FC<IProps> = (props) => {
   return (
     <div className={styles.root}>
       <div className={styles.info}>
-        <div className={styles.number}># {props.currentQuestionIndex}</div>
-        <div className={styles.timer}>{Locals.formatTime(timeInSeconds)}</div>
+        <div className={styles.number}>
+          # {props.currentQuestionIndex}
+          {props.settings.limits.count > 0 && `/${props.settings.limits.count}`}
+        </div>
+        <div
+          className={styles.timer}
+          style={{
+            color:
+              timeInSeconds < 10 && props.settings.limits.time > 0 ? "red" : "",
+          }}
+        >
+          {Locals.formatTime(timeInSeconds)}
+        </div>
       </div>
 
       <div className={styles.content}>
