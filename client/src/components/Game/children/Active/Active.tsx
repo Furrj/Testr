@@ -31,8 +31,7 @@ const Active: React.FC<IProps> = (props) => {
     }
   }, [inputRef]);
 
-  // reset input value and err on new question load &&
-  // change gameState to post if currentQuestionIndex exceeds count
+  // reset input value and err on new question load
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -58,6 +57,13 @@ const Active: React.FC<IProps> = (props) => {
     // clean up on unmount
     return () => clearInterval(interval);
   }, []);
+
+  // check for end of game if using time limits
+  useEffect(() => {
+    if (props.limitType === E_GAME_LIMIT_TYPES.TIME && timeInSeconds < 1) {
+      props.setGameStatus(E_GAME_STATUS.POST);
+    }
+  }, [timeInSeconds]);
 
   return (
     <div className={styles.root}>
@@ -100,12 +106,17 @@ const Active: React.FC<IProps> = (props) => {
             ref={inputRef}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
+                // submit answer
                 if (inputRef.current?.value !== "") {
-                  Locals.submitAnswer(
-                    e.currentTarget.valueAsNumber,
-                    props.userAnswers,
-                    props.setCurrentQuestionIndex,
-                  );
+                  props.userAnswers.current.push(e.currentTarget.valueAsNumber);
+
+                  // if last question set gameState to 'post' else increase index
+                  if (
+                    props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
+                    props.currentQuestionIndex >= props.settings.limits.count
+                  ) {
+                    props.setGameStatus(E_GAME_STATUS.POST);
+                  } else props.setCurrentQuestionIndex((curr) => curr + 1);
                 } else setInputErr(true);
               }
             }}
