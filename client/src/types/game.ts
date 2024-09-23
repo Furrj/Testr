@@ -1,14 +1,11 @@
+import type { T_OPERATIONS } from "./questions";
+
 export type T_GAME_SETTINGS = {
   range: {
     min: number;
     max: number;
   };
-  ops: {
-    add: boolean;
-    sub: boolean;
-    mult: boolean;
-    div: boolean;
-  };
+  ops: T_OPERATIONS;
   limits: {
     time: number;
     count: number;
@@ -35,17 +32,4 @@ export enum E_GAME_STATUS {
   PRE = 0,
   ACTIVE,
   POST,
-}
-
-export type T_QUESTION = {
-  operands: number[];
-  operator: E_OPERATIONS;
-  result: number;
-};
-
-export enum E_OPERATIONS {
-  ADD = 0,
-  SUB,
-  MULT,
-  DIV,
 }
