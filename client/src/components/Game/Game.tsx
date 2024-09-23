@@ -30,6 +30,8 @@ const Game: React.FC = () => {
   );
   const userAnswers = useRef<number[]>([]);
 
+  console.log(timeInSeconds);
+
   // generate questions on status change to active
   useEffect(() => {
     if (gameStatus === E_GAME_STATUS.ACTIVE) {
@@ -79,7 +81,7 @@ const Game: React.FC = () => {
         />
       );
     case E_GAME_STATUS.ACTIVE:
-      return questions.length > 0 && timeInSeconds ? (
+      return questions.length > 0 && timeInSeconds !== null ? (
         <Active
           currentQuestionIndex={currentQuestionIndex}
           setCurrentQuestionIndex={setCurrentQuestionIndex}
@@ -88,7 +90,7 @@ const Game: React.FC = () => {
           settings={gameSettings.current}
           setGameStatus={setGameStatus}
           limitType={limitType}
-          timeInSeconds={timeInSeconds}
+          timeInSeconds={timeInSeconds as number}
           setTimeInSeconds={
             setTimeInSeconds as React.Dispatch<React.SetStateAction<number>>
           }
