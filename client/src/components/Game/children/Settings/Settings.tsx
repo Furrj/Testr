@@ -1,13 +1,18 @@
 import styles from "./Settings.module.scss";
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
-import { type T_GAME_SETTINGS, E_GAME_STATUS } from "../../../../types/game";
+import {
+  type T_GAME_SETTINGS,
+  E_GAME_LIMIT_TYPES,
+  E_GAME_STATUS,
+} from "../../../../types/game";
 import Locals, { type T_SETTINGS_FORM } from "./Locals";
 import { deepCopyObject } from "../../../../utils/methods";
 
 interface IProps {
   gameSettings: React.MutableRefObject<T_GAME_SETTINGS>;
   setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
+  setLimitType: React.Dispatch<React.SetStateAction<E_GAME_LIMIT_TYPES>>;
 }
 
 const Settings: React.FC<IProps> = (props) => {
@@ -50,6 +55,9 @@ const Settings: React.FC<IProps> = (props) => {
 
       props.gameSettings.current = obj;
       props.setGameStatus(E_GAME_STATUS.ACTIVE);
+      props.setLimitType(
+        timeLimit ? E_GAME_LIMIT_TYPES.TIME : E_GAME_LIMIT_TYPES.COUNT,
+      );
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);

@@ -34,7 +34,7 @@ export enum E_GAME_STATUS {
   POST,
 }
 
-export enum E_GAME_LIMIT_OPTIONS {
+export enum E_GAME_LIMIT_TYPES {
   NULL = -1,
   TIME,
   COUNT,

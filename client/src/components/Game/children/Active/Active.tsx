@@ -2,7 +2,11 @@ import styles from "./Active.module.scss";
 import type { T_QUESTION } from "../../../../types/questions";
 import { useEffect, useRef, useState } from "react";
 import Locals from "./Locals";
-import type { T_GAME_SETTINGS } from "../../../../types/game";
+import {
+  E_GAME_LIMIT_TYPES,
+  E_GAME_STATUS,
+  type T_GAME_SETTINGS,
+} from "../../../../types/game";
 
 interface IProps {
   questions: T_QUESTION[];
@@ -10,6 +14,8 @@ interface IProps {
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
   userAnswers: React.MutableRefObject<number[]>;
   settings: T_GAME_SETTINGS;
+  setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
+  limitType: E_GAME_LIMIT_TYPES;
 }
 
 const Active: React.FC<IProps> = (props) => {
@@ -25,7 +31,8 @@ const Active: React.FC<IProps> = (props) => {
     }
   }, [inputRef]);
 
-  // reset input value and err on new question load
+  // reset input value and err on new question load &&
+  // change gameState to post if currentQuestionIndex exceeds count
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -35,12 +42,16 @@ const Active: React.FC<IProps> = (props) => {
 
   // setup timer
   const [timeInSeconds, setTimeInSeconds] = useState(
-    props.settings.limits.time > 0 ? props.settings.limits.time : 0,
+    props.limitType === E_GAME_LIMIT_TYPES.TIME
+      ? props.settings.limits.time
+      : 0,
   );
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeInSeconds((prevSeconds) =>
-        props.settings.limits.time > 0 ? prevSeconds - 1 : prevSeconds + 1,
+        props.limitType === E_GAME_LIMIT_TYPES.TIME
+          ? prevSeconds - 1
+          : prevSeconds + 1,
       );
     }, 1000);
 
@@ -53,13 +64,16 @@ const Active: React.FC<IProps> = (props) => {
       <div className={styles.info}>
         <div className={styles.number}>
           # {props.currentQuestionIndex}
-          {props.settings.limits.count > 0 && `/${props.settings.limits.count}`}
+          {props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
+            `/${props.settings.limits.count}`}
         </div>
         <div
           className={styles.timer}
           style={{
             color:
-              timeInSeconds < 10 && props.settings.limits.time > 0 ? "red" : "",
+              timeInSeconds < 10 && props.limitType === E_GAME_LIMIT_TYPES.TIME
+                ? "red"
+                : "",
           }}
         >
           {Locals.formatTime(timeInSeconds)}
