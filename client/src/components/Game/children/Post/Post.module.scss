@@ -16,17 +16,31 @@
   .content {
     width: 60%;
     height: fit-content;
+
     border: 1px solid white;
     border-radius: 10px;
     padding: 5px;
 
-    display: grid;
-    grid-template-rows: 3fr 2fr;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
 
     h2 {
       font-size: 5rem;
       font-weight: bold;
       text-align: center;
+    }
+
+    .incorrect {
+      border: 1px solid white;
+      border-radius: 10px;
+
+      width: 100px;
+      height: 100px;
+
+      @include flex-center;
+      flex-flow: column;
     }
   }
 }

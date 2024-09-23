@@ -26,6 +26,15 @@ export const INIT_QUESTION: T_QUESTION = {
   result: 0,
 };
 
+export type T_QUESTION_RESULTS = {
+  correct: T_QUESTION[];
+  incorrect: T_QUESTION[];
+};
+export const INIT_QUESTION_RESULTS: T_QUESTION_RESULTS = {
+  correct: [],
+  incorrect: [],
+};
+
 export function generateQuestions(
   settings: T_GAME_SETTINGS,
   count: number,

@@ -7,7 +7,12 @@ import {
   type T_GAME_SETTINGS,
 } from "../../types/game";
 import { deepCopyObject } from "../../utils/methods";
-import { generateQuestions, type T_QUESTION } from "../../types/questions";
+import {
+  generateQuestions,
+  INIT_QUESTION_RESULTS,
+  type T_QUESTION,
+  type T_QUESTION_RESULTS,
+} from "../../types/questions";
 import Active from "./children/Active/Active";
 import Loading from "../Loading/Loading";
 import Post from "./children/Post/Post";
@@ -24,15 +29,16 @@ const Game: React.FC = () => {
     E_GAME_LIMIT_TYPES.NULL,
   );
   const [timeInSeconds, setTimeInSeconds] = useState<number | null>(null);
+  const [questionResults, setQuestionResults] = useState<T_QUESTION_RESULTS>(
+    deepCopyObject(INIT_QUESTION_RESULTS),
+  );
 
   const gameSettings = useRef<T_GAME_SETTINGS>(
     deepCopyObject(INIT_GAME_SETTINGS),
   );
   const userAnswers = useRef<number[]>([]);
 
-  console.log(timeInSeconds);
-
-  // generate questions on status change to active
+  // generate questions on ACTIVE &&
   useEffect(() => {
     if (gameStatus === E_GAME_STATUS.ACTIVE) {
       switch (limitType) {
