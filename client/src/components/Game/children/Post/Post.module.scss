@@ -1,2 +1,32 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
 .root {
+  min-width: 287px;
+  @include full-size-percent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10%;
+
+  //border: 1px solid white;
+
+  .content {
+    width: 60%;
+    height: fit-content;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
+
+    display: grid;
+    grid-template-rows: 3fr 2fr;
+
+    h2 {
+      font-size: 5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
 }

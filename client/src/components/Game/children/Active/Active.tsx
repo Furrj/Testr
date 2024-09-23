@@ -16,6 +16,8 @@ interface IProps {
   settings: T_GAME_SETTINGS;
   setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
   limitType: E_GAME_LIMIT_TYPES;
+  timeInSeconds: number;
+  setTimeInSeconds: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Active: React.FC<IProps> = (props) => {
@@ -40,14 +42,9 @@ const Active: React.FC<IProps> = (props) => {
   }, [props.currentQuestionIndex]);
 
   // setup timer
-  const [timeInSeconds, setTimeInSeconds] = useState(
-    props.limitType === E_GAME_LIMIT_TYPES.TIME
-      ? props.settings.limits.time
-      : 0,
-  );
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeInSeconds((prevSeconds) =>
+      props.setTimeInSeconds((prevSeconds) =>
         props.limitType === E_GAME_LIMIT_TYPES.TIME
           ? prevSeconds - 1
           : prevSeconds + 1,
@@ -60,10 +57,13 @@ const Active: React.FC<IProps> = (props) => {
 
   // check for end of game if using time limits
   useEffect(() => {
-    if (props.limitType === E_GAME_LIMIT_TYPES.TIME && timeInSeconds < 1) {
+    if (
+      props.limitType === E_GAME_LIMIT_TYPES.TIME &&
+      props.timeInSeconds < 1
+    ) {
       props.setGameStatus(E_GAME_STATUS.POST);
     }
-  }, [timeInSeconds]);
+  }, [props.timeInSeconds]);
 
   return (
     <div className={styles.root}>
@@ -77,12 +77,13 @@ const Active: React.FC<IProps> = (props) => {
           className={styles.timer}
           style={{
             color:
-              timeInSeconds < 10 && props.limitType === E_GAME_LIMIT_TYPES.TIME
+              props.timeInSeconds < 10 &&
+              props.limitType === E_GAME_LIMIT_TYPES.TIME
                 ? "red"
                 : "",
           }}
         >
-          {Locals.formatTime(timeInSeconds)}
+          {Locals.formatTime(props.timeInSeconds)}
         </div>
       </div>
 

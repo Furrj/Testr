@@ -23,6 +23,7 @@ const Game: React.FC = () => {
   const [limitType, setLimitType] = useState<E_GAME_LIMIT_TYPES>(
     E_GAME_LIMIT_TYPES.NULL,
   );
+  const [timeInSeconds, setTimeInSeconds] = useState<number | null>(null);
 
   const gameSettings = useRef<T_GAME_SETTINGS>(
     deepCopyObject(INIT_GAME_SETTINGS),
@@ -72,10 +73,13 @@ const Game: React.FC = () => {
           gameSettings={gameSettings}
           setGameStatus={setGameStatus}
           setLimitType={setLimitType}
+          setTimeInSeconds={
+            setTimeInSeconds as React.Dispatch<React.SetStateAction<number>>
+          }
         />
       );
     case E_GAME_STATUS.ACTIVE:
-      return questions.length > 0 ? (
+      return questions.length > 0 && timeInSeconds ? (
         <Active
           currentQuestionIndex={currentQuestionIndex}
           setCurrentQuestionIndex={setCurrentQuestionIndex}
@@ -84,12 +88,16 @@ const Game: React.FC = () => {
           settings={gameSettings.current}
           setGameStatus={setGameStatus}
           limitType={limitType}
+          timeInSeconds={timeInSeconds}
+          setTimeInSeconds={
+            setTimeInSeconds as React.Dispatch<React.SetStateAction<number>>
+          }
         />
       ) : (
         <Loading />
       );
     case E_GAME_STATUS.POST:
-      return <Post />;
+      return <Post questions={questions} userAnswers={userAnswers.current} />;
   }
 };
 
