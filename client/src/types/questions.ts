@@ -20,7 +20,7 @@ export type T_QUESTION = {
   operator: E_OPERATIONS;
   result: number;
 };
-const INIT_QUESTION: T_QUESTION = {
+export const INIT_QUESTION: T_QUESTION = {
   operands: [0, 0],
   operator: E_OPERATIONS.NULL,
   result: 0,

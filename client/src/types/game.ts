@@ -33,3 +33,9 @@ export enum E_GAME_STATUS {
   ACTIVE,
   POST,
 }
+
+export enum E_GAME_LIMIT_OPTIONS {
+  NULL = -1,
+  TIME,
+  COUNT,
+}

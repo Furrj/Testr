@@ -1,12 +1,12 @@
+import styles from "./Settings.module.scss";
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { type T_GAME_SETTINGS, E_GAME_STATUS } from "../../../../types/game";
-import styles from "./Settings.module.scss";
 import Locals, { type T_SETTINGS_FORM } from "./Locals";
 import { deepCopyObject } from "../../../../utils/methods";
 
 interface IProps {
-  setGameSettings: React.Dispatch<React.SetStateAction<T_GAME_SETTINGS>>;
+  gameSettings: React.MutableRefObject<T_GAME_SETTINGS>;
   setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
 }
 
@@ -48,9 +48,7 @@ const Settings: React.FC<IProps> = (props) => {
       if (timeLimit) obj.limits.count = 0;
       else obj.limits.time = 0;
 
-      console.log(obj);
-
-      props.setGameSettings(obj);
+      props.gameSettings.current = obj;
       props.setGameStatus(E_GAME_STATUS.ACTIVE);
     },
   });
