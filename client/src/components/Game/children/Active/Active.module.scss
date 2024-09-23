@@ -2,58 +2,112 @@
 @import "../../../../styles/vars";
 
 .root {
-  width: 80%;
-  height: 200px;
-  border: 1px solid white;
-  border-radius: 10px;
+  min-width: 287px;
+  @include full-size-percent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  display: grid;
-  grid-template-rows: 3fr 2fr;
+  gap: 10%;
 
-  h2 {
-    font-size: 4rem;
-    text-align: center;
+  //border: 1px solid white;
+
+  .info {
+    width: 60%;
+
+    //border: 1px solid white;
+
+    display: flex;
+    justify-content: space-between;
+
+    .number {
+      @include flex-center;
+      min-width: 8rem;
+      width: fit-content;
+      height: 100%;
+      padding: 10px;
+      font-size: 5rem;
+      font-weight: bold;
+
+      border: 1px solid white;
+      border-radius: 10px;
+    }
+
+    .timer {
+      @include flex-center;
+      width: fit-content;
+      height: 100%;
+      padding: 10px;
+      font-size: 5rem;
+      font-weight: bold;
+
+      border: 1px solid white;
+      border-radius: 10px;
+    }
   }
 
-  input[type="number"] {
-    width: 10rem;
-    height: 4rem;
-
-    text-align: center;
-    font-size: 3rem;
-    font-weight: bold;
-  }
-
-  .top {
-    width: 100%;
-    height: 100%;
+  .content {
+    width: 60%;
+    height: fit-content;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 3fr 2fr;
 
-    div {
+    h2 {
+      font-size: 5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    input[type="number"] {
+      width: 10rem;
+      height: 4rem;
+
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .top {
+      width: 100%;
+      height: 100%;
+
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      div {
+        @include flex-center;
+      }
+
+      .left {
+        align-items: flex-end;
+      }
+
+      .right {
+        align-items: flex-start;
+      }
+    }
+
+    .bottom {
+      width: 100%;
+      height: 100%;
+
       @include flex-center;
     }
-
-    .left {
-      align-items: flex-end;
-    }
-
-    .right {
-      align-items: flex-start;
-    }
-  }
-
-  .bottom {
-    width: 100%;
-    height: 100%;
-
-    @include flex-center;
   }
 }
 
+.err {
+  border: red;
+  background: red;
+}
+
 @media only screen and (min-width: 700px) {
-  .root {
+  .content {
     width: 50%;
   }
 }

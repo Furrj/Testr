@@ -1,4 +1,3 @@
-import styles from "./Game.module.scss";
 import { useEffect, useRef, useState } from "react";
 import Settings from "./children/Settings/Settings";
 import {
@@ -61,20 +60,16 @@ const Game: React.FC = () => {
   switch (gameStatus) {
     case E_GAME_STATUS.PRE:
       return (
-        <div className={styles.root}>
-          <Settings gameSettings={gameSettings} setGameStatus={setGameStatus} />
-        </div>
+        <Settings gameSettings={gameSettings} setGameStatus={setGameStatus} />
       );
     case E_GAME_STATUS.ACTIVE:
       return questions.length > 0 ? (
-        <div className={styles.root}>
-          <Active
-            currentQuestionIndex={currentQuestionIndex}
-            setCurrentQuestionIndex={setCurrentQuestionIndex}
-            questions={questions}
-            userAnswers={userAnswers}
-          />
-        </div>
+        <Active
+          currentQuestionIndex={currentQuestionIndex}
+          setCurrentQuestionIndex={setCurrentQuestionIndex}
+          questions={questions}
+          userAnswers={userAnswers}
+        />
       ) : (
         <Loading />
       );
