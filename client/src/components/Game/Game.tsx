@@ -119,10 +119,8 @@ const Game: React.FC = () => {
         <Loading />
       );
     case E_GAME_STATUS.POST:
-      return questionResults.length > 0 ? (
-        <Post
-          results={questionResults}
-        />
+      return questionResults.length > 0 && timeInSeconds !== null ? (
+        <Post results={questionResults} time={timeInSeconds} />
       ) : (
         <Loading />
       );

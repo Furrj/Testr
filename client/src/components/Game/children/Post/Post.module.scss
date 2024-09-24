@@ -6,14 +6,39 @@
   @include full-size-percent;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   gap: 10%;
 
   //border: 1px solid white;
 
-  .content {
+  padding-top: 20px;
+
+  h2 {
+    font-size: 5rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .info {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .ratio {
+      margin-top: 50px;
+    }
+  }
+
+  .results {
     width: 60%;
     height: fit-content;
 
@@ -25,12 +50,6 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 5px;
-
-    h2 {
-      font-size: 5rem;
-      font-weight: bold;
-      text-align: center;
-    }
 
     .incorrect {
       border: 1px solid white;
