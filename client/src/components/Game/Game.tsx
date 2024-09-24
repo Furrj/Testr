@@ -17,7 +17,7 @@ import Loading from "../Loading/Loading";
 import Post from "./children/Post/Post";
 import Locals from "./Locals";
 
-const QUESTION_CHUNK_SIZE: number = 25;
+const QUESTION_CHUNK_SIZE: number = 10;
 
 const Game: React.FC = () => {
   const [gameStatus, setGameStatus] = useState<E_GAME_STATUS>(
@@ -45,16 +45,21 @@ const Game: React.FC = () => {
       case E_GAME_STATUS.ACTIVE:
         switch (limitType) {
           case E_GAME_LIMIT_TYPES.COUNT:
-            setQuestions(
+            setQuestions((curr) =>
               generateQuestions(
                 gameSettings.current,
                 gameSettings.current.limits.count,
+                curr.length !== undefined ? curr.length : 0,
               ),
             );
             break;
           case E_GAME_LIMIT_TYPES.TIME:
-            setQuestions(
-              generateQuestions(gameSettings.current, QUESTION_CHUNK_SIZE),
+            setQuestions((curr) =>
+              generateQuestions(
+                gameSettings.current,
+                QUESTION_CHUNK_SIZE,
+                curr.length !== undefined ? curr.length : 0,
+              ),
             );
             break;
         }
@@ -75,7 +80,11 @@ const Game: React.FC = () => {
     ) {
       setQuestions((curr) => {
         curr.push(
-          ...generateQuestions(gameSettings.current, QUESTION_CHUNK_SIZE),
+          ...generateQuestions(
+            gameSettings.current,
+            QUESTION_CHUNK_SIZE,
+            curr.length !== undefined ? curr.length : 0,
+          ),
         );
         return curr;
       });
