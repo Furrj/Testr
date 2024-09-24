@@ -22,8 +22,3 @@ type StudentData struct {
 	TeacherID UserID `json:"teacher_id"`
 	Period    uint   `json:"period"`
 }
-
-type UserGameSessionData struct {
-	GameSessionID string `json:"game_session_id"`
-	UserID        UserID `json:"user_id"`
-}

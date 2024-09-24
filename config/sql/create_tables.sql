@@ -32,8 +32,7 @@ CREATE TABLE game_sessions.data
 (
   game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids(game_session_id),
   user_id INTEGER REFERENCES users.ids(user_id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP
+  timestamp TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE users.data
@@ -45,9 +44,4 @@ CREATE TABLE users.data
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
     role users.role DEFAULT 'S'
-);
-
-CREATE TABLE users.game_session(
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids(user_id),
-    game_session_id UUID REFERENCES game_sessions.ids(game_session_id)
 );

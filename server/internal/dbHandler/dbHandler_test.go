@@ -108,29 +108,6 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("Error inserting game session: %+v", err)
 		}
 	})
-	t.Run("InsertUserGameSessionIDByUserID", func(t *testing.T) {
-		if err := dbHandler.InsertUserGameSession(testGameSessionData); err != nil {
-			t.Errorf("error in InsertGameSessionIDByUserID: %+v", err)
-		}
-	})
-	t.Run("GetGameSessionIDByUserID", func(t *testing.T) {
-		gameSessionID, err := dbHandler.GetUserGameSessionIDByUserID(testUserDataJackson.UserID)
-		if err != nil {
-			t.Errorf("%+v\n", err)
-		}
-		if gameSessionID != testGameSessionData.GameSessionID {
-			t.Errorf("gameSessionID mismatch: got %+v, want %+v", gameSessionID, testGameSessionData.GameSessionID)
-		}
-	})
-	t.Run("GetGameSessionByUserID", func(t *testing.T) {
-		gameSession, err := dbHandler.GetUserGameSessionByUserID(testUserDataJackson.UserID)
-		if err != nil {
-			t.Errorf("Error getting game session: %+v", err)
-		}
-		if gameSession != testGameSessionData {
-			t.Errorf("mismatch in GetGameSessionByUserID: got %+v, want %+v", gameSession, testGameSessionData)
-		}
-	})
 	t.Run("GetGameSessionByGameSessionID", func(t *testing.T) {
 		gameSession, err := dbHandler.GetGameSessionByGameSessionID(testGameSessionData.GameSessionID)
 		if err != nil {
