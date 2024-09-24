@@ -1,38 +1,30 @@
 import styles from "./Post.module.scss";
-import type { T_QUESTION } from "../../../../types/questions";
+import type {
+  T_QUESTION,
+  T_QUESTION_RESULT,
+} from "../../../../types/questions";
 
 interface IProps {
   questions: T_QUESTION[];
-  userAnswers: number[];
-}
-
-function generateIncorrectQuestionComponents(
-  questions: T_QUESTION[],
-  userAnswers: number[],
-): JSX.Element[] {
-  const out: JSX.Element[] = [];
-
-  userAnswers.forEach((a, i) => {
-    if (a !== questions[i].result) {
-      out.push(
-        <div key={`question-${i + 1}`} className={styles.incorrect}>
-          #{i + 1}: got {a}, wanted {questions[i].result}
-        </div>,
-      );
-    }
-  });
-
-  return out;
+  userGuesses: number[];
+  results: T_QUESTION_RESULT[];
 }
 
 const Post: React.FC<IProps> = (props) => {
+  console.log(props.results);
+
   return (
     <div className={styles.root}>
       <div className={styles.content}>
-        {generateIncorrectQuestionComponents(
-          props.questions,
-          props.userAnswers,
-        )}
+        {props.results
+          .filter(({ correct }) => !correct)
+          .map((result) => {
+            return (
+              <div key={`question-${result.id}`} className={styles.incorrect}>
+                #{result.id}: got {result.guess}, wanted {result.answer}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

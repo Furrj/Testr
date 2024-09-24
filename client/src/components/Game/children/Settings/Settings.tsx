@@ -13,7 +13,9 @@ interface IProps {
   gameSettings: React.MutableRefObject<T_GAME_SETTINGS>;
   setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
   setLimitType: React.Dispatch<React.SetStateAction<E_GAME_LIMIT_TYPES>>;
-  setTimeInSeconds: React.Dispatch<React.SetStateAction<number>>;
+  timeInSeconds: {
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
 }
 
 const Settings: React.FC<IProps> = (props) => {
@@ -59,7 +61,7 @@ const Settings: React.FC<IProps> = (props) => {
       props.setLimitType(
         timeLimit ? E_GAME_LIMIT_TYPES.TIME : E_GAME_LIMIT_TYPES.COUNT,
       );
-      props.setTimeInSeconds(timeLimit ? obj.limits.time : 0);
+      props.timeInSeconds.set(timeLimit ? obj.limits.time : 0);
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);

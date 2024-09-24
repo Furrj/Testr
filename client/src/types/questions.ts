@@ -16,23 +16,26 @@ export enum E_OPERATIONS {
 }
 
 export type T_QUESTION = {
+  id: number;
   operands: number[];
   operator: E_OPERATIONS;
-  result: number;
+  answer: number;
 };
 export const INIT_QUESTION: T_QUESTION = {
+  id: -1,
   operands: [0, 0],
   operator: E_OPERATIONS.NULL,
-  result: 0,
+  answer: 0,
 };
 
-export type T_QUESTION_RESULTS = {
-  correct: T_QUESTION[];
-  incorrect: T_QUESTION[];
+export type T_QUESTION_RESULT = T_QUESTION & {
+  guess: number;
+  correct: boolean;
 };
-export const INIT_QUESTION_RESULTS: T_QUESTION_RESULTS = {
-  correct: [],
-  incorrect: [],
+export const INIT_QUESTION_RESULT: T_QUESTION_RESULT = {
+  ...INIT_QUESTION,
+  guess: 0,
+  correct: false,
 };
 
 export function generateQuestions(
@@ -42,10 +45,10 @@ export function generateQuestions(
   const questions: T_QUESTION[] = [];
   const initQuestion = deepCopyObject(INIT_QUESTION);
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 1; i <= count; i++) {
     questions.push(
       // if first question, pass initQuestion as prev
-      generateQuestion(i === 0 ? initQuestion : questions[i - 1], settings),
+      generateQuestion(i === 1 ? initQuestion : questions[i - 2], settings, i),
     );
   }
 
@@ -55,6 +58,7 @@ export function generateQuestions(
 export function generateQuestion(
   prev: T_QUESTION,
   settings: T_GAME_SETTINGS,
+  id: number,
 ): T_QUESTION {
   const question = deepCopyObject(INIT_QUESTION);
 
@@ -67,7 +71,8 @@ export function generateQuestion(
 
     question.operands = operands;
     question.operator = operator;
-    question.result = calculateQuestionResult(operands, operator);
+    question.answer = calculateQuestionResult(operands, operator);
+    question.id = id;
 
     if (
       question.operands.join("") === prev.operands.join("") &&

@@ -9,13 +9,13 @@ import {
 import { deepCopyObject } from "../../utils/methods";
 import {
   generateQuestions,
-  INIT_QUESTION_RESULTS,
+  T_QUESTION_RESULT,
   type T_QUESTION,
-  type T_QUESTION_RESULTS,
 } from "../../types/questions";
 import Active from "./children/Active/Active";
 import Loading from "../Loading/Loading";
 import Post from "./children/Post/Post";
+import Locals from "./Locals";
 
 const QUESTION_CHUNK_SIZE: number = 25;
 
@@ -29,33 +29,41 @@ const Game: React.FC = () => {
     E_GAME_LIMIT_TYPES.NULL,
   );
   const [timeInSeconds, setTimeInSeconds] = useState<number | null>(null);
-  const [questionResults, setQuestionResults] = useState<T_QUESTION_RESULTS>(
-    deepCopyObject(INIT_QUESTION_RESULTS),
+  const [questionResults, setQuestionResults] = useState<T_QUESTION_RESULT[]>(
+    [],
   );
 
   const gameSettings = useRef<T_GAME_SETTINGS>(
     deepCopyObject(INIT_GAME_SETTINGS),
   );
-  const userAnswers = useRef<number[]>([]);
+  const userGuesses = useRef<number[]>([]);
 
   // generate questions on ACTIVE &&
+  // generate results on POST
   useEffect(() => {
-    if (gameStatus === E_GAME_STATUS.ACTIVE) {
-      switch (limitType) {
-        case E_GAME_LIMIT_TYPES.COUNT:
-          setQuestions(
-            generateQuestions(
-              gameSettings.current,
-              gameSettings.current.limits.count,
-            ),
-          );
-          break;
-        case E_GAME_LIMIT_TYPES.TIME:
-          setQuestions(
-            generateQuestions(gameSettings.current, QUESTION_CHUNK_SIZE),
-          );
-          break;
-      }
+    switch (gameStatus) {
+      case E_GAME_STATUS.ACTIVE:
+        switch (limitType) {
+          case E_GAME_LIMIT_TYPES.COUNT:
+            setQuestions(
+              generateQuestions(
+                gameSettings.current,
+                gameSettings.current.limits.count,
+              ),
+            );
+            break;
+          case E_GAME_LIMIT_TYPES.TIME:
+            setQuestions(
+              generateQuestions(gameSettings.current, QUESTION_CHUNK_SIZE),
+            );
+            break;
+        }
+        break;
+      case E_GAME_STATUS.POST:
+        setQuestionResults(
+          Locals.generateResults(userGuesses.current, questions),
+        );
+        break;
     }
   }, [gameStatus]);
 
@@ -81,31 +89,45 @@ const Game: React.FC = () => {
           gameSettings={gameSettings}
           setGameStatus={setGameStatus}
           setLimitType={setLimitType}
-          setTimeInSeconds={
-            setTimeInSeconds as React.Dispatch<React.SetStateAction<number>>
-          }
+          timeInSeconds={{
+            set: setTimeInSeconds as React.Dispatch<
+              React.SetStateAction<number>
+            >,
+          }}
         />
       );
     case E_GAME_STATUS.ACTIVE:
       return questions.length > 0 && timeInSeconds !== null ? (
         <Active
-          currentQuestionIndex={currentQuestionIndex}
-          setCurrentQuestionIndex={setCurrentQuestionIndex}
           questions={questions}
-          userAnswers={userAnswers}
+          userGuesses={userGuesses}
           settings={gameSettings.current}
-          setGameStatus={setGameStatus}
           limitType={limitType}
-          timeInSeconds={timeInSeconds as number}
-          setTimeInSeconds={
-            setTimeInSeconds as React.Dispatch<React.SetStateAction<number>>
-          }
+          gameStatus={{ set: setGameStatus }}
+          currentQuestionIndex={{
+            curr: currentQuestionIndex,
+            set: setCurrentQuestionIndex,
+          }}
+          timeInSeconds={{
+            curr: timeInSeconds,
+            set: setTimeInSeconds as React.Dispatch<
+              React.SetStateAction<number>
+            >,
+          }}
         />
       ) : (
         <Loading />
       );
     case E_GAME_STATUS.POST:
-      return <Post questions={questions} userAnswers={userAnswers.current} />;
+      return questionResults.length > 0 ? (
+        <Post
+          questions={questions}
+          userGuesses={userGuesses.current}
+          results={questionResults}
+        />
+      ) : (
+        <Loading />
+      );
   }
 };
 

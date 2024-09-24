@@ -10,20 +10,26 @@ import {
 
 interface IProps {
   questions: T_QUESTION[];
-  currentQuestionIndex: number;
-  setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
-  userAnswers: React.MutableRefObject<number[]>;
+  userGuesses: React.MutableRefObject<number[]>;
   settings: T_GAME_SETTINGS;
-  setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
   limitType: E_GAME_LIMIT_TYPES;
-  timeInSeconds: number;
-  setTimeInSeconds: React.Dispatch<React.SetStateAction<number>>;
+  gameStatus: {
+    set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
+  };
+  currentQuestionIndex: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
+  timeInSeconds: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
 }
 
 const Active: React.FC<IProps> = (props) => {
   const [inputErr, setInputErr] = useState<boolean>(false);
 
-  const currQuestion = props.questions[props.currentQuestionIndex - 1];
+  const currQuestion = props.questions[props.currentQuestionIndex.curr - 1];
   const inputRef = useRef<HTMLInputElement>(null);
 
   // focus on input box on page load
@@ -44,7 +50,7 @@ const Active: React.FC<IProps> = (props) => {
   // setup timer
   useEffect(() => {
     const interval = setInterval(() => {
-      props.setTimeInSeconds((prevSeconds) =>
+      props.timeInSeconds.set((prevSeconds) =>
         props.limitType === E_GAME_LIMIT_TYPES.TIME
           ? prevSeconds - 1
           : prevSeconds + 1,
@@ -59,9 +65,9 @@ const Active: React.FC<IProps> = (props) => {
   useEffect(() => {
     if (
       props.limitType === E_GAME_LIMIT_TYPES.TIME &&
-      props.timeInSeconds < 1
+      props.timeInSeconds.curr < 1
     ) {
-      props.setGameStatus(E_GAME_STATUS.POST);
+      props.gameStatus.set(E_GAME_STATUS.POST);
     }
   }, [props.timeInSeconds]);
 
@@ -69,7 +75,7 @@ const Active: React.FC<IProps> = (props) => {
     <div className={styles.root}>
       <div className={styles.info}>
         <div className={styles.number}>
-          # {props.currentQuestionIndex}
+          # {props.currentQuestionIndex.curr}
           {props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
             `/${props.settings.limits.count}`}
         </div>
@@ -77,13 +83,13 @@ const Active: React.FC<IProps> = (props) => {
           className={styles.timer}
           style={{
             color:
-              props.timeInSeconds < 10 &&
+              props.timeInSeconds.curr < 10 &&
               props.limitType === E_GAME_LIMIT_TYPES.TIME
                 ? "red"
                 : "",
           }}
         >
-          {Locals.formatTime(props.timeInSeconds)}
+          {Locals.formatTime(props.timeInSeconds.curr)}
         </div>
       </div>
 
@@ -109,15 +115,18 @@ const Active: React.FC<IProps> = (props) => {
               if (e.key === "Enter") {
                 // submit answer
                 if (inputRef.current?.value !== "") {
-                  props.userAnswers.current.push(e.currentTarget.valueAsNumber);
+                  props.userGuesses.current.push(e.currentTarget.valueAsNumber);
 
                   // if last question set gameState to 'post' else increase index
                   if (
                     props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
-                    props.currentQuestionIndex >= props.settings.limits.count
+                    props.currentQuestionIndex.curr >=
+                      props.settings.limits.count
                   ) {
-                    props.setGameStatus(E_GAME_STATUS.POST);
-                  } else props.setCurrentQuestionIndex((curr) => curr + 1);
+                    props.gameStatus.set(E_GAME_STATUS.POST);
+                  } else {
+                    props.currentQuestionIndex.set((curr) => curr + 1);
+                  }
                 } else setInputErr(true);
               }
             }}
