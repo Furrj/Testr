@@ -66,7 +66,7 @@ const EInsertGameSessionData = `
   VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
 `
 
-func (dbHandler *DBHandler) InsertGameSession(session types.GameSession) error {
+func (dbHandler *DBHandler) InsertGameSessionData(session types.GameSession) error {
 	_, err := dbHandler.Conn.Exec(
 		context.Background(),
 		EInsertGameSessionData,

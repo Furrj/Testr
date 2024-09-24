@@ -104,7 +104,7 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("mismatch inserting duplicate gameSessionID: got %d, want 0", result.RowsAffected())
 		}
 
-		if err := dbHandler.InsertGameSession(testGameSessionData); err != nil {
+		if err := dbHandler.InsertGameSessionData(testGameSessionData); err != nil {
 			t.Errorf("Error inserting game session: %+v", err)
 		}
 	})

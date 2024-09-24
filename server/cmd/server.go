@@ -66,6 +66,7 @@ func main() {
 	router.POST(consts.RouteUrlRegister, routes.Register(db))
 	router.POST(consts.RouteUrlLogin, routes.Login(db))
 	router.POST(consts.RouteUrlValidateSession, routes.ValidateSession(db))
+	router.POST(consts.RouteUrlSubmitGameSession, routes.SubmitGameSession(db))
 
 	router.Use(spa.Middleware("/", "client"))
 
