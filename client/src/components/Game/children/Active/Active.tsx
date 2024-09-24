@@ -45,7 +45,7 @@ const Active: React.FC<IProps> = (props) => {
       inputRef.current.value = "";
       inputErr && setInputErr(false);
     }
-  }, [props.currentQuestionIndex]);
+  }, [props.currentQuestionIndex.curr]);
 
   // setup timer
   useEffect(() => {
