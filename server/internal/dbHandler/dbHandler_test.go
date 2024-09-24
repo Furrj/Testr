@@ -110,6 +110,7 @@ func TestDBHandler(t *testing.T) {
 	})
 	t.Run("GetGameSessionByGameSessionID", func(t *testing.T) {
 		gameSession, err := dbHandler.GetGameSessionByGameSessionID(testGameSessionData.GameSessionID)
+		fmt.Printf("timestamp: %+v\n", gameSession.Timestamp)
 		if err != nil {
 			t.Errorf("Error getting game session: %+v", err)
 		}

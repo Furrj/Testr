@@ -10,7 +10,7 @@ import (
 // GETS
 
 const QGetGameSessionByGameSessionID = `
-  SELECT game_session_id, user_id
+  SELECT game_session_id, user_id, timestamp
   FROM game_sessions.data
   WHERE game_session_id=$1
 `
@@ -20,6 +20,7 @@ func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID types.Ga
 	err := dbHandler.Conn.QueryRow(context.Background(), QGetGameSessionByGameSessionID, gameSessionID).Scan(
 		&gameSession.GameSessionID,
 		&gameSession.UserID,
+		&gameSession.Timestamp,
 	)
 	if err != nil {
 		return gameSession, err
