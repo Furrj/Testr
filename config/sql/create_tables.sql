@@ -32,7 +32,17 @@ CREATE TABLE game_sessions.data
 (
   game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids(game_session_id),
   user_id INTEGER REFERENCES users.ids(user_id),
-  timestamp TIMESTAMP DEFAULT NOW()
+  timestamp TIMESTAMP DEFAULT NOW(),
+  limit_type SMALLINT,
+  questions_cout INTEGER,
+  correct_count INTEGER,
+  score SMALLINT,
+  min INTEGER,
+  max INTEGER,
+  add boolean,
+  sub boolean,
+  mult boolean,
+  div boolean
 );
 
 CREATE TABLE users.data
