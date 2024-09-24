@@ -1,4 +1,4 @@
-import { E_OPERATIONS } from "../../../../types/questions";
+import { E_OPERATIONS } from "../../../../types/game";
 
 const Locals = {
   convertOperatorToDisplay(op: E_OPERATIONS): string {

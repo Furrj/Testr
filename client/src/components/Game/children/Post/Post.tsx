@@ -1,19 +1,58 @@
 import styles from "./Post.module.scss";
 import type { T_QUESTION_RESULT } from "../../../../types/questions";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useMutation } from "@tanstack/react-query";
+import {
+  apiRequestSubmitGameSession,
+  I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
+} from "../../../../../requests";
+import { HttpStatusCode, type AxiosResponse } from "axios";
+import type {
+  E_GAME_LIMIT_TYPES,
+  T_GAME_SETTINGS,
+} from "../../../../types/game";
+import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
   time: number;
+  settings: T_GAME_SETTINGS;
+  limitType: E_GAME_LIMIT_TYPES;
 }
 
 const Post: React.FC<IProps> = (props) => {
-  const correctCount = useMemo(
-    () => props.results.filter(({ correct }) => correct).length,
-    [props.results],
-  );
+  const correctCount = props.results.filter(({ correct }) => correct).length;
+  const questionsCount = props.results.length;
+  const score = Math.round((correctCount / questionsCount) * 100);
 
-  const score = Math.round((correctCount / props.results.length) * 100);
+  const mutation = useMutation({
+    mutationFn: (
+      params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
+    ): Promise<AxiosResponse> => apiRequestSubmitGameSession(params),
+    onSuccess(data) {
+      if (data.status === HttpStatusCode.Ok) console.log("success");
+      else console.log("error");
+    },
+  });
+
+  // submit on page load
+  useEffect(() => {
+    mutation.mutate({
+      tokens: getUserSessionDataFromStorage(),
+      session: {
+        limit_type: props.limitType,
+        questions_count: questionsCount,
+        correct_count: correctCount,
+        score,
+        min: props.settings.range.min,
+        max: props.settings.range.max,
+        add: props.settings.ops.add,
+        sub: props.settings.ops.sub,
+        mult: props.settings.ops.mult,
+        div: props.settings.ops.div,
+      },
+    });
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -23,7 +62,7 @@ const Post: React.FC<IProps> = (props) => {
         </div>
         <div className={styles.ratio}>
           <h3>
-            {correctCount}/{props.results.length}
+            {correctCount}/{questionsCount}
           </h3>
         </div>
         <div className={styles.time}>

@@ -128,8 +128,15 @@ const Game: React.FC = () => {
         <Loading />
       );
     case E_GAME_STATUS.POST:
-      return questionResults.length > 0 && timeInSeconds !== null ? (
-        <Post results={questionResults} time={timeInSeconds} />
+      return questionResults.length > 0 &&
+        timeInSeconds !== null &&
+        gameSettings.current !== undefined ? (
+        <Post
+          results={questionResults}
+          time={timeInSeconds}
+          settings={gameSettings.current}
+          limitType={limitType}
+        />
       ) : (
         <Loading />
       );
