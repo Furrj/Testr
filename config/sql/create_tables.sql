@@ -34,7 +34,7 @@ CREATE TABLE game_sessions.data
   user_id INTEGER REFERENCES users.ids(user_id),
   timestamp TIMESTAMP DEFAULT NOW(),
   limit_type SMALLINT,
-  questions_cout INTEGER,
+  questions_count INTEGER,
   correct_count INTEGER,
   score SMALLINT,
   min INTEGER,
