@@ -25,14 +25,15 @@ const App: React.FC = () => {
     staleTime: Infinity,
   });
 
-  // if auth invalid, send to login &&
-  // set gameComponent base on role
+  // if auth invalid, send to login
   const navigate = useNavigate();
   useEffect(() => {
     if (!isFetching && isFetched) {
       if (!data || !data.valid || error) {
         clearTokensFromLocalStorage();
         navigate("/login");
+      } else {
+        navigate("/game");
       }
     }
   }, [isSuccess, isFetched, isFetching]);
@@ -43,7 +44,7 @@ const App: React.FC = () => {
       <VersionLabel />
       <ContentBox>
         <Routes>
-          <Route path="/" element={isFetching ? <Loading /> : <Game />} />
+          <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
