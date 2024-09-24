@@ -121,8 +121,6 @@ const Game: React.FC = () => {
     case E_GAME_STATUS.POST:
       return questionResults.length > 0 ? (
         <Post
-          questions={questions}
-          userGuesses={userGuesses.current}
           results={questionResults}
         />
       ) : (

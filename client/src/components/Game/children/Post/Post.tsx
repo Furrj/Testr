@@ -1,12 +1,9 @@
 import styles from "./Post.module.scss";
 import type {
-  T_QUESTION,
   T_QUESTION_RESULT,
 } from "../../../../types/questions";
 
 interface IProps {
-  questions: T_QUESTION[];
-  userGuesses: number[];
   results: T_QUESTION_RESULT[];
 }
 
