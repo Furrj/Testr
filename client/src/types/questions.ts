@@ -41,14 +41,21 @@ export const INIT_QUESTION_RESULT: T_QUESTION_RESULT = {
 export function generateQuestions(
   settings: T_GAME_SETTINGS,
   count: number,
+  currentQuestionCount: number,
 ): T_QUESTION[] {
   const questions: T_QUESTION[] = [];
   const initQuestion = deepCopyObject(INIT_QUESTION);
 
+  console.log(currentQuestionCount);
+
   for (let i = 1; i <= count; i++) {
     questions.push(
       // if first question, pass initQuestion as prev
-      generateQuestion(i === 1 ? initQuestion : questions[i - 2], settings, i),
+      generateQuestion(
+        i === 1 ? initQuestion : questions[i - 2],
+        settings,
+        i + currentQuestionCount,
+      ),
     );
   }
 
