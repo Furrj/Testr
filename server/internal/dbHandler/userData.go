@@ -43,43 +43,6 @@ func (dbHandler *DBHandler) GetUserDataByUserID(UserID types.UserID) (types.User
 	return UserData, nil
 }
 
-const QGetUserGameSessionByUserID = `
-  SELECT game_session_id, user_id
-	FROM users.game_session
-	WHERE user_id=$1
-`
-
-func (dbHandler *DBHandler) GetUserGameSessionByUserID(userID types.UserID) (types.GameSession, error) {
-	var gameSession types.GameSession
-
-	err := dbHandler.Conn.QueryRow(context.Background(), QGetUserGameSessionByUserID, userID).Scan(
-		&gameSession.GameSessionID,
-		&gameSession.UserID,
-	)
-	if err != nil {
-		return gameSession, err
-	}
-
-	return gameSession, nil
-}
-
-const QGetUserGameSessionIDByUserID = `
-  SELECT game_session_id
-  FROM users.game_session
-  WHERE user_id=$1
-`
-
-func (dbHandler *DBHandler) GetUserGameSessionIDByUserID(userID types.UserID) (types.GameSessionID, error) {
-	var gameSessionID types.GameSessionID
-	if err := dbHandler.Conn.QueryRow(context.Background(), QGetUserGameSessionIDByUserID, userID).Scan(&gameSessionID); err != nil {
-		return gameSessionID, err
-	}
-
-	return gameSessionID, nil
-}
-
-// Inserts
-
 const EInsertUser = `
 	INSERT INTO users.ids DEFAULT VALUES
 	RETURNING user_id
@@ -115,39 +78,4 @@ func (dbHandler *DBHandler) InsertUserData(userData types.UserData) error {
 		return err
 	}
 	return nil
-}
-
-const EInsertUserGameSession = `
-	INSERT INTO users.game_session (user_id, game_session_id)
-	VALUES ($1, $2)
-`
-
-func (dbHandler *DBHandler) InsertUserGameSession(session types.GameSession) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertUserGameSession,
-		session.UserID, session.GameSessionID)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UPDATES
-
-const EUpdateUserGameSessionByUserID = `
-	UPDATE users.game_session
-  SET game_session_id = $1
-	WHERE user_id = $2
-`
-
-func (dbHandler *DBHandler) UpdateUserGameSessionByUserID(gameSessionID types.GameSessionID, userID types.UserID) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EUpdateUserGameSessionByUserID,
-		gameSessionID,
-		userID,
-	)
-
-	return err
 }
