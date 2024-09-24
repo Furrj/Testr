@@ -44,6 +44,7 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 			QuestionsCount: payload.QuestionsCount,
 			CorrectCount:   payload.CorrectCount,
 			Score:          payload.Score,
+			Time:           payload.Time,
 			Min:            payload.Min,
 			Max:            payload.Max,
 			Add:            payload.Add,

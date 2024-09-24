@@ -9,4 +9,5 @@ const (
 	RouteUrlRegister          string = RouteUrlBase + "/register"
 	RouteUrlValidateSession   string = RouteUrlBase + "/validateSession"
 	RouteUrlSubmitGameSession string = RouteUrlBase + "/submitGameSession"
+	RouteUrlGetGameSessions   string = RouteUrlBase + "/getGameSessions"
 )

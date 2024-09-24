@@ -32,11 +32,12 @@ CREATE TABLE game_sessions.data
 (
   game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids(game_session_id),
   user_id INTEGER REFERENCES users.ids(user_id),
-  timestamp TIMESTAMP DEFAULT NOW(),
+  timestamp BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
   limit_type SMALLINT,
   questions_count INTEGER,
   correct_count INTEGER,
   score SMALLINT,
+  time SMALLINT,
   min INTEGER,
   max INTEGER,
   add boolean,

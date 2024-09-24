@@ -1,17 +1,15 @@
 import styles from "./Post.module.scss";
 import type { T_QUESTION_RESULT } from "../../../../types/questions";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   apiRequestSubmitGameSession,
   I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
 } from "../../../../../requests";
 import { HttpStatusCode, type AxiosResponse } from "axios";
-import type {
-  E_GAME_LIMIT_TYPES,
-  T_GAME_SETTINGS,
-} from "../../../../types/game";
+import { E_GAME_LIMIT_TYPES, T_GAME_SETTINGS } from "../../../../types/game";
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
+import Locals from "../Active/Locals";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
@@ -21,6 +19,8 @@ interface IProps {
 }
 
 const Post: React.FC<IProps> = (props) => {
+  const [sent, setSent] = useState<boolean>(false);
+
   const correctCount = props.results.filter(({ correct }) => correct).length;
   const questionsCount = props.results.length;
   const score = Math.round((correctCount / questionsCount) * 100);
@@ -32,26 +32,32 @@ const Post: React.FC<IProps> = (props) => {
     onSuccess(data) {
       if (data.status === HttpStatusCode.Ok) console.log("success");
       else console.log("error");
+      setSent(true);
     },
   });
 
   // submit on page load
   useEffect(() => {
-    mutation.mutate({
-      tokens: getUserSessionDataFromStorage(),
-      session: {
-        limit_type: props.limitType,
-        questions_count: questionsCount,
-        correct_count: correctCount,
-        score,
-        min: props.settings.range.min,
-        max: props.settings.range.max,
-        add: props.settings.ops.add,
-        sub: props.settings.ops.sub,
-        mult: props.settings.ops.mult,
-        div: props.settings.ops.div,
-      },
-    });
+    !sent &&
+      mutation.mutate({
+        tokens: getUserSessionDataFromStorage(),
+        session: {
+          limit_type: props.limitType,
+          questions_count: questionsCount,
+          correct_count: correctCount,
+          score,
+          time:
+            props.limitType === E_GAME_LIMIT_TYPES.TIME
+              ? props.settings.limits.time
+              : props.time,
+          min: props.settings.range.min,
+          max: props.settings.range.max,
+          add: props.settings.ops.add,
+          sub: props.settings.ops.sub,
+          mult: props.settings.ops.mult,
+          div: props.settings.ops.div,
+        },
+      });
   }, []);
 
   return (
@@ -66,7 +72,13 @@ const Post: React.FC<IProps> = (props) => {
           </h3>
         </div>
         <div className={styles.time}>
-          <h3>1:00</h3>
+          <h3>
+            {Locals.formatTime(
+              props.limitType === E_GAME_LIMIT_TYPES.TIME
+                ? props.settings.limits.time
+                : props.time,
+            )}
+          </h3>
         </div>
       </div>
       <div className={styles.results}>

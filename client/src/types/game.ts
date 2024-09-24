@@ -45,6 +45,7 @@ export type T_GAME_SESSION = {
   questions_count: number;
   correct_count: number;
   score: number;
+  time: number;
   min: number;
   max: number;
   add: boolean;

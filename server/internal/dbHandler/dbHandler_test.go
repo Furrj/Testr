@@ -118,6 +118,13 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("Mismatch in GetGameSessionByGameID: got %+v, want %+v", gameSession.GameSessionID, testGameSessionData.GameSessionID)
 		}
 	})
+	t.Run("GetGameSessionsByUserID", func(t *testing.T) {
+		sessions, err := dbHandler.GetGameSessionsByUserID(testGameSessionData.UserID)
+		fmt.Printf("%+v\n", sessions)
+		if err != nil {
+			t.Errorf("Error in GetGameSessionsByUserID: %+v", err)
+		}
+	})
 
 	t.Run("InsertTeacherData", func(t *testing.T) {
 		if err := dbHandler.InsertTeacherData(testTeacherData); err != nil {

@@ -11,6 +11,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 		JWTValidatedRoutes: map[string]struct{}{
 			consts.RouteUrlValidateSession:   {},
 			consts.RouteUrlSubmitGameSession: {},
+			consts.RouteUrlGetGameSessions:   {},
 		},
 	}
 
