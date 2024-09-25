@@ -69,6 +69,7 @@ func main() {
 	router.POST(consts.RouteUrlSubmitGameSession, routes.SubmitGameSession(db))
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
+	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))
 
 	router.Use(spa.Middleware("/", "client"))
 

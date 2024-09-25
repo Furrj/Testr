@@ -13,6 +13,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 			consts.RouteUrlSubmitGameSession: {},
 			consts.RouteUrlGetGameSessions:   {},
 			consts.RouteUrlGetStudents:       {},
+			consts.RouteUrlGetUserInfo:       {},
 		},
 	}
 
