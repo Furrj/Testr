@@ -1,8 +1,7 @@
 import styles from "./App.module.scss";
-import Navbar from "../Navbar/Navbar";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../../utils/consts";
+import { QUERY_KEYS, USER_ROLES } from "../../utils/consts";
 import {
   clearTokensFromLocalStorage,
   getAuthStatus,
@@ -15,6 +14,8 @@ import Register from "../Register/Register";
 import VersionLabel from "./children/VersionLabel/VersionLabel";
 import Game from "../Game/Game";
 import Home from "../Home/Home";
+import Nav from "./children/Nav/Nav";
+import Teacher from "../Teacher/Teacher";
 
 const App: React.FC = () => {
   // fetch auth status if tokens in localstorage
@@ -39,16 +40,20 @@ const App: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <Navbar data={data} />
       <VersionLabel />
       <ContentBox>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
+          {data && data.user_data.role === USER_ROLES.TEACHER && (
+            <Route path="/teacher" element={<Teacher />} />
+          )}
           <Route path="/register/*" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to={"/"} replace />} />
         </Routes>
       </ContentBox>
+      {data !== undefined && data.valid && <Nav userData={data.user_data} />}
     </div>
   );
 };

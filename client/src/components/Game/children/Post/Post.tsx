@@ -9,7 +9,7 @@ import {
 import { HttpStatusCode, type AxiosResponse } from "axios";
 import { E_GAME_LIMIT_TYPES, T_GAME_SETTINGS } from "../../../../types/game";
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
-import Locals from "../Active/Locals";
+import UIHandlers from "../../../../utils/uiHandlers";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
@@ -73,7 +73,7 @@ const Post: React.FC<IProps> = (props) => {
         </div>
         <div className={styles.time}>
           <h3>
-            {Locals.formatTime(
+            {UIHandlers.formatTime(
               props.limitType === E_GAME_LIMIT_TYPES.TIME
                 ? props.settings.limits.time
                 : props.time,

@@ -1,7 +1,6 @@
 import styles from "./Active.module.scss";
 import type { T_QUESTION } from "../../../../types/questions";
 import { useEffect, useRef, useState } from "react";
-import Locals from "./Locals";
 import UIHandlers from "../../../../utils/uiHandlers";
 import {
   E_GAME_LIMIT_TYPES,

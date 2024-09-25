@@ -18,21 +18,6 @@ export const INIT_TOKENS: T_TOKENS = {
   refresh_token: "",
 };
 
-export type T_USERDATA_ALL = {
-  user_id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-  tokens: T_TOKENS;
-};
-export const INIT_USERDATA_ALL: T_USERDATA_ALL = {
-  user_id: 0,
-  username: "",
-  first_name: "",
-  last_name: "",
-  tokens: deepCopyObject(INIT_TOKENS),
-};
-
 export type T_USERDATA_STATE = {
   user_id: number;
   username: string;

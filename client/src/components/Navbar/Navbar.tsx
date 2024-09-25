@@ -1,7 +1,7 @@
 import styles from "./Navbar.module.scss";
 import { clearTokensFromLocalStorage } from "../../utils/methods";
 import { useQueryClient } from "@tanstack/react-query";
-import { APP_VERSION, QUERY_KEYS } from "../../utils/consts";
+import { QUERY_KEYS } from "../../utils/consts";
 import { useNavigate } from "react-router-dom";
 import type { T_AUTH_STATUS } from "../../types";
 

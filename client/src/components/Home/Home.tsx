@@ -24,7 +24,6 @@ const Home: React.FC = () => {
         <div className={styles.past_tests}>
           {data.data.length > 0 &&
             data.data.map((session, i) => {
-              // TODO: make separate comp
               return <PastTest key={`test-${i}`} session={session} />;
             })}
         </div>
