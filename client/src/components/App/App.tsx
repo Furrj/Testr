@@ -14,6 +14,7 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import VersionLabel from "./children/VersionLabel/VersionLabel";
 import Game from "../Game/Game";
+import Home from "../Home/Home";
 
 const App: React.FC = () => {
   // fetch auth status if tokens in localstorage
@@ -32,8 +33,6 @@ const App: React.FC = () => {
       if (!data || !data.valid || error) {
         clearTokensFromLocalStorage();
         navigate("/login");
-      } else {
-        navigate("/game");
       }
     }
   }, [isSuccess, isFetched, isFetching]);
@@ -44,6 +43,7 @@ const App: React.FC = () => {
       <VersionLabel />
       <ContentBox>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/login" element={<Login />} />

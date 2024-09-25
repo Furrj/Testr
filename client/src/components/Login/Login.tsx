@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.GAME_SESSION_INFO],
         });
-        navigate("/game");
+        navigate("/");
       } else {
         setIncorrectInfo(true);
       }
