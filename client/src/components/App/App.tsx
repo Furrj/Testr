@@ -45,9 +45,16 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
-          {data && data.user_data.role === USER_ROLES.TEACHER && (
-            <Route path="/teacher" element={<Teacher />} />
-          )}
+          <Route
+            path="/teacher/*"
+            element={
+              data && data.user_data.role === USER_ROLES.TEACHER ? (
+                <Teacher />
+              ) : (
+                <Loading />
+              )
+            }
+          />
           <Route path="/register/*" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to={"/"} replace />} />

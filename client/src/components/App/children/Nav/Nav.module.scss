@@ -2,104 +2,112 @@
 @import "../../../../styles/vars";
 
 .root {
-	min-width: 80%;
-	max-width: 95%;
-	height: fit-content;
+  min-width: 80%;
+  max-width: 95%;
+  height: fit-content;
 
-	display: flex;
-	flex-wrap: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
 
-	border: 1px solid white;
-	border-radius: 10px;
+  border: 1px solid white;
+  border-radius: 10px;
 
-	position: absolute;
-	bottom: 10px;
-	left: 50%;
-	transform: translateX(-50%);
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 
-	backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 
-	.icon {
-		font-size: 2rem;
-	}
+  .icon {
+    font-size: 2rem;
+  }
 
-	.logo {
-		@include flex-center;
-		gap: 5px;
+  .logo {
+    @include flex-center;
+    gap: 5px;
 
-		width: 100px;
-		height: 100%;
+    width: 100px;
+    height: 100%;
 
-		background: black;
-		color: $color-navbar-title;
+    background: black;
+    color: $color-navbar-title;
 
-		border-top-left-radius: 10px;
-		border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 
-		padding: 5px;
+    padding: 5px;
 
-		.icon {
-			border: 1px solid white;
-			border-radius: 5px;
-		}
-	}
+    .icon {
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+  }
 
-	.links {
-		width: 100%;
+  .links {
+    width: 100%;
 
-		display: flex;
-		align-items: center;
-		justify-content: space-around;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
-		overflow: auto;
+    overflow: auto;
 
-		.link {
-			@include flex-center;
+    .link {
+      @include flex-center;
 
-			width: 50px;
-			height: 50px;
+      width: 50px;
+      height: 50px;
 
-			text-decoration: none;
-			border-radius: 10px;
+      text-decoration: none;
+      border-radius: 10px;
 
-			background: green;
-			color: white;
+      background: green;
+      color: white;
 
-			&:hover {
-				background: rgb(114, 162, 114);
-			}
-		}
-	}
+      &:hover {
+        background: rgb(114, 162, 114);
+      }
+    }
+
+    .teacher {
+      background: rgb(77, 77, 194);
+
+      &:hover {
+        background: rgb(120, 120, 218);
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 800px) {
-	.root {
-		min-width: fit-content;
-		max-width: fit-content;
-		min-height: 80%;
-		max-height: 90%;
+  .root {
+    min-width: fit-content;
+    max-width: fit-content;
+    min-height: 80%;
+    max-height: 90%;
 
-		flex-direction: column;
+    flex-direction: column;
 
-		left: 10px;
+    left: 10px;
 
-		top: 50%;
-		transform: translateY(-45%);
+    top: 50%;
+    transform: translateY(-45%);
 
-		.logo {
-			width: 60px;
-			height: 80px;
+    .logo {
+      width: 60px;
+      height: 80px;
 
-			border-top-right-radius: 10px;
-			border-bottom-left-radius: 0px;
-		}
+      border-top-right-radius: 10px;
+      border-bottom-left-radius: 0px;
+    }
 
-		.links {
-			@include full-size-percent;
-			flex-direction: column;
-			flex-grow: 1;
+    .links {
+      @include full-size-percent;
+      flex-direction: column;
+      flex-grow: 1;
 
-			//border: 1px solid white;
-		}
-	}
+      //border: 1px solid white;
+    }
+  }
 }

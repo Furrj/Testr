@@ -68,202 +68,21 @@ const Settings: React.FC<IProps> = (props) => {
 
   return (
     <div className={styles.root}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div className={styles.range}>
-          <div className={styles.min}>
-            <form.Field
-              name="range.min"
-              children={(field) => (
-                <>
-                  <h2>Min</h2>
-                  <input
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={
-                      field.state.meta.errors.length > 0 ? styles.errInput : ""
-                    }
-                    type="number"
-                  />
-                  {field.state.meta.errors.length > 0 ? (
-                    <div className={styles.err}>
-                      {field.state.meta.errors.join(", ")}
-                    </div>
-                  ) : null}
-                </>
-              )}
-              validators={{
-                onChange: ({ value, fieldApi }) => {
-                  if (
-                    !Number.isNaN(value) &&
-                    !Number.isNaN(fieldApi.form.getFieldValue("range.max")) &&
-                    Number.parseInt(value as string) >=
-                      Number.parseInt(
-                        fieldApi.form.getFieldValue("range.max") as string,
-                      )
-                  ) {
-                    return "Min must be less than max";
-                  }
-
-                  return undefined;
-                },
-                onSubmit: ({ value }) => {
-                  if (value === "") {
-                    return "Cannot be empty";
-                  } else if (Number.isNaN(value as string)) {
-                    return "Invalid value";
-                  }
-
-                  return undefined;
-                },
-              }}
-            />
-          </div>
-          <div className={styles.max}>
-            <form.Field
-              name="range.max"
-              children={(field) => (
-                <>
-                  <h2>Max</h2>
-                  <input
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={
-                      field.state.meta.errors.length > 0 ? styles.errInput : ""
-                    }
-                    type="number"
-                  />
-                  {field.state.meta.errors.length > 0 ? (
-                    <div className={styles.err}>
-                      {field.state.meta.errors.join(", ")}
-                    </div>
-                  ) : null}
-                </>
-              )}
-              validators={{
-                onChange: ({ value, fieldApi }) => {
-                  if (
-                    !Number.isNaN(value) &&
-                    !Number.isNaN(fieldApi.form.getFieldValue("range.min")) &&
-                    Number.parseInt(value as string) <=
-                      Number.parseInt(
-                        fieldApi.form.getFieldValue("range.min") as string,
-                      )
-                  ) {
-                    return "Max must be more than min";
-                  }
-
-                  return undefined;
-                },
-                onSubmit: ({ value }) => {
-                  if (value === "") {
-                    return "Cannot be empty";
-                  } else if (Number.isNaN(value as string)) {
-                    return "Invalid value";
-                  }
-
-                  return undefined;
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div className={styles.ops}>
-          <div className={styles.add}>
-            <form.Field
-              name="ops.add"
-              children={(field) => (
-                <>
-                  <h2>&#x002B;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.sub}>
-            <form.Field
-              name="ops.sub"
-              children={(field) => (
-                <>
-                  <h2>&minus;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.mult}>
-            <form.Field
-              name="ops.mult"
-              children={(field) => (
-                <>
-                  <h2>&times;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.div}>
-            <form.Field
-              name="ops.div"
-              children={(field) => (
-                <>
-                  <h2>&divide;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-        </div>
-        {formErrorMap.onSubmit !== undefined && (
-          <div className={styles.ops_error}>{formErrorMap.onSubmit}</div>
-        )}
-        <div className={styles.limits}>
-          <div className={styles.time}>
-            <h2>Time Limit (s)</h2>
-            <input
-              type="checkbox"
-              name="time_limit_check"
-              checked={timeLimit}
-              onChange={() => setTimeLimit((c) => !c && true)}
-            />
-            {timeLimit && (
+      <div className={styles.scroll}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <div className={styles.range}>
+            <div className={styles.min}>
               <form.Field
-                name="limits.time"
+                name="range.min"
                 children={(field) => (
                   <>
+                    <h2>Min</h2>
                     <input
                       name={field.name}
                       value={field.state.value}
@@ -284,40 +103,38 @@ const Settings: React.FC<IProps> = (props) => {
                   </>
                 )}
                 validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
+                  onChange: ({ value, fieldApi }) => {
+                    if (
+                      !Number.isNaN(value) &&
+                      !Number.isNaN(fieldApi.form.getFieldValue("range.max")) &&
+                      Number.parseInt(value as string) >=
+                        Number.parseInt(
+                          fieldApi.form.getFieldValue("range.max") as string,
+                        )
+                    ) {
+                      return "Min must be less than max";
                     }
 
                     return undefined;
                   },
                   onSubmit: ({ value }) => {
-                    if (
-                      timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
+                    if (value === "") {
                       return "Cannot be empty";
+                    } else if (Number.isNaN(value as string)) {
+                      return "Invalid value";
                     }
 
                     return undefined;
                   },
                 }}
               />
-            )}
-          </div>
-          <div className={styles.questions}>
-            <h2>Question Limit</h2>
-            <input
-              type="checkbox"
-              name="question_limit_check"
-              checked={!timeLimit}
-              onChange={() => setTimeLimit((c) => c && false)}
-            />
-            {!timeLimit && (
+            </div>
+            <div className={styles.max}>
               <form.Field
-                name="limits.count"
+                name="range.max"
                 children={(field) => (
                   <>
+                    <h2>Max</h2>
                     <input
                       name={field.name}
                       value={field.state.value}
@@ -338,30 +155,219 @@ const Settings: React.FC<IProps> = (props) => {
                   </>
                 )}
                 validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
+                  onChange: ({ value, fieldApi }) => {
+                    if (
+                      !Number.isNaN(value) &&
+                      !Number.isNaN(fieldApi.form.getFieldValue("range.min")) &&
+                      Number.parseInt(value as string) <=
+                        Number.parseInt(
+                          fieldApi.form.getFieldValue("range.min") as string,
+                        )
+                    ) {
+                      return "Max must be more than min";
                     }
 
                     return undefined;
                   },
                   onSubmit: ({ value }) => {
-                    if (
-                      !timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
+                    if (value === "") {
                       return "Cannot be empty";
+                    } else if (Number.isNaN(value as string)) {
+                      return "Invalid value";
                     }
 
                     return undefined;
                   },
                 }}
               />
-            )}
+            </div>
           </div>
-        </div>
-        <button type="submit">Start</button>
-      </form>
+          <div className={styles.ops}>
+            <div className={styles.add}>
+              <form.Field
+                name="ops.add"
+                children={(field) => (
+                  <>
+                    <h2>&#x002B;</h2>
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      checked={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  </>
+                )}
+              />
+            </div>
+            <div className={styles.sub}>
+              <form.Field
+                name="ops.sub"
+                children={(field) => (
+                  <>
+                    <h2>&minus;</h2>
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      checked={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  </>
+                )}
+              />
+            </div>
+            <div className={styles.mult}>
+              <form.Field
+                name="ops.mult"
+                children={(field) => (
+                  <>
+                    <h2>&times;</h2>
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      checked={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  </>
+                )}
+              />
+            </div>
+            <div className={styles.div}>
+              <form.Field
+                name="ops.div"
+                children={(field) => (
+                  <>
+                    <h2>&divide;</h2>
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      checked={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  </>
+                )}
+              />
+            </div>
+          </div>
+          {formErrorMap.onSubmit !== undefined && (
+            <div className={styles.ops_error}>{formErrorMap.onSubmit}</div>
+          )}
+          <div className={styles.limits}>
+            <div className={styles.time}>
+              <h2>Time Limit (s)</h2>
+              <input
+                type="checkbox"
+                name="time_limit_check"
+                checked={timeLimit}
+                onChange={() => setTimeLimit((c) => !c && true)}
+              />
+              {timeLimit && (
+                <form.Field
+                  name="limits.time"
+                  children={(field) => (
+                    <>
+                      <input
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className={
+                          field.state.meta.errors.length > 0
+                            ? styles.errInput
+                            : ""
+                        }
+                        type="number"
+                      />
+                      {field.state.meta.errors.length > 0 ? (
+                        <div className={styles.err}>
+                          {field.state.meta.errors.join(", ")}
+                        </div>
+                      ) : null}
+                    </>
+                  )}
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (Number.parseInt(value as string) < 0) {
+                        return "Cannot be negative";
+                      }
+
+                      return undefined;
+                    },
+                    onSubmit: ({ value }) => {
+                      if (
+                        timeLimit &&
+                        (value === "" || Number.isNaN(value as string))
+                      ) {
+                        return "Cannot be empty";
+                      }
+
+                      return undefined;
+                    },
+                  }}
+                />
+              )}
+            </div>
+            <div className={styles.questions}>
+              <h2>Question Limit</h2>
+              <input
+                type="checkbox"
+                name="question_limit_check"
+                checked={!timeLimit}
+                onChange={() => setTimeLimit((c) => c && false)}
+              />
+              {!timeLimit && (
+                <form.Field
+                  name="limits.count"
+                  children={(field) => (
+                    <>
+                      <input
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className={
+                          field.state.meta.errors.length > 0
+                            ? styles.errInput
+                            : ""
+                        }
+                        type="number"
+                      />
+                      {field.state.meta.errors.length > 0 ? (
+                        <div className={styles.err}>
+                          {field.state.meta.errors.join(", ")}
+                        </div>
+                      ) : null}
+                    </>
+                  )}
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (Number.parseInt(value as string) < 0) {
+                        return "Cannot be negative";
+                      }
+
+                      return undefined;
+                    },
+                    onSubmit: ({ value }) => {
+                      if (
+                        !timeLimit &&
+                        (value === "" || Number.isNaN(value as string))
+                      ) {
+                        return "Cannot be empty";
+                      }
+
+                      return undefined;
+                    },
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          <button type="submit">Start</button>
+        </form>
+      </div>
     </div>
   );
 };
