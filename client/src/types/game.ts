@@ -46,6 +46,7 @@ export type T_GAME_SESSION = {
   correct_count: number;
   score: number;
   time: number;
+  timestamp?: number;
   min: number;
   max: number;
   add: boolean;

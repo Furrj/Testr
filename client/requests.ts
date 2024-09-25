@@ -15,7 +15,8 @@ const API_ROUTES = {
   LOGIN: ROUTE_PREFIX + "/api/login",
   REGISTER: ROUTE_PREFIX + "/api/register",
   VALIDATE: ROUTE_PREFIX + "/api/validateSession",
-  SubmitGameSession: ROUTE_PREFIX + "/api/submitGameSession",
+  SUBMIT_GAME_SESSION: ROUTE_PREFIX + "/api/submitGameSession",
+  GET_GAME_SESSIONS: ROUTE_PREFIX + "/api/getGameSessions",
 };
 
 export async function apiRequestRegister(
@@ -62,16 +63,29 @@ export interface I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION {
 
 export async function apiRequestSubmitGameSession(
   params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
-): Promise<AxiosResponse<T_APIRESULT_VALIDATE_ACCESS_TOKEN>> {
+): Promise<AxiosResponse> {
   console.log("Running apiRequestValidateSession");
-  return await axios<T_APIRESULT_VALIDATE_ACCESS_TOKEN>({
+  return await axios({
     method: "POST",
-    url: API_ROUTES.SubmitGameSession,
+    url: API_ROUTES.SUBMIT_GAME_SESSION,
     data: {
       ...params.session,
     },
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export async function apiRequestGetGameSessions(
+  tokens: T_TOKENS,
+): Promise<AxiosResponse<T_GAME_SESSION[]>> {
+  console.log("Running apiRequestValidateSession");
+  return await axios<T_GAME_SESSION[]>({
+    method: "GET",
+    url: API_ROUTES.GET_GAME_SESSIONS,
+    headers: {
+      Authorization: `Bearer ${tokens.access_token}`,
     },
   });
 }

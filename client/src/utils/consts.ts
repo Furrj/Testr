@@ -14,8 +14,8 @@ export const LOCAL_STORAGE_KEYS: T_LOCAL_STORAGE_KEYS = {
 
 // React-Query
 export const QUERY_KEYS = {
-  USER_DATA: "user_data",
-  GAME_SESSION_INFO: "game_session_info",
+  USER_DATA: "USER_DATA",
+  USER_GAME_SESSIONS: "USER_GAME_SESSIONS",
 };
 
 export const USER_ROLES = {
