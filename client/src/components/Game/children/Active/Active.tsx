@@ -2,6 +2,7 @@ import styles from "./Active.module.scss";
 import type { T_QUESTION } from "../../../../types/questions";
 import { useEffect, useRef, useState } from "react";
 import Locals from "./Locals";
+import UIHandlers from "../../../../utils/uiHandlers";
 import {
   E_GAME_LIMIT_TYPES,
   E_GAME_STATUS,
@@ -89,7 +90,7 @@ const Active: React.FC<IProps> = (props) => {
                 : "",
           }}
         >
-          {Locals.formatTime(props.timeInSeconds.curr)}
+          {UIHandlers.formatTime(props.timeInSeconds.curr)}
         </div>
       </div>
 
@@ -99,7 +100,9 @@ const Active: React.FC<IProps> = (props) => {
             <h2>{currQuestion.operands[0]}</h2>
           </div>
           <div className={styles.middle}>
-            <h2>{Locals.convertOperatorToDisplay(currQuestion.operator)}</h2>
+            <h2>
+              {UIHandlers.convertOperatorToDisplay(currQuestion.operator)}
+            </h2>
           </div>
           <div className={styles.right}>
             <h2>{currQuestion.operands[1]}</h2>

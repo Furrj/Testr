@@ -1,20 +1,4 @@
-import { E_OPERATIONS } from "../../../../types/game";
-
 const Locals = {
-  convertOperatorToDisplay(op: E_OPERATIONS): string {
-    switch (op) {
-      case E_OPERATIONS.ADD:
-        return String.fromCharCode(0x002b);
-      case E_OPERATIONS.SUB:
-        return String.fromCharCode(0x2212);
-      case E_OPERATIONS.MULT:
-        return String.fromCharCode(0x00d7);
-      case E_OPERATIONS.DIV:
-        return String.fromCharCode(0x00f7);
-    }
-
-    return "";
-  },
   submitAnswer(
     answer: number,
     userAnswers: React.MutableRefObject<number[]>,
@@ -22,11 +6,6 @@ const Locals = {
   ): void {
     userAnswers.current.push(answer);
     setCurrentQuestionIndex((curr) => ++curr);
-  },
-  formatTime(totalSeconds: number): string {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   },
 };
 

@@ -1,2 +1,21 @@
+@import "../../styles/mixins";
+
 .root {
+  @include full-size-percent;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //border: 1px solid red;
+
+  .past_tests {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    //border: 1px solid white;
+  }
 }
