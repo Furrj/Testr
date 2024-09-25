@@ -12,6 +12,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 			consts.RouteUrlValidateSession:   {},
 			consts.RouteUrlSubmitGameSession: {},
 			consts.RouteUrlGetGameSessions:   {},
+			consts.RouteUrlGetStudents:       {},
 		},
 	}
 

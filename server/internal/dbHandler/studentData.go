@@ -29,6 +29,49 @@ func (dbHandler *DBHandler) GetStudentDataByUserID(UserID types.UserID) (types.S
 	return StudentData, nil
 }
 
+const QGetAllStudentsDataByTeacherID = `
+	SELECT user_id, teacher_id, period, first_name, last_name, username
+	FROM students.data
+	NATURAL JOIN users.data
+	WHERE teacher_id=$1
+`
+
+func (dbHandler *DBHandler) GetAllStudentsDataByTeacherID(UserID types.UserID) ([]types.StudentData, error) {
+	students := []types.StudentData{}
+
+	rows, err := dbHandler.Conn.Query(
+		context.Background(),
+		QGetAllStudentsDataByTeacherID,
+		UserID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var student types.StudentData
+
+		err := rows.Scan(
+			&student.UserID,
+			&student.TeacherID,
+			&student.Period,
+			&student.FirstName,
+			&student.LastName,
+			&student.Username,
+		)
+		if err != nil {
+			return nil, err
+		}
+		students = append(students, student)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return students, nil
+}
+
 // Inserts
 
 const EInsertStudentData = `

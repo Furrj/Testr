@@ -155,6 +155,11 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
 		}
 	})
+	t.Run("GetAllStudentsDataByTeacherID", func(t *testing.T) {
+		if _, err := dbHandler.GetAllStudentsDataByTeacherID(testTeacherData.UserID); err != nil {
+			t.Errorf("error in GetAllStudentsDataByTeacherID: %+v\n", err)
+		}
+	})
 
 	t.Run("DropTablesEnd", func(t *testing.T) {
 		if err := dbHandler.ExecuteSqlScript(os.Getenv("SQL_DROP_TABLES")); err != nil {
