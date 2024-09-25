@@ -5,6 +5,7 @@ import {
   type T_APIRESULT_REGISTER,
   type T_USERINPUT_REGISTER,
   type T_APIRESULT_VALIDATE_ACCESS_TOKEN,
+  T_USERDATA_STATE,
 } from "./src/types";
 import { type T_TOKENS } from "./src/types";
 import type { T_GAME_SESSION } from "./src/types/game";
@@ -19,6 +20,7 @@ const API_ROUTES = {
   SUBMIT_GAME_SESSION: ROUTE_PREFIX + "/api/submitGameSession",
   GET_GAME_SESSIONS: ROUTE_PREFIX + "/api/getGameSessions",
   GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
+  GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
 };
 
 export async function apiRequestRegister(
@@ -62,7 +64,6 @@ export interface I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION {
   tokens: T_TOKENS;
   session: T_GAME_SESSION;
 }
-
 export async function apiRequestSubmitGameSession(
   params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
 ): Promise<AxiosResponse> {
@@ -98,6 +99,29 @@ export async function apiRequestGetStudents(
     url: API_ROUTES.GET_STUDENTS,
     headers: {
       Authorization: `Bearer ${tokens.access_token}`,
+    },
+  });
+}
+
+export type T_APIRESULT_GET_USER_INFO = {
+  user_data: T_USERDATA_STATE;
+  sessions: T_GAME_SESSION[];
+};
+export interface I_PARAMS_APIREQUEST_GET_USER_INFO {
+  tokens: T_TOKENS;
+  user_id: number;
+}
+export async function apiRequestGetUserInfo(
+  params: I_PARAMS_APIREQUEST_GET_USER_INFO,
+): Promise<AxiosResponse<T_APIRESULT_GET_USER_INFO>> {
+  return await axios<T_APIRESULT_GET_USER_INFO>({
+    method: "GET",
+    url: API_ROUTES.GET_USER_INFO,
+    data: {
+      user_id: params.user_id,
+    },
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
     },
   });
 }

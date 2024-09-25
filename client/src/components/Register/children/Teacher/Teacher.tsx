@@ -12,7 +12,7 @@ import {
 } from "../../../../types";
 import { QUERY_KEYS, USER_ROLES } from "../../../../utils/consts";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
-import { apiRequestRegister } from "../../../../utils/requests";
+import { apiRequestRegister } from "../../../../../requests";
 
 function isAlpha(input: string): boolean {
   let regex = /^[a-zA-Z]+$/;

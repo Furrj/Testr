@@ -1,0 +1,29 @@
+@import "../../styles/mixins";
+
+.root {
+  @include full-size-percent;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //border: 1px solid red;
+
+  .info {
+    h2 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  }
+
+  .past_tests {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding-bottom: 100px;
+
+    //border: 1px solid white;
+  }
+}

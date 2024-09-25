@@ -5,6 +5,7 @@ import { QUERY_KEYS } from "../../utils/consts";
 import { getUserSessionDataFromStorage } from "../../utils/methods";
 import Loading from "../Loading/Loading";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Teacher: React.FC = () => {
   const [currentPeriod, setCurrentPeriod] = useState<number>(1);
@@ -27,7 +28,7 @@ const Teacher: React.FC = () => {
           <label htmlFor="periods">Period: </label>
           <select
             name="periods"
-						id="periods"
+            id="periods"
             onChange={(e) => setCurrentPeriod(Number.parseInt(e.target.value))}
           >
             {data?.data.map((_, i) => {
@@ -43,12 +44,14 @@ const Teacher: React.FC = () => {
           <div className={styles.scroll}>
             {data.data[currentPeriod - 1].map((student, i) => {
               return (
-                <div
-                  key={`period-${currentPeriod}-student-${i}`}
-                  className={styles.student}
-                >
-                  {student.last_name}, {student.first_name}
-                </div>
+                <Link to={"/teacher/student"} key={`period-${currentPeriod}-student-${i}`}>
+                  <div
+
+                    className={styles.student}
+                  >
+                    {student.last_name}, {student.first_name}
+                  </div>
+                </Link>
               );
             })}
           </div>

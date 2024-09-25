@@ -13,9 +13,9 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import VersionLabel from "./children/VersionLabel/VersionLabel";
 import Game from "../Game/Game";
-import Home from "../Home/Home";
 import Nav from "./children/Nav/Nav";
 import Teacher from "../Teacher/Teacher";
+import User, { E_USER_MODES } from "../User/User";
 
 const App: React.FC = () => {
   // fetch auth status if tokens in localstorage
@@ -43,10 +43,13 @@ const App: React.FC = () => {
       <VersionLabel />
       <ContentBox>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={<User user_id={0} mode={E_USER_MODES.HOME} />}
+          />
           <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
           <Route
-            path="/teacher/*"
+            path="/teacher"
             element={
               data && data.user_data.role === USER_ROLES.TEACHER ? (
                 <Teacher />
@@ -55,6 +58,7 @@ const App: React.FC = () => {
               )
             }
           />
+          <Route path="/teacher/student" element={<User user_id={2} mode={E_USER_MODES.TEACHER} />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to={"/"} replace />} />
