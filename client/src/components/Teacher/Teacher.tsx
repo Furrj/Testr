@@ -17,16 +17,7 @@ const Teacher: React.FC = () => {
           />
         }
       />
-      <Route
-        path="/student"
-        element={
-          activeStudentID !== -1 ? (
-            <Student user_id={activeStudentID} />
-          ) : (
-            <Loading />
-          )
-        }
-      />
+      <Route path="/student" element={<Student user_id={activeStudentID} />} />
     </Routes>
   );
 };
