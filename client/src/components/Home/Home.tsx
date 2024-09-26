@@ -6,11 +6,7 @@ import { getUserSessionDataFromStorage } from "../../utils/methods";
 import Loading from "../Loading/Loading";
 import PastTest from "../PastTest/PastTest";
 
-interface IProps {
-  user_id: number;
-}
-
-const Home: React.FC<IProps> = (props) => {
+const Home: React.FC = () => {
   const { isSuccess, isPending, isFetching, data } = useQuery({
     queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
     queryFn: () => apiRequestGetGameSessions(getUserSessionDataFromStorage()),
