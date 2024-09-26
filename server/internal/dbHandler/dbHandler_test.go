@@ -119,7 +119,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetGameSessionsByUserID", func(t *testing.T) {
-		sessions, err := dbHandler.GetGameSessionsByUserID(testGameSessionData.UserID)
+		sessions, err := dbHandler.GetAllGameSessionsByUserID(testGameSessionData.UserID)
 		fmt.Printf("%+v\n", sessions)
 		if err != nil {
 			t.Errorf("Error in GetGameSessionsByUserID: %+v", err)

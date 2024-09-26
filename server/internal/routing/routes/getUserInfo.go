@@ -78,7 +78,7 @@ func GetUserInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 			}
 		}
 
-		sessions, err := db.GetGameSessionsByUserID(userID)
+		sessions, err := db.GetAllGameSessionsByUserID(userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetGameSessionsByUserID %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, nil)

@@ -22,7 +22,7 @@ func GetGameSessions(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// get game sessions
-		sessions, err := db.GetGameSessionsByUserID(userID)
+		sessions, err := db.GetAllGameSessionsByUserID(userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error getting gameSessions %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, nil)

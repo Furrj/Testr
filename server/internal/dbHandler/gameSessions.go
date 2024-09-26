@@ -45,18 +45,19 @@ func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID types.Ga
 	return gameSession, nil
 }
 
-const QGetGameSessionByUserID = `
+const QGetAllGameSessionByUserID = `
   SELECT game_session_id, user_id, timestamp, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div 
   FROM game_sessions.data
   WHERE user_id=$1
+	ORDER BY timestamp DESC
 `
 
-func (dbHandler *DBHandler) GetGameSessionsByUserID(id types.UserID) ([]types.GameSession, error) {
+func (dbHandler *DBHandler) GetAllGameSessionsByUserID(id types.UserID) ([]types.GameSession, error) {
 	sessions := []types.GameSession{}
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),
-		QGetGameSessionByUserID,
+		QGetAllGameSessionByUserID,
 		id,
 	)
 	if err != nil {
