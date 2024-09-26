@@ -1,7 +1,7 @@
 import styles from "./Post.module.scss";
 import type { T_QUESTION_RESULT } from "../../../../types/questions";
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   apiRequestSubmitGameSession,
   I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
@@ -10,6 +10,7 @@ import { HttpStatusCode, type AxiosResponse } from "axios";
 import { E_GAME_LIMIT_TYPES, T_GAME_SETTINGS } from "../../../../types/game";
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import UIHandlers from "../../../../utils/uiHandlers";
+import { QUERY_KEYS } from "../../../../utils/consts";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
@@ -25,12 +26,16 @@ const Post: React.FC<IProps> = (props) => {
   const questionsCount = props.results.length;
   const score = Math.round((correctCount / questionsCount) * 100);
 
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (
       params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
     ): Promise<AxiosResponse> => apiRequestSubmitGameSession(params),
     onSuccess(data) {
-      if (data.status === HttpStatusCode.Ok) console.log("success");
+      if (data.status === HttpStatusCode.Ok)
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
+        });
       else console.log("error");
       setSent(true);
     },
