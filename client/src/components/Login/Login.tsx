@@ -35,10 +35,9 @@ const Login: React.FC = () => {
     onSuccess(data) {
       if (data.data.valid) {
         sendTokensToLocalStorage(data.data.tokens);
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_DATA] });
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
-        });
+
+        queryClient.resetQueries();
+
         navigate("/");
       } else {
         setIncorrectInfo(true);
