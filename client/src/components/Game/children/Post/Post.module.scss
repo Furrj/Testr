@@ -39,27 +39,41 @@
   }
 
   .results {
-    width: 60%;
+    width: 80%;
     height: fit-content;
 
-    border: 1px solid white;
+    //border: 1px solid white;
     border-radius: 10px;
     padding: 5px;
 
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
 
     .incorrect {
+      width: fit-content;
+      height: fit-content;
+
+      display: flex;
+      flex-direction: column;
+
       border: 1px solid white;
       border-radius: 10px;
 
-      width: 100px;
-      height: 100px;
+      div {
+        text-align: center;
+        font-size: 1.5rem;
 
-      @include flex-center;
-      flex-flow: column;
+        border-bottom: 1px solid white;
+        padding: 5px;
+
+        &:nth-child(3) {
+          border: none;
+          color: red;
+        }
+      }
     }
   }
 }

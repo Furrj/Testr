@@ -87,7 +87,13 @@ const Post: React.FC<IProps> = (props) => {
           .map((result) => {
             return (
               <div key={`question-${result.id}`} className={styles.incorrect}>
-                #{result.id}: got {result.guess}, wanted {result.answer}
+                <div>#{result.id}</div>
+                <div>
+                  {result.operands[0]}{" "}
+                  {UIHandlers.convertOperatorToDisplay(result.operator)}{" "}
+                  {result.operands[1]} = {result.answer}
+                </div>
+                <div>{result.guess}</div>
               </div>
             );
           })}

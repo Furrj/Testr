@@ -1,11 +1,30 @@
 @import "../../styles/mixins";
+@import "../../styles/vars";
 
 .root {
-  @include flex-center;
-
   border: 1px solid white;
   border-radius: 10px;
   padding: 5px;
 
   font-size: larger;
+
+  h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .stats {
+    @include flex-center;
+    gap: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    div {
+      border: 1px solid white;
+      border-radius: 10px;
+      padding: 3px;
+
+      background: black;
+    }
+  }
 }

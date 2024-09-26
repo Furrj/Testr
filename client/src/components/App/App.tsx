@@ -43,7 +43,10 @@ const App: React.FC = () => {
       <VersionLabel />
       <ContentBox>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={data ? <Home userData={data?.user_data} /> : <Loading />}
+          />
           <Route path="/game/*" element={isFetching ? <Loading /> : <Game />} />
           <Route
             path="/teacher/*"

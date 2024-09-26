@@ -8,6 +8,12 @@
   align-items: center;
   //border: 1px solid red;
 
+  .info {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
   .past_tests {
     width: 80%;
     height: fit-content;
