@@ -11,5 +11,5 @@ const (
 	RouteUrlSubmitGameSession string = RouteUrlBase + "/submitGameSession"
 	RouteUrlGetGameSessions   string = RouteUrlBase + "/getGameSessions"
 	RouteUrlGetStudents       string = RouteUrlBase + "/getStudents"
-	RouteUrlGetUserInfo       string = RouteUrlBase + "/getUserInfo"
+	RouteUrlGetUserInfo       string = RouteUrlBase + "/getUserInfo/:id"
 )

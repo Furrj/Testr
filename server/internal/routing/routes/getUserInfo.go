@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
@@ -36,18 +37,22 @@ func GetUserInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		// check role
 		if userData.Role != "S" {
-			// bind payload
-			var payload getUserInfoPayload
-			if err = ctx.BindJSON(&payload); err != nil {
-				fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
-				ctx.Status(http.StatusInternalServerError)
+			// get param
+			paramStr := ctx.Param("id")
+
+			// Convert the string to a uint
+			userParamID32, err := strconv.ParseUint(paramStr, 10, 32)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error parsing param string: %+v\n", err)
+				ctx.Status(http.StatusBadRequest)
 				return
 			}
+			userParamID := types.UserID(userParamID32)
 
 			// if sending specific userID
-			if payload.UserID != 0 {
+			if userParamID != 0 {
 				// get user data for specified userID
-				fetchedUserData, err := db.GetUserDataByUserID(payload.UserID)
+				fetchedUserData, err := db.GetUserDataByUserID(userParamID)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID %+v\n", err)
 					ctx.Status(http.StatusInternalServerError)
@@ -61,14 +66,14 @@ func GetUserInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 				}
 
 				// check if student owned by teacher
-				studentData, err := db.GetStudentDataByUserID(payload.UserID)
+				studentData, err := db.GetStudentDataByUserID(userParamID)
 				if studentData.TeacherID != userID {
 					ctx.Status(http.StatusUnauthorized)
 					return
 				}
 
 				// succesful, set userID & userData to specified
-				userID = payload.UserID
+				userID = userParamID
 				userData = fetchedUserData
 			}
 		}
