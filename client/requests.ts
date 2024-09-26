@@ -116,10 +116,7 @@ export async function apiRequestGetUserInfo(
 ): Promise<AxiosResponse<T_APIRESULT_GET_USER_INFO>> {
   return await axios<T_APIRESULT_GET_USER_INFO>({
     method: "GET",
-    url: API_ROUTES.GET_USER_INFO,
-    data: {
-      user_id: params.user_id,
-    },
+    url: `${API_ROUTES.GET_USER_INFO}/${params.user_id}`,
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },

@@ -7,7 +7,14 @@ import Loading from "../../../Loading/Loading";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Selection: React.FC = () => {
+interface IProps {
+  activeStudentID: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
+}
+
+const Selection: React.FC<IProps> = (props) => {
   const [currentPeriod, setCurrentPeriod] = useState<number>(1);
 
   // fetch students
@@ -48,6 +55,9 @@ const Selection: React.FC = () => {
                   className={styles.link}
                   to={"/teacher/student"}
                   key={`period-${currentPeriod}-student-${i}`}
+                  onClick={() =>
+                    props.activeStudentID.set((_) => student.user_id)
+                  }
                 >
                   <div className={styles.student}>
                     {student.last_name}, {student.first_name}
