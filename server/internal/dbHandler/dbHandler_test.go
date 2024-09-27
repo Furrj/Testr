@@ -161,6 +161,12 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
+	t.Run("UpdateVerticalByUserID", func(t *testing.T) {
+		if err := dbHandler.UpdateVerticalByUserID(testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {
+			t.Errorf("error in UpdateVerticalByUserID: %+v\n", err)
+		}
+	})
+
 	t.Run("DropTablesEnd", func(t *testing.T) {
 		if err := dbHandler.ExecuteSqlScript(os.Getenv("SQL_DROP_TABLES")); err != nil {
 			t.Errorf("Error dropping tables: %+v\n", err)

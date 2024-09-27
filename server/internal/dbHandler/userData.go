@@ -21,7 +21,7 @@ func (dbHandler *DBHandler) GetUserIDByUsername(username string) (types.UserID, 
 }
 
 const QGetUserDataByUserID = `
-	SELECT user_id, username, password, salt, first_name, last_name, role
+	SELECT user_id, username, password, salt, first_name, last_name, role, vertical
 	FROM users.data
 	WHERE user_id=$1
 `
@@ -36,6 +36,7 @@ func (dbHandler *DBHandler) GetUserDataByUserID(UserID types.UserID) (types.User
 		&UserData.FirstName,
 		&UserData.LastName,
 		&UserData.Role,
+		&UserData.Vertical,
 	)
 	if err != nil {
 		return UserData, err
@@ -58,8 +59,8 @@ func (dbHandler *DBHandler) InsertUser() (types.UserID, error) {
 }
 
 const EInsertUserData = `
-	INSERT INTO users.data (user_id, username, password, salt, first_name, last_name, role)
-	VALUES ($1, $2, $3, $4, $5, $6, $7)
+	INSERT INTO users.data (user_id, username, password, salt, first_name, last_name, role, vertical)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 `
 
 func (dbHandler *DBHandler) InsertUserData(userData types.UserData) error {
@@ -73,6 +74,28 @@ func (dbHandler *DBHandler) InsertUserData(userData types.UserData) error {
 		userData.FirstName,
 		userData.LastName,
 		userData.Role,
+		userData.Vertical,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UPDATES
+
+const EUpdateVerticalByUserID = `
+	UPDATE users.data
+	SET vertical=$2
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) UpdateVerticalByUserID(id types.UserID, vertical bool) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EUpdateVerticalByUserID,
+		id,
+		vertical,
 	)
 	if err != nil {
 		return err

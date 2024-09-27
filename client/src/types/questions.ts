@@ -32,8 +32,6 @@ export function generateQuestions(
   const questions: T_QUESTION[] = [];
   const initQuestion = deepCopyObject(INIT_QUESTION);
 
-  console.log(currentQuestionCount);
-
   for (let i = 1; i <= count; i++) {
     questions.push(
       // if first question, pass initQuestion as prev

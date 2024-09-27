@@ -11,23 +11,23 @@ DEFAULT VALUES;
 INSERT INTO users.ids
 DEFAULT VALUES;
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (1, 'mfurr', 'pass', 'test_salt', 'Michele', 'Furr', 'T');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (1, 'mfurr', 'pass', 'test_salt', 'Michele', 'Furr', 'T', true);
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (2, 'poemmys', 'pass', 'test_salt', 'Jackson', 'Furr', 'S');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (2, 'poemmys', 'pass', 'test_salt', 'Jackson', 'Furr', 'S', true);
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (3, 'test2', 'pass', 'test_salt', 'test', 'two', 'S');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (3, 'test2', 'pass', 'test_salt', 'test', 'two', 'S', true);
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (4, 'test3', 'pass', 'test_salt', 'test', 'three', 'S');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (4, 'test3', 'pass', 'test_salt', 'test', 'three', 'S', true);
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (5, 'test4', 'pass', 'test_salt', 'test', 'four', 'S');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (5, 'test4', 'pass', 'test_salt', 'test', 'four', 'S', true);
 
-INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role)
-VALUES (6, 'test5', 'pass', 'test_salt', 'test', 'five', 'S');
+INSERT INTO users.data(user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES (6, 'test5', 'pass', 'test_salt', 'test', 'five', 'S', false);
 
 INSERT INTO teachers.data(user_id, periods)
 VALUES (1, 5);

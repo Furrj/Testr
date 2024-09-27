@@ -12,4 +12,5 @@ const (
 	RouteUrlGetGameSessions   string = RouteUrlBase + "/getGameSessions"
 	RouteUrlGetStudents       string = RouteUrlBase + "/getStudents"
 	RouteUrlGetUserInfo       string = RouteUrlBase + "/getUserInfo/:id"
+	RouteUrlUpdateVertical    string = RouteUrlBase + "/updateVertical"
 )

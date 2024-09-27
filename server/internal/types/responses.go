@@ -6,6 +6,7 @@ type ResponseUserData struct {
 	Username  string `json:"username"`
 	Role      string `json:"role"`
 	UserID    UserID `json:"user_id"`
+	Vertical  bool   `json:"vertical"`
 }
 
 type ResponseRegisterLogin struct {
@@ -24,6 +25,6 @@ type ResponseValidateToken struct {
 }
 
 type ResponseGetUserData struct {
-	UserData ResponseUserData `json:"user_data"`
 	Sessions []GameSession    `json:"sessions"`
+	UserData ResponseUserData `json:"user_data"`
 }
