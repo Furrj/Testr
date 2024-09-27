@@ -1,5 +1,5 @@
 import styles from "./Nav.module.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaHome, FaPlay } from "react-icons/fa";
 import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
@@ -15,8 +15,6 @@ interface IProps {
 
 const Nav: React.FC<IProps> = (props) => {
   const queryClient = useQueryClient();
-
-  const navigate = useNavigate();
 
   return (
     <div className={styles.root}>
@@ -44,7 +42,6 @@ const Nav: React.FC<IProps> = (props) => {
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEYS.USER_DATA],
             });
-            navigate("/login");
           }}
         >
           <IoMdExit className={styles.icon} />
