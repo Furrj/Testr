@@ -8,7 +8,6 @@ cd .. &&
   rm deploy/deploy.sh &&
   cp -r client/dist deploy/client &&
   cp config/sql/* deploy &&
-  rm deploy/seed_db.sql &&
   cd server &&
   GOOS=linux GOARCH=amd64 go build -o ../deploy/mathtestr.exe cmd/server.go &&
   cd .. &&

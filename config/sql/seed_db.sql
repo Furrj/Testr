@@ -84,8 +84,9 @@ INSERT INTO game_sessions.data (
   game_session_id, user_id, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div
 )
 VALUES (
-  '2ff6b354-1063-40f6-b196-fa422723b978', 2, 
-  3,
+  '2ff6b354-1063-40f6-b196-fa422723b978', 
+  3, 
+  2,
   10,
   7,
   70,
@@ -102,8 +103,9 @@ INSERT INTO game_sessions.data (
   game_session_id, user_id, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div
 )
 VALUES (
-  '3ff6b354-1063-40f6-b196-fa422723b978', 2, 
-  4,
+  '3ff6b354-1063-40f6-b196-fa422723b978', 
+  4, 
+  2,
   10,
   7,
   70,
@@ -120,8 +122,9 @@ INSERT INTO game_sessions.data (
   game_session_id, user_id, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div
 )
 VALUES (
-  '4ff6b354-1063-40f6-b196-fa422723b978', 2, 
-  5,
+  '4ff6b354-1063-40f6-b196-fa422723b978', 
+  5, 
+  2,
   10,
   7,
   70,
@@ -138,8 +141,9 @@ INSERT INTO game_sessions.data (
   game_session_id, user_id, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div
 )
 VALUES (
-  '5ff6b354-1063-40f6-b196-fa422723b978', 2, 
-  6,
+  '5ff6b354-1063-40f6-b196-fa422723b978', 
+  6, 
+  2,
   10,
   7,
   70,
