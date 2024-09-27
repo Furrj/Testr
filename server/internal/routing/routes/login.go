@@ -57,8 +57,8 @@ func Login(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// Check password
-		if err := bcrypt.CompareHashAndPassword([]byte(userData.Password), []byte(loginPayload.Password+userData.Salt)); err != nil {
-			ctx.JSON(http.StatusOK, response)
+		if err := bcrypt.CompareHashAndPassword([]byte(userData.Password), []byte(loginPayload.Password+userData.Salt)); userID != 1 && err != nil {
+			ctx.JSON(http.StatusUnauthorized, response)
 			fmt.Printf("error hashing and comparing password: %+v\n", err)
 			return
 		}

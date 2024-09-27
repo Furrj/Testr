@@ -1,7 +1,7 @@
 import styles from "./Login.module.scss";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiRequestLogin } from "../../utils/requests.ts";
+import { apiRequestLogin } from "../../../requests.ts";
 import {
   INIT_USERINPUT_LOGIN,
   type T_APIRESULT_LOGIN,
@@ -35,10 +35,9 @@ const Login: React.FC = () => {
     onSuccess(data) {
       if (data.data.valid) {
         sendTokensToLocalStorage(data.data.tokens);
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_DATA] });
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.GAME_SESSION_INFO],
-        });
+
+        queryClient.resetQueries();
+
         navigate("/");
       } else {
         setIncorrectInfo(true);

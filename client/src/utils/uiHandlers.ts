@@ -1,3 +1,5 @@
+import { E_OPERATIONS } from "../types/game";
+
 export const togglePasswordLogin = (
   e: React.MouseEvent<HTMLButtonElement>,
 ): void => {
@@ -55,3 +57,27 @@ export const togglePasswordRegister2 = (
     }
   }
 };
+
+const UIHandlers = {
+  convertOperatorToDisplay(op: E_OPERATIONS): string {
+    switch (op) {
+      case E_OPERATIONS.ADD:
+        return String.fromCharCode(0x002b);
+      case E_OPERATIONS.SUB:
+        return String.fromCharCode(0x2212);
+      case E_OPERATIONS.MULT:
+        return String.fromCharCode(0x00d7);
+      case E_OPERATIONS.DIV:
+        return String.fromCharCode(0x00f7);
+    }
+
+    return "";
+  },
+  formatTime(totalSeconds: number): string {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  },
+};
+
+export default UIHandlers;

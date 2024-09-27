@@ -10,9 +10,9 @@ import {
   E_REGISTER_RESULT,
   INIT_USERINPUT_REGISTER,
 } from "../../../../types";
-import { QUERY_KEYS, USER_ROLES } from "../../../../utils/consts";
+import { USER_ROLES } from "../../../../utils/consts";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
-import { apiRequestRegister } from "../../../../utils/requests";
+import { apiRequestRegister } from "../../../../../requests";
 
 function isAlpha(input: string): boolean {
   let regex = /^[a-zA-Z]+$/;
@@ -38,10 +38,9 @@ const Teacher: React.FC = () => {
       switch (data.data.result) {
         case E_REGISTER_RESULT.VALID:
           sendTokensToLocalStorage(data.data.tokens);
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_DATA] });
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEYS.GAME_SESSION_INFO],
-          });
+
+          queryClient.resetQueries();
+
           navigate("/");
           break;
         case E_REGISTER_RESULT.USERNAME_EXISTS:

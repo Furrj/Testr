@@ -1,381 +1,146 @@
-import styles from "./Game.module.scss";
-import { useState } from "react";
-import { useForm } from "@tanstack/react-form";
+import { useEffect, useRef, useState } from "react";
+import Settings from "./children/Settings/Settings";
+import {
+  E_GAME_LIMIT_TYPES,
+  E_GAME_STATUS,
+  INIT_GAME_SETTINGS,
+  type T_GAME_SETTINGS,
+} from "../../types/game";
+import { deepCopyObject } from "../../utils/methods";
+import {
+  generateQuestions,
+  T_QUESTION_RESULT,
+  type T_QUESTION,
+} from "../../types/questions";
+import Active from "./children/Active/Active";
+import Loading from "../Loading/Loading";
+import Post from "./children/Post/Post";
+import Locals from "./Locals";
 
-type T_GAME_SETTINGS = {
-  range: {
-    min: number | string;
-    max: number | string;
-  };
-  ops: {
-    add: boolean;
-    sub: boolean;
-    mult: boolean;
-    div: boolean;
-  };
-  limits: {
-    time: number | string;
-    count: number | string;
-  };
-};
-const INIT_GAME_SETTINGS: T_GAME_SETTINGS = {
-  range: {
-    min: "",
-    max: "",
-  },
-  ops: {
-    add: false,
-    sub: false,
-    mult: false,
-    div: false,
-  },
-  limits: {
-    time: "",
-    count: "",
-  },
-};
+const QUESTION_CHUNK_SIZE: number = 10;
 
 const Game: React.FC = () => {
-  const [timeLimit, setTimeLimit] = useState<boolean>(true);
-
-  const form = useForm<T_GAME_SETTINGS>({
-    defaultValues: {
-      ...INIT_GAME_SETTINGS,
-    },
-    validators: {
-      onSubmit({ value }) {
-        return !value.ops.add &&
-          !value.ops.sub &&
-          !value.ops.mult &&
-          !value.ops.div
-          ? "Choose at least one operation"
-          : undefined;
-      },
-    },
-    onSubmit: ({ value }) => {
-      const obj = {
-        range: {
-          min: Number.parseInt(value.range.min as string) | 0,
-          max: Number.parseInt(value.range.max as string) | 0,
-        },
-        ops: {
-          add: value.ops.add,
-          sub: value.ops.sub,
-          mult: value.ops.mult,
-          div: value.ops.div,
-        },
-        limits: {
-          time: Number.parseInt(value.limits.time as string) | 0,
-          count: Number.parseInt(value.limits.count as string) | 0,
-        },
-      };
-
-      if (timeLimit) obj.limits.count = 0;
-      else obj.limits.time = 0;
-
-      console.log(obj);
-    },
-  });
-  const formErrorMap = form.useStore((state) => state.errorMap);
-
-  return (
-    <div className={styles.root}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div className={styles.range}>
-          <div className={styles.min}>
-            <form.Field
-              name="range.min"
-              children={(field) => (
-                <>
-                  <h2>Min</h2>
-                  <input
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={
-                      field.state.meta.errors.length > 0 ? styles.errInput : ""
-                    }
-                    type="number"
-                  />
-                  {field.state.meta.errors.length > 0 ? (
-                    <div className={styles.err}>
-                      {field.state.meta.errors.join(", ")}
-                    </div>
-                  ) : null}
-                </>
-              )}
-              validators={{
-                onChange: ({ value, fieldApi }) => {
-                  if (
-                    !Number.isNaN(value) &&
-                    !Number.isNaN(fieldApi.form.getFieldValue("range.max")) &&
-                    Number.parseInt(value as string) >=
-                      Number.parseInt(
-                        fieldApi.form.getFieldValue("range.max") as string,
-                      )
-                  ) {
-                    return "Min must be less than max";
-                  }
-
-                  return undefined;
-                },
-                onSubmit: ({ value }) => {
-                  if (value === "") {
-                    return "Cannot be empty";
-                  } else if (Number.isNaN(value as string)) {
-                    return "Invalid value";
-                  }
-
-                  return undefined;
-                },
-              }}
-            />
-          </div>
-          <div className={styles.max}>
-            <form.Field
-              name="range.max"
-              children={(field) => (
-                <>
-                  <h2>Max</h2>
-                  <input
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={
-                      field.state.meta.errors.length > 0 ? styles.errInput : ""
-                    }
-                    type="number"
-                  />
-                  {field.state.meta.errors.length > 0 ? (
-                    <div className={styles.err}>
-                      {field.state.meta.errors.join(", ")}
-                    </div>
-                  ) : null}
-                </>
-              )}
-              validators={{
-                onChange: ({ value, fieldApi }) => {
-                  if (
-                    !Number.isNaN(value) &&
-                    !Number.isNaN(fieldApi.form.getFieldValue("range.min")) &&
-                    Number.parseInt(value as string) <=
-                      Number.parseInt(
-                        fieldApi.form.getFieldValue("range.min") as string,
-                      )
-                  ) {
-                    return "Max must be more than min";
-                  }
-
-                  return undefined;
-                },
-                onSubmit: ({ value }) => {
-                  if (value === "") {
-                    return "Cannot be empty";
-                  } else if (Number.isNaN(value as string)) {
-                    return "Invalid value";
-                  }
-
-                  return undefined;
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div className={styles.ops}>
-          <div className={styles.add}>
-            <form.Field
-              name="ops.add"
-              children={(field) => (
-                <>
-                  <h2>&#x002B;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.sub}>
-            <form.Field
-              name="ops.sub"
-              children={(field) => (
-                <>
-                  <h2>&minus;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.mult}>
-            <form.Field
-              name="ops.mult"
-              children={(field) => (
-                <>
-                  <h2>&times;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-          <div className={styles.div}>
-            <form.Field
-              name="ops.div"
-              children={(field) => (
-                <>
-                  <h2>&divide;</h2>
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                </>
-              )}
-            />
-          </div>
-        </div>
-        {formErrorMap.onSubmit !== undefined && (
-          <div className={styles.ops_error}>{formErrorMap.onSubmit}</div>
-        )}
-        <div className={styles.limits}>
-          <div className={styles.time}>
-            <h2>Time Limit (s)</h2>
-            <input
-              type="checkbox"
-              name="time_limit_check"
-              checked={timeLimit}
-              onChange={() => setTimeLimit((c) => !c && true)}
-            />
-            {timeLimit && (
-              <form.Field
-                name="limits.time"
-                children={(field) => (
-                  <>
-                    <input
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className={
-                        field.state.meta.errors.length > 0
-                          ? styles.errInput
-                          : ""
-                      }
-                      type="number"
-                    />
-                    {field.state.meta.errors.length > 0 ? (
-                      <div className={styles.err}>
-                        {field.state.meta.errors.join(", ")}
-                      </div>
-                    ) : null}
-                  </>
-                )}
-                validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
-                    }
-
-                    return undefined;
-                  },
-                  onSubmit: ({ value }) => {
-                    if (
-                      timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
-                      return "Cannot be empty";
-                    }
-
-                    return undefined;
-                  },
-                }}
-              />
-            )}
-          </div>
-          <div className={styles.questions}>
-            <h2>Question Limit</h2>
-            <input
-              type="checkbox"
-              name="question_limit_check"
-              checked={!timeLimit}
-              onChange={() => setTimeLimit((c) => c && false)}
-            />
-            {!timeLimit && (
-              <form.Field
-                name="limits.count"
-                children={(field) => (
-                  <>
-                    <input
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className={
-                        field.state.meta.errors.length > 0
-                          ? styles.errInput
-                          : ""
-                      }
-                      type="number"
-                    />
-                    {field.state.meta.errors.length > 0 ? (
-                      <div className={styles.err}>
-                        {field.state.meta.errors.join(", ")}
-                      </div>
-                    ) : null}
-                  </>
-                )}
-                validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
-                    }
-
-                    return undefined;
-                  },
-                  onSubmit: ({ value }) => {
-                    if (
-                      !timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
-                      return "Cannot be empty";
-                    }
-
-                    return undefined;
-                  },
-                }}
-              />
-            )}
-          </div>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+  const [gameStatus, setGameStatus] = useState<E_GAME_STATUS>(
+    E_GAME_STATUS.PRE,
   );
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(1);
+  const [questions, setQuestions] = useState<T_QUESTION[]>([]);
+  const [limitType, setLimitType] = useState<E_GAME_LIMIT_TYPES>(
+    E_GAME_LIMIT_TYPES.NULL,
+  );
+  const [timeInSeconds, setTimeInSeconds] = useState<number | null>(null);
+  const [questionResults, setQuestionResults] = useState<T_QUESTION_RESULT[]>(
+    [],
+  );
+
+  const gameSettings = useRef<T_GAME_SETTINGS>(
+    deepCopyObject(INIT_GAME_SETTINGS),
+  );
+  const userGuesses = useRef<number[]>([]);
+
+  // generate questions on ACTIVE &&
+  // generate results on POST
+  useEffect(() => {
+    switch (gameStatus) {
+      case E_GAME_STATUS.ACTIVE:
+        switch (limitType) {
+          case E_GAME_LIMIT_TYPES.COUNT:
+            setQuestions((curr) =>
+              generateQuestions(
+                gameSettings.current,
+                gameSettings.current.limits.count,
+                curr.length !== undefined ? curr.length : 0,
+              ),
+            );
+            break;
+          case E_GAME_LIMIT_TYPES.TIME:
+            setQuestions((curr) =>
+              generateQuestions(
+                gameSettings.current,
+                QUESTION_CHUNK_SIZE,
+                curr.length !== undefined ? curr.length : 0,
+              ),
+            );
+            break;
+        }
+        break;
+      case E_GAME_STATUS.POST:
+        setQuestionResults(
+          Locals.generateResults(userGuesses.current, questions),
+        );
+        break;
+    }
+  }, [gameStatus]);
+
+  // check if more questions need to be generated,
+  useEffect(() => {
+    if (
+      Math.abs(questions.length - currentQuestionIndex) < 5 &&
+      limitType === E_GAME_LIMIT_TYPES.TIME
+    ) {
+      setQuestions((curr) => {
+        curr.push(
+          ...generateQuestions(
+            gameSettings.current,
+            QUESTION_CHUNK_SIZE,
+            curr.length !== undefined ? curr.length : 0,
+          ),
+        );
+        return curr;
+      });
+    }
+  }, [currentQuestionIndex]);
+
+  switch (gameStatus) {
+    case E_GAME_STATUS.PRE:
+      return (
+        <Settings
+          gameSettings={gameSettings}
+          setGameStatus={setGameStatus}
+          setLimitType={setLimitType}
+          timeInSeconds={{
+            set: setTimeInSeconds as React.Dispatch<
+              React.SetStateAction<number>
+            >,
+          }}
+        />
+      );
+    case E_GAME_STATUS.ACTIVE:
+      return questions.length > 0 && timeInSeconds !== null ? (
+        <Active
+          questions={questions}
+          userGuesses={userGuesses}
+          settings={gameSettings.current}
+          limitType={limitType}
+          gameStatus={{ set: setGameStatus }}
+          currentQuestionIndex={{
+            curr: currentQuestionIndex,
+            set: setCurrentQuestionIndex,
+          }}
+          timeInSeconds={{
+            curr: timeInSeconds,
+            set: setTimeInSeconds as React.Dispatch<
+              React.SetStateAction<number>
+            >,
+          }}
+        />
+      ) : (
+        <Loading />
+      );
+    case E_GAME_STATUS.POST:
+      return questionResults.length > 0 &&
+        timeInSeconds !== null &&
+        gameSettings.current !== undefined ? (
+        <Post
+          results={questionResults}
+          time={timeInSeconds}
+          settings={gameSettings.current}
+          limitType={limitType}
+        />
+      ) : (
+        <Loading />
+      );
+  }
 };
 
 export default Game;

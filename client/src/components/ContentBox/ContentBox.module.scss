@@ -6,26 +6,4 @@
   height: 100%;
   overflow-y: auto;
   background: $main_bg;
-  //border: 1px solid red;
-
-  .spacer {
-    height: 20px;
-    width: 100%;
-  }
-
-  // .content {
-  // 	width: 100%;
-  // 	height: fit-content;
-
-  // 	border: 1px solid red;
-
-  // 	@include flex-center;
-
-  // 	overflow-y: hidden;
-
-  // 	.spacer {
-  // 		height: 20px;
-  // 		width: 100%;
-  // 	}
-  // }
 }

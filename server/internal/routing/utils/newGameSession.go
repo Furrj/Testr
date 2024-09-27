@@ -9,18 +9,13 @@ import (
 )
 
 // generate new game session with different spellID than current
-func SpawnNewGameSession(userID types.UserID, db *dbHandler.DBHandler) (types.GameSession, error) {
-	var session types.GameSession
-
+func SpawnNewGameSession(db *dbHandler.DBHandler) (types.GameSessionID, error) {
 	gameSessionID, err := createAndInsertNewGameSessionID(db)
 	if err != nil {
-		return session, err
+		return gameSessionID, err
 	}
 
-	session.GameSessionID = gameSessionID
-	session.UserID = userID
-
-	return session, nil
+	return gameSessionID, nil
 }
 
 func createAndInsertNewGameSessionID(db *dbHandler.DBHandler) (types.GameSessionID, error) {
