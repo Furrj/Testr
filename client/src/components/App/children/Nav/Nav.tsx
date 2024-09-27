@@ -18,33 +18,37 @@ const Nav: React.FC<IProps> = (props) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.logo}>
-        <PiMathOperationsBold className={styles.icon} />
-        Mathy
-      </div>
+      <div className={styles.bar}>
+        <div className={styles.logo}>
+          <PiMathOperationsBold className={styles.icon} />
+        </div>
 
-      <div className={styles.links}>
-        {props.userData.role === USER_ROLES.TEACHER && (
-          <Link to={"/teacher"} className={`${styles.link} ${styles.teacher}`}>
-            <GiTeacher className={styles.icon} />
+        <div className={styles.links}>
+          {props.userData.role === USER_ROLES.TEACHER && (
+            <Link
+              to={"/teacher"}
+              className={`${styles.link} ${styles.teacher}`}
+            >
+              <GiTeacher className={styles.icon} />
+            </Link>
+          )}
+          <Link to={"/game"} className={styles.link}>
+            <FaPlay className={styles.icon} />
           </Link>
-        )}
-        <Link to={"/game"} className={styles.link}>
-          <FaPlay className={styles.icon} />
-        </Link>
-        <Link to={"/"} className={styles.link}>
-          <FaHome className={styles.icon} />
-        </Link>
-        <div
-          className={styles.link}
-          onClick={() => {
-            clearTokensFromLocalStorage();
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEYS.USER_DATA],
-            });
-          }}
-        >
-          <IoMdExit className={styles.icon} />
+          <Link to={"/"} className={styles.link}>
+            <FaHome className={styles.icon} />
+          </Link>
+          <div
+            className={styles.link}
+            onClick={() => {
+              clearTokensFromLocalStorage();
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.USER_DATA],
+              });
+            }}
+          >
+            <IoMdExit className={styles.icon} />
+          </div>
         </div>
       </div>
     </div>
