@@ -40,10 +40,10 @@ CREATE TABLE game_sessions.data
   time SMALLINT,
   min INTEGER,
   max INTEGER,
-  add boolean,
-  sub boolean,
-  mult boolean,
-  div boolean
+  add BOOLEAN,
+  sub BOOLEAN,
+  mult BOOLEAN,
+  div BOOLEAN
 );
 
 CREATE TABLE users.data
@@ -54,5 +54,6 @@ CREATE TABLE users.data
     salt       TEXT,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
-    role users.role DEFAULT 'S'
+    role users.role DEFAULT 'S',
+    vertical BOOLEAN
 );

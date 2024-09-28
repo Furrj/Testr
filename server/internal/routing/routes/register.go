@@ -118,6 +118,7 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 			FirstName: registerPayload.FirstName,
 			LastName:  registerPayload.LastName,
 			Role:      registerPayload.Role,
+			Vertical:  false,
 		}
 
 		// insert UserData

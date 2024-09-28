@@ -13,6 +13,7 @@ var TestUserDataJackson = types.UserData{
 	Username:  "poemmys",
 	Password:  "pass",
 	Role:      "S",
+	Vertical:  false,
 }
 
 var TestStudentData = types.StudentData{
@@ -28,6 +29,7 @@ var TestUserDataMichele = types.UserData{
 	Username:  "mfurr",
 	Password:  "pass",
 	Role:      "T",
+	Vertical:  true,
 }
 
 var TestTeacherData = types.TeacherData{

@@ -10,6 +10,7 @@ type UserData struct {
 	Salt      string `json:"salt"`
 	Role      string `json:"role"`
 	UserID    UserID `json:"user_id"`
+	Vertical  bool   `json:"vertical"`
 }
 
 type TeacherData struct {
