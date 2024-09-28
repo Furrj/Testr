@@ -12,48 +12,56 @@ CREATE TABLE users.ids
 
 CREATE TABLE game_sessions.ids
 (
-  game_session_id UUID PRIMARY KEY
+    game_session_id UUID PRIMARY KEY
 );
 
 CREATE TABLE teachers.data
 (
-  user_id INTEGER PRIMARY KEY references users.ids(user_id),
-  periods SMALLINT
+    user_id INTEGER PRIMARY KEY references users.ids (user_id),
+    periods SMALLINT
 );
 
 CREATE TABLE students.data
 (
-  user_id INTEGER PRIMARY KEY references users.ids(user_id),
-  teacher_id INTEGER REFERENCES teachers.data(user_id),
-  period SMALLINT
+    user_id    INTEGER PRIMARY KEY references users.ids (user_id),
+    teacher_id INTEGER REFERENCES teachers.data (user_id),
+    period     SMALLINT
 );
 
 CREATE TABLE game_sessions.data
 (
-  game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids(game_session_id),
-  user_id INTEGER REFERENCES users.ids(user_id),
-  timestamp BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
-  limit_type SMALLINT,
-  questions_count INTEGER,
-  correct_count INTEGER,
-  score SMALLINT,
-  time SMALLINT,
-  min INTEGER,
-  max INTEGER,
-  add BOOLEAN,
-  sub BOOLEAN,
-  mult BOOLEAN,
-  div BOOLEAN
+    game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids (game_session_id),
+    user_id         INTEGER REFERENCES users.ids (user_id),
+    timestamp       BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
+    limit_type      SMALLINT,
+    questions_count INTEGER,
+    correct_count   INTEGER,
+    score           SMALLINT,
+    time            SMALLINT,
+    min             INTEGER,
+    max             INTEGER,
+    add             BOOLEAN,
+    sub             BOOLEAN,
+    mult            BOOLEAN,
+    div             BOOLEAN
 );
 
 CREATE TABLE users.data
 (
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids(user_id),
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
     username   VARCHAR(32) UNIQUE,
     password   TEXT,
     salt       TEXT,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
-    role users.role DEFAULT 'S',
-    vertical BOOLEAN
+    role       users.role DEFAULT 'S',
+    vertical   BOOLEAN
+);
+
+CREATE TABLE teachers.classes
+(
+    user_id  INTEGER REFERENCES users.ids,
+    class_id SERIAL,
+    name     TEXT,
+    PRIMARY KEY (user_id, class_id)
 );
