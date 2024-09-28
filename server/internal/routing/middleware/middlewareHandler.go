@@ -16,6 +16,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 			consts.RouteUrlGetUserInfo:       {},
 			consts.RouteUrlUpdateVertical:    {},
 			consts.RouteUrlAddClass:          {},
+			consts.RouteUrlGetClasses:        {},
 		},
 	}
 

@@ -32,22 +32,39 @@ const QGetTeacherClassByUserID = `
 	SELECT user_id, class_id, name
 	FROM teachers.classes
 	WHERE user_id=$1
+	ORDER BY class_id
 `
 
-func (dbHandler *DBHandler) GetTeacherClassByUserID(UserID types.UserID) (types.TeacherClass, error) {
-	var classes types.TeacherClass
+func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]types.TeacherClass, error) {
+	classes := make([]types.TeacherClass, 0)
 
-	err := dbHandler.Conn.QueryRow(
+	rows, err := dbHandler.Conn.Query(
 		context.Background(),
 		QGetTeacherClassByUserID,
 		UserID,
-	).Scan(
-		&classes.UserID,
-		&classes.ClassID,
-		&classes.Name,
 	)
 	if err != nil {
-		return classes, err
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var class types.TeacherClass
+
+		err = rows.Scan(
+			&class.UserID,
+			&class.ClassID,
+			&class.Name,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		classes = append(classes, class)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return classes, nil

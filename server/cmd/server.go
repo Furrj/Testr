@@ -72,6 +72,7 @@ func main() {
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
 	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))
+	router.GET(consts.RouteUrlGetClasses, routes.GetClasses(db))
 
 	router.Use(spa.Middleware("/", "client"))
 

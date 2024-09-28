@@ -146,12 +146,12 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in InsertTeacherClass: %+v\n", err)
 		}
 	})
-	t.Run("GetTeacherClassByUserID", func(t *testing.T) {
-		data, err := dbHandler.GetTeacherClassByUserID(testTeacherData.UserID)
+	t.Run("GetTeacherClassesByUserID", func(t *testing.T) {
+		data, err := dbHandler.GetTeacherClassesByUserID(testTeacherData.UserID)
 		if err != nil {
 			t.Errorf("error in GetTeacherClassByUserID: %+v\n", err)
 		}
-		if data != testTeacherClass {
+		if data[0] != testTeacherClass {
 			t.Errorf("mismatch in GetTeacherClassByUserID: got %+v, want %+v", data, testTeacherData)
 		}
 	})
