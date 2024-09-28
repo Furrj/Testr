@@ -163,5 +163,5 @@ VALUES ('5ff6b354-1063-40f6-b196-fa422723b978',
         true,
         false);
 
-INSERT INTO teachers.classes (user_id, class_id, name)
-VALUES (1, 1, 'testname');
+INSERT INTO teachers.classes (user_id, name)
+VALUES (1, 'testname');

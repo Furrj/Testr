@@ -14,7 +14,11 @@ const QGetTeacherDataByUserID = `
 
 func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.TeacherData, error) {
 	var TeacherData types.TeacherData
-	err := dbHandler.Conn.QueryRow(context.Background(), QGetTeacherDataByUserID, UserID).Scan(
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherDataByUserID,
+		UserID,
+	).Scan(
 		&TeacherData.UserID,
 		&TeacherData.Periods,
 	)
@@ -70,8 +74,8 @@ func (dbHandler *DBHandler) InsertTeacherData(teacherData types.TeacherData) err
 }
 
 const EInsertTeacherClass = `
-	INSERT INTO teachers.classes(user_id, class_id, name)
-	VALUES ($1, $2, $3)
+	INSERT INTO teachers.classes(user_id, name)
+	VALUES ($1, $2)
 `
 
 func (dbHandler *DBHandler) InsertTeacherClass(class types.TeacherClass) error {
@@ -79,7 +83,6 @@ func (dbHandler *DBHandler) InsertTeacherClass(class types.TeacherClass) error {
 		context.Background(),
 		EInsertTeacherClass,
 		class.UserID,
-		class.ClassID,
 		class.Name,
 	)
 	if err != nil {

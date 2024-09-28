@@ -60,7 +60,7 @@ CREATE TABLE users.data
 
 CREATE TABLE teachers.classes
 (
-    user_id  INTEGER REFERENCES users.ids,
+    user_id  INTEGER REFERENCES teachers.data (user_id),
     class_id SERIAL,
     name     TEXT,
     PRIMARY KEY (user_id, class_id)
