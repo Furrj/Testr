@@ -24,6 +24,31 @@ func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.T
 	return TeacherData, nil
 }
 
+const QGetTeacherClassByUserID = `
+	SELECT user_id, class_id, name
+	FROM teachers.classes
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) GetTeacherClassByUserID(UserID types.UserID) (types.TeacherClass, error) {
+	var classes types.TeacherClass
+
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherClassByUserID,
+		UserID,
+	).Scan(
+		&classes.UserID,
+		&classes.ClassID,
+		&classes.Name,
+	)
+	if err != nil {
+		return classes, err
+	}
+
+	return classes, nil
+}
+
 // Inserts
 
 const EInsertTeacherData = `
@@ -37,6 +62,25 @@ func (dbHandler *DBHandler) InsertTeacherData(teacherData types.TeacherData) err
 		EInsertTeacherData,
 		teacherData.UserID,
 		teacherData.Periods,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+const EInsertTeacherClass = `
+	INSERT INTO teachers.classes(user_id, class_id, name)
+	VALUES ($1, $2, $3)
+`
+
+func (dbHandler *DBHandler) InsertTeacherClass(class types.TeacherClass) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EInsertTeacherClass,
+		class.UserID,
+		class.ClassID,
+		class.Name,
 	)
 	if err != nil {
 		return err

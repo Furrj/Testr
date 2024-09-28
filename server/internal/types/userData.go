@@ -13,11 +13,6 @@ type UserData struct {
 	Vertical  bool   `json:"vertical"`
 }
 
-type TeacherData struct {
-	UserID  UserID `json:"user_id"`
-	Periods uint   `json:"periods"`
-}
-
 type StudentData struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`

@@ -32,11 +32,6 @@ var TestUserDataMichele = types.UserData{
 	Vertical:  true,
 }
 
-var TestTeacherData = types.TeacherData{
-	UserID:  1,
-	Periods: 5,
-}
-
 var TestUserRegisterPayload = types.RequestPayloadRegister{
 	Username:  "poemmys",
 	Password:  "pass",
