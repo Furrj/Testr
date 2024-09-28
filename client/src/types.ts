@@ -24,6 +24,7 @@ export type T_USERDATA_STATE = {
   first_name: string;
   last_name: string;
   role: string;
+  vertical: boolean;
 };
 export const INIT_USERDATA_STATE: T_USERDATA_STATE = {
   user_id: 0,
@@ -31,6 +32,7 @@ export const INIT_USERDATA_STATE: T_USERDATA_STATE = {
   first_name: "",
   last_name: "",
   role: "U",
+  vertical: false,
 };
 
 // REGISTER

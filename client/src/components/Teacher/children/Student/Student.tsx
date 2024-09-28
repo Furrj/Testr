@@ -25,7 +25,6 @@ const Student: React.FC<IProps> = (props) => {
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
-  console.log(props.user_id);
 
   // redirect to "/teacher" if user_id invalid
   const navigate = useNavigate();

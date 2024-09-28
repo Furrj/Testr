@@ -21,6 +21,7 @@ const API_ROUTES = {
   GET_GAME_SESSIONS: ROUTE_PREFIX + "/api/getGameSessions",
   GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
   GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
+  UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
 };
 
 export async function apiRequestRegister(
@@ -117,6 +118,25 @@ export async function apiRequestGetUserInfo(
   return await axios<T_APIRESULT_GET_USER_INFO>({
     method: "GET",
     url: `${API_ROUTES.GET_USER_INFO}/${params.user_id}`,
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_UPDATE_VERTICAL {
+  tokens: T_TOKENS;
+  vertical: boolean;
+}
+export async function apiRequestUpdateVertical(
+  params: I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "POST",
+    url: API_ROUTES.UPDATE_VERTICAL,
+    data: {
+      vertical: params.vertical,
+    },
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },

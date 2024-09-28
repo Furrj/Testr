@@ -8,11 +8,20 @@ import {
   type T_GAME_SETTINGS,
 } from "../../../../types/game";
 import { PiDeviceRotateBold } from "react-icons/pi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import {
+  I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
+  apiRequestUpdateVertical,
+} from "../../../../../requests";
+import { QUERY_KEYS } from "../../../../utils/consts";
+import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 
 interface IProps {
   questions: T_QUESTION[];
   userGuesses: React.MutableRefObject<number[]>;
   settings: T_GAME_SETTINGS;
+  vertical: boolean;
   limitType: E_GAME_LIMIT_TYPES;
   gameStatus: {
     set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
@@ -75,11 +84,21 @@ const Active: React.FC<IProps> = (props) => {
     }
   }, [props.timeInSeconds]);
 
+  // init vertical mode
+  useEffect(() => {
+    savedVerticalMode.current = props.vertical;
+
+    if (rootRef.current) {
+      if (rootRef.current.clientWidth >= 800) {
+        setVerticalMode(savedVerticalMode.current);
+      }
+    }
+  }, [props.vertical]);
+
+  // set up window resize listener for disabling vertical mode
   useEffect(() => {
     function checkResizeForVerticalEligibility() {
       if (rootRef.current) {
-        console.log(verticalMode);
-
         if (rootRef.current.clientWidth < 800 && verticalMode) {
           setVerticalMode(false);
         } else if (
@@ -95,6 +114,20 @@ const Active: React.FC<IProps> = (props) => {
     return () =>
       window.removeEventListener("resize", checkResizeForVerticalEligibility);
   }, [verticalMode]);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (
+      params: I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
+    ): Promise<AxiosResponse> => apiRequestUpdateVertical(params),
+    onSuccess(data) {
+      if (data.status === HttpStatusCode.Ok)
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.USER_DATA],
+        });
+      else console.log("error");
+    },
+  });
 
   return (
     <div
@@ -170,6 +203,11 @@ const Active: React.FC<IProps> = (props) => {
               onClick={() => {
                 savedVerticalMode.current = !savedVerticalMode.current;
                 setVerticalMode((curr) => !curr);
+
+                mutation.mutate({
+                  vertical: savedVerticalMode.current,
+                  tokens: getUserSessionDataFromStorage(),
+                });
               }}
             >
               <PiDeviceRotateBold />

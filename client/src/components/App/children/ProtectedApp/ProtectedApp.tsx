@@ -21,7 +21,10 @@ const ProtectedApp: React.FC<IProps> = (props) => {
             props.userData ? <Home userData={props.userData} /> : <Loading />
           }
         />
-        <Route path="/game/*" element={<Game />} />
+        <Route
+          path="/game/*"
+          element={<Game vertical={props.userData.vertical} />}
+        />
         <Route
           path="/teacher/*"
           element={
