@@ -19,6 +19,11 @@ type ReqRegisterTeacher struct {
 	Classes []TeacherClass `json:"classes"`
 }
 
+type ReqRegisterStudent struct {
+	ClassID   uint `json:"class_id"`
+	TeacherID uint `json:"teacher_id"`
+}
+
 type RequestSubmitGameSession struct {
 	LimitType      uint `json:"limit_type"`
 	QuestionsCount uint `json:"questions_count"`

@@ -71,6 +71,7 @@ func main() {
 	router.POST(consts.RouteUrlUpdateVertical, routes.UpdateVertical(db))
 	router.POST(consts.RouteUrlAddClass, routes.AddClass(db))
 	router.POST(consts.RouteUrlRegisterTeacher, routes.RegisterTeacher(db))
+	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
 
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
