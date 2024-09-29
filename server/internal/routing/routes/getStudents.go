@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/routing/utils"
+	"mathtestr.com/server/internal/types"
 )
 
 func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
@@ -44,11 +45,19 @@ func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get students
-		_, err = db.GetAllStudentsDataByTeacherID(userID)
+		students, err := db.GetAllStudentsDataByTeacherID(userID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, nil)
 			fmt.Fprintf(os.Stderr, "error in GetAllStudentsDataByTeacherID: %+v\n", err)
 			return
 		}
+
+		res := make(map[uint][]types.StudentData)
+
+		for _, v := range students {
+			res[v.ClassID] = append(res[v.ClassID], v)
+		}
+
+		ctx.JSON(http.StatusOK, res)
 	}
 }
