@@ -17,11 +17,11 @@ func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// bind request body
-		if err := ctx.BindJSON(&registerPayload); err != nil {
+		if err := ctx.BindJSON(&payload); err != nil {
 			fmt.Printf("Error binding json: %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, response)
 			return
 		}
-		fmt.Printf("%+v\n", registerPayload)
+		fmt.Printf("%+v\n", payload)
 	}
 }

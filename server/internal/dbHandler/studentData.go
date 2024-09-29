@@ -7,7 +7,7 @@ import (
 )
 
 const QGetStudentDataByUserID = `
-	SELECT user_id, teacher_id, period
+	SELECT user_id, teacher_id, class_id
 	FROM students.data
 	WHERE user_id=$1
 `
@@ -21,7 +21,7 @@ func (dbHandler *DBHandler) GetStudentDataByUserID(UserID types.UserID) (types.S
 	).Scan(
 		&StudentData.UserID,
 		&StudentData.TeacherID,
-		&StudentData.Period,
+		&StudentData.ClassID,
 	)
 	if err != nil {
 		return StudentData, err
@@ -30,7 +30,7 @@ func (dbHandler *DBHandler) GetStudentDataByUserID(UserID types.UserID) (types.S
 }
 
 const QGetAllStudentsDataByTeacherID = `
-	SELECT user_id, teacher_id, period, first_name, last_name, username
+	SELECT user_id, teacher_id, class_id, first_name, last_name, username
 	FROM students.data
 	NATURAL JOIN users.data
 	WHERE teacher_id=$1
@@ -55,7 +55,7 @@ func (dbHandler *DBHandler) GetAllStudentsDataByTeacherID(UserID types.UserID) (
 		err := rows.Scan(
 			&student.UserID,
 			&student.TeacherID,
-			&student.Period,
+			&student.ClassID,
 			&student.FirstName,
 			&student.LastName,
 			&student.Username,
@@ -75,7 +75,7 @@ func (dbHandler *DBHandler) GetAllStudentsDataByTeacherID(UserID types.UserID) (
 // Inserts
 
 const EInsertStudentData = `
-	INSERT INTO students.data(user_id, teacher_id, period)
+	INSERT INTO students.data(user_id, teacher_id, class_id)
 	VALUES ($1, $2, $3)
 `
 
@@ -85,7 +85,7 @@ func (dbHandler *DBHandler) InsertStudentData(studentData types.StudentData) err
 		EInsertStudentData,
 		studentData.UserID,
 		studentData.TeacherID,
-		studentData.Period,
+		studentData.ClassID,
 	)
 	if err != nil {
 		return err

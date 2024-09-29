@@ -19,7 +19,7 @@ var TestUserDataJackson = types.UserData{
 var TestStudentData = types.StudentData{
 	UserID:    2,
 	TeacherID: 1,
-	Period:    1,
+	ClassID:   1,
 }
 
 var TestUserDataMichele = types.UserData{

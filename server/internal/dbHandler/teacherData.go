@@ -7,7 +7,7 @@ import (
 )
 
 const QGetTeacherDataByUserID = `
-	SELECT user_id, periods
+	SELECT user_id, email, school
 	FROM teachers.data
 	WHERE user_id=$1
 `
@@ -20,7 +20,8 @@ func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.T
 		UserID,
 	).Scan(
 		&TeacherData.UserID,
-		&TeacherData.Periods,
+		&TeacherData.Email,
+		&TeacherData.School,
 	)
 	if err != nil {
 		return TeacherData, err
@@ -72,8 +73,8 @@ func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]ty
 // Inserts
 
 const EInsertTeacherData = `
-	INSERT INTO teachers.data(user_id, periods)
-	VALUES ($1, $2)
+	INSERT INTO teachers.data(user_id, email, school)
+	VALUES ($1, $2, $3)
 `
 
 func (dbHandler *DBHandler) InsertTeacherData(teacherData types.TeacherData) error {
@@ -81,7 +82,8 @@ func (dbHandler *DBHandler) InsertTeacherData(teacherData types.TeacherData) err
 		context.Background(),
 		EInsertTeacherData,
 		teacherData.UserID,
-		teacherData.Periods,
+		teacherData.Email,
+		teacherData.School,
 	)
 	if err != nil {
 		return err

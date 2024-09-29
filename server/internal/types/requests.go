@@ -11,9 +11,6 @@ type ReqRegister struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Role      string `json:"role"`
-	TeacherID UserID `json:"teacher_id,omitempty"`
-	Period    uint   `json:"period,omitempty"`
-	Periods   uint   `json:"periods,omitempty"`
 }
 
 type ReqRegisterTeacher struct {

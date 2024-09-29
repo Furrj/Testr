@@ -19,5 +19,5 @@ type StudentData struct {
 	Username  string `json:"username"`
 	UserID    UserID `json:"user_id"`
 	TeacherID UserID `json:"teacher_id"`
-	Period    uint   `json:"period"`
+	ClassID   uint   `json:"class_id"`
 }
