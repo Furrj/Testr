@@ -15,4 +15,5 @@ const (
 	RouteUrlUpdateVertical    string = RouteUrlBase + "/updateVertical"
 	RouteUrlAddClass          string = RouteUrlBase + "/classes/add"
 	RouteUrlGetClasses        string = RouteUrlBase + "/classes/get"
+	RouteUrlRegisterTeacher   string = RouteUrlBase + "/register/teacher"
 )

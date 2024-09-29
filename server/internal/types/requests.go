@@ -14,13 +14,9 @@ type ReqRegister struct {
 }
 
 type ReqRegisterTeacher struct {
-	Username  string         `json:"username"`
-	Password  string         `json:"password"`
-	FirstName string         `json:"first_name"`
-	LastName  string         `json:"last_name"`
-	School    string         `json:"school"`
-	Email     string         `json:"email"`
-	Classes   []TeacherClass `json:"classes"`
+	School  string         `json:"school"`
+	Email   string         `json:"email"`
+	Classes []TeacherClass `json:"classes"`
 }
 
 type RequestSubmitGameSession struct {
