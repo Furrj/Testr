@@ -1,18 +1,16 @@
 import styles from "./Teacher.module.scss";
+import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import type { AxiosResponse } from "axios";
-import { useState } from "react";
+import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import {
-  type T_USERINPUT_REGISTER,
-  type T_APIRESULT_REGISTER,
-  E_REGISTER_RESULT,
-  INIT_USERINPUT_REGISTER,
-} from "../../../../types";
-import { USER_ROLES } from "../../../../utils/consts";
+import { T_APIRESULT_REGISTER, E_REGISTER_RESULT } from "../../../../types";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
-import { apiRequestRegister } from "../../../../../requests";
+import {
+  INIT_FORM_REGISTER_TEACHER,
+  T_FORM_REGISTER_TEACHER,
+} from "../../Register";
+import { apiRequestRegisterTeacher } from "../../../../../requests";
 
 function isAlpha(input: string): boolean {
   let regex = /^[a-zA-Z]+$/;
@@ -26,9 +24,9 @@ const Teacher: React.FC = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (
-      userInput: T_USERINPUT_REGISTER,
+      formData: T_FORM_REGISTER_TEACHER,
     ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-      return apiRequestRegister(userInput);
+      return apiRequestRegisterTeacher(formData);
     },
     onError(err) {
       console.log(err);
@@ -51,23 +49,21 @@ const Teacher: React.FC = () => {
     },
   });
 
-  const form = useForm<T_USERINPUT_REGISTER>({
+  const form = useForm<T_FORM_REGISTER_TEACHER>({
     defaultValues: {
-      ...INIT_USERINPUT_REGISTER,
+      ...INIT_FORM_REGISTER_TEACHER,
     },
     onSubmit: ({ value }) => {
-      const obj = {
+      const obj: T_FORM_REGISTER_TEACHER = {
         first_name: value.first_name.trim(),
         last_name: value.last_name.trim(),
         username: value.username.trim(),
         password: value.password.trim(),
-        confirm_password: value.password.trim(),
-        role: USER_ROLES.TEACHER,
-        teacher_id: 0,
-        period: 0,
-        periods: Number.parseInt(value.periods as string),
+        confirm_password: value.confirm_password.trim(),
+        email: value.email.trim(),
+        school: value.school.trim(),
       };
-      console.log(obj);
+
       mutate(obj);
     },
   });
@@ -250,17 +246,18 @@ const Teacher: React.FC = () => {
         }}
       />
       <form.Field
-        name="periods"
+        name="email"
         children={(field) => (
           <>
-            <h2># Of Periods</h2>
+            <h2>Email</h2>
             <input
               name={field.name}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
-              type="number"
+              type="email"
+              inputMode="email"
             />
             {field.state.meta.errors ? (
               <div className={styles.err}>
@@ -270,24 +267,47 @@ const Teacher: React.FC = () => {
           </>
         )}
         validators={{
-          onChange: ({ value }) => {
-            if (Number.parseInt(value as string) < 0) {
-              return "Cannot be negative";
-            }
-
-            return undefined;
-          },
+          // onChange: ({ value }) => {
+          //
+          //   return undefined;
+          // },
           onSubmit: ({ value }) => {
-            if (value === "") {
-              return "Cannot be empty";
-            } else if (Number.isNaN(value as string)) {
-              return "Invalid value";
-            }
-
-            return undefined;
+            return value === "" ? "Cannot be empty" : undefined;
           },
         }}
       />
+      <form.Field
+        name="school"
+        children={(field) => (
+          <>
+            <h2>School</h2>
+            <input
+              name={field.name}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              className={field.state.meta.errors.length > 0 ? styles.err : ""}
+              type="text"
+              inputMode="text"
+            />
+            {field.state.meta.errors ? (
+              <div className={styles.err}>
+                {field.state.meta.errors.join(", ")}
+              </div>
+            ) : null}
+          </>
+        )}
+        validators={{
+          // onChange: ({ value }) => {
+          //
+          //   return undefined;
+          // },
+          onSubmit: ({ value }) => {
+            return value === "" ? "Cannot be empty" : undefined;
+          },
+        }}
+      />
+
       {<div className={styles.err}>{errMessage}</div>}
       <button type="submit">Register</button>
     </form>

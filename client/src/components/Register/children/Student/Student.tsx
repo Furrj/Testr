@@ -5,14 +5,15 @@ import type { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  type T_USERINPUT_REGISTER,
   type T_APIRESULT_REGISTER,
   E_REGISTER_RESULT,
-  INIT_USERINPUT_REGISTER,
 } from "../../../../types";
-import { USER_ROLES } from "../../../../utils/consts";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
-import { apiRequestRegister } from "../../../../../requests";
+import { apiRequestRegisterStudent } from "../../../../../requests";
+import {
+  INIT_FORM_REGISTER_STUDENT,
+  T_FORM_REGISTER_STUDENT,
+} from "../../Register";
 
 function isAlpha(input: string): boolean {
   let regex = /^[a-zA-Z]+$/;
@@ -26,9 +27,9 @@ const Student: React.FC = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (
-      userInput: T_USERINPUT_REGISTER,
+      formData: T_FORM_REGISTER_STUDENT,
     ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-      return apiRequestRegister(userInput);
+      return apiRequestRegisterStudent(formData);
     },
     onError(err) {
       console.log(err);
@@ -51,9 +52,9 @@ const Student: React.FC = () => {
     },
   });
 
-  const form = useForm<T_USERINPUT_REGISTER>({
+  const form = useForm<T_FORM_REGISTER_STUDENT>({
     defaultValues: {
-      ...INIT_USERINPUT_REGISTER,
+      ...INIT_FORM_REGISTER_STUDENT,
     },
     onSubmit: ({ value }) => {
       const obj = {
@@ -62,10 +63,8 @@ const Student: React.FC = () => {
         username: value.username.trim(),
         password: value.password.trim(),
         confirm_password: value.password.trim(),
-        role: USER_ROLES.STUDENT,
         teacher_id: Number.parseInt(value.teacher_id as string),
-        period: Number.parseInt(value.period as string),
-        periods: 0,
+        class_id: Number.parseInt(value.class_id as string),
       };
       //console.log(obj);
       mutate(obj);
@@ -267,6 +266,7 @@ const Student: React.FC = () => {
               onChange={(e) => field.handleChange(e.target.value)}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
               type="number"
+              inputMode="numeric"
             />
             {field.state.meta.errors ? (
               <div className={styles.err}>
@@ -295,10 +295,10 @@ const Student: React.FC = () => {
         }}
       />
       <form.Field
-        name="period"
+        name="class_id"
         children={(field) => (
           <>
-            <h2>Period</h2>
+            <h2>Class ID</h2>
             <input
               name={field.name}
               autoComplete="off"
