@@ -10,6 +10,7 @@ import { type T_TOKENS } from "./src/types";
 import type { T_GAME_SESSION } from "./src/types/game";
 import type { T_STUDENT_DATA } from "./src/types/users";
 import {
+  T_CLASS,
   T_FORM_REGISTER_STUDENT,
   T_FORM_REGISTER_TEACHER,
 } from "./src/components/Register/Register";
@@ -26,6 +27,8 @@ const API_ROUTES = {
   GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
   GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
   UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
+  GET_CLASSES: ROUTE_PREFIX + "/api/classes/get",
+  ADD_CLASS: ROUTE_PREFIX + "/api/classes/add",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -153,6 +156,35 @@ export async function apiRequestUpdateVertical(
     data: {
       vertical: params.vertical,
     },
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export async function apiRequestGetClasses(
+  tokens: T_TOKENS,
+): Promise<AxiosResponse<T_CLASS[]>> {
+  return await axios<T_CLASS[]>({
+    method: "GET",
+    url: API_ROUTES.GET_CLASSES,
+    headers: {
+      Authorization: `Bearer ${tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_ADD_CLASS {
+  c: T_CLASS;
+  tokens: T_TOKENS;
+}
+export async function apiRequestAddClass(
+  params: I_PARAMS_APIREQUEST_ADD_CLASS,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "POST",
+    url: API_ROUTES.ADD_CLASS,
+    data: [params.c],
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },

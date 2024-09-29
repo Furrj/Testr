@@ -1,0 +1,62 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.root {
+  width: 100%;
+  height: 100%;
+
+  @include flex-center;
+
+  //border: 1px solid white;
+
+  h2 {
+    width: 100%;
+    @include flex-center;
+  }
+
+  .content {
+    width: 60%;
+    height: 80%;
+    overflow: auto;
+
+    border: 1px solid white;
+
+    .scroll {
+      width: 100%;
+      height: 100%;
+
+      .box {
+        width: 100%;
+        height: 3.5rem;
+        @include flex-center;
+        border: 1px solid white;
+
+        font-size: 2rem;
+
+        cursor: pointer;
+
+        &:hover {
+          background: $color-btn-hover;
+        }
+      }
+
+      .new {
+        width: 100%;
+        height: 2rem;
+
+        display: flex;
+        border: 1px solid white;
+
+        input {
+          width: 100%;
+
+          text-align: center;
+        }
+
+        button {
+          width: 10%;
+        }
+      }
+    }
+  }
+}
