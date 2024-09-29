@@ -9,6 +9,7 @@ const Teacher: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
+      <Route path="/class" />
       <Route path="/student" element={<Student user_id={activeStudentID} />} />
     </Routes>
   );
