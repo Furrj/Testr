@@ -11,11 +11,11 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-type addClassReq struct {
+type reqAddClass struct {
 	Name string `json:"name"`
 }
 
-func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
+func AddClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -41,21 +41,23 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// bind payload
-		var payload addClassReq
+		var payload []reqAddClass
 		if err = ctx.BindJSON(&payload); err != nil {
 			fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
-		// insert class
-		class := types.TeacherClass{
-			Name: payload.Name,
-		}
-		if err := db.InsertTeacherClass(userID, class); err != nil {
-			fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
-			ctx.Status(http.StatusInternalServerError)
-			return
+		// insert classes
+		for _, v := range payload {
+			class := types.TeacherClass{
+				Name: v.Name,
+			}
+			if err := db.InsertTeacherClass(userID, class); err != nil {
+				fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
+				ctx.Status(http.StatusInternalServerError)
+				return
+			}
 		}
 
 		ctx.Status(http.StatusOK)
