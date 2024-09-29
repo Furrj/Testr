@@ -21,7 +21,7 @@ type responseLogin struct {
 
 func Login(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var loginPayload types.RequestPayloadLogin
+		var loginPayload types.ReqLogin
 		response := responseLogin{
 			Valid: false,
 		}

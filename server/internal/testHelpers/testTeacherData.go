@@ -8,7 +8,6 @@ var TestTeacherData = types.TeacherData{
 }
 
 var TestTeacherClass = types.TeacherClass{
-	UserID:  1,
 	ClassID: 1,
 	Name:    "testclass",
 }

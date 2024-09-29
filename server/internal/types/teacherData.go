@@ -7,6 +7,5 @@ type TeacherData struct {
 
 type TeacherClass struct {
 	Name    string `json:"name"`
-	UserID  UserID `json:"user_id"`
 	ClassID uint   `json:"class_id"`
 }

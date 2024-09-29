@@ -142,7 +142,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("InsertTeacherClass", func(t *testing.T) {
-		if err := dbHandler.InsertTeacherClass(testTeacherClass); err != nil {
+		if err := dbHandler.InsertTeacherClass(testTeacherData.UserID, testTeacherClass); err != nil {
 			t.Errorf("error in InsertTeacherClass: %+v\n", err)
 		}
 	})

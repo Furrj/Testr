@@ -18,14 +18,22 @@ CREATE TABLE game_sessions.ids
 CREATE TABLE teachers.data
 (
     user_id INTEGER PRIMARY KEY references users.ids (user_id),
-    periods SMALLINT
+    email   TEXT UNIQUE,
+    school  TEXT
+);
+
+CREATE TABLE teachers.classes
+(
+    class_id SERIAL PRIMARY KEY,
+    user_id  INTEGER REFERENCES teachers.data (user_id),
+    name     TEXT
 );
 
 CREATE TABLE students.data
 (
-    user_id    INTEGER PRIMARY KEY references users.ids (user_id),
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
     teacher_id INTEGER REFERENCES teachers.data (user_id),
-    period     SMALLINT
+    class_id   INTEGER REFERENCES teachers.classes (class_id)
 );
 
 CREATE TABLE game_sessions.data
@@ -55,13 +63,7 @@ CREATE TABLE users.data
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
     role       users.role DEFAULT 'S',
-    vertical   BOOLEAN
-);
-
-CREATE TABLE teachers.classes
-(
-    user_id  INTEGER REFERENCES teachers.data (user_id),
-    class_id SERIAL,
-    name     TEXT,
-    PRIMARY KEY (user_id, class_id)
+    vertical   BOOLEAN,
+    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW()),
+    updated_at BIGINT
 );

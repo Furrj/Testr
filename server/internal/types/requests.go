@@ -1,11 +1,11 @@
 package types
 
-type RequestPayloadLogin struct {
+type ReqLogin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type RequestPayloadRegister struct {
+type ReqRegister struct {
 	Username  string `json:"username"`
 	Password  string `json:"password"`
 	FirstName string `json:"first_name"`
@@ -14,6 +14,16 @@ type RequestPayloadRegister struct {
 	TeacherID UserID `json:"teacher_id,omitempty"`
 	Period    uint   `json:"period,omitempty"`
 	Periods   uint   `json:"periods,omitempty"`
+}
+
+type ReqRegisterTeacher struct {
+	Username  string         `json:"username"`
+	Password  string         `json:"password"`
+	FirstName string         `json:"first_name"`
+	LastName  string         `json:"last_name"`
+	School    string         `json:"school"`
+	Email     string         `json:"email"`
+	Classes   []TeacherClass `json:"classes"`
 }
 
 type RequestSubmitGameSession struct {

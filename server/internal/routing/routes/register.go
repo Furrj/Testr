@@ -32,7 +32,7 @@ type responseRegister struct {
 // inserts into user_info, generates tokens, then sends a ResponseRegisterLogin
 func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var registerPayload types.RequestPayloadRegister
+		var registerPayload types.ReqRegister
 		response := responseRegister{
 			Result: RESULT_NULL,
 		}

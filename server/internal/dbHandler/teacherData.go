@@ -29,7 +29,7 @@ func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.T
 }
 
 const QGetTeacherClassByUserID = `
-	SELECT user_id, class_id, name
+	SELECT class_id, name
 	FROM teachers.classes
 	WHERE user_id=$1
 	ORDER BY class_id
@@ -52,7 +52,6 @@ func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]ty
 		var class types.TeacherClass
 
 		err = rows.Scan(
-			&class.UserID,
 			&class.ClassID,
 			&class.Name,
 		)
@@ -95,11 +94,11 @@ const EInsertTeacherClass = `
 	VALUES ($1, $2)
 `
 
-func (dbHandler *DBHandler) InsertTeacherClass(class types.TeacherClass) error {
+func (dbHandler *DBHandler) InsertTeacherClass(userID types.UserID, class types.TeacherClass) error {
 	_, err := dbHandler.Conn.Exec(
 		context.Background(),
 		EInsertTeacherClass,
-		class.UserID,
+		userID,
 		class.Name,
 	)
 	if err != nil {

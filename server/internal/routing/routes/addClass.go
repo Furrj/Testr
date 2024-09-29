@@ -50,10 +50,9 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		// insert class
 		class := types.TeacherClass{
-			Name:   payload.Name,
-			UserID: userID,
+			Name: payload.Name,
 		}
-		if err := db.InsertTeacherClass(class); err != nil {
+		if err := db.InsertTeacherClass(userID, class); err != nil {
 			fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
