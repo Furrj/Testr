@@ -92,6 +92,8 @@ const Student: React.FC = () => {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
+              type="text"
+              inputMode="text"
             />
             {field.state.meta.errors ? (
               <div className={styles.err}>
@@ -125,6 +127,8 @@ const Student: React.FC = () => {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
+              type="text"
+              inputMode="text"
             />
             {field.state.meta.errors ? (
               <div className={styles.err}>
@@ -158,6 +162,8 @@ const Student: React.FC = () => {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
+              type="text"
+              inputMode="text"
             />
             {field.state.meta.errors ? (
               <div className={styles.err}>
