@@ -205,10 +205,17 @@ export async function apiRequestCheckUsername(
   });
 }
 
+export type T_APIRESULT_GET_TEACHER_INFO = {
+  first_name: string;
+  last_name: string;
+  school: string;
+  classes: T_CLASS[];
+  valid: boolean;
+};
 export async function apiRequestGetTeacherInfo(
   id: number,
-): Promise<AxiosResponse> {
-  return await axios({
+): Promise<AxiosResponse<T_APIRESULT_GET_TEACHER_INFO>> {
+  return await axios<T_APIRESULT_GET_TEACHER_INFO>({
     method: "GET",
     url: `${API_ROUTES.GET_TEACHER_INFO}/${id}`,
   });

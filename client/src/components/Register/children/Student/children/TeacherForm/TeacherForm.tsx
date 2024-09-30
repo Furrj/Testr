@@ -10,12 +10,9 @@ import { useNavigate } from "react-router-dom";
 import {
   apiRequestGetTeacherInfo,
   apiRequestRegisterStudent,
+  T_APIRESULT_GET_TEACHER_INFO,
 } from "../../../../../../../requests";
-import {
-  T_APIRESULT_REGISTER,
-  E_REGISTER_RESULT,
-} from "../../../../../../types";
-import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
+import { T_APIRESULT_REGISTER } from "../../../../../../types";
 
 interface IProps {
   formData: {
@@ -48,7 +45,9 @@ const TeacherForm: React.FC<IProps> = (props) => {
   });
 
   const teacherMutation = useMutation({
-    mutationFn: (id: number): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
+    mutationFn: (
+      id: number,
+    ): Promise<AxiosResponse<T_APIRESULT_GET_TEACHER_INFO>> => {
       return apiRequestGetTeacherInfo(id);
     },
     onError(err) {
