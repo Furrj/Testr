@@ -30,6 +30,7 @@ const API_ROUTES = {
   GET_CLASSES: ROUTE_PREFIX + "/api/classes/get",
   ADD_CLASS: ROUTE_PREFIX + "/api/classes/add",
   CHECK_USERNAME: ROUTE_PREFIX + "/api/checkUsername",
+  GET_TEACHER_INFO: ROUTE_PREFIX + "/api/getTeacherInfo",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -201,5 +202,14 @@ export async function apiRequestCheckUsername(
   return await axios<T_APIRESULT_CHECK_USERNAME>({
     method: "GET",
     url: `${API_ROUTES.CHECK_USERNAME}/${username}`,
+  });
+}
+
+export async function apiRequestGetTeacherInfo(
+  id: number,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "GET",
+    url: `${API_ROUTES.GET_TEACHER_INFO}/${id}`,
   });
 }

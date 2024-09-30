@@ -7,7 +7,10 @@ import styles from "./TeacherForm.module.scss";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { apiRequestRegisterStudent } from "../../../../../../../requests";
+import {
+  apiRequestGetTeacherInfo,
+  apiRequestRegisterStudent,
+} from "../../../../../../../requests";
 import {
   T_APIRESULT_REGISTER,
   E_REGISTER_RESULT,
@@ -28,7 +31,7 @@ interface IProps {
 const TeacherForm: React.FC<IProps> = (props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const formMutation = useMutation({
     mutationFn: (
       formData: T_FORM_REGISTER_STUDENT,
     ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
@@ -44,6 +47,19 @@ const TeacherForm: React.FC<IProps> = (props) => {
     },
   });
 
+  const teacherMutation = useMutation({
+    mutationFn: (id: number): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
+      return apiRequestGetTeacherInfo(id);
+    },
+    onError(err) {
+      console.log(err);
+      alert("Error, please refresh and try again");
+    },
+    onSuccess(data) {
+      console.log(data.data);
+    },
+  });
+
   const form = useForm<T_FORM_REGISTER_STUDENT>({
     defaultValues: {
       ...INIT_FORM_REGISTER_STUDENT,
@@ -55,6 +71,8 @@ const TeacherForm: React.FC<IProps> = (props) => {
           teacher_id: Number.parseInt(value.teacher_id as string),
         };
       });
+
+      teacherMutation.mutate(Number.parseInt(value.teacher_id as string));
     },
   });
 
