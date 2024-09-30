@@ -42,7 +42,6 @@ const UserForm: React.FC<IProps> = (props) => {
       alert("Error, please refresh and try again");
     },
     onSuccess(data) {
-      console.log(data.data);
       if (data.data.valid) {
         props.teacherMode.set(true);
       } else {
@@ -66,7 +65,6 @@ const UserForm: React.FC<IProps> = (props) => {
         teacher_id: 0,
       };
 
-      console.log("submitting");
       props.formData.set(obj);
       mutation.mutate(value.username.trim());
     },
