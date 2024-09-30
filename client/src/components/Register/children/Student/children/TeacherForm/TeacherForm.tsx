@@ -13,6 +13,7 @@ import {
   T_APIRESULT_GET_TEACHER_INFO,
 } from "../../../../../../../requests";
 import { T_APIRESULT_REGISTER } from "../../../../../../types";
+import { useState } from "react";
 
 interface IProps {
   formData: {
@@ -26,23 +27,27 @@ interface IProps {
 }
 
 const TeacherForm: React.FC<IProps> = (props) => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const formMutation = useMutation({
-    mutationFn: (
-      formData: T_FORM_REGISTER_STUDENT,
-    ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-      return apiRequestRegisterStudent(formData);
-    },
-    onError(err) {
-      console.log(err);
-      alert("Error, please refresh and try again");
-    },
-    onSuccess(data) {
-      switch (data.data.result) {
-      }
-    },
-  });
+  const [teacherInfo, setTeacherInfo] =
+    useState<T_APIRESULT_GET_TEACHER_INFO | null>(null);
+  const [errMessage, setErrMessage] = useState<string>("");
+
+  // const navigate = useNavigate();
+  // const queryClient = useQueryClient();
+  // const formMutation = useMutation({
+  //   mutationFn: (
+  //     formData: T_FORM_REGISTER_STUDENT,
+  //   ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
+  //     return apiRequestRegisterStudent(formData);
+  //   },
+  //   onError(err) {
+  //     console.log(err);
+  //     alert("Error, please refresh and try again");
+  //   },
+  //   onSuccess(data) {
+  //     switch (data.data.result) {
+  //     }
+  //   },
+  // });
 
   const teacherMutation = useMutation({
     mutationFn: (
@@ -55,7 +60,13 @@ const TeacherForm: React.FC<IProps> = (props) => {
       alert("Error, please refresh and try again");
     },
     onSuccess(data) {
-      console.log(data.data);
+      if (data.data.valid) {
+        setTeacherInfo(data.data);
+      } else {
+        setErrMessage(
+          `Teacher code '${props.formData.curr.teacher_id}' does not exist`,
+        );
+      }
     },
   });
 
@@ -76,51 +87,80 @@ const TeacherForm: React.FC<IProps> = (props) => {
   });
 
   return (
-    <form
-      className={styles.root}
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
-      <form.Field
-        name="teacher_id"
-        children={(field) => (
-          <>
-            <h2>Teacher Code</h2>
-            <input
-              name={field.name}
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              className={
-                field.state.meta.errors.length > 0 ? styles.errInput : ""
-              }
-              type="number"
-              inputMode="numeric"
-            />
-            {field.state.meta.errors.length > 0 ? (
-              <div className={styles.err}>
-                {field.state.meta.errors.join(", ")}
-              </div>
-            ) : null}
-          </>
-        )}
-        validators={{
-          onSubmit: ({ value }) => {
-            if (value === "") {
-              return "Cannot be empty";
-            } else if (Number.isNaN(value as string)) {
-              return "Invalid value";
-            }
-
-            return undefined;
-          },
+    <div className={styles.root}>
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
         }}
-      />
-      <button type="submit">Submit</button>
-    </form>
+      >
+        <form.Field
+          name="teacher_id"
+          children={(field) => (
+            <>
+              <h2>Teacher Code</h2>
+              <input
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => {
+                  errMessage !== "" && setErrMessage("");
+                  teacherInfo && setTeacherInfo(null);
+                  field.handleChange(e.target.value);
+                }}
+                className={
+                  field.state.meta.errors.length > 0 ? styles.errInput : ""
+                }
+                type="number"
+                inputMode="numeric"
+              />
+              {field.state.meta.errors.length > 0 ? (
+                <div className={styles.err}>
+                  {field.state.meta.errors.join(", ")}
+                </div>
+              ) : null}
+              {<div style={{ color: "red" }}>{errMessage}</div>}
+            </>
+          )}
+          validators={{
+            onSubmit: ({ value }) => {
+              if (value === "") {
+                return "Cannot be empty";
+              } else if (Number.isNaN(value as string)) {
+                return "Invalid value";
+              }
+
+              return undefined;
+            },
+          }}
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {teacherInfo && (
+        <>
+          <div className={styles.teacher}>
+            <div>
+              {teacherInfo.first_name} {teacherInfo.last_name}
+            </div>
+            <div>{teacherInfo.school}</div>
+          </div>
+          <div className={styles.classes}>
+            <label htmlFor="classes">Class</label>
+            <select className={styles.classes} name="classes" id="classes">
+              {teacherInfo.classes.map((c) => {
+                return (
+                  <option value={c.class_id} key={`$class-${c.class_id}`}>
+                    {c.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
