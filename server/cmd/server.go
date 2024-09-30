@@ -77,6 +77,7 @@ func main() {
 	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))
 	router.GET(consts.RouteUrlGetClasses, routes.GetClasses(db))
 	router.GET(consts.RouteUrlCheckUsername, routes.CheckUsername(db))
+	router.GET(consts.RouteUrlGetTeacherInfo, routes.GetTeacherInfo(db))
 
 	router.Use(spa.Middleware("/", "client"))
 
