@@ -1,12 +1,14 @@
 package routes
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
@@ -16,10 +18,15 @@ type resGetTeacherInfo struct {
 	LastName  string               `json:"last_name"`
 	School    string               `json:"school"`
 	Classes   []types.TeacherClass `json:"classes"`
+	Valid     bool                 `json:"valid"`
 }
 
 func GetTeacherInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		res := resGetTeacherInfo{
+			Valid: false,
+		}
+
 		// get param
 		paramStr := ctx.Param("id")
 
@@ -35,6 +42,11 @@ func GetTeacherInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 		// get user data
 		userData, err := db.GetUserDataByUserID(userID)
 		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				fmt.Fprintf(os.Stderr, "could not find user by id %d: %+v\n", userID, err)
+				ctx.JSON(http.StatusOK, res)
+				return
+			}
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)
 			return
@@ -56,11 +68,12 @@ func GetTeacherInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		res := resGetTeacherInfo{
+		res = resGetTeacherInfo{
 			FirstName: userData.FirstName,
 			LastName:  userData.LastName,
 			School:    teacherData.School,
 			Classes:   classes,
+			Valid:     true,
 		}
 		ctx.JSON(http.StatusOK, res)
 	}
