@@ -2,4 +2,7 @@
 
 .root {
   @include full-size-percent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

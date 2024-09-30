@@ -1,35 +1,28 @@
 import { useRef, useState } from "react";
 import { T_CLASS } from "../../../Register/Register";
 import styles from "./Classes.module.scss";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import {
   apiRequestAddClass,
   I_PARAMS_APIREQUEST_ADD_CLASS,
 } from "../../../../../requests";
 import { QUERY_KEYS } from "../../../../utils/consts";
-import {
-  getAuthStatus,
-  getUserSessionDataFromStorage,
-} from "../../../../utils/methods";
+import { getUserSessionDataFromStorage } from "../../../../utils/methods";
+import { Link } from "react-router-dom";
 
 interface IProps {
   classes: T_CLASS[];
-  userID: number;
+  activeClassID: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
 }
 
 const Classes: React.FC<IProps> = (props) => {
   const [addingMode, setAddingMode] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const { data } = useQuery({
-    queryKey: [QUERY_KEYS.USER_DATA],
-    queryFn: getAuthStatus,
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -49,15 +42,19 @@ const Classes: React.FC<IProps> = (props) => {
 
   return (
     <div className={styles.root}>
-      <h2>Teacher Code: {data?.user_data.user_id}</h2>
       <h2>My Classes</h2>
       <div className={styles.content}>
         <div className={styles.scroll}>
           {props.classes.length > 0 &&
             props.classes.map((c) => (
-              <div key={`class-${c.class_id}`} className={styles.box}>
-                {c.name}
-              </div>
+              <Link
+                to={"/teacher/class"}
+                onClick={() => props.activeClassID.set(c.class_id)}
+                key={`class-${c.class_id}`}
+                className={styles.link}
+              >
+                <div className={styles.box}>{c.name}</div>
+              </Link>
             ))}
           {addingMode ? (
             <div className={`${styles.new}`}>

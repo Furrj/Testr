@@ -1,6 +1,12 @@
 import styles from "./Class.module.scss";
 
-const Class: React.FC = () => {
+interface IProps {
+  id: number;
+}
+
+const Class: React.FC<IProps> = (props) => {
+  console.log(props.id);
+
   return <div className={styles.root}>Class</div>;
 };
 
