@@ -48,6 +48,7 @@ export async function apiRequestRegisterTeacher(
 export async function apiRequestRegisterStudent(
   formData: T_FORM_REGISTER_STUDENT,
 ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> {
+  console.log(formData);
   return await axios<T_APIRESULT_REGISTER>({
     method: "POST",
     url: API_ROUTES.REGISTER_STUDENT,

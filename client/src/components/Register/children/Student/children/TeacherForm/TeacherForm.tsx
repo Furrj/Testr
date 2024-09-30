@@ -13,7 +13,7 @@ import {
   T_APIRESULT_GET_TEACHER_INFO,
 } from "../../../../../../../requests";
 import { T_APIRESULT_REGISTER } from "../../../../../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
 
 interface IProps {
@@ -46,7 +46,6 @@ const TeacherForm: React.FC<IProps> = (props) => {
       alert("Error, please refresh and try again");
     },
     onSuccess(data) {
-      console.log(data.data.result);
       sendTokensToLocalStorage(data.data.tokens);
 
       queryClient.resetQueries();
@@ -74,6 +73,10 @@ const TeacherForm: React.FC<IProps> = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    teacherInfo && setClassSelection(teacherInfo.classes[0].class_id);
+  }, [teacherInfo]);
 
   const form = useForm<T_FORM_REGISTER_STUDENT>({
     defaultValues: {
