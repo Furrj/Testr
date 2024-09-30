@@ -63,14 +63,22 @@ func main() {
 	router.Use(middleware.ValidateAccessToken())
 
 	router.SetTrustedProxies([]string{"127.0.0.1"})
-	router.POST(consts.RouteUrlRegister, routes.Register(db))
+
 	router.POST(consts.RouteUrlLogin, routes.Login(db))
 	router.POST(consts.RouteUrlValidateSession, routes.ValidateSession(db))
 	router.POST(consts.RouteUrlSubmitGameSession, routes.SubmitGameSession(db))
 	router.POST(consts.RouteUrlUpdateVertical, routes.UpdateVertical(db))
+	router.POST(consts.RouteUrlAddClasses, routes.AddClasses(db))
+	router.POST(consts.RouteUrlRegisterTeacher, routes.RegisterTeacher(db))
+	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
+
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
 	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))
+	router.GET(consts.RouteUrlGetClasses, routes.GetClasses(db))
+	router.GET(consts.RouteUrlCheckUsername, routes.CheckUsername(db))
+	router.GET(consts.RouteUrlGetTeacherInfo, routes.GetTeacherInfo(db))
+	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
 
 	router.Use(spa.Middleware("/", "client"))
 

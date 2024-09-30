@@ -1,14 +1,19 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../../../../styles/mixins";
+@import "../../../../../../styles/vars";
 
 .root {
   @include full-size-percent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-center;
   gap: 5px;
 
   padding: 20px;
+
+  //border: 1px solid white;
+
+  .spacer {
+    min-height: 50px;
+    min-width: 100%;
+  }
 
   input {
     text-align: center;
@@ -37,6 +42,5 @@
     box-shadow: none;
     border: 1px solid white;
     margin-top: 5px;
-    background: red;
   }
 }

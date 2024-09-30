@@ -19,7 +19,7 @@ var TestUserDataJackson = types.UserData{
 var TestStudentData = types.StudentData{
 	UserID:    2,
 	TeacherID: 1,
-	Period:    1,
+	ClassID:   1,
 }
 
 var TestUserDataMichele = types.UserData{
@@ -32,29 +32,24 @@ var TestUserDataMichele = types.UserData{
 	Vertical:  true,
 }
 
-var TestTeacherData = types.TeacherData{
-	UserID:  1,
-	Periods: 5,
-}
-
-var TestUserRegisterPayload = types.RequestPayloadRegister{
+var TestUserRegisterPayload = types.ReqRegister{
 	Username:  "poemmys",
 	Password:  "pass",
 	FirstName: "Jackson",
 	LastName:  "Furr",
 }
 
-var TestUserLoginPayload = types.RequestPayloadLogin{
+var TestUserLoginPayload = types.ReqLogin{
 	Username: "poemmys",
 	Password: "pass",
 }
 
-var TestUserLoginPayloadInvalidPassword = types.RequestPayloadLogin{
+var TestUserLoginPayloadInvalidPassword = types.ReqLogin{
 	Username: "poemmys",
 	Password: "invalid",
 }
 
-var TestUserLoginPayloadInvalidUsername = types.RequestPayloadLogin{
+var TestUserLoginPayloadInvalidUsername = types.ReqLogin{
 	Username: "invalid",
 	Password: "pass",
 }

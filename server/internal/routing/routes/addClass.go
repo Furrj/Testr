@@ -11,7 +11,11 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
+type reqAddClass struct {
+	Name string `json:"name"`
+}
+
+func AddClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -36,28 +40,26 @@ func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// get teacher data
-		_, err = db.GetTeacherDataByUserID(userID)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, nil)
-			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
+		// bind payload
+		var payload []reqAddClass
+		if err = ctx.BindJSON(&payload); err != nil {
+			fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
-		// get students
-		students, err := db.GetAllStudentsDataByTeacherID(userID)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, nil)
-			fmt.Fprintf(os.Stderr, "error in GetAllStudentsDataByTeacherID: %+v\n", err)
-			return
+		// insert classes
+		for _, v := range payload {
+			class := types.TeacherClass{
+				Name: v.Name,
+			}
+			if err := db.InsertTeacherClass(userID, class); err != nil {
+				fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
+				ctx.Status(http.StatusInternalServerError)
+				return
+			}
 		}
 
-		res := make(map[uint][]types.StudentData)
-
-		for _, v := range students {
-			res[v.ClassID] = append(res[v.ClassID], v)
-		}
-
-		ctx.JSON(http.StatusOK, res)
+		ctx.Status(http.StatusOK)
 	}
 }

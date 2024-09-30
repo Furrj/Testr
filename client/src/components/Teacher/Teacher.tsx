@@ -1,23 +1,50 @@
-import { Route, Routes } from "react-router-dom";
-import Selection from "./children/Selection/Selection";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useState } from "react";
-import Loading from "../Loading/Loading";
 import Student from "./children/Student/Student";
+import Main from "./children/Main/Main";
+import Class from "./children/Class/Class";
+import { T_CLASS } from "../Register/Register";
 
 const Teacher: React.FC = () => {
   const [activeStudentID, setActiveStudentID] = useState<number>(-1);
+  const [activeClass, setActiveClass] = useState<T_CLASS | undefined>(
+    undefined,
+  );
 
   return (
     <Routes>
       <Route
         path="/"
         element={
-          <Selection
-            activeStudentID={{ curr: activeStudentID, set: setActiveStudentID }}
-          />
+          <Main activeClass={{ curr: activeClass, set: setActiveClass }} />
         }
       />
-      <Route path="/student" element={<Student user_id={activeStudentID} />} />
+      <Route
+        path="/class"
+        element={
+          activeClass !== undefined ? (
+            <Class
+              info={activeClass}
+              activeStudentID={{
+                curr: activeStudentID,
+                set: setActiveStudentID,
+              }}
+            />
+          ) : (
+            <Navigate to={"/teacher"} replace />
+          )
+        }
+      />
+      <Route
+        path="/student"
+        element={
+          activeStudentID > 0 ? (
+            <Student user_id={activeStudentID} />
+          ) : (
+            <Navigate to={"/teacher"} replace />
+          )
+        }
+      />
     </Routes>
   );
 };

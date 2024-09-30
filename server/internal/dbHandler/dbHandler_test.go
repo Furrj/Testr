@@ -30,6 +30,7 @@ func TestDBHandler(t *testing.T) {
 	testStudentData := testHelpers.TestStudentData
 	testTeacherData := testHelpers.TestTeacherData
 	testGameSessionData := testHelpers.TestGameSession
+	testTeacherClass := testHelpers.TestTeacherClass
 
 	t.Run("Ping connection", func(t *testing.T) {
 		if err := dbHandler.Conn.Ping(context.Background()); err != nil {
@@ -128,16 +129,30 @@ func TestDBHandler(t *testing.T) {
 
 	t.Run("InsertTeacherData", func(t *testing.T) {
 		if err := dbHandler.InsertTeacherData(testTeacherData); err != nil {
-			t.Errorf("Error inserting teacher: %+v\n", err)
+			t.Errorf("error inserting teacher data: %+v\n", err)
 		}
 	})
 	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
 		data, err := dbHandler.GetTeacherDataByUserID(testTeacherData.UserID)
 		if err != nil {
-			t.Errorf("error getting teacher: %+v\n", err)
+			t.Errorf("error getting teacher data: %+v\n", err)
 		}
 		if data != testTeacherData {
 			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
+		}
+	})
+	t.Run("InsertTeacherClass", func(t *testing.T) {
+		if err := dbHandler.InsertTeacherClass(testTeacherData.UserID, testTeacherClass); err != nil {
+			t.Errorf("error in InsertTeacherClass: %+v\n", err)
+		}
+	})
+	t.Run("GetTeacherClassesByUserID", func(t *testing.T) {
+		data, err := dbHandler.GetTeacherClassesByUserID(testTeacherData.UserID)
+		if err != nil {
+			t.Errorf("error in GetTeacherClassByUserID: %+v\n", err)
+		}
+		if data[0] != testTeacherClass {
+			t.Errorf("mismatch in GetTeacherClassByUserID: got %+v, want %+v", data, testTeacherData)
 		}
 	})
 

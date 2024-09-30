@@ -8,13 +8,12 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
-
-	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -28,51 +27,32 @@ type responseRegister struct {
 	Result int             `json:"result"`
 }
 
-// Register recieves a RequestPayloadRegister, then checks if the username is valid,
-// inserts into user_info, generates tokens, then sends a ResponseRegisterLogin
-func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
+type ReqRT struct {
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	School    string `json:"school"`
+	Email     string `json:"email"`
+}
+
+func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var registerPayload types.RequestPayloadRegister
+		var payload ReqRT
 		response := responseRegister{
 			Result: RESULT_NULL,
 		}
 
 		// bind request body
-		if err := ctx.BindJSON(&registerPayload); err != nil {
+		if err := ctx.BindJSON(&payload); err != nil {
 			fmt.Printf("Error binding json: %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, response)
 			return
 		}
-		fmt.Printf("%+v\n", registerPayload)
-
-		// verify role-related fields
-		switch role := registerPayload.Role; role {
-		case "S":
-			if (registerPayload.TeacherID < 1) || (registerPayload.Period < 1) {
-				fmt.Printf("invalid student fields: %+v\n", registerPayload)
-				ctx.JSON(http.StatusBadRequest, response)
-				return
-			}
-
-			// check if teacher valid
-			_, err := db.GetTeacherDataByUserID(registerPayload.TeacherID)
-			if err != nil {
-				if err == pgx.ErrNoRows {
-					fmt.Printf("invalid teacher id: %+v\n", registerPayload)
-					ctx.JSON(http.StatusBadRequest, response)
-					return
-				}
-			}
-		case "T":
-			if registerPayload.Periods < 1 {
-				fmt.Printf("invalid teacher fields: %+v\n", registerPayload)
-				ctx.JSON(http.StatusBadRequest, response)
-				return
-			}
-		}
+		fmt.Printf("%+v\n", payload)
 
 		// check if username currently exists
-		_, err := db.GetUserIDByUsername(registerPayload.Username)
+		_, err := db.GetUserIDByUsername(payload.Username)
 		if err != nil {
 			if !errors.Is(err, pgx.ErrNoRows) {
 				fmt.Printf("Error checking username validity: %+v\n", err)
@@ -80,7 +60,7 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 				return
 			}
 		} else {
-			fmt.Printf("Username '%s' already exists", registerPayload.Username)
+			fmt.Printf("Username '%s' already exists", payload.Username)
 			response.Result = RESULT_USERNAME_EXISTS
 			ctx.JSON(http.StatusOK, response)
 			return
@@ -102,7 +82,7 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		hashed, err := bcrypt.GenerateFromPassword([]byte(registerPayload.Password+salt), bcrypt.DefaultCost)
+		hashed, err := bcrypt.GenerateFromPassword([]byte(payload.Password+salt), bcrypt.DefaultCost)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("error hashing password: %+v\n", err)
@@ -112,12 +92,12 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 		// create UserData
 		UserData := types.UserData{
 			UserID:    userID,
-			Username:  registerPayload.Username,
+			Username:  payload.Username,
 			Password:  string(hashed),
 			Salt:      salt,
-			FirstName: registerPayload.FirstName,
-			LastName:  registerPayload.LastName,
-			Role:      registerPayload.Role,
+			FirstName: payload.FirstName,
+			LastName:  payload.LastName,
+			Role:      "T",
 			Vertical:  false,
 		}
 
@@ -128,29 +108,16 @@ func Register(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// handle role-related
-		switch role := registerPayload.Role; role {
-		case "S":
-			data := types.StudentData{
-				UserID:    userID,
-				TeacherID: registerPayload.TeacherID,
-				Period:    registerPayload.Period,
-			}
-			if err := db.InsertStudentData(data); err != nil {
-				ctx.JSON(http.StatusInternalServerError, response)
-				fmt.Printf("error inserting student: %+v\n", err)
-				return
-			}
-		case "T":
-			data := types.TeacherData{
-				UserID:  userID,
-				Periods: registerPayload.Periods,
-			}
-			if err := db.InsertTeacherData(data); err != nil {
-				ctx.JSON(http.StatusInternalServerError, response)
-				fmt.Printf("error inserting student: %+v\n", err)
-				return
-			}
+		// insert TeacherData
+		teacherData := types.TeacherData{
+			Email:  payload.Email,
+			School: payload.School,
+			UserID: userID,
+		}
+		if err := db.InsertTeacherData(teacherData); err != nil {
+			ctx.JSON(http.StatusInternalServerError, response)
+			fmt.Printf("error inserting teacher: %+v\n", err)
+			return
 		}
 
 		// generate JWT

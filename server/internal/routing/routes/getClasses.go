@@ -8,10 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/routing/utils"
-	"mathtestr.com/server/internal/types"
 )
 
-func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
+func GetClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -36,28 +35,14 @@ func GetStudents(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// get teacher data
-		_, err = db.GetTeacherDataByUserID(userID)
+		// get classes
+		classes, err := db.GetTeacherClassesByUserID(userID)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, nil)
-			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
+			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
-		// get students
-		students, err := db.GetAllStudentsDataByTeacherID(userID)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, nil)
-			fmt.Fprintf(os.Stderr, "error in GetAllStudentsDataByTeacherID: %+v\n", err)
-			return
-		}
-
-		res := make(map[uint][]types.StudentData)
-
-		for _, v := range students {
-			res[v.ClassID] = append(res[v.ClassID], v)
-		}
-
-		ctx.JSON(http.StatusOK, res)
+		ctx.JSON(http.StatusOK, classes)
 	}
 }
