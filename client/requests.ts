@@ -29,6 +29,7 @@ const API_ROUTES = {
   UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
   GET_CLASSES: ROUTE_PREFIX + "/api/classes/get",
   ADD_CLASS: ROUTE_PREFIX + "/api/classes/add",
+  CHECK_USERNAME: ROUTE_PREFIX + "/api/checkUsername",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -188,5 +189,17 @@ export async function apiRequestAddClass(
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },
+  });
+}
+
+export type T_APIRESULT_CHECK_USERNAME = {
+  valid: boolean;
+};
+export async function apiRequestCheckUsername(
+  username: string,
+): Promise<AxiosResponse<T_APIRESULT_CHECK_USERNAME>> {
+  return await axios<T_APIRESULT_CHECK_USERNAME>({
+    method: "GET",
+    url: `${API_ROUTES.CHECK_USERNAME}/${username}`,
   });
 }

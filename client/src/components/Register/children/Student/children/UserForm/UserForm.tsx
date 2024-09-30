@@ -5,6 +5,12 @@ import {
 } from "../../../../Register";
 import styles from "./UserForm.module.scss";
 import { useState } from "react";
+import {
+  apiRequestCheckUsername,
+  T_APIRESULT_CHECK_USERNAME,
+} from "../../../../../../../requests";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 function isAlpha(input: string): boolean {
   let regex = /^[a-zA-Z]+$/;
@@ -25,6 +31,26 @@ interface IProps {
 const UserForm: React.FC<IProps> = (props) => {
   const [errMessage, setErrMessage] = useState<string>("");
 
+  const mutation = useMutation({
+    mutationFn: (
+      username: string,
+    ): Promise<AxiosResponse<T_APIRESULT_CHECK_USERNAME>> => {
+      return apiRequestCheckUsername(username);
+    },
+    onError(err) {
+      console.log(err);
+      alert("Error, please refresh and try again");
+    },
+    onSuccess(data) {
+      console.log(data.data);
+      if (data.data.valid) {
+        props.teacherMode.set(true);
+      } else {
+        setErrMessage("Username already exists");
+      }
+    },
+  });
+
   const form = useForm<T_FORM_REGISTER_STUDENT>({
     defaultValues: {
       ...INIT_FORM_REGISTER_STUDENT,
@@ -39,8 +65,10 @@ const UserForm: React.FC<IProps> = (props) => {
         class_id: 0,
         teacher_id: 0,
       };
+
+      console.log("submitting");
       props.formData.set(obj);
-      props.teacherMode.set(true);
+      mutation.mutate(value.username.trim());
     },
   });
 
@@ -133,7 +161,10 @@ const UserForm: React.FC<IProps> = (props) => {
               autoComplete="username"
               value={field.state.value}
               onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
+              onChange={(e) => {
+                errMessage !== "" && setErrMessage("");
+                field.handleChange(e.target.value);
+              }}
               className={field.state.meta.errors.length > 0 ? styles.err : ""}
               type="text"
               inputMode="text"
@@ -143,14 +174,13 @@ const UserForm: React.FC<IProps> = (props) => {
                 {field.state.meta.errors.join(", ")}
               </div>
             ) : null}
+            {<div className={styles.err}>{errMessage}</div>}
           </>
         )}
         validators={{
           onChange: ({ value }) => {
             if (value.includes(" ")) {
               return "Username cannot contain spaces";
-            } else if (!isAlpha(value) && value !== "") {
-              return "Username can only contain letters";
             }
 
             return undefined;
@@ -232,7 +262,7 @@ const UserForm: React.FC<IProps> = (props) => {
           },
         }}
       />
-      {<div className={styles.err}>{errMessage}</div>}
+
       <button type="submit">Next</button>
     </form>
   );
