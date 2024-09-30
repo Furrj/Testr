@@ -6,6 +6,7 @@ import styles from "./Class.module.scss";
 import Loading from "../../../Loading/Loading";
 import { Link } from "react-router-dom";
 import { T_CLASS } from "../../../Register/Register";
+import { useEffect } from "react";
 
 interface IProps {
   info: T_CLASS;
@@ -16,7 +17,8 @@ interface IProps {
 }
 
 const Class: React.FC<IProps> = (props) => {
-  const { isPending, isSuccess, data } = useQuery({
+  const queryClient = useQueryClient();
+  const { isFetching, isSuccess, data } = useQuery({
     queryKey: [QUERY_KEYS.CLASS],
     queryFn: () =>
       apiRequestGetClass({
@@ -29,15 +31,19 @@ const Class: React.FC<IProps> = (props) => {
     enabled: props.info.class_id > 0,
   });
 
-  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CLASS] });
+  }, [props.info]);
 
-  if (isPending) {
+  if (isFetching) {
     return (
       <div className={styles.root}>
         <Loading />
       </div>
     );
   } else if (isSuccess && data.data !== undefined) {
+    console.log(data.data);
+
     if (data.data.length > 0) {
       return (
         <div className={styles.root}>

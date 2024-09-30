@@ -51,9 +51,9 @@ const Classes: React.FC<IProps> = (props) => {
                 to={"/teacher/class"}
                 onClick={() => {
                   props.activeClass.set(c);
-                  queryClient.invalidateQueries({
-                    queryKey: [QUERY_KEYS.CLASS],
-                  });
+                  // queryClient.invalidateQueries({
+                  //   queryKey: [QUERY_KEYS.CLASS],
+                  // });
                 }}
                 key={`class-${c.class_id}`}
                 className={styles.link}

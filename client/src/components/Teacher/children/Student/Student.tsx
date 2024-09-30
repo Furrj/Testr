@@ -6,7 +6,6 @@ import styles from "./Student.module.scss";
 import { useEffect } from "react";
 import Loading from "../../../Loading/Loading";
 import PastTest from "../../../PastTest/PastTest";
-import { useNavigate } from "react-router-dom";
 
 interface IProps {
   user_id: number;
@@ -14,7 +13,7 @@ interface IProps {
 
 const Student: React.FC<IProps> = (props) => {
   const queryClient = useQueryClient();
-  const { isSuccess, isPending, data } = useQuery({
+  const { isSuccess, isFetching, data } = useQuery({
     queryKey: [QUERY_KEYS.STUDENT_INFO],
     queryFn: () =>
       apiRequestGetUserInfo({
@@ -26,23 +25,12 @@ const Student: React.FC<IProps> = (props) => {
     staleTime: Infinity,
   });
 
-  // redirect to "/teacher" if user_id invalid
-  const navigate = useNavigate();
+  // re-fetch data on props.user_id change
   useEffect(() => {
-    props.user_id <= 0 && navigate("/teacher");
-  }, []);
-
-  // re-fetch data on props.user_id change &&
-  // leave if user_id invalid
-  useEffect(() => {
-    if (props.user_id <= 0) {
-      navigate("/teacher");
-    } else {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.STUDENT_INFO] });
-    }
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.STUDENT_INFO] });
   }, [props.user_id]);
 
-  if (isPending) {
+  if (isFetching) {
     return <Loading />;
   } else if (isSuccess && data.data) {
     return (

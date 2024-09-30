@@ -35,7 +35,16 @@ const Teacher: React.FC = () => {
           )
         }
       />
-      <Route path="/student" element={<Student user_id={activeStudentID} />} />
+      <Route
+        path="/student"
+        element={
+          activeStudentID > 0 ? (
+            <Student user_id={activeStudentID} />
+          ) : (
+            <Navigate to={"/teacher"} replace />
+          )
+        }
+      />
     </Routes>
   );
 };
