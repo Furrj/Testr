@@ -31,23 +31,23 @@ const TeacherForm: React.FC<IProps> = (props) => {
     useState<T_APIRESULT_GET_TEACHER_INFO | null>(null);
   const [errMessage, setErrMessage] = useState<string>("");
 
-  // const navigate = useNavigate();
-  // const queryClient = useQueryClient();
-  // const formMutation = useMutation({
-  //   mutationFn: (
-  //     formData: T_FORM_REGISTER_STUDENT,
-  //   ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-  //     return apiRequestRegisterStudent(formData);
-  //   },
-  //   onError(err) {
-  //     console.log(err);
-  //     alert("Error, please refresh and try again");
-  //   },
-  //   onSuccess(data) {
-  //     switch (data.data.result) {
-  //     }
-  //   },
-  // });
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const formMutation = useMutation({
+    mutationFn: (
+      formData: T_FORM_REGISTER_STUDENT,
+    ): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
+      return apiRequestRegisterStudent(formData);
+    },
+    onError(err) {
+      console.log(err);
+      alert("Error, please refresh and try again");
+    },
+    onSuccess(data) {
+      switch (data.data.result) {
+      }
+    },
+  });
 
   const teacherMutation = useMutation({
     mutationFn: (
@@ -78,6 +78,7 @@ const TeacherForm: React.FC<IProps> = (props) => {
       props.formData.set((curr) => {
         return {
           ...curr,
+          class_id: Number.parseInt(value.class_id as string),
           teacher_id: Number.parseInt(value.teacher_id as string),
         };
       });
@@ -146,18 +147,30 @@ const TeacherForm: React.FC<IProps> = (props) => {
             </div>
             <div>{teacherInfo.school}</div>
           </div>
-          <div className={styles.classes}>
-            <label htmlFor="classes">Class</label>
-            <select className={styles.classes} name="classes" id="classes">
-              {teacherInfo.classes.map((c) => {
-                return (
-                  <option value={c.class_id} key={`$class-${c.class_id}`}>
-                    {c.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <form.Field
+            name="class_id"
+            children={(field) => (
+              <div className={styles.classes}>
+                <label htmlFor={field.name}>Class</label>
+                <select
+                  className={styles.classes}
+                  name={field.name}
+                  id={field.name}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                >
+                  {teacherInfo.classes.map((c) => {
+                    return (
+                      <option value={c.class_id} key={`$class-${c.class_id}`}>
+                        {c.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
+          />
         </>
       )}
     </div>
