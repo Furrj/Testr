@@ -13,9 +13,9 @@ import { Link } from "react-router-dom";
 
 interface IProps {
   classes: T_CLASS[];
-  activeClassID: {
-    curr: number;
-    set: React.Dispatch<React.SetStateAction<number>>;
+  activeClass: {
+    curr: T_CLASS | undefined;
+    set: React.Dispatch<React.SetStateAction<T_CLASS | undefined>>;
   };
 }
 
@@ -49,7 +49,12 @@ const Classes: React.FC<IProps> = (props) => {
             props.classes.map((c) => (
               <Link
                 to={"/teacher/class"}
-                onClick={() => props.activeClassID.set(c.class_id)}
+                onClick={() => {
+                  props.activeClass.set(c);
+                  queryClient.invalidateQueries({
+                    queryKey: [QUERY_KEYS.CLASS],
+                  });
+                }}
                 key={`class-${c.class_id}`}
                 className={styles.link}
               >

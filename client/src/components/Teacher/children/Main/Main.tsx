@@ -8,11 +8,12 @@ import styles from "./Main.module.scss";
 import { apiRequestGetClasses } from "../../../../../requests";
 import Classes from "../Classes/Classes";
 import Loading from "../../../Loading/Loading";
+import { T_CLASS } from "../../../Register/Register";
 
 interface IProps {
-  activeClassID: {
-    curr: number;
-    set: React.Dispatch<React.SetStateAction<number>>;
+  activeClass: {
+    curr: T_CLASS | undefined;
+    set: React.Dispatch<React.SetStateAction<T_CLASS | undefined>>;
   };
 }
 
@@ -41,9 +42,9 @@ const Main: React.FC<IProps> = (props) => {
         <h2>Teacher Code: {teacherDataQuery.data?.user_data.user_id}</h2>
         <Classes
           classes={data.data}
-          activeClassID={{
-            curr: props.activeClassID.curr,
-            set: props.activeClassID.set,
+          activeClass={{
+            curr: props.activeClass.curr,
+            set: props.activeClass.set,
           }}
         />
       </div>

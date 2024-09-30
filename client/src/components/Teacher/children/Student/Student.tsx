@@ -14,7 +14,7 @@ interface IProps {
 
 const Student: React.FC<IProps> = (props) => {
   const queryClient = useQueryClient();
-  const { isSuccess, isPending, isFetching, data } = useQuery({
+  const { isSuccess, isPending, data } = useQuery({
     queryKey: [QUERY_KEYS.STUDENT_INFO],
     queryFn: () =>
       apiRequestGetUserInfo({
@@ -44,7 +44,7 @@ const Student: React.FC<IProps> = (props) => {
 
   if (isPending) {
     return <Loading />;
-  } else if (!isFetching && isSuccess && data.data) {
+  } else if (isSuccess && data.data) {
     return (
       <div className={styles.root}>
         <div className={styles.info}></div>

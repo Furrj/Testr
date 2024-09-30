@@ -20,6 +20,7 @@ export const QUERY_KEYS = {
   STUDENT_INFO: "STUDENT_INFO",
   STUDENTS: "STUDENTS",
   CLASSES: "CLASSES",
+  CLASS: "CLASS",
 };
 
 export const USER_ROLES = {
