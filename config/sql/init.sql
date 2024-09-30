@@ -4,6 +4,4 @@ BEGIN;
 
 \i 'create_tables.sql'
 
-\i 'seed_db.sql'
-
 COMMIT;
