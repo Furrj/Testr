@@ -9,4 +9,5 @@ type TeacherData struct {
 type TeacherClass struct {
 	Name    string `json:"name"`
 	ClassID uint   `json:"class_id"`
+	UserID  UserID `json:"user_id"`
 }

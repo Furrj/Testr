@@ -29,7 +29,32 @@ func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.T
 	return TeacherData, nil
 }
 
-const QGetTeacherClassByUserID = `
+const QGetTeacherClassByClassID = `
+	SELECT class_id, user_id, name
+	FROM teachers.classes
+	WHERE class_id=$1
+`
+
+func (dbHandler *DBHandler) GetTeacherClassByClassID(classID uint) (types.TeacherClass, error) {
+	var class types.TeacherClass
+
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherClassByClassID,
+		classID,
+	).Scan(
+		&class.ClassID,
+		&class.UserID,
+		&class.Name,
+	)
+	if err != nil {
+		return class, err
+	}
+
+	return class, nil
+}
+
+const QGetTeacherClassesByUserID = `
 	SELECT class_id, name
 	FROM teachers.classes
 	WHERE user_id=$1
@@ -41,7 +66,7 @@ func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]ty
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),
-		QGetTeacherClassByUserID,
+		QGetTeacherClassesByUserID,
 		UserID,
 	)
 	if err != nil {
