@@ -14,6 +14,8 @@ import {
 } from "../../../../../../../requests";
 import { T_APIRESULT_REGISTER } from "../../../../../../types";
 import { useState } from "react";
+import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
+import { QUERY_KEYS } from "../../../../../../utils/consts";
 
 interface IProps {
   formData: {
@@ -30,6 +32,7 @@ const TeacherForm: React.FC<IProps> = (props) => {
   const [teacherInfo, setTeacherInfo] =
     useState<T_APIRESULT_GET_TEACHER_INFO | null>(null);
   const [errMessage, setErrMessage] = useState<string>("");
+  const [classSelection, setClassSelection] = useState<number>(0);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -44,8 +47,11 @@ const TeacherForm: React.FC<IProps> = (props) => {
       alert("Error, please refresh and try again");
     },
     onSuccess(data) {
-      switch (data.data.result) {
-      }
+      console.log(data.data.result);
+      sendTokensToLocalStorage(data.data.tokens);
+
+      queryClient.resetQueries();
+      navigate("/");
     },
   });
 
@@ -137,7 +143,7 @@ const TeacherForm: React.FC<IProps> = (props) => {
             },
           }}
         />
-        <button type="submit">Submit</button>
+        {!teacherInfo && <button type="submit">Search</button>}
       </form>
       {teacherInfo && (
         <>
@@ -147,30 +153,38 @@ const TeacherForm: React.FC<IProps> = (props) => {
             </div>
             <div>{teacherInfo.school}</div>
           </div>
-          <form.Field
-            name="class_id"
-            children={(field) => (
-              <div className={styles.classes}>
-                <label htmlFor={field.name}>Class</label>
-                <select
-                  className={styles.classes}
-                  name={field.name}
-                  id={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                >
-                  {teacherInfo.classes.map((c) => {
-                    return (
-                      <option value={c.class_id} key={`$class-${c.class_id}`}>
-                        {c.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            )}
-          />
+          <div className={styles.classes}>
+            <label htmlFor={"class_select"}>Class</label>
+            <select
+              className={styles.classes}
+              name={"class_select"}
+              id={"class_select"}
+              value={classSelection}
+              onChange={(e) =>
+                setClassSelection(Number.parseInt(e.target.value))
+              }
+            >
+              {teacherInfo.classes.map((c) => {
+                return (
+                  <option value={c.class_id} key={`$class-${c.class_id}`}>
+                    {c.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <button
+            className={styles.submit}
+            onClick={() =>
+              formMutation.mutate({
+                ...props.formData.curr,
+                class_id: classSelection,
+              })
+            }
+          >
+            Submit
+          </button>
         </>
       )}
     </div>
