@@ -10,13 +10,14 @@
   //border: 1px solid white;
 
   h2 {
+    margin-top: 20px;
     width: 100%;
     @include flex-center;
   }
 
   .content {
     width: 60%;
-    height: 80%;
+    height: 60%;
     overflow: auto;
 
     border: 1px solid white;

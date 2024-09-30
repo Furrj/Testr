@@ -15,7 +15,6 @@ import {
 import { T_APIRESULT_REGISTER } from "../../../../../../types";
 import { useState } from "react";
 import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
-import { QUERY_KEYS } from "../../../../../../utils/consts";
 
 interface IProps {
   formData: {
