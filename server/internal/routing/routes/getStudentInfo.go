@@ -12,10 +12,6 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-type getStudentInfoPayload struct {
-	UserID types.UserID `json:"user_id"`
-}
-
 func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
