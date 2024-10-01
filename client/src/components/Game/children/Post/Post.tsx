@@ -15,7 +15,7 @@ import {
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import UIHandlers from "../../../../utils/uiHandlers";
 import { QUERY_KEYS } from "../../../../utils/consts";
-import { FaRedoAlt } from "react-icons/fa";
+import { FaRedoAlt, FaPlus } from "react-icons/fa";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
@@ -34,7 +34,7 @@ interface IProps {
     curr: number;
     set: React.Dispatch<React.SetStateAction<number | null>>;
   };
-  restartGame: () => void;
+  restartGame: (status: E_GAME_STATUS) => void;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -125,10 +125,22 @@ const Post: React.FC<IProps> = (props) => {
 
       <div className={styles.buttons}>
         <div className={styles.box}>
-          <div className={styles.button} onClick={() => props.restartGame()}>
+          <div
+            className={styles.button}
+            onClick={() => props.restartGame(E_GAME_STATUS.ACTIVE)}
+          >
             <FaRedoAlt className={styles.icon} />
           </div>
           Play Again
+        </div>
+        <div className={styles.box}>
+          <div
+            className={styles.button}
+            onClick={() => props.restartGame(E_GAME_STATUS.PRE)}
+          >
+            <FaPlus className={styles.icon} />
+          </div>
+          New Game
         </div>
       </div>
     </div>

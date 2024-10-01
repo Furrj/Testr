@@ -42,9 +42,9 @@ const Game: React.FC<IProps> = (props) => {
   );
   const userGuesses = useRef<number[]>([]);
 
-  function restartGame(): void {
+  function restartGame(status: E_GAME_STATUS): void {
     setCurrentQuestionIndex(1);
-    setGameStatus(E_GAME_STATUS.ACTIVE);
+    setGameStatus(status);
     setTimeInSeconds(() =>
       limitType === E_GAME_LIMIT_TYPES.TIME
         ? gameSettings.current.limits.time
