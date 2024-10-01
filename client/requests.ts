@@ -33,6 +33,7 @@ const API_ROUTES = {
   CHECK_USERNAME: ROUTE_PREFIX + "/api/checkUsername",
   GET_TEACHER_INFO: ROUTE_PREFIX + "/api/getTeacherInfo",
   GET_STUDENT_INFO: ROUTE_PREFIX + "/api/getStudent",
+  UPDATE_STUDENT_CLASS: ROUTE_PREFIX + "/api/updateStudent/class",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -255,6 +256,27 @@ export async function apiRequestGetStudentInfo(
   return await axios<T_APIRESULT_GET_STUDENT_INFO>({
     method: "GET",
     url: `${API_ROUTES.GET_STUDENT_INFO}/${params.user_id}`,
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_UPDATE_STUDENT_CLASS {
+  user_id: number;
+  class_id: number;
+  tokens: T_TOKENS;
+}
+export async function apiRequestUpdateStudentClass(
+  params: I_PARAMS_APIREQUEST_UPDATE_STUDENT_CLASS,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "POST",
+    url: API_ROUTES.UPDATE_STUDENT_CLASS,
+    data: {
+      user_id: params.user_id,
+      class_id: params.class_id,
+    },
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },
