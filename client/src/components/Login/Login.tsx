@@ -11,7 +11,6 @@ import { togglePasswordLogin } from "../../utils/uiHandlers.ts";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
-import { QUERY_KEYS } from "../../utils/consts.ts";
 
 const Login: React.FC = () => {
   const [userInput, setUserInuput] =
@@ -25,7 +24,6 @@ const Login: React.FC = () => {
     mutationFn: (
       userInput: T_USERINPUT_LOGIN,
     ): Promise<AxiosResponse<T_APIRESULT_LOGIN>> => {
-      console.log(userInput);
       return apiRequestLogin(userInput);
     },
     onError(err) {

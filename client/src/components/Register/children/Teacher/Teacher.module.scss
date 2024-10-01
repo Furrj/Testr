@@ -6,37 +6,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
 
-  padding: 20px;
+  //border: 1px solid white;
 
-  input {
-    text-align: center;
-    font-size: 1.5rem;
-    width: 15rem;
-    height: 2rem;
-    border-radius: 10px;
-    border: 1px solid white;
-    background: rgb(71, 71, 71);
-    overflow-x: auto;
+  overflow-y: auto;
 
-    &.err {
-      border: 2px solid red;
+  .form {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    padding: 20px;
+
+    input {
+      text-align: center;
+      font-size: 1.5rem;
+      width: 15rem;
+      height: 2rem;
+      border-radius: 10px;
+      border: 1px solid white;
+      background: rgb(71, 71, 71);
+      overflow-x: auto;
+
+      &.err {
+        border: 2px solid red;
+      }
     }
-  }
 
-  div.err {
-    color: red;
-  }
+    div.err {
+      color: red;
+    }
 
-  button {
-    font-size: large;
-    border-radius: 10px;
-    padding: 5px;
-    font-weight: bold;
-    box-shadow: none;
-    border: 1px solid white;
-    margin-top: 5px;
-    background: red;
+    button {
+      font-size: large;
+      border-radius: 10px;
+      padding: 5px;
+      font-weight: bold;
+      box-shadow: none;
+      border: 1px solid white;
+      margin-top: 5px;
+      background: red;
+    }
   }
 }

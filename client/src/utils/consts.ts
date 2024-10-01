@@ -29,4 +29,4 @@ export const USER_ROLES = {
   ADMIN: "A",
 };
 
-export const APP_VERSION: string = "0.6b";
+export const APP_VERSION: string = "0.7b";

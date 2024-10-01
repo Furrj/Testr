@@ -7,16 +7,34 @@ import {
   I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
 } from "../../../../../requests";
 import { HttpStatusCode, type AxiosResponse } from "axios";
-import { E_GAME_LIMIT_TYPES, T_GAME_SETTINGS } from "../../../../types/game";
+import {
+  E_GAME_LIMIT_TYPES,
+  E_GAME_STATUS,
+  T_GAME_SETTINGS,
+} from "../../../../types/game";
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import UIHandlers from "../../../../utils/uiHandlers";
 import { QUERY_KEYS } from "../../../../utils/consts";
+import { FaRedoAlt, FaPlus } from "react-icons/fa";
 
 interface IProps {
   results: T_QUESTION_RESULT[];
   time: number;
   settings: T_GAME_SETTINGS;
   limitType: E_GAME_LIMIT_TYPES;
+  gameStatus: {
+    curr: E_GAME_STATUS;
+    set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
+  };
+  currentQuestionIndex: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number>>;
+  };
+  timeInSeconds: {
+    curr: number;
+    set: React.Dispatch<React.SetStateAction<number | null>>;
+  };
+  restartGame: (status: E_GAME_STATUS) => void;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -86,6 +104,7 @@ const Post: React.FC<IProps> = (props) => {
           </h3>
         </div>
       </div>
+
       <div className={styles.results}>
         {props.results
           .filter(({ correct }) => !correct)
@@ -102,6 +121,27 @@ const Post: React.FC<IProps> = (props) => {
               </div>
             );
           })}
+      </div>
+
+      <div className={styles.buttons}>
+        <div className={styles.box}>
+          <div
+            className={styles.button}
+            onClick={() => props.restartGame(E_GAME_STATUS.ACTIVE)}
+          >
+            <FaRedoAlt className={styles.icon} />
+          </div>
+          Play Again
+        </div>
+        <div className={styles.box}>
+          <div
+            className={styles.button}
+            onClick={() => props.restartGame(E_GAME_STATUS.PRE)}
+          >
+            <FaPlus className={styles.icon} />
+          </div>
+          New Game
+        </div>
       </div>
     </div>
   );

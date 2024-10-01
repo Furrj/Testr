@@ -42,8 +42,6 @@ const Class: React.FC<IProps> = (props) => {
       </div>
     );
   } else if (isSuccess && data.data !== undefined) {
-    console.log(data.data);
-
     if (data.data.length > 0) {
       return (
         <div className={styles.root}>

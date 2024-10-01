@@ -42,6 +42,19 @@ const Game: React.FC<IProps> = (props) => {
   );
   const userGuesses = useRef<number[]>([]);
 
+  function restartGame(status: E_GAME_STATUS): void {
+    setCurrentQuestionIndex(1);
+    setGameStatus(status);
+    setTimeInSeconds(() =>
+      limitType === E_GAME_LIMIT_TYPES.TIME
+        ? gameSettings.current.limits.time
+        : 0,
+    );
+    setQuestionResults([]);
+    setQuestions([]);
+    userGuesses.current = [];
+  }
+
   // generate questions on ACTIVE &&
   // generate results on POST
   useEffect(() => {
@@ -141,6 +154,13 @@ const Game: React.FC<IProps> = (props) => {
           time={timeInSeconds}
           settings={gameSettings.current}
           limitType={limitType}
+          gameStatus={{ curr: gameStatus, set: setGameStatus }}
+          currentQuestionIndex={{
+            curr: currentQuestionIndex,
+            set: setCurrentQuestionIndex,
+          }}
+          timeInSeconds={{ curr: timeInSeconds, set: setTimeInSeconds }}
+          restartGame={restartGame}
         />
       ) : (
         <Loading />
