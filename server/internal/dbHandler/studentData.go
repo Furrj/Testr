@@ -77,6 +77,7 @@ const QGetStudentsDataByClassID = `
 	FROM students.data
 	NATURAL JOIN users.data
 	WHERE class_id=$1
+	ORDER BY LOWER(last_name)
 `
 
 func (dbHandler *DBHandler) GetStudentsDataByClassID(classID uint) ([]types.StudentData, error) {
@@ -129,6 +130,26 @@ func (dbHandler *DBHandler) InsertStudentData(studentData types.StudentData) err
 		studentData.UserID,
 		studentData.TeacherID,
 		studentData.ClassID,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Updates
+const EUpdateStudentClassIDByUserID = `
+	UPDATE students.data
+	SET class_id=$2
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) UpdateStudentClassIDByUserID(userID types.UserID, classID uint) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EUpdateStudentClassIDByUserID,
+		userID,
+		classID,
 	)
 	if err != nil {
 		return err

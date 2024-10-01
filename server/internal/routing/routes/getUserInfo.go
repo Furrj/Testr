@@ -78,6 +78,7 @@ func GetUserInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 			}
 		}
 
+		// get sessions
 		sessions, err := db.GetAllGameSessionsByUserID(userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetGameSessionsByUserID %+v\n", err)

@@ -28,3 +28,9 @@ type ResponseGetUserData struct {
 	Sessions []GameSession    `json:"sessions"`
 	UserData ResponseUserData `json:"user_data"`
 }
+
+type ResponseGetStudentInfo struct {
+	Sessions []GameSession    `json:"sessions"`
+	UserData ResponseUserData `json:"user_data"`
+	Class    TeacherClass     `json:"class"`
+}
