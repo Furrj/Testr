@@ -36,6 +36,7 @@ const Settings: React.FC<IProps> = (props) => {
       },
     },
     onSubmit: ({ value }) => {
+      console.log("submitting");
       const obj: T_GAME_SETTINGS = {
         range: {
           min: Number.parseInt(value.range.min as string) | 0,
@@ -262,53 +263,53 @@ const Settings: React.FC<IProps> = (props) => {
                 type="checkbox"
                 name="time_limit_check"
                 checked={timeLimit}
-                onChange={() => setTimeLimit((c) => !c && true)}
+                onClick={() => !timeLimit && setTimeLimit(true)}
+                onChange={() => console.log("")}
               />
-              {timeLimit && (
-                <form.Field
-                  name="limits.time"
-                  children={(field) => (
-                    <>
-                      <input
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        className={
-                          field.state.meta.errors.length > 0
-                            ? styles.errInput
-                            : ""
-                        }
-                        type="number"
-                      />
-                      {field.state.meta.errors.length > 0 ? (
-                        <div className={styles.err}>
-                          {field.state.meta.errors.join(", ")}
-                        </div>
-                      ) : null}
-                    </>
-                  )}
-                  validators={{
-                    onChange: ({ value }) => {
-                      if (Number.parseInt(value as string) < 0) {
-                        return "Cannot be negative";
-                      }
+              <form.Field
+                name="limits.time"
+                children={(field) => (
+                  <>
+                    <input
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className={`${
+                        field.state.meta.errors.length > 0
+                          ? styles.errInput
+                          : ""
+                      } ${timeLimit ? "" : styles.hidden}`}
+                      type="number"
+                      inputMode="numeric"
+                    />
+                    {field.state.meta.errors.length > 0 ? (
+                      <div className={styles.err}>
+                        {field.state.meta.errors.join(", ")}
+                      </div>
+                    ) : null}
+                  </>
+                )}
+                validators={{
+                  onChange: ({ value }) => {
+                    if (Number.parseInt(value as string) < 0) {
+                      return "Cannot be negative";
+                    }
 
-                      return undefined;
-                    },
-                    onSubmit: ({ value }) => {
-                      if (
-                        timeLimit &&
-                        (value === "" || Number.isNaN(value as string))
-                      ) {
-                        return "Cannot be empty";
-                      }
+                    return undefined;
+                  },
+                  onSubmit: ({ value }) => {
+                    if (
+                      timeLimit &&
+                      (value === "" || Number.isNaN(value as string))
+                    ) {
+                      return "Cannot be empty";
+                    }
 
-                      return undefined;
-                    },
-                  }}
-                />
-              )}
+                    return undefined;
+                  },
+                }}
+              />
             </div>
             <div className={styles.questions}>
               <h2>Question Limit</h2>
@@ -316,56 +317,58 @@ const Settings: React.FC<IProps> = (props) => {
                 type="checkbox"
                 name="question_limit_check"
                 checked={!timeLimit}
-                onChange={() => setTimeLimit((c) => c && false)}
+                onClick={() => timeLimit && setTimeLimit(false)}
+                onChange={() => console.log("")}
               />
-              {!timeLimit && (
-                <form.Field
-                  name="limits.count"
-                  children={(field) => (
-                    <>
-                      <input
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        className={
-                          field.state.meta.errors.length > 0
-                            ? styles.errInput
-                            : ""
-                        }
-                        type="number"
-                      />
-                      {field.state.meta.errors.length > 0 ? (
-                        <div className={styles.err}>
-                          {field.state.meta.errors.join(", ")}
-                        </div>
-                      ) : null}
-                    </>
-                  )}
-                  validators={{
-                    onChange: ({ value }) => {
-                      if (Number.parseInt(value as string) < 0) {
-                        return "Cannot be negative";
-                      }
+              <form.Field
+                name="limits.count"
+                children={(field) => (
+                  <>
+                    <input
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className={`${
+                        field.state.meta.errors.length > 0
+                          ? styles.errInput
+                          : ""
+                      } ${timeLimit ? styles.hidden : ""}`}
+                      type="number"
+                      inputMode="numeric"
+                    />
+                    {field.state.meta.errors.length > 0 ? (
+                      <div className={styles.err}>
+                        {field.state.meta.errors.join(", ")}
+                      </div>
+                    ) : null}
+                  </>
+                )}
+                validators={{
+                  onChange: ({ value }) => {
+                    if (Number.parseInt(value as string) < 0) {
+                      return "Cannot be negative";
+                    }
 
-                      return undefined;
-                    },
-                    onSubmit: ({ value }) => {
-                      if (
-                        !timeLimit &&
-                        (value === "" || Number.isNaN(value as string))
-                      ) {
-                        return "Cannot be empty";
-                      }
+                    return undefined;
+                  },
+                  onSubmit: ({ value }) => {
+                    if (
+                      !timeLimit &&
+                      (value === "" || Number.isNaN(value as string))
+                    ) {
+                      return "Cannot be empty";
+                    }
 
-                      return undefined;
-                    },
-                  }}
-                />
-              )}
+                    return undefined;
+                  },
+                }}
+              />
             </div>
           </div>
-          <button type="submit">Start</button>
+          <button type="submit" onClick={() => console.log(form.fieldInfo)}>
+            Start
+          </button>
         </form>
       </div>
     </div>
