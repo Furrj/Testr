@@ -29,6 +29,23 @@ CREATE TABLE teachers.classes
     name     TEXT
 );
 
+CREATE TABLE teachers.assignments
+(
+    assignment_id   UUID PRIMARY KEY,
+    user_id         INTEGER REFERENCES teachers.data (user_id),
+    class_id        INTEGER REFERENCES teachers.classes (class_id),
+    name            TEXT,
+    due             BIGINT,
+    limit_type      SMALLINT,
+    limit_amount    SMALLINT,
+    min             INTEGER,
+    max             INTEGER,
+    add             BOOLEAN,
+    sub             BOOLEAN,
+    mult            BOOLEAN,
+    div             BOOLEAN
+);
+
 CREATE TABLE students.data
 (
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
