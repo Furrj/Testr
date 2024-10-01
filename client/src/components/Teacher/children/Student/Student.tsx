@@ -1,6 +1,9 @@
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import { QUERY_KEYS } from "../../../../utils/consts";
-import { apiRequestGetUserInfo } from "../../../../../requests";
+import {
+  apiRequestGetClasses,
+  apiRequestGetStudentInfo,
+} from "../../../../../requests";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styles from "./Student.module.scss";
 import { useEffect } from "react";
@@ -16,10 +19,18 @@ const Student: React.FC<IProps> = (props) => {
   const { isSuccess, isFetching, data } = useQuery({
     queryKey: [QUERY_KEYS.STUDENT_INFO],
     queryFn: () =>
-      apiRequestGetUserInfo({
+      apiRequestGetStudentInfo({
         tokens: getUserSessionDataFromStorage(),
         user_id: props.user_id,
       }),
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  const classData = useQuery({
+    queryKey: [QUERY_KEYS.CLASSES],
+    queryFn: () => apiRequestGetClasses(getUserSessionDataFromStorage()),
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
@@ -39,6 +50,7 @@ const Student: React.FC<IProps> = (props) => {
         <h2>
           {data.data.user_data.first_name} {data.data.user_data.last_name}
         </h2>
+        <h3>{data.data.class.name}</h3>
         <div className={styles.past_tests}>
           {data.data.sessions.length > 0 &&
             data.data.sessions.map((session, i) => {

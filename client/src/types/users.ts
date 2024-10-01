@@ -3,12 +3,14 @@ export type T_STUDENT_DATA = {
   last_name: string;
   username: string;
   user_id: number;
-  period: number;
+  teacher_id: number;
+  class_id: number;
 };
-export const INIT_STUDENT_DATA = {
+export const INIT_STUDENT_DATA: T_STUDENT_DATA = {
   first_name: "",
   last_name: "",
   username: "",
   user_id: -1,
-  period: -1,
+  teacher_id: -1,
+  class_id: -1,
 };
