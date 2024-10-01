@@ -69,8 +69,6 @@ const Student: React.FC<IProps> = (props) => {
     classData.data && setClassSelection(classData.data.data[0].class_id);
   }, [classData.data, classData.isSuccess]);
 
-  console.log(classSelection);
-
   if (isFetching) {
     return <Loading />;
   } else if (isSuccess && data.data && classData.data && classData.data.data) {
