@@ -19,4 +19,5 @@ const (
 	RouteUrlCheckUsername     string = RouteUrlBase + "/checkUsername/:username"
 	RouteUrlGetTeacherInfo    string = RouteUrlBase + "/getTeacherInfo/:id"
 	RouteUrlGetClass          string = RouteUrlBase + "/class/:id"
+	RouteUrlGetStudentInfo    string = RouteUrlBase + "/getStudent/:id"
 )
