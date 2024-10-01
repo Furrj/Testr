@@ -178,6 +178,10 @@
   }
 }
 
+.hidden {
+  visibility: none;
+}
+
 @media only screen and (min-width: 700px) {
   .root .scroll form {
     width: 50%;
