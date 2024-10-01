@@ -48,8 +48,8 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 		userParamID := types.UserID(userParamID32)
 
-		// get user data
-		fetchedUserData, err := db.GetUserDataByUserID(userParamID)
+		// get student data
+		studentUserData, err := db.GetUserDataByUserID(userParamID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -57,7 +57,7 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// check if student
-		if fetchedUserData.Role != "S" {
+		if studentUserData.Role != "S" {
 			ctx.Status(http.StatusUnauthorized)
 			return
 		}
@@ -78,7 +78,7 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get sessions
-		sessions, err := db.GetAllGameSessionsByUserID(userID)
+		sessions, err := db.GetAllGameSessionsByUserID(studentData.UserID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetGameSessionsByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -87,11 +87,11 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		res := types.ResponseGetStudentInfo{
 			UserData: types.ResponseUserData{
-				FirstName: userData.FirstName,
-				LastName:  userData.LastName,
-				Username:  userData.Username,
-				Role:      userData.Role,
-				UserID:    userID,
+				FirstName: studentUserData.FirstName,
+				LastName:  studentUserData.LastName,
+				Username:  studentUserData.Username,
+				Role:      studentUserData.Role,
+				UserID:    studentUserData.UserID,
 			},
 			Sessions: sessions,
 			Class:    class,
