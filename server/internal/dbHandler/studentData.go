@@ -136,3 +136,23 @@ func (dbHandler *DBHandler) InsertStudentData(studentData types.StudentData) err
 	}
 	return nil
 }
+
+// Updates
+const EUpdateStudentClassIDByUserID = `
+	UPDATE students.data
+	SET class_id=$2
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) UpdateStudentClassIDByUserID(userID types.UserID, classID uint) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EUpdateStudentClassIDByUserID,
+		userID,
+		classID,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
