@@ -77,6 +77,7 @@ const QGetStudentsDataByClassID = `
 	FROM students.data
 	NATURAL JOIN users.data
 	WHERE class_id=$1
+	ORDER BY LOWER(last_name)
 `
 
 func (dbHandler *DBHandler) GetStudentsDataByClassID(classID uint) ([]types.StudentData, error) {
