@@ -55,6 +55,8 @@ const Game: React.FC<IProps> = (props) => {
     userGuesses.current = [];
   }
 
+  console.log(questions);
+
   // generate questions on ACTIVE &&
   // generate results on POST
   useEffect(() => {
@@ -89,9 +91,10 @@ const Game: React.FC<IProps> = (props) => {
     }
   }, [gameStatus]);
 
-  // check if more questions need to be generated,
+  // check if more questions need to be generated while in active mode
   useEffect(() => {
     if (
+      gameStatus === E_GAME_STATUS.ACTIVE &&
       Math.abs(questions.length - currentQuestionIndex) < 5 &&
       limitType === E_GAME_LIMIT_TYPES.TIME
     ) {
@@ -106,7 +109,7 @@ const Game: React.FC<IProps> = (props) => {
         return curr;
       });
     }
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, gameStatus]);
 
   switch (gameStatus) {
     case E_GAME_STATUS.PRE:
