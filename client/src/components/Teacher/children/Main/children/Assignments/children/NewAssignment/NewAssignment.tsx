@@ -3,12 +3,21 @@ import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { E_GAME_LIMIT_TYPES } from "../../../../../../../../types/game";
-import { deepCopyObject } from "../../../../../../../../utils/methods";
+import {
+  deepCopyObject,
+  getUserSessionDataFromStorage,
+} from "../../../../../../../../utils/methods";
 import type { T_SETTINGS_FORM } from "../../../../../../../Game/children/Settings/Locals";
 import Locals from "./Locals";
 import styles from "./NewAssignment.module.scss";
 import { T_CLASS } from "../../../../../../../Register/Register";
 import { T_ASSIGNMENT } from "../../../../../../../../types/assignments";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import {
+  I_PARAMS_APIREQUEST_ADD_ASSIGNMENT,
+  apiRequestAddAssignment,
+} from "../../../../../../../../../requests";
 
 interface IProps {
   classes: T_CLASS[];
@@ -19,6 +28,21 @@ const NewAssignment: React.FC<IProps> = (props) => {
   const [dueDate, setDueDate] = useState<Date>(new Date());
 
   const classes = useRef<number[]>(props.classes.map((c) => c.class_id));
+
+  const mutation = useMutation({
+    mutationFn: (
+      params: I_PARAMS_APIREQUEST_ADD_ASSIGNMENT,
+    ): Promise<AxiosResponse> => {
+      return apiRequestAddAssignment(params);
+    },
+    onError(err) {
+      console.log(err);
+      alert("Error, please refresh and try again");
+    },
+    onSuccess() {
+      console.log("success");
+    },
+  });
 
   const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
@@ -53,7 +77,7 @@ const NewAssignment: React.FC<IProps> = (props) => {
         name: "",
       };
 
-      console.log(assignment);
+      mutation.mutate({ tokens: getUserSessionDataFromStorage(), assignment });
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
