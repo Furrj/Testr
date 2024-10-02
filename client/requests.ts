@@ -36,6 +36,7 @@ const API_ROUTES = {
   GET_STUDENT_INFO: ROUTE_PREFIX + "/api/getStudent",
   UPDATE_STUDENT_CLASS: ROUTE_PREFIX + "/api/updateStudent/class",
   ADD_ASSIGNMENT: ROUTE_PREFIX + "/api/assignments/add",
+  GET_ASSIGNMENTS_TEACHER: ROUTE_PREFIX + "/api/assignments/get/teacher",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -300,6 +301,21 @@ export async function apiRequestAddAssignment(
     },
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export type T_APIRESULT_GET_ASSIGNMENTS = {
+  assignments: T_ASSIGNMENT[];
+};
+export async function apiRequestGetAssignmentsTeacher(
+  tokens: T_TOKENS,
+): Promise<AxiosResponse<T_APIRESULT_GET_ASSIGNMENTS>> {
+  return await axios<T_APIRESULT_GET_ASSIGNMENTS>({
+    method: "POST",
+    url: API_ROUTES.GET_ASSIGNMENTS_TEACHER,
+    headers: {
+      Authorization: `Bearer ${tokens.access_token}`,
     },
   });
 }

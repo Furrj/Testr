@@ -10,6 +10,7 @@ export type T_ASSIGNMENT = {
   sub: boolean;
   mult: boolean;
   div: boolean;
+  is_active?: boolean;
 };
 export const INIT_ASSIGNMENT: T_ASSIGNMENT = {
   name: "",
