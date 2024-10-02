@@ -7,6 +7,7 @@ import { deepCopyObject } from "../../../../../../../../utils/methods";
 import type { T_SETTINGS_FORM } from "../../../../../../../Game/children/Settings/Locals";
 import Locals from "./Locals";
 import styles from "./NewAssignment.module.scss";
+import { T_CLASS } from "../../../../../../../Register/Register";
 
 function endOfDayTimestamp(date: Date) {
   // Set hours, minutes, seconds, and milliseconds to represent 11:59:59 PM
@@ -16,7 +17,11 @@ function endOfDayTimestamp(date: Date) {
   return Math.floor(date.getTime() / 1000);
 }
 
-const NewAssignment: React.FC = () => {
+interface IProps {
+  classes: T_CLASS[];
+}
+
+const NewAssignment: React.FC<IProps> = (props) => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
   const [dueDate, setDueDate] = useState<Date>(new Date());
 
@@ -59,7 +64,6 @@ const NewAssignment: React.FC = () => {
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
 
-  console.log(endOfDayTimestamp(dueDate));
   return (
     <div className={styles.root}>
       <div className={styles.date}>

@@ -1,11 +1,16 @@
+import { T_CLASS } from "../../../../../Register/Register";
 import styles from "./Assignments.module.scss";
 import NewAssignment from "./children/NewAssignment/NewAssignment";
 
-const Assignments: React.FC = () => {
+interface IProps {
+  classes: T_CLASS[];
+}
+
+const Assignments: React.FC<IProps> = (props) => {
   return (
     <div className={styles.root}>
       <button>Add</button>
-      <NewAssignment />
+      <NewAssignment {...props} />
     </div>
   );
 };

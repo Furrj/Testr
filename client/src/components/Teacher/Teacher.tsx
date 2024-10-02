@@ -61,7 +61,10 @@ const Teacher: React.FC = () => {
             )
           }
         />
-        <Route path="/assignments" element={<Assignments />} />
+        <Route
+          path="/assignments"
+          element={<Assignments classes={data.data} />}
+        />
         <Route
           path="/student"
           element={
