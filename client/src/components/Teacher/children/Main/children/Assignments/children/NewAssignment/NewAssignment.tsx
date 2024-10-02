@@ -8,9 +8,17 @@ import type { T_SETTINGS_FORM } from "../../../../../../../Game/children/Setting
 import Locals from "./Locals";
 import styles from "./NewAssignment.module.scss";
 
+function endOfDayTimestamp(date: Date) {
+  // Set hours, minutes, seconds, and milliseconds to represent 11:59:59 PM
+  date.setHours(23, 59, 59, 999);
+
+  // Convert the date to a Unix timestamp in milliseconds, then divide by 1000 to get seconds
+  return Math.floor(date.getTime() / 1000);
+}
+
 const NewAssignment: React.FC = () => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
-  const [dueDate, setDueDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState<Date>(new Date());
 
   const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
@@ -51,6 +59,7 @@ const NewAssignment: React.FC = () => {
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
 
+  console.log(endOfDayTimestamp(dueDate));
   return (
     <div className={styles.root}>
       <div className={styles.date}>

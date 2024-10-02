@@ -17,8 +17,12 @@
     font-size: 1.3rem;
     .date_picker {
       input[type="text"] {
+        padding: 5px;
         font-size: 1.3rem;
         text-align: center;
+        background: black;
+        border: 1px solid white;
+        border-radius: 10px;
       }
     }
   }
