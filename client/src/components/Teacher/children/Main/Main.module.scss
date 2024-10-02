@@ -17,25 +17,23 @@
     width: 100%;
     //border: 1px solid white;
 
-    div {
-      @include flex-center;
-      font-size: 1.2rem;
-      border: 1px solid white;
-      padding: 10px;
+    .link {
       border-radius: $border-radius;
-
-      height: fit-content;
-      width: 35%;
-
-      text-wrap: nowrap;
-      cursor: pointer;
-
+      text-decoration: none;
+      color: white;
       &:hover {
         background-color: $color-btn-hover;
       }
-      .link {
-        text-decoration: none;
-        color: white;
+      div {
+        border: 1px solid white;
+        padding: 10px;
+        border-radius: $border-radius;
+
+        font-size: 1.5rem;
+
+        &:hover {
+          background-color: $color-btn-hover;
+        }
       }
     }
   }

@@ -30,16 +30,12 @@ const Main: React.FC = () => {
         <h2>Teacher Code: {data?.user_data.user_id}</h2>
 
         <div className={styles.links}>
-          <div>
-            <Link to={"/teacher/classes"} className={styles.link}>
-              Classes
-            </Link>
-          </div>
-          <div>
-            <Link to={"/teacher/assignments"} className={styles.link}>
-              Assignments
-            </Link>
-          </div>
+          <Link to={"/teacher/classes"} className={styles.link}>
+            <div>Classes</div>
+          </Link>
+          <Link to={"/teacher/assignments"} className={styles.link}>
+            <div>Assignments</div>
+          </Link>
         </div>
       </div>
     );
