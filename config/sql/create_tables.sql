@@ -31,19 +31,20 @@ CREATE TABLE teachers.classes
 
 CREATE TABLE teachers.assignments
 (
-    assignment_id   UUID PRIMARY KEY,
-    user_id         INTEGER REFERENCES teachers.data (user_id),
-    class_id        INTEGER REFERENCES teachers.classes (class_id),
-    name            TEXT,
-    due             BIGINT,
-    limit_type      SMALLINT,
-    limit_amount    SMALLINT,
-    min             INTEGER,
-    max             INTEGER,
-    add             BOOLEAN,
-    sub             BOOLEAN,
-    mult            BOOLEAN,
-    div             BOOLEAN
+    assignment_id UUID PRIMARY KEY,
+    user_id       INTEGER REFERENCES teachers.data (user_id),
+    class_id      INTEGER REFERENCES teachers.classes (class_id),
+    name          TEXT,
+    due           BIGINT,
+    limit_type    SMALLINT,
+    limit_amount  SMALLINT,
+    min           INTEGER,
+    max           INTEGER,
+    add           BOOLEAN,
+    sub           BOOLEAN,
+    mult          BOOLEAN,
+    div           BOOLEAN,
+    is_active     BOOLEAN
 );
 
 CREATE TABLE students.data
@@ -51,6 +52,13 @@ CREATE TABLE students.data
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
     teacher_id INTEGER REFERENCES teachers.data (user_id),
     class_id   INTEGER REFERENCES teachers.classes (class_id)
+);
+
+CREATE TABLE students.assignments
+(
+    assignment_id   UUID PRIMARY KEY,
+    game_session_id UUID REFERENCES game_sessions.ids,
+    user_id         INTEGER REFERENCES students.data (user_id)
 );
 
 CREATE TABLE game_sessions.data
