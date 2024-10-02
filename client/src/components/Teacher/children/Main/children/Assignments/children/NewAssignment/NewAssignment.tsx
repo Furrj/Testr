@@ -1,13 +1,16 @@
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { type T_GAME_SETTINGS } from "../../../../../../../../types/game";
 import { deepCopyObject } from "../../../../../../../../utils/methods";
 import type { T_SETTINGS_FORM } from "../../../../../../../Game/children/Settings/Locals";
-import styles from "./NewAssignment.module.scss";
 import Locals from "./Locals";
+import styles from "./NewAssignment.module.scss";
 
 const NewAssignment: React.FC = () => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
+  const [dueDate, setDueDate] = useState(new Date());
 
   const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
@@ -50,6 +53,14 @@ const NewAssignment: React.FC = () => {
 
   return (
     <div className={styles.root}>
+      <div className={styles.date}>
+        Due on:{" "}
+        <DatePicker
+          selected={dueDate}
+          onChange={(date) => date && setDueDate(date)}
+          wrapperClassName={styles.date_picker}
+        />
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
