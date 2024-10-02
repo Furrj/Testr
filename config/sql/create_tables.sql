@@ -17,7 +17,7 @@ CREATE TABLE game_sessions.ids
 
 CREATE TABLE teachers.data
 (
-    user_id INTEGER PRIMARY KEY references users.ids (user_id),
+    user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
     email   TEXT UNIQUE,
     school  TEXT
 );
@@ -25,15 +25,14 @@ CREATE TABLE teachers.data
 CREATE TABLE teachers.classes
 (
     class_id SERIAL PRIMARY KEY,
-    user_id  INTEGER REFERENCES teachers.data (user_id),
+    user_id  INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
     name     TEXT
 );
 
 CREATE TABLE teachers.assignments
 (
     assignment_id UUID PRIMARY KEY,
-    user_id       INTEGER REFERENCES teachers.data (user_id),
-    class_id      INTEGER REFERENCES teachers.classes (class_id),
+    user_id       INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
     name          TEXT,
     due           BIGINT,
     limit_type    SMALLINT,
@@ -47,9 +46,16 @@ CREATE TABLE teachers.assignments
     is_active     BOOLEAN
 );
 
+CREATE TABLE teachers.assignment_classes
+(
+    assignment_id UUID REFERENCES teachers.assignments (assignment_id) ON DELETE CASCADE,
+    class_id      INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE,
+    PRIMARY KEY (assignment_id, class_id)
+);
+
 CREATE TABLE students.data
 (
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
     teacher_id INTEGER REFERENCES teachers.data (user_id),
     class_id   INTEGER REFERENCES teachers.classes (class_id)
 );
@@ -63,8 +69,8 @@ CREATE TABLE students.assignments
 
 CREATE TABLE game_sessions.data
 (
-    game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids (game_session_id),
-    user_id         INTEGER REFERENCES users.ids (user_id),
+    game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids (game_session_id) ON DELETE CASCADE,
+    user_id         INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
     timestamp       BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
     limit_type      SMALLINT,
     questions_count INTEGER,
@@ -81,7 +87,7 @@ CREATE TABLE game_sessions.data
 
 CREATE TABLE users.data
 (
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id),
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
     username   VARCHAR(32) UNIQUE,
     password   TEXT,
     salt       TEXT,
