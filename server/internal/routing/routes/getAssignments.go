@@ -8,9 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/routing/utils"
+	"mathtestr.com/server/internal/types"
 )
 
-func GetAssignments(db *dbHandler.DBHandler) gin.HandlerFunc {
+func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -35,6 +36,12 @@ func GetAssignments(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
+		type resAssignment struct {
+			types.DBAssignment
+			Classes []uint `json:"classes"`
+		}
+		res := []resAssignment{}
+
 		// get assignments
 		a, err := db.GetAllAssignmentsDataByUserID(userID)
 		if err != nil {
@@ -43,6 +50,22 @@ func GetAssignments(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, a)
+		for _, v := range a {
+			r := resAssignment{
+				DBAssignment: v,
+				Classes:      []uint{},
+			}
+			// get classes for assignment
+			classes, err := db.GetAllAssignmentClassesByAssignmentID(v.AssignmentID)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
+				ctx.Status(http.StatusInternalServerError)
+			}
+			r.Classes = classes
+
+			res = append(res, r)
+		}
+
+		ctx.JSON(http.StatusOK, res)
 	}
 }

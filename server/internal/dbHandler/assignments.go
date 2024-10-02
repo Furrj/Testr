@@ -79,7 +79,7 @@ WHERE
 `
 
 func (dbHandler *DBHandler) GetAllAssignmentsDataByUserID(id types.UserID) ([]types.DBAssignment, error) {
-	var assignments []types.DBAssignment = []types.DBAssignment{}
+	assignments := []types.DBAssignment{}
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),
@@ -129,7 +129,7 @@ const QGetAllAssignmentClassesByAssignmentID = `
 `
 
 func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id string) ([]uint, error) {
-	var ids []uint = []uint{}
+	ids := []uint{}
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),

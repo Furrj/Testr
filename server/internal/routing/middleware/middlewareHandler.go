@@ -9,19 +9,19 @@ type MiddlewareHandler struct {
 func NewMiddlewareHandler() *MiddlewareHandler {
 	MiddlewareHandler := MiddlewareHandler{
 		JWTValidatedRoutes: map[string]struct{}{
-			consts.RouteUrlValidateSession:    {},
-			consts.RouteUrlSubmitGameSession:  {},
-			consts.RouteUrlGetGameSessions:    {},
-			consts.RouteUrlGetStudents:        {},
-			consts.RouteUrlGetUserInfo:        {},
-			consts.RouteUrlUpdateVertical:     {},
-			consts.RouteUrlAddClasses:         {},
-			consts.RouteUrlGetClasses:         {},
-			consts.RouteUrlGetClass:           {},
-			consts.RouteUrlGetStudentInfo:     {},
-			consts.RouteUrlUpdateStudentClass: {},
-			consts.RouteUrlAddAssignment:      {},
-			consts.RouteUrlGetAssignments:     {},
+			consts.RouteUrlValidateSession:       {},
+			consts.RouteUrlSubmitGameSession:     {},
+			consts.RouteUrlGetGameSessions:       {},
+			consts.RouteUrlGetStudents:           {},
+			consts.RouteUrlGetUserInfo:           {},
+			consts.RouteUrlUpdateVertical:        {},
+			consts.RouteUrlAddClasses:            {},
+			consts.RouteUrlGetClasses:            {},
+			consts.RouteUrlGetClass:              {},
+			consts.RouteUrlGetStudentInfo:        {},
+			consts.RouteUrlUpdateStudentClass:    {},
+			consts.RouteUrlAddAssignment:         {},
+			consts.RouteUrlGetAssignmentsTeacher: {},
 		},
 	}
 
