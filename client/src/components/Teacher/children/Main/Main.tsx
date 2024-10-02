@@ -31,12 +31,12 @@ const Main: React.FC = () => {
 
         <div className={styles.links}>
           <div>
-            <Link to={"/teachers/classes"} className={styles.link}>
+            <Link to={"/teacher/classes"} className={styles.link}>
               Classes
             </Link>
           </div>
           <div>
-            <Link to={"/teachers/assignments"} className={styles.link}>
+            <Link to={"/teacher/assignments"} className={styles.link}>
               Assignments
             </Link>
           </div>
