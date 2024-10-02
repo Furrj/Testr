@@ -122,6 +122,42 @@ func (dbHandler *DBHandler) GetAllAssignmentsDataByUserID(id types.UserID) ([]ty
 	return assignments, nil
 }
 
+const QGetAllAssignmentClassesByAssignmentID = `
+	SELECT class_id
+	FROM assignments.classes
+	WHERE assignment_id=$1
+`
+
+func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id string) ([]uint, error) {
+	var ids []uint = []uint{}
+
+	rows, err := dbHandler.Conn.Query(
+		context.Background(),
+		QGetAllAssignmentClassesByAssignmentID,
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var a uint
+
+		err := rows.Scan(&a)
+		if err != nil {
+			return nil, err
+		}
+
+		ids = append(ids, a)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return ids, nil
+}
+
 // INSERTS
 const EInsertAssignment = `
 	INSERT INTO assignments.data

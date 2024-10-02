@@ -197,6 +197,12 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("mismatch in GetAssignmentDataByAssignmentID, got %+v wanted %+v\n", a, testAssignment)
 		}
 	})
+	t.Run("GetAllAssignmentClassesByAssignmentID", func(t *testing.T) {
+		_, err := dbHandler.GetAllAssignmentClassesByAssignmentID(testAssignment.AssignmentID)
+		if err != nil {
+			t.Errorf("error in GetAllAssignmentClassesByAssignmentID: %+v\n", err)
+		}
+	})
 
 	t.Run("UpdateVerticalByUserID", func(t *testing.T) {
 		if err := dbHandler.UpdateVerticalByUserID(testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {
