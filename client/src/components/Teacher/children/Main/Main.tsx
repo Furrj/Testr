@@ -36,9 +36,10 @@ const Main: React.FC<IProps> = (props) => {
 
   if (isPending) {
     return <Loading />;
-  } else if (!isPending && isSuccess && data.data !== undefined) {
+  } else if (!isPending && isSuccess && data.data !== undefined && teacherDataQuery.data !== undefined) {
     return (
       <div className={styles.root}>
+				<h2>{teacherDataQuery.data.user_data.first_name} {teacherDataQuery.data.user_data.last_name}</h2>
         <h2>Teacher Code: {teacherDataQuery.data?.user_data.user_id}</h2>
         <Classes
           classes={data.data}
