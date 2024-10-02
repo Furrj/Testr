@@ -21,3 +21,18 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+@mixin login-register-btn {
+  font-size: large;
+  border-radius: 10px;
+  padding: 5px;
+  font-weight: bold;
+  box-shadow: none;
+  border: 1px solid white;
+
+  background: $color-btn;
+
+  &:hover {
+    background: $color-btn-hover;
+  }
+}

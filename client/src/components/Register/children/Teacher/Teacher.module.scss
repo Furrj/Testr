@@ -41,14 +41,7 @@
     }
 
     button {
-      font-size: large;
-      border-radius: 10px;
-      padding: 5px;
-      font-weight: bold;
-      box-shadow: none;
-      border: 1px solid white;
-      margin-top: 5px;
-      background: red;
+      @include login-register-btn;
     }
   }
 }
