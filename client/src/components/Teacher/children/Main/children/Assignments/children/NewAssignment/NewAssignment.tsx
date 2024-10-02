@@ -1,21 +1,14 @@
 import { useForm } from "@tanstack/react-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { type T_GAME_SETTINGS } from "../../../../../../../../types/game";
+import { E_GAME_LIMIT_TYPES } from "../../../../../../../../types/game";
 import { deepCopyObject } from "../../../../../../../../utils/methods";
 import type { T_SETTINGS_FORM } from "../../../../../../../Game/children/Settings/Locals";
 import Locals from "./Locals";
 import styles from "./NewAssignment.module.scss";
 import { T_CLASS } from "../../../../../../../Register/Register";
-
-function endOfDayTimestamp(date: Date) {
-  // Set hours, minutes, seconds, and milliseconds to represent 11:59:59 PM
-  date.setHours(23, 59, 59, 999);
-
-  // Convert the date to a Unix timestamp in milliseconds, then divide by 1000 to get seconds
-  return Math.floor(date.getTime() / 1000);
-}
+import { T_ASSIGNMENT } from "../../../../../../../../types/assignments";
 
 interface IProps {
   classes: T_CLASS[];
@@ -24,6 +17,8 @@ interface IProps {
 const NewAssignment: React.FC<IProps> = (props) => {
   const [timeLimit, setTimeLimit] = useState<boolean>(true);
   const [dueDate, setDueDate] = useState<Date>(new Date());
+
+  const classes = useRef<number[]>(props.classes.map((c) => c.class_id));
 
   const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
@@ -40,26 +35,25 @@ const NewAssignment: React.FC<IProps> = (props) => {
       },
     },
     onSubmit: ({ value }) => {
-      console.log("submitting");
-      const obj: T_GAME_SETTINGS = {
-        range: {
-          min: Number.parseInt(value.range.min as string) | 0,
-          max: Number.parseInt(value.range.max as string) | 0,
-        },
-        ops: {
-          add: value.ops.add,
-          sub: value.ops.sub,
-          mult: value.ops.mult,
-          div: value.ops.div,
-        },
-        limits: {
-          time: Number.parseInt(value.limits.time as string) | 0,
-          count: Number.parseInt(value.limits.count as string) | 0,
-        },
+      const assignment: T_ASSIGNMENT = {
+        min: Number.parseInt(value.range.min as string) | 0,
+        max: Number.parseInt(value.range.max as string) | 0,
+        add: value.ops.add,
+        sub: value.ops.sub,
+        mult: value.ops.mult,
+        div: value.ops.div,
+        limit_type: timeLimit
+          ? E_GAME_LIMIT_TYPES.TIME
+          : E_GAME_LIMIT_TYPES.COUNT,
+        limit_amount: timeLimit
+          ? Number.parseInt(value.limits.time as string)
+          : Number.parseInt(value.limits.count as string),
+        due: Locals.endOfDayTimestamp(dueDate),
+        classes: classes.current,
+        name: "",
       };
 
-      if (timeLimit) obj.limits.count = 0;
-      else obj.limits.time = 0;
+      console.log(assignment);
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
@@ -74,6 +68,34 @@ const NewAssignment: React.FC<IProps> = (props) => {
           wrapperClassName={styles.date_picker}
         />
       </div>
+
+      <div className={styles.classes}>
+        {props.classes.map((c) => {
+          return (
+            <div key={c.class_id} className={styles.box}>
+              <label htmlFor={c.class_id.toString()}>{c.name}</label>
+              <input
+                onChange={(e) => {
+                  if (!e.target.checked)
+                    classes.current = classes.current
+                      .filter((id) => id !== c.class_id)
+                      .sort();
+                  else {
+                    const curr = [...classes.current];
+                    curr.push(c.class_id);
+                    classes.current = curr.sort();
+                  }
+                }}
+                defaultChecked={true}
+                type="checkbox"
+                id={c.class_id.toString()}
+                name={c.class_id.toString()}
+              />
+            </div>
+          );
+        })}
+      </div>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
