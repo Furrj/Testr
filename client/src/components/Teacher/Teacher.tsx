@@ -4,6 +4,7 @@ import Student from "./children/Student/Student";
 import Main from "./children/Main/Main";
 import Class from "./children/Class/Class";
 import { T_CLASS } from "../Register/Register";
+import MyClasses from "./children/Main/children/MyClasses/MyClasses";
 
 const Teacher: React.FC = () => {
   const [activeStudentID, setActiveStudentID] = useState<number>(-1);
@@ -13,10 +14,11 @@ const Teacher: React.FC = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<Main />} />
       <Route
-        path="/"
+        path="/classes"
         element={
-          <Main activeClass={{ curr: activeClass, set: setActiveClass }} />
+          <MyClasses activeClass={{ curr: activeClass, set: setActiveClass }} />
         }
       />
       <Route
@@ -33,6 +35,12 @@ const Teacher: React.FC = () => {
           ) : (
             <Navigate to={"/teacher"} replace />
           )
+        }
+      />
+      <Route
+        path="/assignments"
+        element={
+          <MyClasses activeClass={{ curr: activeClass, set: setActiveClass }} />
         }
       />
       <Route
