@@ -21,4 +21,6 @@ const (
 	RouteUrlGetClass           string = RouteUrlBase + "/class/:id"
 	RouteUrlGetStudentInfo     string = RouteUrlBase + "/getStudent/:id"
 	RouteUrlUpdateStudentClass string = RouteUrlBase + "/updateStudent/class"
+	RouteUrlAddAssignment      string = RouteUrlBase + "/assignments/add"
+	RouteUrlGetAssignments     string = RouteUrlBase + "/assignments/get"
 )

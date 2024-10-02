@@ -7,6 +7,55 @@ import (
 )
 
 // GETS
+const QGetAssignmentDataByAssignmentID = `
+SELECT
+		assignment_id,
+    user_id,
+    name,
+    due,
+    limit_type,
+    limit_amount,
+    min,
+    max,
+    add,
+    sub,
+    mult,
+    div,
+    is_active
+FROM
+	assignments.data
+WHERE
+	assignment_id=$1
+`
+
+func (dbHandler *DBHandler) GetAssignmentDataByAssignmentID(id string) (types.DBAssignment, error) {
+	var a types.DBAssignment
+
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetAssignmentDataByAssignmentID,
+		id,
+	).Scan(
+		&a.AssignmentID,
+		&a.UserID,
+		&a.Name,
+		&a.Due,
+		&a.LimitType,
+		&a.LimitAmount,
+		&a.Min,
+		&a.Max,
+		&a.Add,
+		&a.Sub,
+		&a.Mult,
+		&a.Div,
+		&a.IsActive,
+	)
+	if err != nil {
+		return a, err
+	}
+
+	return a, nil
+}
 
 // INSERTS
 const EInsertAssignment = `
