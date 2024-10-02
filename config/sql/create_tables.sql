@@ -2,6 +2,7 @@ CREATE SCHEMA users;
 CREATE SCHEMA teachers;
 CREATE SCHEMA students;
 CREATE SCHEMA game_sessions;
+CREATE SCHEMA assignments;
 
 CREATE TYPE users.role AS ENUM ('S', 'T', 'A');
 
@@ -29,30 +30,6 @@ CREATE TABLE teachers.classes
     name     TEXT
 );
 
-CREATE TABLE teachers.assignments
-(
-    assignment_id UUID PRIMARY KEY,
-    user_id       INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    name          TEXT,
-    due           BIGINT,
-    limit_type    SMALLINT,
-    limit_amount  SMALLINT,
-    min           INTEGER,
-    max           INTEGER,
-    add           BOOLEAN,
-    sub           BOOLEAN,
-    mult          BOOLEAN,
-    div           BOOLEAN,
-    is_active     BOOLEAN
-);
-
-CREATE TABLE teachers.assignment_classes
-(
-    assignment_id UUID REFERENCES teachers.assignments (assignment_id) ON DELETE CASCADE,
-    class_id      INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE,
-    PRIMARY KEY (assignment_id, class_id)
-);
-
 CREATE TABLE students.data
 (
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
@@ -60,11 +37,18 @@ CREATE TABLE students.data
     class_id   INTEGER REFERENCES teachers.classes (class_id)
 );
 
-CREATE TABLE students.assignments
+CREATE TABLE users.data
 (
-    assignment_id   UUID PRIMARY KEY,
-    game_session_id UUID REFERENCES game_sessions.ids,
-    user_id         INTEGER REFERENCES students.data (user_id)
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    username   VARCHAR(32) UNIQUE,
+    password   TEXT,
+    salt       TEXT,
+    first_name VARCHAR(32),
+    last_name  VARCHAR(32),
+    role       users.role DEFAULT 'S',
+    vertical   BOOLEAN,
+    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW()),
+    updated_at BIGINT
 );
 
 CREATE TABLE game_sessions.data
@@ -85,16 +69,34 @@ CREATE TABLE game_sessions.data
     div             BOOLEAN
 );
 
-CREATE TABLE users.data
+CREATE TABLE assignments.data
 (
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    username   VARCHAR(32) UNIQUE,
-    password   TEXT,
-    salt       TEXT,
-    first_name VARCHAR(32),
-    last_name  VARCHAR(32),
-    role       users.role DEFAULT 'S',
-    vertical   BOOLEAN,
-    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW()),
-    updated_at BIGINT
+    assignment_id UUID PRIMARY KEY,
+    user_id       INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    name          TEXT,
+    due           BIGINT,
+    limit_type    SMALLINT,
+    limit_amount  SMALLINT,
+    min           INTEGER,
+    max           INTEGER,
+    add           BOOLEAN,
+    sub           BOOLEAN,
+    mult          BOOLEAN,
+    div           BOOLEAN,
+    is_active     BOOLEAN
+);
+
+CREATE TABLE assignments.classes
+(
+    assignment_id UUID REFERENCES assignments.data (assignment_id) ON DELETE CASCADE,
+    class_id      INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE,
+    PRIMARY KEY (assignment_id, class_id)
+);
+
+CREATE TABLE assignments.students
+(
+    assignment_id   UUID REFERENCES assignments.data (assignment_id),
+    game_session_id UUID REFERENCES game_sessions.ids,
+    user_id         INTEGER REFERENCES students.data (user_id),
+    PRIMARY KEY (assignment_id, game_session_id)
 );
