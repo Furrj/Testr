@@ -6,7 +6,7 @@ import { QUERY_KEYS } from "../../../../utils/consts";
 import { useQuery } from "@tanstack/react-query";
 import styles from "./Main.module.scss";
 import { apiRequestGetClasses } from "../../../../../requests";
-import Classes from "../Classes/Classes";
+import Classes from "./children/Classes/Classes";
 import Loading from "../../../Loading/Loading";
 import { T_CLASS } from "../../../Register/Register";
 
