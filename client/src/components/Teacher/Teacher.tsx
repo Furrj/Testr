@@ -5,7 +5,7 @@ import Main from "./children/Main/Main";
 import Class from "./children/Class/Class";
 import { T_CLASS } from "../Register/Register";
 import MyClasses from "./children/Main/children/MyClasses/MyClasses";
-import MyAssignments from "./children/Main/children/MyAssignments/MyAssignments";
+import Assignments from "./children/Main/children/Assignments/Assignments";
 
 const Teacher: React.FC = () => {
   const [activeStudentID, setActiveStudentID] = useState<number>(-1);
@@ -38,7 +38,7 @@ const Teacher: React.FC = () => {
           )
         }
       />
-      <Route path="/assignments" element={<MyAssignments />} />
+      <Route path="/assignments" element={<Assignments />} />
       <Route
         path="/student"
         element={
