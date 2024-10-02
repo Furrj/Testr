@@ -31,6 +31,8 @@ func TestDBHandler(t *testing.T) {
 	testTeacherData := testHelpers.TestTeacherData
 	testGameSessionData := testHelpers.TestGameSession
 	testTeacherClass := testHelpers.TestTeacherClass
+	testAssignment := testHelpers.TestAssignment
+	testAssignmentClass := testHelpers.TestAssignmentClass
 
 	t.Run("Ping connection", func(t *testing.T) {
 		if err := dbHandler.Conn.Ping(context.Background()); err != nil {
@@ -173,6 +175,17 @@ func TestDBHandler(t *testing.T) {
 	t.Run("GetAllStudentsDataByTeacherID", func(t *testing.T) {
 		if _, err := dbHandler.GetAllStudentsDataByTeacherID(testTeacherData.UserID); err != nil {
 			t.Errorf("error in GetAllStudentsDataByTeacherID: %+v\n", err)
+		}
+	})
+
+	t.Run("InsertAssignment", func(t *testing.T) {
+		if err := dbHandler.InsertAssignment(testAssignment); err != nil {
+			t.Errorf("error in InsertAssignment: %+v\n", err)
+		}
+	})
+	t.Run("InsertAssignmentClasses", func(t *testing.T) {
+		if err := dbHandler.InsertAssignmentClass(testAssignmentClass); err != nil {
+			t.Errorf("error in InsertAssignmentClass: %+v\n", err)
 		}
 	})
 
