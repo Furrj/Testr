@@ -6,7 +6,7 @@ import { QUERY_KEYS } from "../../../../utils/consts";
 import { useQuery } from "@tanstack/react-query";
 import styles from "./Main.module.scss";
 import { apiRequestGetClasses } from "../../../../../requests";
-import Classes from "./children/Classes/Classes";
+import MyClasses from "./children/MyClasses/MyClasses";
 import Loading from "../../../Loading/Loading";
 import { T_CLASS } from "../../../Register/Register";
 
@@ -36,12 +36,20 @@ const Main: React.FC<IProps> = (props) => {
 
   if (isPending) {
     return <Loading />;
-  } else if (!isPending && isSuccess && data.data !== undefined && teacherDataQuery.data !== undefined) {
+  } else if (
+    !isPending &&
+    isSuccess &&
+    data.data !== undefined &&
+    teacherDataQuery.data !== undefined
+  ) {
     return (
       <div className={styles.root}>
-				<h2>{teacherDataQuery.data.user_data.first_name} {teacherDataQuery.data.user_data.last_name}</h2>
+        <h2>
+          {teacherDataQuery.data.user_data.first_name}{" "}
+          {teacherDataQuery.data.user_data.last_name}
+        </h2>
         <h2>Teacher Code: {teacherDataQuery.data?.user_data.user_id}</h2>
-        <Classes
+        <MyClasses
           classes={data.data}
           activeClass={{
             curr: props.activeClass.curr,

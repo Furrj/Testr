@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import styles from "./Classes.module.scss";
+import styles from "./MyClasses.module.scss";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import {
@@ -19,7 +19,7 @@ interface IProps {
   };
 }
 
-const Classes: React.FC<IProps> = (props) => {
+const MyClasses: React.FC<IProps> = (props) => {
   const [addingMode, setAddingMode] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -95,4 +95,4 @@ const Classes: React.FC<IProps> = (props) => {
   );
 };
 
-export default Classes;
+export default MyClasses;
