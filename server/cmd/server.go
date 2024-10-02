@@ -73,7 +73,6 @@ func main() {
 	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
 	router.POST(consts.RouteUrlUpdateStudentClass, routes.UpdateStudentClass(db))
 	router.POST(consts.RouteUrlAddAssignment, routes.AddAssignment(db))
-	router.POST(consts.RouteUrlGetAssignments, routes.GetAssignments(db))
 
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
@@ -83,6 +82,7 @@ func main() {
 	router.GET(consts.RouteUrlGetTeacherInfo, routes.GetTeacherInfo(db))
 	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
 	router.GET(consts.RouteUrlGetStudentInfo, routes.GetStudentInfo(db))
+	router.GET(consts.RouteUrlGetAssignments, routes.GetAssignments(db))
 
 	router.Use(spa.Middleware("/", "client"))
 

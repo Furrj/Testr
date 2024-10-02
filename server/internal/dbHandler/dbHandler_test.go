@@ -188,6 +188,15 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in InsertAssignmentClass: %+v\n", err)
 		}
 	})
+	t.Run("GetAssignmentByAssignmentID", func(t *testing.T) {
+		a, err := dbHandler.GetAssignmentDataByAssignmentID(testAssignment.AssignmentID)
+		if err != nil {
+			t.Errorf("error in GetAssignmentDataByAssignmentID: %+v\n", err)
+		}
+		if a != testAssignment {
+			t.Errorf("mismatch in GetAssignmentDataByAssignmentID, got %+v wanted %+v\n", a, testAssignment)
+		}
+	})
 
 	t.Run("UpdateVerticalByUserID", func(t *testing.T) {
 		if err := dbHandler.UpdateVerticalByUserID(testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {

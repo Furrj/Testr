@@ -57,6 +57,71 @@ func (dbHandler *DBHandler) GetAssignmentDataByAssignmentID(id string) (types.DB
 	return a, nil
 }
 
+const QGetAllAssignmentDataByUserID = `
+SELECT
+		assignment_id,
+    user_id,
+    name,
+    due,
+    limit_type,
+    limit_amount,
+    min,
+    max,
+    add,
+    sub,
+    mult,
+    div,
+    is_active
+FROM
+	assignments.data
+WHERE
+	user_id=$1
+`
+
+func (dbHandler *DBHandler) GetAllAssignmentsDataByUserID(id types.UserID) ([]types.DBAssignment, error) {
+	var assignments []types.DBAssignment = []types.DBAssignment{}
+
+	rows, err := dbHandler.Conn.Query(
+		context.Background(),
+		QGetAllAssignmentDataByUserID,
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var a types.DBAssignment
+
+		err := rows.Scan(
+			&a.AssignmentID,
+			&a.UserID,
+			&a.Name,
+			&a.Due,
+			&a.LimitType,
+			&a.LimitAmount,
+			&a.Min,
+			&a.Max,
+			&a.Add,
+			&a.Sub,
+			&a.Mult,
+			&a.Div,
+			&a.IsActive,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		assignments = append(assignments, a)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return assignments, nil
+}
+
 // INSERTS
 const EInsertAssignment = `
 	INSERT INTO assignments.data
