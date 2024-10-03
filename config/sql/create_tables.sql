@@ -33,8 +33,8 @@ CREATE TABLE teachers.classes
 CREATE TABLE students.data
 (
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    teacher_id INTEGER REFERENCES teachers.data (user_id),
-    class_id   INTEGER REFERENCES teachers.classes (class_id)
+    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    class_id   INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE
 );
 
 CREATE TABLE users.data
@@ -95,8 +95,8 @@ CREATE TABLE assignments.classes
 
 CREATE TABLE assignments.students
 (
-    assignment_id   UUID REFERENCES assignments.data (assignment_id),
-    game_session_id UUID REFERENCES game_sessions.ids,
-    user_id         INTEGER REFERENCES students.data (user_id),
+    assignment_id   UUID REFERENCES assignments.data (assignment_id) ON DELETE CASCADE,
+    game_session_id UUID REFERENCES game_sessions.ids ON DELETE CASCADE,
+    user_id         INTEGER REFERENCES students.data (user_id) ON DELETE CASCADE,
     PRIMARY KEY (assignment_id, game_session_id)
 );
