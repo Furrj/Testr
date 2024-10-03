@@ -12,12 +12,13 @@ import Locals from "./Locals";
 import styles from "./NewAssignment.module.scss";
 import { T_CLASS } from "../../../../../../../Register/Register";
 import { T_ASSIGNMENT } from "../../../../../../../../types/assignments";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import {
   I_PARAMS_APIREQUEST_ADD_ASSIGNMENT,
   apiRequestAddAssignment,
 } from "../../../../../../../../../requests";
+import { QUERY_KEYS } from "../../../../../../../../utils/consts";
 
 interface IProps {
   classes: T_CLASS[];
@@ -29,6 +30,7 @@ const NewAssignment: React.FC<IProps> = (props) => {
 
   const classes = useRef<number[]>(props.classes.map((c) => c.class_id));
 
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (
       params: I_PARAMS_APIREQUEST_ADD_ASSIGNMENT,
@@ -41,6 +43,9 @@ const NewAssignment: React.FC<IProps> = (props) => {
     },
     onSuccess() {
       console.log("success");
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.TEACHER_ASSIGNMENTS],
+      });
     },
   });
 

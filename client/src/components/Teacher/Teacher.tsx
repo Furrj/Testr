@@ -4,7 +4,7 @@ import Student from "./children/Student/Student";
 import Main from "./children/Main/Main";
 import Class from "./children/Class/Class";
 import { T_CLASS } from "../Register/Register";
-import MyClasses from "./children/Main/children/MyClasses/MyClasses";
+import Classes from "./children/Main/children/Classes/Classes";
 import Assignments from "./children/Main/children/Assignments/Assignments";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../utils/consts";
@@ -39,7 +39,7 @@ const Teacher: React.FC = () => {
         <Route
           path="/classes"
           element={
-            <MyClasses
+            <Classes
               classes={data.data}
               activeClass={{ curr: activeClass, set: setActiveClass }}
             />

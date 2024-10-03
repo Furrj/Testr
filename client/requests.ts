@@ -305,13 +305,10 @@ export async function apiRequestAddAssignment(
   });
 }
 
-export type T_APIRESULT_GET_ASSIGNMENTS = {
-  assignments: T_ASSIGNMENT[];
-};
 export async function apiRequestGetAssignmentsTeacher(
   tokens: T_TOKENS,
-): Promise<AxiosResponse<T_APIRESULT_GET_ASSIGNMENTS>> {
-  return await axios<T_APIRESULT_GET_ASSIGNMENTS>({
+): Promise<AxiosResponse<T_ASSIGNMENT[]>> {
+  return await axios<T_ASSIGNMENT[]>({
     method: "GET",
     url: API_ROUTES.GET_ASSIGNMENTS_TEACHER,
     headers: {
