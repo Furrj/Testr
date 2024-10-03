@@ -13,6 +13,10 @@
   overflow-x: hidden;
   overflow-y: auto;
 
+  button {
+    @include login-register-btn;
+  }
+
   .form {
     @include flex-center;
     gap: 5px;
@@ -52,6 +56,8 @@
     select {
       font-size: 1.5rem;
       cursor: pointer;
+
+      margin-bottom: 20px;
 
       option {
         font-size: 1.5rem;

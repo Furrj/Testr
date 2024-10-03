@@ -14,6 +14,7 @@ import {
   T_FORM_REGISTER_STUDENT,
   T_FORM_REGISTER_TEACHER,
 } from "./src/components/Register/Register";
+import { T_ASSIGNMENT } from "./src/types/assignments";
 
 // Routes
 const ROUTE_PREFIX: string = import.meta.env.DEV ? "http://localhost:5000" : "";
@@ -34,6 +35,9 @@ const API_ROUTES = {
   GET_TEACHER_INFO: ROUTE_PREFIX + "/api/getTeacherInfo",
   GET_STUDENT_INFO: ROUTE_PREFIX + "/api/getStudent",
   UPDATE_STUDENT_CLASS: ROUTE_PREFIX + "/api/updateStudent/class",
+  ADD_ASSIGNMENT: ROUTE_PREFIX + "/api/assignments/add",
+  GET_ASSIGNMENTS_TEACHER: ROUTE_PREFIX + "/api/assignments/get/teacher",
+  DELETE_STUDENT: ROUTE_PREFIX + "/api/users/delete/student",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -277,6 +281,53 @@ export async function apiRequestUpdateStudentClass(
       user_id: params.user_id,
       class_id: params.class_id,
     },
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_ADD_ASSIGNMENT {
+  tokens: T_TOKENS;
+  assignment: T_ASSIGNMENT;
+}
+export async function apiRequestAddAssignment(
+  params: I_PARAMS_APIREQUEST_ADD_ASSIGNMENT,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "POST",
+    url: API_ROUTES.ADD_ASSIGNMENT,
+    data: {
+      ...params.assignment,
+    },
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export async function apiRequestGetAssignmentsTeacher(
+  tokens: T_TOKENS,
+): Promise<AxiosResponse<T_ASSIGNMENT[]>> {
+  return await axios<T_ASSIGNMENT[]>({
+    method: "GET",
+    url: API_ROUTES.GET_ASSIGNMENTS_TEACHER,
+    headers: {
+      Authorization: `Bearer ${tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_DELETE_STUDENT {
+  tokens: T_TOKENS;
+  user_id: number;
+}
+export async function apiRequestDeleteStudent(
+  params: I_PARAMS_APIREQUEST_GET_STUDENT_INFO,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "DELETE",
+    url: `${API_ROUTES.DELETE_STUDENT}/${params.user_id}`,
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
     },

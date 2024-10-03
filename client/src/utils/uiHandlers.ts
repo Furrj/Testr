@@ -78,6 +78,18 @@ const UIHandlers = {
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   },
+  convertUnixTimestamp(timestamp: number): string {
+    // Convert the timestamp from seconds to milliseconds
+    const date = new Date(timestamp * 1000);
+
+    // Get the month, day, and year
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+    const day = date.getDate().toString().padStart(2, "0");
+    const year = date.getFullYear();
+
+    // Return the formatted date as mm/dd/yyyy
+    return `${month}/${day}/${year}`;
+  },
 };
 
 export default UIHandlers;

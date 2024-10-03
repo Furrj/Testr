@@ -102,3 +102,22 @@ func (dbHandler *DBHandler) UpdateVerticalByUserID(id types.UserID, vertical boo
 	}
 	return nil
 }
+
+// DELETES
+
+const EDeleteUserByUserID = `
+	DELETE FROM users.ids
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) DeleteUserByUserID(id types.UserID) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EDeleteUserByUserID,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}

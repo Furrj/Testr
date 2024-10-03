@@ -366,9 +366,7 @@ const Settings: React.FC<IProps> = (props) => {
               />
             </div>
           </div>
-          <button type="submit" onClick={() => console.log(form.fieldInfo)}>
-            Start
-          </button>
+          <button type="submit">Start</button>
         </form>
       </div>
     </div>

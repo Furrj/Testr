@@ -53,7 +53,7 @@ func main() {
 		config := cors.DefaultConfig()
 		config.AllowOrigins = []string{"http://localhost:5000", "http://localhost:5173"}
 		config.AllowCredentials = true
-		config.AllowMethods = []string{"POST", "GET"}
+		config.AllowMethods = []string{"POST", "GET", "DELETE"}
 		config.AllowHeaders = []string{consts.HeaderTypeAuthorization, "Content-Type"}
 		router.Use(cors.New(config))
 	}
@@ -72,6 +72,7 @@ func main() {
 	router.POST(consts.RouteUrlRegisterTeacher, routes.RegisterTeacher(db))
 	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
 	router.POST(consts.RouteUrlUpdateStudentClass, routes.UpdateStudentClass(db))
+	router.POST(consts.RouteUrlAddAssignment, routes.AddAssignment(db))
 
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
@@ -81,6 +82,9 @@ func main() {
 	router.GET(consts.RouteUrlGetTeacherInfo, routes.GetTeacherInfo(db))
 	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
 	router.GET(consts.RouteUrlGetStudentInfo, routes.GetStudentInfo(db))
+	router.GET(consts.RouteUrlGetAssignmentsTeacher, routes.GetAssignmentsTeacher(db))
+
+	router.DELETE(consts.RouteUrlDeleteStudent, routes.DeleteStudent(db))
 
 	router.Use(spa.Middleware("/", "client"))
 
