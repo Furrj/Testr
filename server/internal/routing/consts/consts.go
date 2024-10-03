@@ -22,5 +22,6 @@ const (
 	RouteUrlGetStudentInfo        string = RouteUrlBase + "/getStudent/:id"
 	RouteUrlUpdateStudentClass    string = RouteUrlBase + "/updateStudent/class"
 	RouteUrlAddAssignment         string = RouteUrlBase + "/assignments/add"
-	RouteUrlGetAssignmentsTeacher string = RouteUrlBase + "/assignments/get/teacher"
+	RouteUrlGetAssignmentsTeacher string = RouteUrlBase + "/assignhandlers ...gin.HandlerFuncments/get/teacher"
+	RouteUrlDeleteStudent         string = RouteUrlBase + "/users/delete/student/:id"
 )

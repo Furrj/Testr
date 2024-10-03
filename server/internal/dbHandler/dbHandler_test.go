@@ -210,6 +210,12 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
+	t.Run("DeleteUserByUserID", func(t *testing.T) {
+		if err := dbHandler.DeleteUserByUserID(testUserDataJackson.UserID); err != nil {
+			t.Errorf("error in DeleteUserByUserID: %+v\n", err)
+		}
+	})
+
 	t.Run("DropTablesEnd", func(t *testing.T) {
 		if err := dbHandler.ExecuteSqlScript(os.Getenv("SQL_DROP_TABLES")); err != nil {
 			t.Errorf("Error dropping tables: %+v\n", err)

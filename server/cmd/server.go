@@ -53,7 +53,7 @@ func main() {
 		config := cors.DefaultConfig()
 		config.AllowOrigins = []string{"http://localhost:5000", "http://localhost:5173"}
 		config.AllowCredentials = true
-		config.AllowMethods = []string{"POST", "GET"}
+		config.AllowMethods = []string{"POST", "GET", "DELETE"}
 		config.AllowHeaders = []string{consts.HeaderTypeAuthorization, "Content-Type"}
 		router.Use(cors.New(config))
 	}
@@ -83,6 +83,8 @@ func main() {
 	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
 	router.GET(consts.RouteUrlGetStudentInfo, routes.GetStudentInfo(db))
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, routes.GetAssignmentsTeacher(db))
+
+	router.DELETE(consts.RouteUrlDeleteStudent, routes.DeleteStudent(db))
 
 	router.Use(spa.Middleware("/", "client"))
 
