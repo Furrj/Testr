@@ -37,6 +37,7 @@ const API_ROUTES = {
   UPDATE_STUDENT_CLASS: ROUTE_PREFIX + "/api/updateStudent/class",
   ADD_ASSIGNMENT: ROUTE_PREFIX + "/api/assignments/add",
   GET_ASSIGNMENTS_TEACHER: ROUTE_PREFIX + "/api/assignments/get/teacher",
+  DELETE_STUDENT: ROUTE_PREFIX + "/api/users/delete/student",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -313,6 +314,22 @@ export async function apiRequestGetAssignmentsTeacher(
     url: API_ROUTES.GET_ASSIGNMENTS_TEACHER,
     headers: {
       Authorization: `Bearer ${tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_DELETE_STUDENT {
+  tokens: T_TOKENS;
+  user_id: number;
+}
+export async function apiRequestDeleteStudent(
+  params: I_PARAMS_APIREQUEST_GET_STUDENT_INFO,
+): Promise<AxiosResponse> {
+  return await axios({
+    method: "DELETE",
+    url: `${API_ROUTES.DELETE_STUDENT}/${params.user_id}`,
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
     },
   });
 }

@@ -11,8 +11,47 @@
 
   .info {
     h2 {
+      text-align: center;
       font-size: 3rem;
       font-weight: bold;
+    }
+
+    h3 {
+      text-align: center;
+      font-size: 2.5rem;
+    }
+
+    .delete_confirm {
+      text-align: center;
+      font-size: 1.5rem;
+      color: yellow;
+
+      .icons {
+        @include flex-center;
+        flex-direction: row;
+        gap: 10px;
+        color: white;
+
+        .check {
+          cursor: pointer;
+          color: green;
+          font-size: 1.8rem;
+
+          &:hover {
+            color: lightgreen;
+          }
+        }
+
+        .cancel {
+          cursor: pointer;
+          color: red;
+          font-size: 2.1rem;
+
+          &:hover {
+            color: lightgrey;
+          }
+        }
+      }
     }
 
     .class {
@@ -28,6 +67,16 @@
         &:hover {
           cursor: pointer;
           color: lightblue;
+        }
+      }
+
+      .delete {
+        @include flex-center;
+        color: red;
+
+        &:hover {
+          cursor: pointer;
+          color: lightgrey;
         }
       }
     }

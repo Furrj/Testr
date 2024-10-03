@@ -1,9 +1,11 @@
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import { QUERY_KEYS } from "../../../../utils/consts";
 import {
+  apiRequestDeleteStudent,
   apiRequestGetClasses,
   apiRequestGetStudentInfo,
   apiRequestUpdateStudentClass,
+  I_PARAMS_APIREQUEST_DELETE_STUDENT,
   I_PARAMS_APIREQUEST_UPDATE_STUDENT_CLASS,
 } from "../../../../../requests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,8 +13,10 @@ import styles from "./Student.module.scss";
 import { useEffect, useState } from "react";
 import Loading from "../../../Loading/Loading";
 import PastTest from "../../../PastTest/PastTest";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaCheckCircle } from "react-icons/fa";
 import { AxiosResponse } from "axios";
+import { MdDeleteForever, MdCancel } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   user_id: number;
@@ -21,6 +25,7 @@ interface IProps {
 const Student: React.FC<IProps> = (props) => {
   const [editingClass, setEditingClass] = useState<boolean>(false);
   const [classSelection, setClassSelection] = useState<number>(0);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const { isSuccess, isFetching, data } = useQuery({
@@ -43,7 +48,7 @@ const Student: React.FC<IProps> = (props) => {
     staleTime: Infinity,
   });
 
-  const mutation = useMutation({
+  const updateStudentClassMutation = useMutation({
     mutationFn: (
       params: I_PARAMS_APIREQUEST_UPDATE_STUDENT_CLASS,
     ): Promise<AxiosResponse> => {
@@ -56,6 +61,23 @@ const Student: React.FC<IProps> = (props) => {
     onSuccess() {
       setEditingClass(false);
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.STUDENT_INFO] });
+    },
+  });
+
+  const navigate = useNavigate();
+  const deleteStudentMutation = useMutation({
+    mutationFn: (
+      params: I_PARAMS_APIREQUEST_DELETE_STUDENT,
+    ): Promise<AxiosResponse> => {
+      return apiRequestDeleteStudent(params);
+    },
+    onError(err) {
+      console.log(err);
+      alert("Error, please refresh and try again");
+    },
+    onSuccess() {
+      setShowDeleteConfirm(false);
+      navigate("/teacher/class");
     },
   });
 
@@ -78,6 +100,7 @@ const Student: React.FC<IProps> = (props) => {
           <h2>
             {data.data.user_data.first_name} {data.data.user_data.last_name}
           </h2>
+          <h3 className={styles.username}>{data.data.user_data.username}</h3>
           {editingClass ? (
             <div className={styles.classes}>
               <select
@@ -99,7 +122,7 @@ const Student: React.FC<IProps> = (props) => {
               </select>
               <button
                 onClick={() =>
-                  mutation.mutate({
+                  updateStudentClassMutation.mutate({
                     user_id: props.user_id,
                     class_id: classSelection,
                     tokens: getUserSessionDataFromStorage(),
@@ -117,6 +140,35 @@ const Student: React.FC<IProps> = (props) => {
                 onClick={() => !editingClass && setEditingClass(true)}
               >
                 <FaEdit />
+              </div>
+              <div
+                className={styles.delete}
+                onClick={() => setShowDeleteConfirm((c) => !c)}
+              >
+                <MdDeleteForever />
+              </div>
+            </div>
+          )}
+
+          {showDeleteConfirm && (
+            <div className={styles.delete_confirm}>
+              <h4>Are you sure?</h4>
+              <div className={styles.icons}>
+                <FaCheckCircle
+                  className={styles.check}
+                  onClick={() =>
+                    deleteStudentMutation.mutate({
+                      tokens: getUserSessionDataFromStorage(),
+                      user_id: props.user_id,
+                    })
+                  }
+                />
+                <MdCancel
+                  className={styles.cancel}
+                  onClick={() =>
+                    showDeleteConfirm && setShowDeleteConfirm(false)
+                  }
+                />
               </div>
             </div>
           )}
