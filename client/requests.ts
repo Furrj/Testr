@@ -312,7 +312,7 @@ export async function apiRequestGetAssignmentsTeacher(
   tokens: T_TOKENS,
 ): Promise<AxiosResponse<T_APIRESULT_GET_ASSIGNMENTS>> {
   return await axios<T_APIRESULT_GET_ASSIGNMENTS>({
-    method: "POST",
+    method: "GET",
     url: API_ROUTES.GET_ASSIGNMENTS_TEACHER,
     headers: {
       Authorization: `Bearer ${tokens.access_token}`,
