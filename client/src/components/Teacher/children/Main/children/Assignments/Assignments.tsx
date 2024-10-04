@@ -28,18 +28,20 @@ const Assignments: React.FC<IProps> = (props) => {
     return (
       <div className={styles.root}>
         <div className={styles.ass_cont}>
-          <div className={styles.assignments}>
-            {data.data.map((a, i) => {
-              return (
-                <div key={`assignment-${i}`}>
-                  {UIHandlers.convertUnixTimestamp(a.due)}
-                </div>
-              );
-            })}
-          </div>
+          {data.data.length > 0 ? (
+            <div className={styles.assignments}>
+              {data.data.map((a, i) => {
+                return (
+                  <div key={`assignment-${i}`} className={styles.assignment}>
+                    <div>{UIHandlers.convertUnixTimestamp(a.due)}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div>No assignments</div>
+          )}
         </div>
-
-        <NewAssignment {...props} />
       </div>
     );
   } else {
