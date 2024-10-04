@@ -1,45 +1,25 @@
 package utils
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
-	"mathtestr.com/server/internal/types"
 )
 
-// generate new game session with different spellID than current
-func SpawnNewGameSession(db *dbHandler.DBHandler) (types.GameSessionID, error) {
-	gameSessionID, err := createAndInsertNewGameSessionID(db)
-	if err != nil {
-		return gameSessionID, err
-	}
-
-	return gameSessionID, nil
-}
-
-func createAndInsertNewGameSessionID(db *dbHandler.DBHandler) (types.GameSessionID, error) {
-	var id types.GameSessionID
+func CreateNewGameSessionID(db *dbHandler.DBHandler) (uuid.UUID, error) {
+	var id uuid.UUID
 
 	for {
 		// Generate a new UUID
-		id = uuid.New().String()
+		id = uuid.New()
 
 		// Execute the query
-		result, err := db.InsertGameSessionID(id)
-		if err != nil {
+		if _, err := db.GetGameSessionByGameSessionID(id); err != nil {
+			if err == pgx.ErrNoRows {
+				break
+			}
 			return id, err
 		}
-
-		// Check if the insert was successful
-		if result.RowsAffected() > 0 {
-			// Successfully inserted
-			fmt.Println("Successfully inserted record with UUID:", id)
-			break
-		}
-
-		// If no rows were affected, it means there was a conflict, so we retry
-		fmt.Println("UUID conflict detected, generating a new UUID and retrying...")
 	}
 
 	return id, nil
