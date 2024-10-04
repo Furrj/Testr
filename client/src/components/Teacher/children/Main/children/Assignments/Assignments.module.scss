@@ -26,11 +26,18 @@
 
       overflow: auto;
 
-      div {
+      .assignment {
+        @include flex-center;
+        flex-direction: row;
         width: 100%;
         height: 50px;
 
         border: 1px solid white;
+
+        &:hover {
+          cursor: pointer;
+          background: $color-btn-hover;
+        }
       }
     }
   }
