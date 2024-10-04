@@ -20,9 +20,9 @@ CREATE TABLE teachers.data
 
 CREATE TABLE teachers.classes
 (
-    class_id SERIAL PRIMARY KEY,
-    user_id  INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    name     TEXT
+    class_id   SERIAL PRIMARY KEY,
+    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    name       TEXT
 );
 
 CREATE TABLE students.data
@@ -46,38 +46,42 @@ CREATE TABLE users.data
     updated_at BIGINT
 );
 
+CREATE TABLE game_sessions.settings
+(
+    settings_id  UUID PRIMARY KEY,
+    limit_type   SMALLINT,
+    limit_amount SMALLINT,
+    min          INTEGER,
+    max          INTEGER,
+    add          BOOLEAN,
+    sub          BOOLEAN,
+    mult         BOOLEAN,
+    div          BOOLEAN
+);
+
+CREATE UNIQUE INDEX idx_unique_settings
+    ON game_sessions.settings (limit_type, limit_amount, min, max, add, sub,
+                               mult, div);
+
 CREATE TABLE game_sessions.data
 (
     game_session_id UUID PRIMARY KEY,
     user_id         INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    settings_id     UUID REFERENCES game_sessions.settings (settings_id) ON DELETE CASCADE,
     timestamp       BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
-    limit_type      SMALLINT,
     questions_count INTEGER,
     correct_count   INTEGER,
     score           SMALLINT,
-    time            SMALLINT,
-    min             INTEGER,
-    max             INTEGER,
-    add             BOOLEAN,
-    sub             BOOLEAN,
-    mult            BOOLEAN,
-    div             BOOLEAN
+    time            SMALLINT
 );
 
 CREATE TABLE assignments.data
 (
     assignment_id UUID PRIMARY KEY,
-    user_id       INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    teacher_id    INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    settings_id   UUID REFERENCES game_sessions.settings (settings_id) ON DELETE CASCADE,
     name          TEXT,
     due           BIGINT,
-    limit_type    SMALLINT,
-    limit_amount  SMALLINT,
-    min           INTEGER,
-    max           INTEGER,
-    add           BOOLEAN,
-    sub           BOOLEAN,
-    mult          BOOLEAN,
-    div           BOOLEAN,
     is_active     BOOLEAN
 );
 
@@ -88,7 +92,7 @@ CREATE TABLE assignments.classes
     PRIMARY KEY (assignment_id, class_id)
 );
 
-CREATE TABLE assignments.sessions
+CREATE TABLE assignments.game_sessions
 (
     assignment_id   UUID REFERENCES assignments.data (assignment_id) ON DELETE CASCADE,
     game_session_id UUID REFERENCES game_sessions.data (game_session_id) ON DELETE CASCADE,
