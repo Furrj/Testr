@@ -88,10 +88,9 @@ CREATE TABLE assignments.classes
     PRIMARY KEY (assignment_id, class_id)
 );
 
-CREATE TABLE assignments.students
+CREATE TABLE assignments.sessions
 (
     assignment_id   UUID REFERENCES assignments.data (assignment_id) ON DELETE CASCADE,
     game_session_id UUID REFERENCES game_sessions.data (game_session_id) ON DELETE CASCADE,
-    user_id         INTEGER REFERENCES students.data (user_id) ON DELETE CASCADE,
     PRIMARY KEY (assignment_id, game_session_id)
 );
