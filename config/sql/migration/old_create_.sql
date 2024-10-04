@@ -11,6 +11,11 @@ CREATE TABLE users.ids
     user_id SERIAL PRIMARY KEY
 );
 
+CREATE TABLE game_sessions.ids
+(
+    game_session_id UUID PRIMARY KEY
+);
+
 CREATE TABLE teachers.data
 (
     user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
@@ -42,13 +47,13 @@ CREATE TABLE users.data
     last_name  VARCHAR(32),
     role       users.role DEFAULT 'S',
     vertical   BOOLEAN,
-    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
+    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW()),
     updated_at BIGINT
 );
 
 CREATE TABLE game_sessions.data
 (
-    game_session_id UUID PRIMARY KEY,
+    game_session_id UUID PRIMARY KEY REFERENCES game_sessions.ids (game_session_id) ON DELETE CASCADE,
     user_id         INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
     timestamp       BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
     limit_type      SMALLINT,
@@ -88,9 +93,10 @@ CREATE TABLE assignments.classes
     PRIMARY KEY (assignment_id, class_id)
 );
 
-CREATE TABLE assignments.sessions
+CREATE TABLE assignments.students
 (
     assignment_id   UUID REFERENCES assignments.data (assignment_id) ON DELETE CASCADE,
-    game_session_id UUID REFERENCES game_sessions.data (game_session_id) ON DELETE CASCADE,
+    game_session_id UUID REFERENCES game_sessions.ids ON DELETE CASCADE,
+    user_id         INTEGER REFERENCES students.data (user_id) ON DELETE CASCADE,
     PRIMARY KEY (assignment_id, game_session_id)
 );
