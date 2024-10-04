@@ -31,7 +31,7 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// spawn game session
-		gameSessionID, err := utils.SpawnNewGameSession(db)
+		gameSessionID, err := utils.CreateNewGameSessionID(db)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error spawning game session: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

@@ -1,12 +1,13 @@
 package testHelpers
 
 import (
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/types"
 )
 
 var TestGameSession = types.GameSession{
 	Timestamp:      1727217444,
-	GameSessionID:  "8ff6b354-1063-40f6-b196-fa422723b978",
+	GameSessionID:  uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b978"),
 	UserID:         2,
 	LimitType:      1,
 	QuestionsCount: 10,

@@ -95,18 +95,6 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("InsertGameSession", func(t *testing.T) {
-		if _, err := dbHandler.InsertGameSessionID(testGameSessionData.GameSessionID); err != nil {
-			t.Errorf("error inserting game session: %+v", err)
-		}
-
-		result, err := dbHandler.InsertGameSessionID(testGameSessionData.GameSessionID)
-		if err != nil {
-			t.Errorf("error inserting game session: %+v", err)
-		}
-		if result.RowsAffected() != 0 {
-			t.Errorf("mismatch inserting duplicate gameSessionID: got %d, want 0", result.RowsAffected())
-		}
-
 		if err := dbHandler.InsertGameSessionData(testGameSessionData); err != nil {
 			t.Errorf("Error inserting game session: %+v", err)
 		}

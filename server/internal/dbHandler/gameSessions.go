@@ -3,7 +3,7 @@ package dbHandler
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -15,7 +15,7 @@ const QGetGameSessionByGameSessionID = `
   WHERE game_session_id=$1
 `
 
-func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID types.GameSessionID) (types.GameSession, error) {
+func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID uuid.UUID) (types.GameSession, error) {
 	var gameSession types.GameSession
 
 	err := dbHandler.Conn.QueryRow(
@@ -99,23 +99,6 @@ func (dbHandler *DBHandler) GetAllGameSessionsByUserID(id types.UserID) ([]types
 }
 
 // INSERTS
-
-const EInsertGameSessionID = `
-	INSERT INTO game_sessions.ids (game_session_id)
-  VALUES ($1)
-  ON CONFLICT (game_session_id) DO NOTHING;
-`
-
-func (dbHandler *DBHandler) InsertGameSessionID(gameSessionID types.GameSessionID) (pgconn.CommandTag, error) {
-	result, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertGameSessionID,
-		gameSessionID,
-	)
-
-	return result, err
-}
-
 const EInsertGameSessionData = `
   INSERT INTO game_sessions.data(game_session_id, user_id, limit_type, questions_count, correct_count, score, time, min, max, add, sub, mult, div)
   VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
