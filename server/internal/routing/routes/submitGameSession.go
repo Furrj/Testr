@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -31,9 +32,9 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// spawn game session
-		gameSessionID, err := utils.CreateNewGameSessionID(db)
+		gameSessionID, err := uuid.NewRandom()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error spawning game session: %+v\n", err)
+			fmt.Fprintf(os.Stderr, "error creating uuid: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
@@ -52,7 +53,12 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 			Mult:           payload.Mult,
 			Div:            payload.Div,
 		}
-		if err = db.InsertGameSessionData(session); err != nil {
+		if payload.LimitType == 0 {
+			session.LimitAmount = payload.Time
+		} else {
+			session.LimitAmount = payload.QuestionsCount
+		}
+		if err = db.InsertGameSession(session); err != nil {
 			fmt.Fprintf(os.Stderr, "error inserting game session: %+v\n", err)
 		}
 
