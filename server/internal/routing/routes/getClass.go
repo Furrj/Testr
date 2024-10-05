@@ -57,7 +57,7 @@ func GetClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// check user owns class
-		if class.UserID != userID {
+		if class.TeacherID != userID {
 			ctx.Status(http.StatusUnauthorized)
 			return
 		}
