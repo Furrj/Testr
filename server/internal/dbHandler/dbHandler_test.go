@@ -31,8 +31,8 @@ func TestDBHandler(t *testing.T) {
 	testTeacherData := testHelpers.TestTeacherData
 	testGameSession := testHelpers.TestGameSession
 	testTeacherClass := testHelpers.TestTeacherClass
-	// testAssignment := testHelpers.TestAssignment
-	// testAssignmentClass := testHelpers.TestAssignmentClass
+	testAssignment := testHelpers.TestAssignment
+	testAssignmentClass := testHelpers.TestAssignmentClass
 
 	t.Run("Ping connection", func(t *testing.T) {
 		if err := dbHandler.Conn.Ping(context.Background()); err != nil {
@@ -166,31 +166,28 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
-	// t.Run("InsertAssignment", func(t *testing.T) {
-	// 	if err := dbHandler.InsertAssignment(testAssignment); err != nil {
-	// 		t.Errorf("error in InsertAssignment: %+v\n", err)
-	// 	}
-	// })
-	// t.Run("InsertAssignmentClasses", func(t *testing.T) {
-	// 	if err := dbHandler.InsertAssignmentClass(testAssignmentClass); err != nil {
-	// 		t.Errorf("error in InsertAssignmentClass: %+v\n", err)
-	// 	}
-	// })
-	// t.Run("GetAssignmentByAssignmentID", func(t *testing.T) {
-	// 	a, err := dbHandler.GetAssignmentDataByAssignmentID(testAssignment.AssignmentID)
-	// 	if err != nil {
-	// 		t.Errorf("error in GetAssignmentDataByAssignmentID: %+v\n", err)
-	// 	}
-	// 	if a != testAssignment {
-	// 		t.Errorf("mismatch in GetAssignmentDataByAssignmentID, got %+v wanted %+v\n", a, testAssignment)
-	// 	}
-	// })
-	// t.Run("GetAllAssignmentClassesByAssignmentID", func(t *testing.T) {
-	// 	_, err := dbHandler.GetAllAssignmentClassesByAssignmentID(testAssignment.AssignmentID)
-	// 	if err != nil {
-	// 		t.Errorf("error in GetAllAssignmentClassesByAssignmentID: %+v\n", err)
-	// 	}
-	// })
+	t.Run("InsertAssignment", func(t *testing.T) {
+		if err := dbHandler.InsertAssignment(testAssignment); err != nil {
+			t.Errorf("error in InsertAssignment: %+v\n", err)
+		}
+	})
+	t.Run("InsertAssignmentClasses", func(t *testing.T) {
+		if err := dbHandler.InsertAssignmentClass(testAssignmentClass); err != nil {
+			t.Errorf("error in InsertAssignmentClass: %+v\n", err)
+		}
+	})
+	t.Run("GetAssignmentByAssignmentID", func(t *testing.T) {
+		_, err := dbHandler.GetAssignmentByAssignmentID(testAssignment.AssignmentID)
+		if err != nil {
+			t.Errorf("error in GetAssignmentDataByAssignmentID: %+v\n", err)
+		}
+	})
+	t.Run("GetAllAssignmentClassesByAssignmentID", func(t *testing.T) {
+		_, err := dbHandler.GetAllAssignmentClassesByAssignmentID(testAssignment.AssignmentID)
+		if err != nil {
+			t.Errorf("error in GetAllAssignmentClassesByAssignmentID: %+v\n", err)
+		}
+	})
 
 	t.Run("UpdateVerticalByUserID", func(t *testing.T) {
 		if err := dbHandler.UpdateVerticalByUserID(testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {

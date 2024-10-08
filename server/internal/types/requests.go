@@ -37,17 +37,3 @@ type RequestSubmitGameSession struct {
 	Mult           bool `json:"mult"`
 	Div            bool `json:"div"`
 }
-
-type ReqAddAssignment struct {
-	Name        string `json:"name"`
-	Classes     []uint `json:"classes"`
-	LimitType   uint   `json:"limit_type"`
-	LimitAmount uint   `json:"limit_amount"`
-	Due         uint   `json:"due"`
-	Min         int    `json:"min"`
-	Max         int    `json:"max"`
-	Add         bool   `json:"add"`
-	Sub         bool   `json:"sub"`
-	Mult        bool   `json:"mult"`
-	Div         bool   `json:"div"`
-}

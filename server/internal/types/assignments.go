@@ -1,22 +1,18 @@
 package types
 
-type DBAssignment struct {
-	Name         string `json:"name"`
-	AssignmentID string `json:"assignment_id"`
-	Min          int    `json:"min"`
-	LimitType    uint   `json:"limit_type"`
-	LimitAmount  uint   `json:"limit_amount"`
-	Due          uint   `json:"due"`
-	UserID       UserID `json:"user_id"`
-	Max          int    `json:"max"`
-	Add          bool   `json:"add"`
-	Sub          bool   `json:"sub"`
-	Mult         bool   `json:"mult"`
-	Div          bool   `json:"div"`
-	IsActive     bool   `json:"is_active"`
+import "github.com/google/uuid"
+
+type Assignment struct {
+	Name         string    `json:"name"`
+	Classes      []uint    `json:"classes"`
+	Due          uint      `json:"due"`
+	TeacherID    UserID    `json:"teacher_id"`
+	AssignmentID uuid.UUID `json:"assignment_id"`
+	IsActive     bool      `json:"is_active"`
+	DBGameSessionSettings
 }
 
 type DBAssignmentClass struct {
-	AssignmentID string `json:"assignment_id"`
-	ClassID      uint   `json:"class_id"`
+	AssignmentID uuid.UUID `json:"assignment_id"`
+	ClassID      uint      `json:"class_id"`
 }

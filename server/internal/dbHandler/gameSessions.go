@@ -114,20 +114,20 @@ const QGetMatchingSettings = `
   AND div = $8
 `
 
-func (dbHandler *DBHandler) CheckForExistingSettings(session types.GameSession) (bool, uuid.UUID, error) {
+func (dbHandler *DBHandler) CheckForExistingSettings(settings types.DBGameSessionSettings) (bool, uuid.UUID, error) {
 	var id uuid.UUID
 
 	err := dbHandler.Conn.QueryRow(
 		context.Background(),
 		QGetMatchingSettings,
-		session.LimitType,
-		session.LimitAmount,
-		session.Min,
-		session.Max,
-		session.Add,
-		session.Sub,
-		session.Mult,
-		session.Div,
+		settings.LimitType,
+		settings.LimitAmount,
+		settings.Min,
+		settings.Max,
+		settings.Add,
+		settings.Sub,
+		settings.Mult,
+		settings.Div,
 	).Scan(&id)
 	if err != nil {
 		if err == pgx.ErrNoRows {
@@ -169,46 +169,47 @@ const EInsertGameSessionSettings = `
 	VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
 `
 
-func (dbHandler *DBHandler) InsertGameSessionSettings(session types.GameSession) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertGameSessionSettings,
-		session.SettingsID,
-		session.LimitType,
-		session.LimitAmount,
-		session.Min,
-		session.Max,
-		session.Add,
-		session.Sub,
-		session.Mult,
-		session.Div,
-	)
+func (dbHandler *DBHandler) InsertGameSessionSettings(settings types.DBGameSessionSettings) (uuid.UUID, error) {
+	exists, id, err := dbHandler.CheckForExistingSettings(settings)
 	if err != nil {
-		return err
+		return uuid.UUID{}, err
 	}
 
-	return nil
+	if !exists {
+		id, err = uuid.NewRandom()
+		if err != nil {
+			return uuid.UUID{}, err
+		}
+
+		_, err := dbHandler.Conn.Exec(
+			context.Background(),
+			EInsertGameSessionSettings,
+			id,
+			settings.LimitType,
+			settings.LimitAmount,
+			settings.Min,
+			settings.Max,
+			settings.Add,
+			settings.Sub,
+			settings.Mult,
+			settings.Div,
+		)
+		if err != nil {
+			return uuid.UUID{}, err
+		}
+
+	}
+
+	return id, nil
 }
 
 func (dbHandler *DBHandler) InsertGameSession(session types.GameSession) error {
-	exists, id, err := dbHandler.CheckForExistingSettings(session)
+	id, err := dbHandler.InsertGameSessionSettings(session.DBGameSessionSettings)
 	if err != nil {
 		return err
 	}
-	if exists {
-		session.SettingsID = id
-	} else {
-		id, err := uuid.NewRandom()
-		if err != nil {
-			return err
-		}
-		session.SettingsID = id
 
-		if err := dbHandler.InsertGameSessionSettings(session); err != nil {
-			return err
-		}
-	}
-
+	session.SettingsID = id
 	if err := dbHandler.InsertGameSessionData(session); err != nil {
 		return err
 	}
