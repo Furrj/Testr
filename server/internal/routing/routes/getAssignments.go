@@ -36,14 +36,10 @@ func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		type resAssignment struct {
-			types.DBAssignment
-			Classes []uint `json:"classes"`
-		}
-		res := []resAssignment{}
+		res := []types.Assignment{}
 
 		// get assignments
-		a, err := db.GetAllAssignmentsDataByUserID(userID)
+		a, err := db.GetAllAssignmentsByTeacherID(userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetAllAssignmentsDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -51,9 +47,8 @@ func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		for _, v := range a {
-			r := resAssignment{
-				DBAssignment: v,
-				Classes:      []uint{},
+			r := types.Assignment{
+				Classes: []uint{},
 			}
 			// get classes for assignment
 			classes, err := db.GetAllAssignmentClassesByAssignmentID(v.AssignmentID)

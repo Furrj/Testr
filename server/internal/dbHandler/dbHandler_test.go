@@ -177,12 +177,9 @@ func TestDBHandler(t *testing.T) {
 	// 	}
 	// })
 	// t.Run("GetAssignmentByAssignmentID", func(t *testing.T) {
-	// 	a, err := dbHandler.GetAssignmentDataByAssignmentID(testAssignment.AssignmentID)
+	// 	_, err := dbHandler.GetAssignmentByAssignmentID(testAssignment.AssignmentID)
 	// 	if err != nil {
 	// 		t.Errorf("error in GetAssignmentDataByAssignmentID: %+v\n", err)
-	// 	}
-	// 	if a != testAssignment {
-	// 		t.Errorf("mismatch in GetAssignmentDataByAssignmentID, got %+v wanted %+v\n", a, testAssignment)
 	// 	}
 	// })
 	// t.Run("GetAllAssignmentClassesByAssignmentID", func(t *testing.T) {

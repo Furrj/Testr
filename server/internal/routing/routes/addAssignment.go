@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -39,7 +38,7 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// bind payload
-		var payload types.ReqAddAssignment
+		var payload types.Assignment
 		if err = ctx.BindJSON(&payload); err != nil {
 			fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -48,20 +47,20 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("payload: %+v\n", payload)
 
 		// insert assignment
-		id, err := generateNewAssignmentID(db)
+		id, err := uuid.NewRandom()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error in generateNewAssignmentID: %+v\n", err)
+			fmt.Fprintf(os.Stderr, "error generating uuid: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
-		a := types.DBAssignment{
+		a := types.Assignment{
 			Name:         payload.Name,
 			AssignmentID: id,
 			Min:          payload.Min,
 			LimitType:    payload.LimitType,
 			LimitAmount:  payload.LimitAmount,
 			Due:          payload.Due,
-			UserID:       userID,
+			TeacherID:    userID,
 			Max:          payload.Max,
 			Add:          payload.Add,
 			Sub:          payload.Sub,
@@ -88,21 +87,5 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		ctx.Status(http.StatusOK)
-	}
-}
-
-func generateNewAssignmentID(db *dbHandler.DBHandler) (string, error) {
-	for {
-		// generate a new UUID
-		id := uuid.New().String()
-
-		// check if id exists
-		_, err := db.GetAssignmentDataByAssignmentID(id)
-		if err != nil {
-			if err == pgx.ErrNoRows {
-				return id, nil
-			}
-			return id, err
-		}
 	}
 }
