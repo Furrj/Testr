@@ -31,7 +31,7 @@ WHERE
 	assignment_id=$1
 `
 
-func (dbHandler *DBHandler) GetAssignmentByAssignmentID(id string) (types.Assignment, error) {
+func (dbHandler *DBHandler) GetAssignmentByAssignmentID(id uuid.UUID) (types.Assignment, error) {
 	var a types.Assignment
 
 	err := dbHandler.Conn.QueryRow(
@@ -179,7 +179,13 @@ const EInsertAssignment = `
 `
 
 func (dbHandler *DBHandler) InsertAssignment(a types.Assignment) error {
-	_, err := dbHandler.Conn.Exec(
+	id, err := dbHandler.InsertGameSessionSettings(a.DBGameSessionSettings)
+	if err != nil {
+		return err
+	}
+
+	a.SettingsID = id
+	_, err = dbHandler.Conn.Exec(
 		context.Background(),
 		EInsertAssignment,
 		a.AssignmentID,

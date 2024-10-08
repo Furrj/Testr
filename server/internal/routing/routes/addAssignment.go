@@ -56,17 +56,19 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 		a := types.Assignment{
 			Name:         payload.Name,
 			AssignmentID: id,
-			Min:          payload.Min,
-			LimitType:    payload.LimitType,
-			LimitAmount:  payload.LimitAmount,
-			Due:          payload.Due,
-			TeacherID:    userID,
-			Max:          payload.Max,
-			Add:          payload.Add,
-			Sub:          payload.Sub,
-			Mult:         payload.Mult,
-			Div:          payload.Div,
-			IsActive:     true,
+			DBGameSessionSettings: types.DBGameSessionSettings{
+				Min:         payload.Min,
+				LimitType:   payload.LimitType,
+				LimitAmount: payload.LimitAmount,
+				Max:         payload.Max,
+				Add:         payload.Add,
+				Sub:         payload.Sub,
+				Mult:        payload.Mult,
+				Div:         payload.Div,
+			},
+			Due:       payload.Due,
+			TeacherID: userID,
+			IsActive:  true,
 		}
 		if err := db.InsertAssignment(a); err != nil {
 			fmt.Fprintf(os.Stderr, "error in InsertAssignment: %+v\n", err)
