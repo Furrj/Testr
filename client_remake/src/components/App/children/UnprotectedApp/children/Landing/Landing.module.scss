@@ -1,2 +1,15 @@
+@import "../../../../../../styles/vars";
+@import "../../../../../../styles/mixins";
+
 .root {
+	@include full-size-percent;
+
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+
+	div {
+		@include full-size-percent;
+
+		border: 1px solid white;
+	}
 }

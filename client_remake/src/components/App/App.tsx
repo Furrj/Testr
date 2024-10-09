@@ -24,7 +24,7 @@ const App: React.FC = () => {
 		<div className={styles.root}>
 			<TopBar />
 
-			<VersionLabel />
+			{/* <VersionLabel /> */}
 
 			<ContentBox>
 				{isFetching ? (
