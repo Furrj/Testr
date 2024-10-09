@@ -1,0 +1,41 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.root {
+  @include full-size-percent;
+
+  .content {
+    @include full-size-percent;
+
+    @include flex-center;
+
+    .passwordBox {
+      @include flex-center;
+
+      position: relative;
+    }
+
+    .eye {
+      position: absolute;
+      top: 55%;
+      right: 2%;
+      cursor: pointer;
+      color: white;
+    }
+
+    input {
+      text-align: center;
+      font-size: 1.5rem;
+      width: 15rem;
+      height: 2rem;
+      border-radius: 10px;
+      border: 1px solid white;
+      background: rgb(71, 71, 71);
+      overflow-x: auto;
+    }
+
+    button {
+      @include login-register-btn;
+    }
+  }
+}

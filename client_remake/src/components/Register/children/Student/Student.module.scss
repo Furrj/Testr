@@ -1,0 +1,17 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.root {
+  @include full-size-percent;
+  @include flex-center;
+  gap: 5px;
+
+  label {
+    font-size: 2rem;
+  }
+
+  input {
+    font-size: 2rem;
+    text-align: center;
+  }
+}

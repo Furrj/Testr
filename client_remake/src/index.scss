@@ -1,0 +1,66 @@
+@import "./styles/vars";
+
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body,
+html,
+#root {
+	height: 100dvh;
+	width: 100dvw;
+
+	overflow: hidden;
+}
+
+* {
+	box-sizing: border-box;
+
+	margin: 0px;
+	padding: 0px;
+}
+
+button {
+	cursor: pointer;
+	color: white;
+}
+
+input[type="checkbox"] {
+	cursor: pointer;
+}
+
+input[type="text"] {
+	box-shadow: none;
+}
+
+.round.col {
+	position: sticky;
+	left: 0;
+
+	z-index: 9;
+	background: $main_bg;
+}
+
+.round.header {
+	position: sticky;
+	left: 0;
+
+	z-index: 9;
+	background: $main_bg;
+}
+
+@media (max-width: 550px) {
+	input[type="text"] {
+		font-size: 2rem;
+	}
+}

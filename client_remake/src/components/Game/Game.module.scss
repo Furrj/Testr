@@ -1,0 +1,13 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.root {
+  min-width: 287px;
+  width: 100%;
+  height: fit-content;
+  @include flex-center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  //border: 1px solid red;
+}

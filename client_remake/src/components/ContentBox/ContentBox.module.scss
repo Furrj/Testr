@@ -1,0 +1,17 @@
+@import "../../styles/_vars.scss";
+@import "../../styles/_mixins.scss";
+
+.root {
+	height: calc(100dvh - $topbar-height);
+	width: 100%;
+	display: flex;
+
+	overflow: hidden;
+	background: $main-bg;
+
+	.content {
+		@include full-size-percent;
+
+		background: $main-bg;
+	}
+}
