@@ -38,6 +38,9 @@ const API_ROUTES = {
   ADD_ASSIGNMENT: ROUTE_PREFIX + "/api/assignments/add",
   GET_ASSIGNMENTS_TEACHER: ROUTE_PREFIX + "/api/assignments/get/teacher",
   DELETE_STUDENT: ROUTE_PREFIX + "/api/users/delete/student",
+  GET_PASSWORD_RESET_CODE: ROUTE_PREFIX + "/api/password/reset",
+  CHECK_PASSWORD_RESET_CODE: ROUTE_PREFIX + "/api/password/check",
+  UPDATE_PASSWORD: ROUTE_PREFIX + "/api/password/update",
 };
 
 export async function apiRequestRegisterTeacher(
@@ -330,6 +333,58 @@ export async function apiRequestDeleteStudent(
     url: `${API_ROUTES.DELETE_STUDENT}/${params.user_id}`,
     headers: {
       Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_GET_PASSWORD_RESET_CODE {
+  tokens: T_TOKENS;
+  user_id: number;
+}
+export type T_APIRESULT_GET_PASSWORD_RESET_CODE = {
+  user_id: number;
+  code: string;
+};
+export async function apiRequestGetPasswordResetCode(
+  params: I_PARAMS_APIREQUEST_GET_PASSWORD_RESET_CODE,
+): Promise<AxiosResponse<T_APIRESULT_GET_PASSWORD_RESET_CODE>> {
+  return await axios<T_APIRESULT_GET_PASSWORD_RESET_CODE>({
+    method: "GET",
+    url: `${API_ROUTES.GET_PASSWORD_RESET_CODE}/${params.user_id}`,
+    headers: {
+      Authorization: `Bearer ${params.tokens.access_token}`,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_CHECK_PASSWORD_RESET_CODE {
+  code: string;
+  username: string;
+}
+export async function apiRequestCheckPasswordResetCode(
+  params: I_PARAMS_APIREQUEST_CHECK_PASSWORD_RESET_CODE,
+): Promise<AxiosResponse<T_USERDATA_STATE>> {
+  return await axios<T_USERDATA_STATE>({
+    method: "POST",
+    url: API_ROUTES.CHECK_PASSWORD_RESET_CODE,
+    data: {
+      ...params,
+    },
+  });
+}
+
+export interface I_PARAMS_APIREQUEST_UPDATE_PASSWORD {
+  code: string;
+  password: string;
+}
+export async function apiRequestUpdatePassword(
+  params: I_PARAMS_APIREQUEST_UPDATE_PASSWORD,
+): Promise<AxiosResponse<T_TOKENS>> {
+  return await axios<T_TOKENS>({
+    method: "PUT",
+    url: API_ROUTES.UPDATE_PASSWORD,
+    data: {
+      ...params,
     },
   });
 }

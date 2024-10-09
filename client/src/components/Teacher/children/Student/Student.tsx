@@ -17,6 +17,7 @@ import { FaEdit, FaCheckCircle } from "react-icons/fa";
 import { AxiosResponse } from "axios";
 import { MdDeleteForever, MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import ResetPassword from "./children/ResetPassword/ResetPassword";
 
 interface IProps {
   user_id: number;
@@ -172,6 +173,7 @@ const Student: React.FC<IProps> = (props) => {
               </div>
             </div>
           )}
+          <ResetPassword user_id={data.data.user_data.user_id} />
         </div>
 
         <div className={styles.past_tests}>

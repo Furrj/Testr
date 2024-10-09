@@ -7,7 +7,6 @@ import {
   type T_APIRESULT_LOGIN,
   type T_USERINPUT_LOGIN,
 } from "../../types";
-import { togglePasswordLogin } from "../../utils/uiHandlers.ts";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
@@ -60,6 +59,7 @@ const Login: React.FC = () => {
         <input
           type="text"
           name="username"
+          id="username"
           value={userInput.username}
           onChange={inputHandler}
           autoComplete="on"
@@ -70,15 +70,10 @@ const Login: React.FC = () => {
           <input
             type="password"
             name="password"
-            id="passwordBox"
+            id="password"
             value={userInput.password}
             onChange={inputHandler}
             autoComplete="on"
-          />
-          <i
-            className={`fa-solid fa-eye fa-eye-slash ${styles.eye}`}
-            id={"eye"}
-            onClick={togglePasswordLogin}
           />
         </div>
         {incorrectInfo && (
@@ -104,6 +99,9 @@ const Login: React.FC = () => {
         or
         <Link to={"/register"}>
           <button className={styles.register}>Register</button>
+        </Link>
+        <Link to={"/password/reset"} className={styles.link}>
+          <div className={styles.forgot_password}>Forgot Password?</div>
         </Link>
       </div>
     </div>

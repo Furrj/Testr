@@ -9,6 +9,10 @@
 
     @include flex-center;
 
+    .link {
+      text-decoration: none;
+    }
+
     .passwordBox {
       @include flex-center;
 
@@ -36,6 +40,16 @@
 
     button {
       @include login-register-btn;
+    }
+
+    .forgot_password {
+      margin-top: 20px;
+      color: blue;
+
+      &:hover {
+        cursor: pointer;
+        color: lightblue;
+      }
     }
   }
 }
