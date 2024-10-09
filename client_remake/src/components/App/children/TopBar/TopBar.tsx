@@ -30,7 +30,7 @@ const TopBar: React.FC = () => {
 				<PiMathOperationsBold className={styles.icon} />
 				<h1 className={styles.title}>Mathtestr</h1>
 
-				{isSuccess && data.valid && (
+				{isSuccess && data.valid ? (
 					<div className={styles.right}>
 						<IoMdExit
 							onClick={() => {
@@ -45,6 +45,11 @@ const TopBar: React.FC = () => {
 							onClick={() => setShowingNavbar((curr) => !curr)}
 							className={styles.hamburger}
 						/>
+					</div>
+				) : (
+					<div className={styles.buttons}>
+						<button>Login</button>
+						<button>Register</button>
 					</div>
 				)}
 			</div>
