@@ -29,6 +29,15 @@
 
 			.hamburger {
 				margin-right: 5px;
+
+				&:hover {
+					cursor: pointer;
+
+					color: green;
+				}
+			}
+
+			.logout {
 				&:hover {
 					cursor: pointer;
 
