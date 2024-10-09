@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../utils/consts";
 import { getAuthStatus } from "../../utils/methods";
 import ContentBox from "../ContentBox/ContentBox";
-import VersionLabel from "./children/VersionLabel/VersionLabel";
 import ProtectedApp from "./children/ProtectedApp/ProtectedApp";
 import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";

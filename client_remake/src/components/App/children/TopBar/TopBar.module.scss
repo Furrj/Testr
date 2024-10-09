@@ -11,6 +11,17 @@
 		background: $topbar-bg;
 
 		@include flex-center-row;
+
+		.icon {
+			width: 50px;
+			height: 50px;
+
+			position: absolute;
+			left: 0;
+
+			color: $logo-accent;
+		}
+
 		.title {
 			@include flex-center-row;
 			height: 100%;

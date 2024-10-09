@@ -9,6 +9,7 @@ import {
 	getAuthStatus,
 } from "../../../../utils/methods";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { PiMathOperationsBold } from "react-icons/pi";
 
 const TopBar: React.FC = () => {
 	const { isSuccess, data } = useQuery({
@@ -26,6 +27,7 @@ const TopBar: React.FC = () => {
 	return (
 		<div className={styles.root}>
 			<div className={styles.main}>
+				<PiMathOperationsBold className={styles.icon} />
 				<h1 className={styles.title}>Mathtestr</h1>
 
 				{isSuccess && data.valid && (

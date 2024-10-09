@@ -4,12 +4,33 @@
 .root {
 	@include full-size-percent;
 
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	// display: grid;
+	// grid-template-columns: repeat(2, 1fr);
 
-	div {
-		@include full-size-percent;
+	.words {
+		width: 100%;
+		@include flex-center-col;
 
-		border: 1px solid white;
+		//border-bottom: 1px solid white;
+
+		div {
+			width: 80%;
+
+			font-size: 3rem;
+			font-weight: 900;
+			text-align: center;
+		}
+	}
+}
+
+.accent {
+	color: $logo-accent;
+}
+
+@media only screen and (max-width: 500px) {
+	.root {
+		.words div {
+			width: 95%;
+		}
 	}
 }
