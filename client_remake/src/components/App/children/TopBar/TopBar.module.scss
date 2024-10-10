@@ -2,118 +2,118 @@
 @import "../../../../styles/mixins";
 
 @mixin topbar_btn {
-	background: black;
-	border: 1px solid white;
-	border-radius: 10px;
-	padding: 5px;
-	font-weight: bold;
+  background: black;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 5px;
+  font-weight: bold;
 
-	&:hover {
-		cursor: pointer;
+  &:hover {
+    cursor: pointer;
 
-		background: grey;
-	}
+    background: grey;
+  }
 }
 
 .root {
-	user-select: none;
+  user-select: none;
 
-	.main {
-		width: 100%;
-		height: $topbar-height;
+  .main {
+    width: 100%;
+    height: $topbar-height;
 
-		background: $topbar-bg;
+    background: $topbar-bg;
 
-		@include flex-center-row;
+    @include flex-center-row;
 
-		.icon {
-			width: 50px;
-			height: 50px;
+    .icon {
+      width: 50px;
+      height: 50px;
 
-			position: absolute;
-			left: 0;
+      position: absolute;
+      left: 0;
 
-			color: $logo-accent;
-		}
+      color: $logo-accent;
+    }
 
-		.title {
-			@include flex-center-row;
-			height: 100%;
-			width: fit-content;
-			padding-left: 5px;
-		}
+    .title {
+      @include flex-center-row;
+      height: 100%;
+      width: fit-content;
+      padding-left: 5px;
+    }
 
-		.right {
-			height: $topbar-height;
+    .right {
+      height: $topbar-height;
 
-			@include flex-center-row;
-			gap: 10px;
+      @include flex-center-row;
+      gap: 10px;
 
-			position: absolute;
-			right: 10px;
+      position: absolute;
+      right: 10px;
 
-			.logged_in {
-				@include flex-center-row;
+      .logged_in {
+        @include flex-center-row;
 
-				font-size: 2.5rem;
+        font-size: 2.5rem;
 
-				.hamburger {
-					margin-right: 5px;
+        .hamburger {
+          margin-right: 5px;
 
-					&:hover {
-						cursor: pointer;
+          &:hover {
+            cursor: pointer;
 
-						color: green;
-					}
-				}
+            color: green;
+          }
+        }
 
-				.logout {
-					&:hover {
-						cursor: pointer;
+        .logout {
+          &:hover {
+            cursor: pointer;
 
-						color: green;
-					}
-				}
-			}
+            color: green;
+          }
+        }
+      }
 
-			.buttons {
-				@include flex-center-row;
-				gap: 10px;
+      .buttons {
+        @include flex-center-row;
+        gap: 10px;
 
-				button {
-					@include topbar_btn;
-				}
-			}
+        button {
+          @include topbar_btn;
+        }
+      }
 
-			.theme {
-				font-size: 2rem;
+      .theme {
+        font-size: 2rem;
 
-				&:hover {
-					cursor: pointer;
+        &:hover {
+          cursor: pointer;
 
-					color: grey;
-				}
-			}
-		}
-	}
+          color: grey;
+        }
+      }
+    }
+  }
 
-	.navbar {
-		height: 100px;
-	}
+  .navbar {
+    height: 100px;
+  }
 }
 
 @media only screen and (min-width: $mobile-width) {
-	.root .main .right {
-		.hamburger {
-			display: none;
-		}
-	}
+  .root .main .right {
+    .hamburger {
+      display: none;
+    }
+  }
 }
 
 @media only screen and (max-width: $mobile-width) {
-	.root .main .right .logged_in {
-		.logout {
-			display: none;
-		}
-	}
+  .root .main .right .logged_in {
+    .logout {
+      display: none;
+    }
+  }
 }

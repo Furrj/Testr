@@ -2,62 +2,73 @@
 @import "../../../../../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+  @include full-size-percent;
 
-	// display: grid;
-	// grid-template-columns: repeat(2, 1fr);
+  // display: grid;
+  // grid-template-columns: repeat(2, 1fr);
 
-	.words {
-		width: 100%;
-		@include flex-center-col;
+  overflow: auto;
 
-		//border-bottom: 1px solid white;
+  .scroll {
+    min-width: 100%;
+    min-height: 100%;
 
-		div {
-			width: 60%;
+    @include flex-center-col;
 
-			font-size: 4rem;
-			font-weight: 900;
-			text-align: center;
-		}
-	}
+    padding: 20px;
 
-	.get_started {
-		width: 100%;
-		@include flex-center-col;
+    .words {
+      width: 100%;
+      @include flex-center-col;
 
-		margin-top: 30px;
+      //border-bottom: 1px solid white;
 
-		div {
-			text-align: center;
+      div {
+        width: 60%;
 
-			font-size: 2rem;
-			background: rgb(15, 117, 67);
-			border-radius: 15px;
-			padding: 10px;
+        font-size: 4rem;
+        font-weight: 900;
+        text-align: center;
+      }
+    }
 
-			&:hover {
-				cursor: pointer;
+    .get_started {
+      width: 100%;
+      @include flex-center-col;
 
-				background: $logo-accent;
-			}
-		}
-	}
+      margin-top: 30px;
+
+      div {
+        text-align: center;
+
+        font-size: 2rem;
+        background: rgb(15, 117, 67);
+        border-radius: 15px;
+        padding: 10px;
+
+        &:hover {
+          cursor: pointer;
+
+          background: $logo-accent;
+        }
+      }
+    }
+  }
 }
 
 .accent {
-	color: $logo-accent;
+  color: $logo-accent;
 }
 
 @media only screen and (max-width: 500px) {
-	.root {
-		.words div {
-			font-size: 3rem;
-			width: 95%;
-		}
+  .root .scroll {
+    .words div {
+      font-size: 3rem;
+      width: 95%;
+    }
 
-		.get_started div {
-			max-width: 70%;
-		}
-	}
+    .get_started div {
+      max-width: 70%;
+    }
+  }
 }
