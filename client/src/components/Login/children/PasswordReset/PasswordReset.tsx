@@ -247,7 +247,7 @@ const PasswordReset: React.FC = () => {
             name="confirm_password"
             children={(field) => (
               <>
-                <h2>New Password</h2>
+                <h2>Confirm Password</h2>
                 <input
                   name={field.name}
                   value={field.state.value}

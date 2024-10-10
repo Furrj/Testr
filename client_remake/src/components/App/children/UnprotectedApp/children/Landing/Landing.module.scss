@@ -14,9 +14,9 @@
 		//border-bottom: 1px solid white;
 
 		div {
-			width: 80%;
+			width: 60%;
 
-			font-size: 3rem;
+			font-size: 4rem;
 			font-weight: 900;
 			text-align: center;
 		}
@@ -30,6 +30,7 @@
 @media only screen and (max-width: 500px) {
 	.root {
 		.words div {
+			font-size: 3rem;
 			width: 95%;
 		}
 	}
