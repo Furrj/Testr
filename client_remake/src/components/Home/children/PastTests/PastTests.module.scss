@@ -1,0 +1,113 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+$border: 1px solid white;
+
+.root {
+  max-height: 100%;
+
+  background: grey;
+
+  overflow: auto;
+
+  border: $border;
+
+  .scroll {
+    height: 100%;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+
+    border-top: $border;
+
+    div {
+      text-align: center;
+    }
+
+    .date {
+      min-width: 8rch;
+
+      border-right: $border;
+    }
+
+    .score {
+      border-right: $border;
+      min-width: 8rch;
+    }
+
+    .count {
+      border-right: $border;
+
+      min-width: 7rch;
+    }
+
+    .time {
+      border-right: $border;
+      min-width: 5rch;
+    }
+
+    .range {
+      display: grid;
+      grid-template-columns: repeat(2, 50%);
+
+      span {
+        border-right: $border;
+
+        min-width: 5rch;
+      }
+    }
+
+    .limit {
+      min-width: 7rch;
+
+      @include flex-center-row;
+
+      border-right: $border;
+    }
+
+    .ops {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        min-width: 3rch;
+        width: 100%;
+
+        text-align: center;
+
+        border-right: $border;
+
+        &.checked {
+          background: green;
+        }
+
+        &.unchecked {
+          background: red;
+        }
+
+        &:last-of-type {
+          border: none;
+        }
+      }
+    }
+
+    &.headers {
+      border-bottom: $border;
+
+      position: sticky;
+      top: 0;
+
+      background: grey;
+
+      color: black;
+      font-size: 1.2rem;
+      font-weight: bold;
+
+      .limit {
+        @include flex-center-col;
+      }
+    }
+  }
+}

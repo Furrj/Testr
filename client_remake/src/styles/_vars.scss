@@ -16,6 +16,10 @@ $color-cell-header: rgba(255, 255, 255, 0.1);
 $main-bg: linear-gradient(225deg, #151515, #292727);
 $topbar-bg: #111010;
 $navbar-bg: #312f2f;
+$form-bg: rgba(
+  $color: #fff,
+  $alpha: 0.9,
+);
 
 $logo-accent: #0bbc6c;
 $font-color-main: #fff;
@@ -24,7 +28,6 @@ $border: 1px solid black;
 $border-radius: 15px;
 
 $topbar-height: 50px;
-$navbar-width: 150px;
 
 $mobile-width: 800px;
 

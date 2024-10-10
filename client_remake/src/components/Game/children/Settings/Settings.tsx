@@ -8,6 +8,7 @@ import {
 } from "../../../../types/game";
 import Locals, { type T_SETTINGS_FORM } from "./Locals";
 import { deepCopyObject } from "../../../../utils/methods";
+import { FaClock, FaQuestionCircle } from "react-icons/fa";
 
 interface IProps {
   gameSettings: React.MutableRefObject<T_GAME_SETTINGS>;
@@ -83,7 +84,6 @@ const Settings: React.FC<IProps> = (props) => {
                 name="range.min"
                 children={(field) => (
                   <>
-                    <h2>Min</h2>
                     <input
                       name={field.name}
                       value={field.state.value}
@@ -95,6 +95,7 @@ const Settings: React.FC<IProps> = (props) => {
                           : ""
                       }
                       type="number"
+                      placeholder="Min"
                     />
                     {field.state.meta.errors.length > 0 ? (
                       <div className={styles.err}>
@@ -130,12 +131,12 @@ const Settings: React.FC<IProps> = (props) => {
                 }}
               />
             </div>
+            <div className={styles.div}>-</div>
             <div className={styles.max}>
               <form.Field
                 name="range.max"
                 children={(field) => (
                   <>
-                    <h2>Max</h2>
                     <input
                       name={field.name}
                       value={field.state.value}
@@ -147,6 +148,7 @@ const Settings: React.FC<IProps> = (props) => {
                           : ""
                       }
                       type="number"
+                      placeholder="Max"
                     />
                     {field.state.meta.errors.length > 0 ? (
                       <div className={styles.err}>
@@ -183,21 +185,22 @@ const Settings: React.FC<IProps> = (props) => {
               />
             </div>
           </div>
+
           <div className={styles.ops}>
             <div className={styles.add}>
               <form.Field
                 name="ops.add"
                 children={(field) => (
-                  <>
-                    <h2>&#x002B;</h2>
-                    <input
-                      type="checkbox"
-                      name={field.name}
-                      checked={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.checked)}
-                    />
-                  </>
+                  <div
+                    onClick={() => {
+                      field.setValue(!field.getValue());
+                    }}
+                    className={
+                      field.getValue() ? styles.checked : styles.unchecked
+                    }
+                  >
+                    &#x002B;
+                  </div>
                 )}
               />
             </div>
@@ -205,16 +208,16 @@ const Settings: React.FC<IProps> = (props) => {
               <form.Field
                 name="ops.sub"
                 children={(field) => (
-                  <>
-                    <h2>&minus;</h2>
-                    <input
-                      type="checkbox"
-                      name={field.name}
-                      checked={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.checked)}
-                    />
-                  </>
+                  <div
+                    onClick={() => {
+                      field.setValue(!field.getValue());
+                    }}
+                    className={
+                      field.getValue() ? styles.checked : styles.unchecked
+                    }
+                  >
+                    &minus;
+                  </div>
                 )}
               />
             </div>
@@ -222,16 +225,16 @@ const Settings: React.FC<IProps> = (props) => {
               <form.Field
                 name="ops.mult"
                 children={(field) => (
-                  <>
-                    <h2>&times;</h2>
-                    <input
-                      type="checkbox"
-                      name={field.name}
-                      checked={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.checked)}
-                    />
-                  </>
+                  <div
+                    onClick={() => {
+                      field.setValue(!field.getValue());
+                    }}
+                    className={
+                      field.getValue() ? styles.checked : styles.unchecked
+                    }
+                  >
+                    &times;
+                  </div>
                 )}
               />
             </div>
@@ -239,16 +242,16 @@ const Settings: React.FC<IProps> = (props) => {
               <form.Field
                 name="ops.div"
                 children={(field) => (
-                  <>
-                    <h2>&divide;</h2>
-                    <input
-                      type="checkbox"
-                      name={field.name}
-                      checked={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.checked)}
-                    />
-                  </>
+                  <div
+                    onClick={() => {
+                      field.setValue(!field.getValue());
+                    }}
+                    className={
+                      field.getValue() ? styles.checked : styles.unchecked
+                    }
+                  >
+                    &divide;
+                  </div>
                 )}
               />
             </div>
@@ -256,17 +259,15 @@ const Settings: React.FC<IProps> = (props) => {
           {formErrorMap.onSubmit !== undefined && (
             <div className={styles.ops_error}>{formErrorMap.onSubmit}</div>
           )}
+
           <div className={styles.limits}>
-            <div className={styles.time}>
-              <h2>Time Limit (s)</h2>
-              <input
-                type="checkbox"
-                name="time_limit_check"
-                checked={timeLimit}
-                onClick={() => !timeLimit && setTimeLimit(true)}
-                onChange={() => console.log("")}
-              />
-              <form.Field
+            <div
+              className={`${styles.time} ${timeLimit ? styles.checked : styles.unchecked}`}
+              onClick={() => !timeLimit && setTimeLimit(true)}
+            >
+              <FaClock />
+
+              {/* <form.Field
                 name="limits.time"
                 children={(field) => (
                   <>
@@ -309,18 +310,15 @@ const Settings: React.FC<IProps> = (props) => {
                     return undefined;
                   },
                 }}
-              />
+              /> */}
             </div>
-            <div className={styles.questions}>
-              <h2>Question Limit</h2>
-              <input
-                type="checkbox"
-                name="question_limit_check"
-                checked={!timeLimit}
-                onClick={() => timeLimit && setTimeLimit(false)}
-                onChange={() => console.log("")}
-              />
-              <form.Field
+            <div
+              className={`${styles.questions} ${!timeLimit ? styles.checked : styles.unchecked}`}
+              onClick={() => timeLimit && setTimeLimit(false)}
+            >
+              <FaQuestionCircle />
+
+              {/* <form.Field
                 name="limits.count"
                 children={(field) => (
                   <>
@@ -363,9 +361,10 @@ const Settings: React.FC<IProps> = (props) => {
                     return undefined;
                   },
                 }}
-              />
+              /> */}
             </div>
           </div>
+
           <button type="submit">Start</button>
         </form>
       </div>

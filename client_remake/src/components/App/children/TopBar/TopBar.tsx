@@ -11,7 +11,7 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { VscColorMode } from "react-icons/vsc";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const TopBar: React.FC = () => {
   const { isSuccess, data } = useQuery({
@@ -25,12 +25,14 @@ const TopBar: React.FC = () => {
   const [showingNavbar, setShowingNavbar] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.root}>
       <div className={styles.main}>
         <PiMathOperationsBold className={styles.icon} />
-        <h1 className={styles.title}>Mathtestr</h1>
+        <h1 className={styles.title}>Teachify</h1>
 
         <div className={styles.right}>
           {isSuccess && data.valid ? (
@@ -38,9 +40,8 @@ const TopBar: React.FC = () => {
               <IoMdExit
                 onClick={() => {
                   clearTokensFromLocalStorage();
-                  queryClient.invalidateQueries({
-                    queryKey: [QUERY_KEYS.USER_DATA],
-                  });
+                  queryClient.resetQueries();
+                  navigate("/login");
                 }}
                 className={styles.logout}
               />
@@ -50,11 +51,15 @@ const TopBar: React.FC = () => {
               />
             </div>
           ) : (
-            <div className={styles.buttons}>
-              <Link to={"/login"} className={"link"}>
-                <button>Login</button>
-              </Link>
-            </div>
+            <>
+              {location.pathname !== "/login" && (
+                <div className={styles.buttons}>
+                  <Link to={"/login"} className={"link"}>
+                    <button>Login</button>
+                  </Link>
+                </div>
+              )}
+            </>
           )}
           <VscColorMode className={styles.theme} />
         </div>

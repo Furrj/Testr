@@ -1,41 +1,134 @@
 @import "../../styles/mixins";
 @import "../../styles/vars";
 
+$br: 20px;
+
 .root {
   @include full-size-percent;
 
-  .content {
-    @include full-size-percent;
+  overflow: auto;
 
-    @include flex-center;
+  .scroll {
+    min-width: 100%;
+    min-height: 100%;
 
-    .passwordBox {
-      @include flex-center;
+    @include flex-center-col;
 
-      position: relative;
-    }
+    padding: 20px;
 
-    .eye {
-      position: absolute;
-      top: 55%;
-      right: 2%;
-      cursor: pointer;
-      color: white;
-    }
+    .main {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
 
-    input {
-      text-align: center;
-      font-size: 1.5rem;
-      width: 15rem;
-      height: 2rem;
-      border-radius: 10px;
-      border: 1px solid white;
-      background: rgb(71, 71, 71);
-      overflow-x: auto;
-    }
+      box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
+      -webkit-box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
+      -moz-box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
 
-    button {
-      @include login-register-btn;
+      .logo {
+        background: $logo-accent;
+        @include flex-center-row;
+
+        border-top-left-radius: $br;
+        border-bottom-left-radius: $br;
+
+        img {
+          color: black;
+        }
+      }
+
+      form {
+        @include flex-center-col;
+
+        position: relative;
+
+        background: $form-bg;
+        backdrop-filter: blur(2rem);
+        -webkit-backdrop-filter: blur(2rem);
+
+        border-top-right-radius: $br;
+        border-bottom-right-radius: $br;
+
+        color: black;
+
+        padding: 50px;
+        padding-bottom: 100px;
+        padding-top: 0;
+        gap: 10px;
+
+        .title {
+          height: 100%;
+
+          @include flex-center-col;
+
+          h2 {
+            font-size: 4rem;
+          }
+
+          .img {
+            aspect-ratio: 1/1;
+            width: 50px;
+
+            border: 1px solid black;
+          }
+        }
+
+        .input {
+          @include flex-center-row;
+
+          border: 1px solid white;
+          border-radius: $br;
+          background: rgba($color: #fff, $alpha: 1);
+
+          div {
+            aspect-ratio: 1/1;
+            height: 100%;
+            @include flex-center-row;
+
+            padding: 5px;
+            background: rgba($color: #000, $alpha: 0.1);
+            border-top-left-radius: $br;
+            border-bottom-left-radius: $br;
+          }
+
+          input {
+            text-align: center;
+            font-size: 1.5rem;
+            width: 15rem;
+            height: 2rem;
+            border-radius: 20px;
+
+            border: none;
+            background: rgba($color: #fff, $alpha: 1);
+
+            overflow-x: auto;
+            color: black;
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        button {
+          width: 100%;
+          height: 50px;
+
+          position: absolute;
+          bottom: 0;
+
+          font-size: 1rem;
+
+          border-radius: 0;
+          border: none;
+          border-bottom-right-radius: calc($br - 1px);
+
+          background: rgba($color: #2b1bbe, $alpha: 0.9);
+
+          &:hover {
+            background: rgba($color: #2b1bbe, $alpha: 0.7);
+          }
+        }
+      }
     }
   }
 }

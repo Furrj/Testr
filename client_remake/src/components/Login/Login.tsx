@@ -1,16 +1,15 @@
 import styles from "./Login.module.scss";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { apiRequestLogin } from "../../../requests.ts";
 import {
   INIT_USERINPUT_LOGIN,
   type T_APIRESULT_LOGIN,
   type T_USERINPUT_LOGIN,
 } from "../../types";
-import { togglePasswordLogin } from "../../utils/uiHandlers.ts";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
+import { FaPerson, FaLock, FaDoorOpen } from "react-icons/fa6";
 
 const Login: React.FC = () => {
   const [userInput, setUserInuput] =
@@ -18,7 +17,6 @@ const Login: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [incorrectInfo, setIncorrectInfo] = useState<boolean>(false);
 
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (
@@ -33,10 +31,7 @@ const Login: React.FC = () => {
     onSuccess(data) {
       if (data.data.valid) {
         sendTokensToLocalStorage(data.data.tokens);
-
         queryClient.resetQueries();
-
-        navigate("/");
       } else {
         setIncorrectInfo(true);
       }
@@ -55,56 +50,68 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.content}>
-        <h2>Username:</h2>
-        <input
-          type="text"
-          name="username"
-          value={userInput.username}
-          onChange={inputHandler}
-          autoComplete="on"
-        />
-        <br />
-        <div className={styles.passwordBox}>
-          <h2>Password:</h2>
-          <input
-            type="password"
-            name="password"
-            id="passwordBox"
-            value={userInput.password}
-            onChange={inputHandler}
-            autoComplete="on"
-          />
-          <i
-            className={`fa-solid fa-eye fa-eye-slash ${styles.eye}`}
-            id={"eye"}
-            onClick={togglePasswordLogin}
-          />
-        </div>
-        {incorrectInfo && (
-          <div style={{ color: "red", marginTop: "10px" }}>
-            Information was incorrect
+      <div className={styles.scroll}>
+        <div className={styles.main}>
+          <div className={styles.logo}>
+            <img src="/favicon.svg" alt="logo" />
           </div>
-        )}
-        {error && (
-          <div>
-            <div>Error, Please Try Again</div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              mutation.mutate(userInput);
+            }}
+          >
+            <div className={styles.title}>
+              <h2>Welcome!</h2>
+            </div>
+            <div className={styles.input}>
+              <div>
+                <FaPerson />
+              </div>
+              <input
+                type="text"
+                name="username"
+                value={userInput.username}
+                onChange={inputHandler}
+                placeholder="Username"
+                autoComplete="on"
+              />
+            </div>
             <br />
-          </div>
-        )}
-        <button
-          className={styles.login}
-          style={{ marginTop: "10px" }}
-          onClick={() => {
-            mutation.mutate(userInput);
-          }}
-        >
-          Login
-        </button>
-        or
-        <Link to={"/register"}>
-          <button className={styles.register}>Register</button>
-        </Link>
+
+            <div className={styles.input}>
+              <div>
+                <FaLock />
+              </div>
+              <input
+                type="password"
+                name="password"
+                id="passwordBox"
+                value={userInput.password}
+                onChange={inputHandler}
+                placeholder="Password"
+                autoComplete="on"
+              />
+            </div>
+
+            {incorrectInfo && (
+              <div style={{ color: "red", marginTop: "10px" }}>
+                Information was incorrect
+              </div>
+            )}
+
+            {error && (
+              <div>
+                <div>Error, Please Try Again</div>
+                <br />
+              </div>
+            )}
+
+            <button type="submit">Login</button>
+          </form>
+        </div>
       </div>
     </div>
   );

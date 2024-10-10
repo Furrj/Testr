@@ -24,7 +24,7 @@ const Locals = {
     ops: {
       add: false,
       sub: false,
-      mult: false,
+      mult: true,
       div: false,
     },
     limits: {

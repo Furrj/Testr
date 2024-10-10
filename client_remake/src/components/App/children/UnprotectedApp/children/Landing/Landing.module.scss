@@ -14,6 +14,7 @@
     min-height: 100%;
 
     @include flex-center-col;
+    gap: 50px;
 
     padding: 20px;
 
@@ -34,8 +35,6 @@
 
     .get_started {
       width: fit-content;
-
-      margin-top: 30px;
 
       div {
         text-align: center;
