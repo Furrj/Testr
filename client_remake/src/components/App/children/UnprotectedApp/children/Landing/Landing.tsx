@@ -8,7 +8,10 @@ const Landing: React.FC = () => {
 					Help your students <span className={styles.accent}>master</span> math.
 				</div>
 			</div>
-			<div className={styles.images}></div>
+
+			<div className={styles.get_started}>
+				<div>Get Started</div>
+			</div>
 		</div>
 	);
 };

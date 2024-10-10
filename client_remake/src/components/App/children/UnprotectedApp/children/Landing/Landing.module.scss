@@ -21,6 +21,28 @@
 			text-align: center;
 		}
 	}
+
+	.get_started {
+		width: 100%;
+		@include flex-center-col;
+
+		margin-top: 30px;
+
+		div {
+			text-align: center;
+
+			font-size: 2rem;
+			background: rgb(15, 117, 67);
+			border-radius: 15px;
+			padding: 10px;
+
+			&:hover {
+				cursor: pointer;
+
+				background: $logo-accent;
+			}
+		}
+	}
 }
 
 .accent {
@@ -32,6 +54,10 @@
 		.words div {
 			font-size: 3rem;
 			width: 95%;
+		}
+
+		.get_started div {
+			max-width: 70%;
 		}
 	}
 }
