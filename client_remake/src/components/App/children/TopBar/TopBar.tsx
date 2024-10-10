@@ -11,6 +11,7 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { VscColorMode } from "react-icons/vsc";
+import { Link } from "react-router-dom";
 
 const TopBar: React.FC = () => {
   const { isSuccess, data } = useQuery({
@@ -50,7 +51,9 @@ const TopBar: React.FC = () => {
             </div>
           ) : (
             <div className={styles.buttons}>
-              <button>Login</button>
+              <Link to={"/login"} className={"link"}>
+                <button>Login</button>
+              </Link>
             </div>
           )}
           <VscColorMode className={styles.theme} />
