@@ -98,3 +98,10 @@ CREATE TABLE assignments.game_sessions
     game_session_id UUID REFERENCES game_sessions.data (game_session_id) ON DELETE CASCADE,
     PRIMARY KEY (assignment_id, game_session_id)
 );
+
+CREATE TABLE users.password_reset_codes
+(
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    code       VARCHAR(4) UNIQUE,
+    created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())::bigint
+);

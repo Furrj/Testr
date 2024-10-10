@@ -21,3 +21,8 @@ type StudentData struct {
 	TeacherID UserID `json:"teacher_id"`
 	ClassID   uint   `json:"class_id"`
 }
+
+type PasswordResetCode struct {
+	Code   string `json:"code"`
+	UserID UserID `json:"user_id"`
+}

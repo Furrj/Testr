@@ -23,6 +23,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 			consts.RouteUrlAddAssignment:         {},
 			consts.RouteUrlGetAssignmentsTeacher: {},
 			consts.RouteUrlDeleteStudent:         {},
+			consts.RouteUrlGetPasswordResetCode:  {},
 		},
 	}
 
