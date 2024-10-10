@@ -3,14 +3,15 @@ package dbHandler
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/types"
 )
 
 // GETS
-const QGetAssignmentDataByAssignmentID = `
+const QGetAssignmentByAssignmentID = `
 SELECT
 		assignment_id,
-    user_id,
+    teacher_id,
     name,
     due,
     limit_type,
@@ -24,20 +25,22 @@ SELECT
     is_active
 FROM
 	assignments.data
+NATURAL JOIN
+	game_sessions.settings
 WHERE
 	assignment_id=$1
 `
 
-func (dbHandler *DBHandler) GetAssignmentDataByAssignmentID(id string) (types.DBAssignment, error) {
-	var a types.DBAssignment
+func (dbHandler *DBHandler) GetAssignmentByAssignmentID(id uuid.UUID) (types.Assignment, error) {
+	var a types.Assignment
 
 	err := dbHandler.Conn.QueryRow(
 		context.Background(),
-		QGetAssignmentDataByAssignmentID,
+		QGetAssignmentByAssignmentID,
 		id,
 	).Scan(
 		&a.AssignmentID,
-		&a.UserID,
+		&a.TeacherID,
 		&a.Name,
 		&a.Due,
 		&a.LimitType,
@@ -57,10 +60,10 @@ func (dbHandler *DBHandler) GetAssignmentDataByAssignmentID(id string) (types.DB
 	return a, nil
 }
 
-const QGetAllAssignmentDataByUserID = `
+const QGetAllAssignmentsByTeacherID = `
 SELECT
 		assignment_id,
-    user_id,
+    teacher_id,
     name,
     due,
     limit_type,
@@ -74,16 +77,18 @@ SELECT
     is_active
 FROM
 	assignments.data
+NATURAL JOIN
+	game_sessions.settings
 WHERE
-	user_id=$1
+	teacher_id=$1
 `
 
-func (dbHandler *DBHandler) GetAllAssignmentsDataByUserID(id types.UserID) ([]types.DBAssignment, error) {
-	assignments := []types.DBAssignment{}
+func (dbHandler *DBHandler) GetAllAssignmentsByTeacherID(id types.UserID) ([]types.Assignment, error) {
+	assignments := []types.Assignment{}
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),
-		QGetAllAssignmentDataByUserID,
+		QGetAllAssignmentsByTeacherID,
 		id,
 	)
 	if err != nil {
@@ -92,11 +97,11 @@ func (dbHandler *DBHandler) GetAllAssignmentsDataByUserID(id types.UserID) ([]ty
 	defer rows.Close()
 
 	for rows.Next() {
-		var a types.DBAssignment
+		var a types.Assignment
 
 		err := rows.Scan(
 			&a.AssignmentID,
-			&a.UserID,
+			&a.TeacherID,
 			&a.Name,
 			&a.Due,
 			&a.LimitType,
@@ -128,7 +133,7 @@ const QGetAllAssignmentClassesByAssignmentID = `
 	WHERE assignment_id=$1
 `
 
-func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id string) ([]uint, error) {
+func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id uuid.UUID) ([]uint, error) {
 	ids := []uint{}
 
 	rows, err := dbHandler.Conn.Query(
@@ -163,39 +168,31 @@ const EInsertAssignment = `
 	INSERT INTO assignments.data
 		(
 		assignment_id,
-    user_id,
+    teacher_id,
+		settings_id,
     name,
     due,
-    limit_type,
-    limit_amount,
-    min,
-    max,
-    add,
-    sub,
-    mult,
-    div,
-    is_active
+   	is_active
 		)
 	VALUES
-		($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) 
+		($1, $2, $3, $4, $5, $6) 
 `
 
-func (dbHandler *DBHandler) InsertAssignment(a types.DBAssignment) error {
-	_, err := dbHandler.Conn.Exec(
+func (dbHandler *DBHandler) InsertAssignment(a types.Assignment) error {
+	id, err := dbHandler.InsertGameSessionSettings(a.DBGameSessionSettings)
+	if err != nil {
+		return err
+	}
+
+	a.SettingsID = id
+	_, err = dbHandler.Conn.Exec(
 		context.Background(),
 		EInsertAssignment,
 		a.AssignmentID,
-		a.UserID,
+		a.TeacherID,
+		a.SettingsID,
 		a.Name,
 		a.Due,
-		a.LimitType,
-		a.LimitAmount,
-		a.Min,
-		a.Max,
-		a.Add,
-		a.Sub,
-		a.Mult,
-		a.Div,
 		a.IsActive,
 	)
 	if err != nil {

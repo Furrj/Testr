@@ -53,7 +53,7 @@ func main() {
 		config := cors.DefaultConfig()
 		config.AllowOrigins = []string{"http://localhost:5000", "http://localhost:5173"}
 		config.AllowCredentials = true
-		config.AllowMethods = []string{"POST", "GET", "DELETE"}
+		config.AllowMethods = []string{"POST", "GET", "PUT", "DELETE"}
 		config.AllowHeaders = []string{consts.HeaderTypeAuthorization, "Content-Type"}
 		router.Use(cors.New(config))
 	}
@@ -73,6 +73,7 @@ func main() {
 	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
 	router.POST(consts.RouteUrlUpdateStudentClass, routes.UpdateStudentClass(db))
 	router.POST(consts.RouteUrlAddAssignment, routes.AddAssignment(db))
+	router.POST(consts.RouteUrlCheckPasswordResetCode, routes.CheckPasswordResetCode(db))
 
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
@@ -83,6 +84,9 @@ func main() {
 	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
 	router.GET(consts.RouteUrlGetStudentInfo, routes.GetStudentInfo(db))
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, routes.GetAssignmentsTeacher(db))
+	router.GET(consts.RouteUrlGetPasswordResetCode, routes.GetPasswordResetCode(db))
+
+	router.PUT(consts.RouteUrlUpdatePassword, routes.UpdatePassword(db))
 
 	router.DELETE(consts.RouteUrlDeleteStudent, routes.DeleteStudent(db))
 

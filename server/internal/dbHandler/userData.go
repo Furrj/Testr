@@ -44,6 +44,31 @@ func (dbHandler *DBHandler) GetUserDataByUserID(UserID types.UserID) (types.User
 	return UserData, nil
 }
 
+const QGetPasswordResetCodeByCode = `
+	SELECT user_id, code
+	FROM users.password_reset_codes
+	WHERE code=$1
+`
+
+func (dbHandler *DBHandler) GetPasswordResetCodeByCode(code string) (types.PasswordResetCode, error) {
+	var rc types.PasswordResetCode
+
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetPasswordResetCodeByCode,
+		code,
+	).Scan(
+		&rc.UserID,
+		&rc.Code,
+	)
+	if err != nil {
+		return rc, err
+	}
+	return rc, nil
+}
+
+// INSERTS
+
 const EInsertUser = `
 	INSERT INTO users.ids DEFAULT VALUES
 	RETURNING user_id
@@ -82,6 +107,24 @@ func (dbHandler *DBHandler) InsertUserData(userData types.UserData) error {
 	return nil
 }
 
+const EInsertPasswordResetCode = `
+	INSERT INTO users.password_reset_codes (user_id, code)
+	VALUES ($1, $2)
+`
+
+func (dbHandler *DBHandler) InsertPasswordResetCode(rc types.PasswordResetCode) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EInsertPasswordResetCode,
+		rc.UserID,
+		rc.Code,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // UPDATES
 
 const EUpdateVerticalByUserID = `
@@ -103,6 +146,26 @@ func (dbHandler *DBHandler) UpdateVerticalByUserID(id types.UserID, vertical boo
 	return nil
 }
 
+const EUpdatePasswordAndSaltByUserID = `
+	UPDATE users.data
+	SET password=$2, salt=$3
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) UpdatePasswordAndSaltByUserID(id types.UserID, password, salt string) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EUpdatePasswordAndSaltByUserID,
+		id,
+		password,
+		salt,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // DELETES
 
 const EDeleteUserByUserID = `
@@ -114,6 +177,23 @@ func (dbHandler *DBHandler) DeleteUserByUserID(id types.UserID) error {
 	_, err := dbHandler.Conn.Exec(
 		context.Background(),
 		EDeleteUserByUserID,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+const EDeletePasswordResetCodeByUserID = `
+	DELETE FROM users.password_reset_codes
+	WHERE user_id=$1
+`
+
+func (dbHandler *DBHandler) DeletePasswordResetCodeByUserID(id types.UserID) error {
+	_, err := dbHandler.Conn.Exec(
+		context.Background(),
+		EDeletePasswordResetCodeByUserID,
 		id,
 	)
 	if err != nil {

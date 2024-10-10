@@ -53,3 +53,8 @@ var TestUserLoginPayloadInvalidUsername = types.ReqLogin{
 	Username: "invalid",
 	Password: "pass",
 }
+
+var TestPasswordResetCode = types.PasswordResetCode{
+	UserID: TestUserDataJackson.UserID,
+	Code:   "1234",
+}

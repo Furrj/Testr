@@ -39,19 +39,21 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 		session := types.GameSession{
-			GameSessionID:  gameSessionID,
-			UserID:         userID,
-			LimitType:      payload.LimitType,
+			GameSessionID: gameSessionID,
+			UserID:        userID,
+			DBGameSessionSettings: types.DBGameSessionSettings{
+				LimitType: payload.LimitType,
+				Min:       payload.Min,
+				Max:       payload.Max,
+				Add:       payload.Add,
+				Sub:       payload.Sub,
+				Mult:      payload.Mult,
+				Div:       payload.Div,
+			},
 			QuestionsCount: payload.QuestionsCount,
 			CorrectCount:   payload.CorrectCount,
 			Score:          payload.Score,
 			Time:           payload.Time,
-			Min:            payload.Min,
-			Max:            payload.Max,
-			Add:            payload.Add,
-			Sub:            payload.Sub,
-			Mult:           payload.Mult,
-			Div:            payload.Div,
 		}
 		if payload.LimitType == 0 {
 			session.LimitAmount = payload.Time
