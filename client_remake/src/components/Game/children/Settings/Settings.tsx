@@ -1,6 +1,5 @@
 import styles from "./Settings.module.scss";
 import { useForm } from "@tanstack/react-form";
-import { useState } from "react";
 import {
   type T_GAME_SETTINGS,
   E_GAME_LIMIT_TYPES,
@@ -20,8 +19,6 @@ interface IProps {
 }
 
 const Settings: React.FC<IProps> = (props) => {
-  const [timeLimit, setTimeLimit] = useState<boolean>(true);
-
   const form = useForm<T_SETTINGS_FORM>({
     defaultValues: {
       ...deepCopyObject(Locals.INIT_SETTINGS_FORM),
@@ -37,7 +34,6 @@ const Settings: React.FC<IProps> = (props) => {
       },
     },
     onSubmit: ({ value }) => {
-      console.log("submitting");
       const obj: T_GAME_SETTINGS = {
         range: {
           min: Number.parseInt(value.range.min as string) | 0,
@@ -50,20 +46,24 @@ const Settings: React.FC<IProps> = (props) => {
           div: value.ops.div,
         },
         limits: {
-          time: Number.parseInt(value.limits.time as string) | 0,
+          time: value.limits.type,
           count: Number.parseInt(value.limits.count as string) | 0,
         },
       };
 
-      if (timeLimit) obj.limits.count = 0;
+      if (value.limits.type === E_GAME_LIMIT_TYPES.TIME) obj.limits.count = 0;
       else obj.limits.time = 0;
 
       props.gameSettings.current = obj;
       props.setGameStatus(E_GAME_STATUS.ACTIVE);
       props.setLimitType(
-        timeLimit ? E_GAME_LIMIT_TYPES.TIME : E_GAME_LIMIT_TYPES.COUNT,
+        value.limits.type === E_GAME_LIMIT_TYPES.TIME
+          ? E_GAME_LIMIT_TYPES.TIME
+          : E_GAME_LIMIT_TYPES.COUNT,
       );
-      props.timeInSeconds.set(timeLimit ? obj.limits.time : 0);
+      props.timeInSeconds.set(
+        value.limits.type === E_GAME_LIMIT_TYPES.TIME ? obj.limits.count : 0,
+      );
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);
@@ -260,110 +260,32 @@ const Settings: React.FC<IProps> = (props) => {
             <div className={styles.ops_error}>{formErrorMap.onSubmit}</div>
           )}
 
-          <div className={styles.limits}>
-            <div
-              className={`${styles.time} ${timeLimit ? styles.checked : styles.unchecked}`}
-              onClick={() => !timeLimit && setTimeLimit(true)}
-            >
-              <FaClock />
+          <form.Field
+            name="limits.type"
+            children={(field) => (
+              <div className={styles.limits}>
+                <div
+                  className={`${styles.time} ${field.getValue() === E_GAME_LIMIT_TYPES.TIME ? styles.checked : styles.unchecked}`}
+                  onClick={() => {
+                    field.setValue(E_GAME_LIMIT_TYPES.TIME);
+                    console.log(field.getValue());
+                  }}
+                >
+                  <FaClock />
+                </div>
 
-              {/* <form.Field
-                name="limits.time"
-                children={(field) => (
-                  <>
-                    <input
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className={`${
-                        field.state.meta.errors.length > 0
-                          ? styles.errInput
-                          : ""
-                      } ${timeLimit ? "" : styles.hidden}`}
-                      type="number"
-                      inputMode="numeric"
-                    />
-                    {field.state.meta.errors.length > 0 ? (
-                      <div className={styles.err}>
-                        {field.state.meta.errors.join(", ")}
-                      </div>
-                    ) : null}
-                  </>
-                )}
-                validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
-                    }
-
-                    return undefined;
-                  },
-                  onSubmit: ({ value }) => {
-                    if (
-                      timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
-                      return "Cannot be empty";
-                    }
-
-                    return undefined;
-                  },
-                }}
-              /> */}
-            </div>
-            <div
-              className={`${styles.questions} ${!timeLimit ? styles.checked : styles.unchecked}`}
-              onClick={() => timeLimit && setTimeLimit(false)}
-            >
-              <FaQuestionCircle />
-
-              {/* <form.Field
-                name="limits.count"
-                children={(field) => (
-                  <>
-                    <input
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className={`${
-                        field.state.meta.errors.length > 0
-                          ? styles.errInput
-                          : ""
-                      } ${timeLimit ? styles.hidden : ""}`}
-                      type="number"
-                      inputMode="numeric"
-                    />
-                    {field.state.meta.errors.length > 0 ? (
-                      <div className={styles.err}>
-                        {field.state.meta.errors.join(", ")}
-                      </div>
-                    ) : null}
-                  </>
-                )}
-                validators={{
-                  onChange: ({ value }) => {
-                    if (Number.parseInt(value as string) < 0) {
-                      return "Cannot be negative";
-                    }
-
-                    return undefined;
-                  },
-                  onSubmit: ({ value }) => {
-                    if (
-                      !timeLimit &&
-                      (value === "" || Number.isNaN(value as string))
-                    ) {
-                      return "Cannot be empty";
-                    }
-
-                    return undefined;
-                  },
-                }}
-              /> */}
-            </div>
-          </div>
+                <div
+                  className={`${styles.questions} ${field.getValue() === E_GAME_LIMIT_TYPES.COUNT ? styles.checked : styles.unchecked}`}
+                  onClick={() => {
+                    field.setValue(E_GAME_LIMIT_TYPES.COUNT);
+                    console.log(field.getValue());
+                  }}
+                >
+                  <FaQuestionCircle />
+                </div>
+              </div>
+            )}
+          />
 
           <button type="submit">Start</button>
         </form>

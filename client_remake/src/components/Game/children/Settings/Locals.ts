@@ -1,3 +1,5 @@
+import { E_GAME_LIMIT_TYPES } from "../../../../types/game";
+
 export type T_SETTINGS_FORM = {
   range: {
     min: number | string;
@@ -10,7 +12,7 @@ export type T_SETTINGS_FORM = {
     div: boolean;
   };
   limits: {
-    time: number | string;
+    type: E_GAME_LIMIT_TYPES;
     count: number | string;
   };
 };
@@ -28,7 +30,7 @@ const Locals = {
       div: false,
     },
     limits: {
-      time: "",
+      type: E_GAME_LIMIT_TYPES.TIME,
       count: "",
     },
   } as T_SETTINGS_FORM,

@@ -166,3 +166,9 @@ $form-bg: #ededed;
     }
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .root .scroll form {
+    width: 90%;
+  }
+}
