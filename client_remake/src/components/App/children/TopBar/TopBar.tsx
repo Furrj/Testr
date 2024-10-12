@@ -5,73 +5,73 @@ import NavBar from "./children/NavBar/NavBar";
 import { IoMdExit } from "react-icons/io";
 import { QUERY_KEYS } from "../../../../utils/consts";
 import {
-  clearTokensFromLocalStorage,
-  getAuthStatus,
+	clearTokensFromLocalStorage,
+	getAuthStatus,
 } from "../../../../utils/methods";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PiMathOperationsBold } from "react-icons/pi";
-import { VscColorMode } from "react-icons/vsc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const TopBar: React.FC = () => {
-  const { isSuccess, data } = useQuery({
-    queryKey: [QUERY_KEYS.USER_DATA],
-    queryFn: getAuthStatus,
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+	const { isSuccess, data } = useQuery({
+		queryKey: [QUERY_KEYS.USER_DATA],
+		queryFn: getAuthStatus,
+		retry: false,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+	});
 
-  const [showingNavbar, setShowingNavbar] = useState<boolean>(false);
+	const [showingNavbar, setShowingNavbar] = useState<boolean>(false);
 
-  const queryClient = useQueryClient();
-  const location = useLocation();
-  const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const location = useLocation();
+	const navigate = useNavigate();
 
-  return (
-    <div className={styles.root}>
-      <div className={styles.main}>
-        <PiMathOperationsBold className={styles.icon} />
-        <h1 className={styles.title}>Teachify</h1>
+	return (
+		<div className={styles.root}>
+			<div className={styles.main}>
+				<PiMathOperationsBold className={styles.icon} />
+				<h1 className={styles.title}>Teachify</h1>
 
-        <div className={styles.right}>
-          {isSuccess && data.valid ? (
-            <div className={styles.logged_in}>
-              <IoMdExit
-                onClick={() => {
-                  clearTokensFromLocalStorage();
-                  queryClient.resetQueries();
-                  navigate("/login");
-                }}
-                className={styles.logout}
-              />
-              <GiHamburgerMenu
-                onClick={() => setShowingNavbar((curr) => !curr)}
-                className={styles.hamburger}
-              />
-            </div>
-          ) : (
-            <>
-              {location.pathname !== "/login" && (
-                <div className={styles.buttons}>
-                  <Link to={"/login"} className={"link"}>
-                    <button>Login</button>
-                  </Link>
-                </div>
-              )}
-            </>
-          )}
-          <VscColorMode className={styles.theme} />
-        </div>
-      </div>
+				<div className={styles.right}>
+					{isSuccess && data.valid ? (
+						<div className={styles.logged_in}>
+							<IoMdExit
+								onClick={() => {
+									clearTokensFromLocalStorage();
+									queryClient.resetQueries();
+									navigate("/login");
+								}}
+								className={styles.logout}
+							/>
+							<GiHamburgerMenu
+								onClick={() => setShowingNavbar((curr) => !curr)}
+								className={`${styles.hamburger} ${
+									showingNavbar ? styles.open : ""
+								}`}
+							/>
+						</div>
+					) : (
+						<>
+							{location.pathname !== "/login" && (
+								<div className={styles.buttons}>
+									<Link to={"/login"} className={"link"}>
+										<button>Login</button>
+									</Link>
+								</div>
+							)}
+						</>
+					)}
+				</div>
+			</div>
 
-      {showingNavbar && (
-        <div className={styles.navbar}>
-          <NavBar />
-        </div>
-      )}
-    </div>
-  );
+			{showingNavbar && (
+				<div className={styles.navbar}>
+					<NavBar />
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default TopBar;

@@ -4,193 +4,225 @@
 $border: 1px solid black;
 $br: 10px;
 $form-bg: #ededed;
+$hover: rgba(
+	$color: #3b3737,
+	$alpha: 1
+);
 
 .root {
-  @include full-size-percent;
+	@include full-size-percent;
 
-  overflow: auto;
+	overflow: auto;
 
-  .scroll {
-    min-width: 100%;
-    min-height: 100%;
-    @include flex-center;
+	.scroll {
+		min-width: 100%;
+		min-height: 100%;
+		@include flex-center;
 
-    padding-top: 20px;
-    padding-bottom: 20px;
+		padding-top: 20px;
+		padding-bottom: 20px;
 
-    form {
-      min-width: fit-content;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-items: center;
+		form {
+			min-width: fit-content;
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+			align-items: center;
 
-      border-radius: $br;
+			border-radius: $br;
 
-      background: $form-bg;
+			user-select: none;
 
-      color: black;
+			//background: $form-bg;
+			//color: black;
 
-      input {
-        height: 5rem;
+			input {
+				height: 5rem;
 
-        border: 1px solid white;
-        border-radius: $br;
-        background: rgba($color: #b7b6b6, $alpha: 1);
+				border: 1px solid white;
+				border-radius: $br;
+				background: rgba($color: #b7b6b6, $alpha: 1);
 
-        color: black;
-        text-align: center;
+				color: black;
+				text-align: center;
 
-        font-size: 3rem;
-        font-weight: bold;
+				font-size: 3rem;
+				font-weight: bold;
 
-        &.errInput {
-          border: 2px solid red;
-          background: rgba($color: #f00, $alpha: 0.5);
-        }
-      }
+				&.errInput {
+					border: 2px solid red;
+					background: rgba($color: #f00, $alpha: 0.5);
+				}
+			}
 
-      .range {
-        display: grid;
-        grid-template-columns: 1fr 4rem 1fr;
+			.range {
+				display: grid;
+				grid-template-columns: 1fr 4rem 1fr;
 
-        padding: 10px;
+				padding: 10px;
 
-        div {
-          @include full-size-percent;
-          @include flex-center-col;
+				div {
+					@include full-size-percent;
+					@include flex-center-col;
 
-          input {
-            width: 10rem;
-          }
-        }
+					input {
+						width: 10rem;
+					}
+				}
 
-        .div {
-          font-size: 4rem;
-          text-align: center;
-        }
-      }
+				.div {
+					font-size: 4rem;
+					text-align: center;
+				}
+			}
 
-      .ops {
-        width: 100%;
+			.ops {
+				width: 100%;
 
-        display: grid;
-        grid-template-columns: repeat(4, 25%);
+				display: grid;
+				grid-template-columns: repeat(4, 25%);
 
-        border: 1px solid $form-bg;
+				border: 1px solid $form-bg;
 
-        div {
-          width: 100%;
-          height: 100%;
-          @include flex-center-col;
+				div {
+					width: 100%;
+					height: 100%;
+					@include flex-center-col;
 
-          border-right: 1px solid $form-bg;
+					border-right: 1px solid $form-bg;
 
-          font-size: 4rem;
-          font-weight: 900;
+					font-size: 4rem;
+					font-weight: 900;
 
-          color: white;
+					color: white;
 
-          backdrop-filter: blur(2rem);
-          -webkit-backdrop-filter: blur(2rem);
+					backdrop-filter: blur(2rem);
+					-webkit-backdrop-filter: blur(2rem);
 
-          &:hover {
-            cursor: pointer;
-          }
+					&:hover {
+						cursor: pointer;
 
-          &:last-of-type {
-            border: none;
-          }
-        }
+						background: $hover;
+					}
 
-        .checked {
-          background: rgba($color: rgb(20, 148, 54), $alpha: 1);
+					&:last-of-type {
+						border: none;
+					}
+				}
 
-          color: rgba($color: #fff, $alpha: 1);
-        }
+				.checked {
+					background: rgba($color: rgb(20, 148, 54), $alpha: 1);
 
-        .unchecked {
-          background: $main-bg;
+					color: rgba($color: #fff, $alpha: 1);
+				}
 
-          color: rgba($color: #fff, $alpha: 0.5);
-        }
-      }
+				.unchecked {
+					background: $main-bg;
 
-      .limits {
-        width: 100%;
+					color: rgba($color: #fff, $alpha: 0.5);
+				}
+			}
 
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        margin-top: 10px;
+			.limits {
+				width: 100%;
 
-        border: 1px solid $form-bg;
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				margin-top: 10px;
 
-        div {
-          width: 100%;
-          @include flex-center-col;
+				border: 1px solid $form-bg;
 
-          font-size: 4rem;
+				div {
+					width: 100%;
+					@include flex-center-col;
 
-          padding: 10px;
+					font-size: 4rem;
 
-          &:first-of-type {
-            border-right: 1px solid $form-bg;
-          }
+					padding: 10px;
 
-          &:hover {
-            cursor: pointer;
-          }
-        }
+					&:first-of-type {
+						border-right: 1px solid $form-bg;
+					}
 
-        .checked {
-          background: rgba($color: rgb(7, 7, 246), $alpha: 1);
+					&:hover {
+						cursor: pointer;
 
-          color: rgba($color: #fff, $alpha: 1);
-        }
+						background: $hover;
+					}
+				}
 
-        .unchecked {
-          background: $main-bg;
+				.checked {
+					background: rgba($color: rgb(7, 7, 246), $alpha: 1);
 
-          color: rgba($color: #fff, $alpha: 0.5);
-        }
-      }
+					color: rgba($color: #fff, $alpha: 1);
+				}
 
-      .limit_count {
-        width: 100%;
-        @include flex-center-row;
+				.unchecked {
+					background: $main-bg;
 
-        margin-top: 10px;
+					color: rgba($color: #fff, $alpha: 0.5);
+				}
+			}
 
-        div {
-          @include flex-center-col;
+			.limit_count {
+				width: 100%;
+				@include flex-center-row;
 
-          input {
-            width: 10rem;
-          }
+				margin-top: 10px;
 
-          span {
-            font-size: 2rem;
-          }
-        }
-      }
-    }
+				div {
+					@include flex-center-col;
 
-    button {
-      width: 100%;
+					input {
+						width: 10rem;
+					}
 
-      border-bottom-left-radius: $br;
-      border-bottom-right-radius: $br;
+					span {
+						font-size: 2rem;
+					}
+				}
+			}
+		}
+
+		.button {
+			aspect-ratio: 1/1;
+			width: 30%;
+
+			@include flex-center-col;
+
+			border-radius: $br;
 
 			font-size: 3rem;
 
-      border: none;
-    }
-  }
+			border: none;
+
+			.img {
+				@include full-size-percent;
+				padding: 10px;
+
+				transform: translateX(4px);
+			}
+		}
+	}
 }
 
 @media only screen and (max-width: 600px) {
-  .root .scroll form {
-    width: 90%;
-  }
+	.root .scroll form {
+		width: 90%;
+
+		.range {
+			div input {
+				width: 8rem;
+			}
+		}
+
+		.ops {
+			div {
+				&:hover {
+					background: none;
+				}
+			}
+		}
+	}
 }
