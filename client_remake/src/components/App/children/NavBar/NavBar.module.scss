@@ -36,6 +36,10 @@ $navbar-width: 135px;
 			&:hover {
 				background: #747575;
 			}
+
+			&.current {
+				background: blue;
+			}
 		}
 	}
 

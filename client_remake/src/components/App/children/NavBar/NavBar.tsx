@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../../../utils/consts";
@@ -12,12 +12,15 @@ const NavBar: React.FC = () => {
 		refetchOnWindowFocus: false,
 		staleTime: Infinity,
 	});
+	const location = useLocation();
 
 	return (
 		<div className={styles.root}>
 			<div className={styles.top}>
 				<Link to={"/game"} className={styles.link}>
-					<div>Play</div>
+					<div className={location.pathname === "/game" ? styles.current : ""}>
+						Play
+					</div>
 				</Link>
 
 				<Link to={"/"} className={styles.link}>
@@ -29,7 +32,7 @@ const NavBar: React.FC = () => {
 				</Link>
 
 				<Link to={"/"} className={styles.link}>
-					<div>Class</div>
+					<div>Classes</div>
 				</Link>
 			</div>
 
