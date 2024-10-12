@@ -87,7 +87,7 @@ const Settings: React.FC<IProps> = (props) => {
 											!Number.isNaN(fieldApi.form.getFieldValue("range.max")) &&
 											Number.parseInt(value as string) >=
 												Number.parseInt(
-													fieldApi.form.getFieldValue("range.max") as string
+													fieldApi.form.getFieldValue("range.max") as string,
 												)
 										) {
 											return "Min must be less than max";
@@ -140,7 +140,7 @@ const Settings: React.FC<IProps> = (props) => {
 											!Number.isNaN(fieldApi.form.getFieldValue("range.min")) &&
 											Number.parseInt(value as string) <=
 												Number.parseInt(
-													fieldApi.form.getFieldValue("range.min") as string
+													fieldApi.form.getFieldValue("range.min") as string,
 												)
 										) {
 											return "Max must be more than min";

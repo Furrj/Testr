@@ -2,16 +2,16 @@
 @import "../../styles/_mixins.scss";
 
 .root {
-  height: calc(100dvh - $topbar-height - 1px);
-  width: 100%;
-  display: flex;
+	height: calc(100dvh - $topbar-height - 1px);
+	width: 100%;
+	display: flex;
 
-  overflow: hidden;
-  background: $main-bg;
+	overflow: hidden;
+	background: $main-bg;
 
-  .content {
-    @include full-size-percent;
+	.content {
+		@include full-size-percent;
 
-    background: $main-bg;
-  }
+		background: $main-bg;
+	}
 }

@@ -2,84 +2,84 @@
 @import "../../../../../../styles/vars";
 
 .root {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 
-  @include flex-center;
+	@include flex-center;
 
-  //border: 1px solid white;
+	//border: 1px solid white;
 
-  h2 {
-    margin-top: 20px;
-    width: 100%;
-    @include flex-center;
-  }
+	h2 {
+		margin-top: 20px;
+		width: 100%;
+		@include flex-center;
+	}
 
-  .content {
-    width: 60%;
-    height: 60%;
-    overflow: auto;
+	.content {
+		width: 60%;
+		height: 60%;
+		overflow: auto;
 
-    border: 1px solid white;
+		border: 1px solid white;
 
-    .scroll {
-      width: 100%;
-      height: 100%;
+		.scroll {
+			width: 100%;
+			height: 100%;
 
-      .link {
-        text-decoration: none;
-        color: white;
+			.link {
+				text-decoration: none;
+				color: white;
 
-        .box {
-          width: 100%;
-          height: 3.5rem;
-          @include flex-center;
-          border: 1px solid white;
+				.box {
+					width: 100%;
+					height: 3.5rem;
+					@include flex-center;
+					border: 1px solid white;
 
-          font-size: 2rem;
+					font-size: 2rem;
 
-          cursor: pointer;
+					cursor: pointer;
 
-          &:hover {
-            background: $color-btn-hover;
-          }
-        }
-      }
+					&:hover {
+						background: $color-btn-hover;
+					}
+				}
+			}
 
-      .box {
-        width: 100%;
-        height: 3.5rem;
-        @include flex-center;
-        border: 1px solid white;
+			.box {
+				width: 100%;
+				height: 3.5rem;
+				@include flex-center;
+				border: 1px solid white;
 
-        font-size: 2rem;
+				font-size: 2rem;
 
-        cursor: pointer;
+				cursor: pointer;
 
-        &:hover {
-          background: $color-btn-hover;
-        }
-      }
+				&:hover {
+					background: $color-btn-hover;
+				}
+			}
 
-      .new {
-        width: 100%;
-        height: 3rem;
+			.new {
+				width: 100%;
+				height: 3rem;
 
-        display: flex;
-        border: 1px solid white;
+				display: flex;
+				border: 1px solid white;
 
-        input {
-          width: 100%;
+				input {
+					width: 100%;
 
-          font-size: 2rem;
+					font-size: 2rem;
 
-          text-align: center;
-        }
+					text-align: center;
+				}
 
-        button {
-          width: 10%;
-        }
-      }
-    }
-  }
+				button {
+					width: 10%;
+				}
+			}
+		}
+	}
 }

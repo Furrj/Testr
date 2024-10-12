@@ -2,74 +2,74 @@
 @import "../../../../../../styles/mixins";
 
 .root {
-  @include full-size-percent;
+	@include full-size-percent;
 
-  // display: grid;
-  // grid-template-columns: repeat(2, 1fr);
+	// display: grid;
+	// grid-template-columns: repeat(2, 1fr);
 
-  overflow: auto;
+	overflow: auto;
 
-  .scroll {
-    min-width: 100%;
-    min-height: 100%;
+	.scroll {
+		min-width: 100%;
+		min-height: 100%;
 
-    @include flex-center-col;
-    gap: 50px;
+		@include flex-center-col;
+		gap: 50px;
 
-    padding: 20px;
+		padding: 20px;
 
-    .words {
-      width: 100%;
-      @include flex-center-col;
+		.words {
+			width: 100%;
+			@include flex-center-col;
 
-      //border-bottom: 1px solid white;
+			//border-bottom: 1px solid white;
 
-      div {
-        width: 60%;
+			div {
+				width: 60%;
 
-        font-size: 4rem;
-        font-weight: 900;
-        text-align: center;
-      }
-    }
+				font-size: 4rem;
+				font-weight: 900;
+				text-align: center;
+			}
+		}
 
-    .get_started {
-      width: fit-content;
+		.get_started {
+			width: fit-content;
 
-      div {
-        text-align: center;
+			div {
+				text-align: center;
 
-        font-size: 2rem;
-        background: rgb(15, 117, 67);
-        border-radius: 15px;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 5px;
-        padding-bottom: 5px;
+				font-size: 2rem;
+				background: rgb(15, 117, 67);
+				border-radius: 15px;
+				padding-left: 10px;
+				padding-right: 10px;
+				padding-top: 5px;
+				padding-bottom: 5px;
 
-        &:hover {
-          cursor: pointer;
+				&:hover {
+					cursor: pointer;
 
-          background: $logo-accent;
-        }
-      }
-    }
-  }
+					background: $logo-accent;
+				}
+			}
+		}
+	}
 }
 
 .accent {
-  color: $logo-accent;
+	color: $logo-accent;
 }
 
 @media only screen and (max-width: 500px) {
-  .root .scroll {
-    .words div {
-      font-size: 3rem;
-      width: 95%;
-    }
+	.root .scroll {
+		.words div {
+			font-size: 3rem;
+			width: 95%;
+		}
 
-    .get_started div {
-      max-width: 70%;
-    }
-  }
+		.get_started div {
+			max-width: 70%;
+		}
+	}
 }

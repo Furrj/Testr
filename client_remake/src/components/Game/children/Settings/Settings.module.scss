@@ -6,7 +6,7 @@ $br: 10px;
 $form-bg: #ededed;
 $hover: rgba(
 	$color: #3b3737,
-	$alpha: 1
+	$alpha: 0.1,
 );
 
 .root {
@@ -102,8 +102,6 @@ $hover: rgba(
 
 					&:hover {
 						cursor: pointer;
-
-						background: $hover;
 					}
 
 					&:last-of-type {
@@ -147,8 +145,6 @@ $hover: rgba(
 
 					&:hover {
 						cursor: pointer;
-
-						background: $hover;
 					}
 				}
 

@@ -7,55 +7,55 @@ $navbar-link-border: 1px solid black;
 $navbar-width: 135px;
 
 .root {
-  width: fit-content;
-  height: 100%;
+	width: fit-content;
+	height: 100%;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-  background: $navbar-bg;
+	background: $navbar-bg;
 
-  border-right: $navbar-link-border;
+	border-right: $navbar-link-border;
 
-  .link {
-    width: 100%;
-    text-decoration: none;
-    color: white;
+	.link {
+		width: 100%;
+		text-decoration: none;
+		color: white;
 
-    div {
-      width: 100%;
-      height: $link-height;
-      @include flex-center-row;
+		div {
+			width: 100%;
+			height: $link-height;
+			@include flex-center-row;
 
-      border-bottom: $navbar-link-border;
+			border-bottom: $navbar-link-border;
 
-      padding-left: 10px;
-      padding-right: 10px;
+			padding-left: 10px;
+			padding-right: 10px;
 
-      &:hover {
-        background: #747575;
-      }
-    }
-  }
+			&:hover {
+				background: #747575;
+			}
+		}
+	}
 
-  .bottom {
-    .link div {
-      border-top: $navbar-link-border;
+	.bottom {
+		.link div {
+			border-top: $navbar-link-border;
 
-      color: $name-color;
+			color: $name-color;
 
-      background: #424141;
+			background: #424141;
 
-      &:hover {
-        background: #424141;
-      }
-    }
-  }
+			&:hover {
+				background: #424141;
+			}
+		}
+	}
 }
 
 @media only screen and (max-width: $mobile-width) {
-  .root {
-    display: none;
-  }
+	.root {
+		display: none;
+	}
 }

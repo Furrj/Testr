@@ -1,6 +1,6 @@
 @import "../../styles/mixins";
 
 .root {
-  @include full-size-percent;
-  @include flex-center;
+	@include full-size-percent;
+	@include flex-center;
 }

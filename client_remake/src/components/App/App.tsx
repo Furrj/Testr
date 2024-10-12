@@ -10,39 +10,39 @@ import TopBar from "./children/TopBar/TopBar";
 import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
 
 const App: React.FC = () => {
-  // fetch auth status if tokens in localstorage
-  const { isFetching, isSuccess, data } = useQuery({
-    queryKey: [QUERY_KEYS.USER_DATA],
-    queryFn: getAuthStatus,
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+	// fetch auth status if tokens in localstorage
+	const { isFetching, isSuccess, data } = useQuery({
+		queryKey: [QUERY_KEYS.USER_DATA],
+		queryFn: getAuthStatus,
+		retry: false,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+	});
 
-  return (
-    <div className={styles.root}>
-      <TopBar />
+	return (
+		<div className={styles.root}>
+			<TopBar />
 
-      {/* <VersionLabel /> */}
+			{/* <VersionLabel /> */}
 
-      <ContentBox>
-        {isFetching ? (
-          <Loading />
-        ) : (
-          <Routes>
-            {isSuccess && data && data.valid ? (
-              <Route
-                path="*"
-                element={<ProtectedApp userData={data.user_data} />}
-              />
-            ) : (
-              <Route path="*" element={<UnprotectedApp />} />
-            )}
-          </Routes>
-        )}
-      </ContentBox>
-    </div>
-  );
+			<ContentBox>
+				{isFetching ? (
+					<Loading />
+				) : (
+					<Routes>
+						{isSuccess && data && data.valid ? (
+							<Route
+								path="*"
+								element={<ProtectedApp userData={data.user_data} />}
+							/>
+						) : (
+							<Route path="*" element={<UnprotectedApp />} />
+						)}
+					</Routes>
+				)}
+			</ContentBox>
+		</div>
+	);
 };
 
 export default App;

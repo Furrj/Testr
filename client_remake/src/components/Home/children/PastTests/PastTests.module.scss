@@ -4,110 +4,110 @@
 $border: 1px solid white;
 
 .root {
-  max-height: 100%;
+	max-height: 100%;
 
-  background: grey;
+	background: grey;
 
-  overflow: auto;
+	overflow: auto;
 
-  border: $border;
+	border: $border;
 
-  .scroll {
-    height: 100%;
-  }
+	.scroll {
+		height: 100%;
+	}
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+	.row {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
 
-    border-top: $border;
+		border-top: $border;
 
-    div {
-      text-align: center;
-    }
+		div {
+			text-align: center;
+		}
 
-    .date {
-      min-width: 8rch;
+		.date {
+			min-width: 8rch;
 
-      border-right: $border;
-    }
+			border-right: $border;
+		}
 
-    .score {
-      border-right: $border;
-      min-width: 8rch;
-    }
+		.score {
+			border-right: $border;
+			min-width: 8rch;
+		}
 
-    .count {
-      border-right: $border;
+		.count {
+			border-right: $border;
 
-      min-width: 7rch;
-    }
+			min-width: 7rch;
+		}
 
-    .time {
-      border-right: $border;
-      min-width: 5rch;
-    }
+		.time {
+			border-right: $border;
+			min-width: 5rch;
+		}
 
-    .range {
-      display: grid;
-      grid-template-columns: repeat(2, 50%);
+		.range {
+			display: grid;
+			grid-template-columns: repeat(2, 50%);
 
-      span {
-        border-right: $border;
+			span {
+				border-right: $border;
 
-        min-width: 5rch;
-      }
-    }
+				min-width: 5rch;
+			}
+		}
 
-    .limit {
-      min-width: 7rch;
+		.limit {
+			min-width: 7rch;
 
-      @include flex-center-row;
+			@include flex-center-row;
 
-      border-right: $border;
-    }
+			border-right: $border;
+		}
 
-    .ops {
-      display: flex;
-      justify-content: space-between;
+		.ops {
+			display: flex;
+			justify-content: space-between;
 
-      span {
-        min-width: 3rch;
-        width: 100%;
+			span {
+				min-width: 3rch;
+				width: 100%;
 
-        text-align: center;
+				text-align: center;
 
-        border-right: $border;
+				border-right: $border;
 
-        &.checked {
-          background: green;
-        }
+				&.checked {
+					background: green;
+				}
 
-        &.unchecked {
-          background: red;
-        }
+				&.unchecked {
+					background: red;
+				}
 
-        &:last-of-type {
-          border: none;
-        }
-      }
-    }
+				&:last-of-type {
+					border: none;
+				}
+			}
+		}
 
-    &.headers {
-      border-bottom: $border;
+		&.headers {
+			border-bottom: $border;
 
-      position: sticky;
-      top: 0;
+			position: sticky;
+			top: 0;
 
-      background: grey;
+			background: grey;
 
-      color: black;
-      font-size: 1.2rem;
-      font-weight: bold;
+			color: black;
+			font-size: 1.2rem;
+			font-weight: bold;
 
-      .limit {
-        @include flex-center-col;
-      }
-    }
-  }
+			.limit {
+				@include flex-center-col;
+			}
+		}
+	}
 }
