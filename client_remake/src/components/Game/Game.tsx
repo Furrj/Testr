@@ -3,7 +3,6 @@ import Settings from "./children/Settings/Settings";
 import {
   E_GAME_LIMIT_TYPES,
   E_GAME_STATUS,
-  INIT_GAME_SETTINGS,
   type T_GAME_SETTINGS,
 } from "../../types/game";
 import {
@@ -15,7 +14,6 @@ import Active from "./children/Active/Active";
 import Loading from "../Loading/Loading";
 import Post from "./children/Post/Post";
 import Locals from "./Locals";
-import { deepCopyObject } from "../../utils/methods";
 
 const QUESTION_CHUNK_SIZE: number = 10;
 
@@ -41,6 +39,15 @@ const Game: React.FC<IProps> = (props) => {
 
   function startGame(settings: T_GAME_SETTINGS): void {
     setGameSettings(settings);
+    setGameStatus(E_GAME_STATUS.ACTIVE);
+    setTimeInSeconds(() =>
+      settings.limit_type === E_GAME_LIMIT_TYPES.TIME
+        ? settings.limit_amount
+        : 0,
+    );
+  }
+
+  function restartGame() {
     setCurrentQuestionIndex(1);
     setGameStatus(E_GAME_STATUS.ACTIVE);
     setTimeInSeconds(() =>
@@ -114,13 +121,14 @@ const Game: React.FC<IProps> = (props) => {
     case E_GAME_STATUS.PRE:
       return <Settings startGame={startGame} />;
     case E_GAME_STATUS.ACTIVE:
-      return questions.length > 0 && timeInSeconds !== null ? (
+      return gameSettings !== undefined &&
+        questions.length > 0 &&
+        timeInSeconds !== null ? (
         <Active
           questions={questions}
           userGuesses={userGuesses}
-          settings={gameSettings.current}
+          gameSettings={{ curr: gameSettings }}
           vertical={props.vertical}
-          limitType={limitType}
           gameStatus={{ set: setGameStatus }}
           currentQuestionIndex={{
             curr: currentQuestionIndex,
@@ -139,19 +147,18 @@ const Game: React.FC<IProps> = (props) => {
     case E_GAME_STATUS.POST:
       return questionResults.length > 0 &&
         timeInSeconds !== null &&
-        gameSettings.current !== undefined ? (
+        gameSettings !== undefined ? (
         <Post
           results={questionResults}
           time={timeInSeconds}
-          settings={gameSettings.current}
-          limitType={limitType}
+          gameSettings={{ curr: gameSettings }}
           gameStatus={{ curr: gameStatus, set: setGameStatus }}
           currentQuestionIndex={{
             curr: currentQuestionIndex,
             set: setCurrentQuestionIndex,
           }}
           timeInSeconds={{ curr: timeInSeconds, set: setTimeInSeconds }}
-          restartGame={startGame}
+          restartGame={restartGame}
         />
       ) : (
         <Loading />

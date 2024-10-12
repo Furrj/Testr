@@ -20,8 +20,7 @@ import { FaRedoAlt, FaPlus } from "react-icons/fa";
 interface IProps {
   results: T_QUESTION_RESULT[];
   time: number;
-  settings: T_GAME_SETTINGS;
-  limitType: E_GAME_LIMIT_TYPES;
+  gameSettings: { curr: T_GAME_SETTINGS };
   gameStatus: {
     curr: E_GAME_STATUS;
     set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
@@ -34,7 +33,7 @@ interface IProps {
     curr: number;
     set: React.Dispatch<React.SetStateAction<number | null>>;
   };
-  restartGame: (status: E_GAME_STATUS) => void;
+  restartGame: () => void;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -43,6 +42,11 @@ const Post: React.FC<IProps> = (props) => {
   const correctCount = props.results.filter(({ correct }) => correct).length;
   const questionsCount = props.results.length;
   const score = Math.round((correctCount / questionsCount) * 100);
+  const limitType = props.gameSettings.curr.limit_type;
+  const time =
+    limitType === E_GAME_LIMIT_TYPES.TIME
+      ? props.gameSettings.curr.limit_amount
+      : props.time;
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -65,20 +69,12 @@ const Post: React.FC<IProps> = (props) => {
       mutation.mutate({
         tokens: getUserSessionDataFromStorage(),
         session: {
-          limit_type: props.limitType,
           questions_count: questionsCount,
           correct_count: correctCount,
           score,
-          time:
-            props.limitType === E_GAME_LIMIT_TYPES.TIME
-              ? props.settings.limits.type
-              : props.time,
-          min: props.settings.range.min,
-          max: props.settings.range.max,
-          add: props.settings.ops.add,
-          sub: props.settings.ops.sub,
-          mult: props.settings.ops.mult,
-          div: props.settings.ops.div,
+          time,
+          timestamp: 0,
+          ...props.gameSettings.curr,
         },
       });
   }, []);
@@ -95,13 +91,7 @@ const Post: React.FC<IProps> = (props) => {
           </h3>
         </div>
         <div className={styles.time}>
-          <h3>
-            {UIHandlers.formatTime(
-              props.limitType === E_GAME_LIMIT_TYPES.TIME
-                ? props.settings.limits.type
-                : props.time,
-            )}
-          </h3>
+          <h3>{UIHandlers.formatTime(time)}</h3>
         </div>
       </div>
 
@@ -125,10 +115,7 @@ const Post: React.FC<IProps> = (props) => {
 
       <div className={styles.buttons}>
         <div className={styles.box}>
-          <div
-            className={styles.button}
-            onClick={() => props.restartGame(E_GAME_STATUS.ACTIVE)}
-          >
+          <div className={styles.button} onClick={props.restartGame}>
             <FaRedoAlt className={styles.icon} />
           </div>
           Play Again
@@ -136,7 +123,7 @@ const Post: React.FC<IProps> = (props) => {
         <div className={styles.box}>
           <div
             className={styles.button}
-            onClick={() => props.restartGame(E_GAME_STATUS.PRE)}
+            onClick={() => props.gameStatus.set(E_GAME_STATUS.PRE)}
           >
             <FaPlus className={styles.icon} />
           </div>

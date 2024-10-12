@@ -20,9 +20,8 @@ import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 interface IProps {
   questions: T_QUESTION[];
   userGuesses: React.MutableRefObject<number[]>;
-  settings: T_GAME_SETTINGS;
+  gameSettings: { curr: T_GAME_SETTINGS };
   vertical: boolean;
-  limitType: E_GAME_LIMIT_TYPES;
   gameStatus: {
     set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
   };
@@ -45,6 +44,8 @@ const Active: React.FC<IProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
+  const limitType = props.gameSettings.curr.limit_type;
+
   // focus on input box on page load
   useEffect(() => {
     if (inputRef.current) {
@@ -64,7 +65,7 @@ const Active: React.FC<IProps> = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       props.timeInSeconds.set((prevSeconds) =>
-        props.limitType === E_GAME_LIMIT_TYPES.TIME
+        limitType === E_GAME_LIMIT_TYPES.TIME
           ? prevSeconds - 1
           : prevSeconds + 1,
       );
@@ -76,10 +77,7 @@ const Active: React.FC<IProps> = (props) => {
 
   // check for end of game if using time limits
   useEffect(() => {
-    if (
-      props.limitType === E_GAME_LIMIT_TYPES.TIME &&
-      props.timeInSeconds.curr < 1
-    ) {
+    if (limitType === E_GAME_LIMIT_TYPES.TIME && props.timeInSeconds.curr < 1) {
       props.gameStatus.set(E_GAME_STATUS.POST);
     }
   }, [props.timeInSeconds]);
@@ -115,18 +113,10 @@ const Active: React.FC<IProps> = (props) => {
       window.removeEventListener("resize", checkResizeForVerticalEligibility);
   }, [verticalMode]);
 
-  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (
       params: I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
     ): Promise<AxiosResponse> => apiRequestUpdateVertical(params),
-    onSuccess(data) {
-      if (data.status === HttpStatusCode.Ok)
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.USER_DATA],
-        });
-      else console.log("error");
-    },
   });
 
   return (
@@ -138,15 +128,15 @@ const Active: React.FC<IProps> = (props) => {
         <div className={styles.info}>
           <div className={styles.number}>
             # {props.currentQuestionIndex.curr}
-            {props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
-              `/${props.settings.limits.count}`}
+            {limitType === E_GAME_LIMIT_TYPES.COUNT &&
+              `/${props.gameSettings.curr.limit_amount}`}
           </div>
           <div
             className={styles.timer}
             style={{
               color:
                 props.timeInSeconds.curr < 10 &&
-                props.limitType === E_GAME_LIMIT_TYPES.TIME
+                limitType === E_GAME_LIMIT_TYPES.TIME
                   ? "red"
                   : "",
             }}
@@ -185,9 +175,9 @@ const Active: React.FC<IProps> = (props) => {
 
                     // if last question set gameState to 'post' else increase index
                     if (
-                      props.limitType === E_GAME_LIMIT_TYPES.COUNT &&
+                      limitType === E_GAME_LIMIT_TYPES.COUNT &&
                       props.currentQuestionIndex.curr >=
-                        props.settings.limits.count
+                        props.gameSettings.curr.limit_amount
                     ) {
                       props.gameStatus.set(E_GAME_STATUS.POST);
                     } else {

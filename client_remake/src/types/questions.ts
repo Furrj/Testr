@@ -55,9 +55,10 @@ export function generateQuestion(
 
   while (true) {
     const operands = [0, 0]
-      .map((_) => randomInRange(settings.range.min, settings.range.max))
+      .map((_) => randomInRange(settings.min, settings.max))
       .sort();
-    const operations = convertOperationsObjectToArray(settings.ops);
+    const { add, sub, mult, div } = settings;
+    const operations = convertOperationsObjectToArray({ add, sub, mult, div });
     const operator = operations[randomInRange(0, operations.length - 1)];
 
     question.operands = operands;

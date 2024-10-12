@@ -87,7 +87,7 @@ const PastTests: React.FC<IProps> = (props) => {
                   <span className={s.add ? styles.checked : styles.unchecked}>
                     {s.add ? "✓" : "x"}
                   </span>
-                  <span className={s.min ? styles.checked : styles.unchecked}>
+                  <span className={s.sub ? styles.checked : styles.unchecked}>
                     {s.min ? "✓" : "x"}
                   </span>
                   <span className={s.mult ? styles.checked : styles.unchecked}>
