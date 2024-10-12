@@ -3,19 +3,13 @@ import { useForm } from "@tanstack/react-form";
 import {
   type T_GAME_SETTINGS,
   E_GAME_LIMIT_TYPES,
-  E_GAME_STATUS,
 } from "../../../../types/game";
 import Locals, { type T_SETTINGS_FORM } from "./Locals";
 import { deepCopyObject } from "../../../../utils/methods";
 import { FaClock, FaQuestionCircle } from "react-icons/fa";
 
 interface IProps {
-  gameSettings: React.MutableRefObject<T_GAME_SETTINGS>;
-  setGameStatus: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
-  setLimitType: React.Dispatch<React.SetStateAction<E_GAME_LIMIT_TYPES>>;
-  timeInSeconds: {
-    set: React.Dispatch<React.SetStateAction<number>>;
-  };
+  startGame: (settings: T_GAME_SETTINGS) => void;
 }
 
 const Settings: React.FC<IProps> = (props) => {
@@ -35,35 +29,17 @@ const Settings: React.FC<IProps> = (props) => {
     },
     onSubmit: ({ value }) => {
       const obj: T_GAME_SETTINGS = {
-        range: {
-          min: Number.parseInt(value.range.min as string) | 0,
-          max: Number.parseInt(value.range.max as string) | 0,
-        },
-        ops: {
-          add: value.ops.add,
-          sub: value.ops.sub,
-          mult: value.ops.mult,
-          div: value.ops.div,
-        },
-        limits: {
-          time: value.limits.type,
-          count: Number.parseInt(value.limits.count as string) | 0,
-        },
+        min: Number.parseInt(value.range.min as string) | 0,
+        max: Number.parseInt(value.range.max as string) | 0,
+        add: value.ops.add,
+        sub: value.ops.sub,
+        mult: value.ops.mult,
+        div: value.ops.div,
+        limit_type: value.limits.type,
+        limit_amount: Number.parseInt(value.limits.count as string) | 0,
       };
 
-      if (value.limits.type === E_GAME_LIMIT_TYPES.TIME) obj.limits.count = 0;
-      else obj.limits.time = 0;
-
-      props.gameSettings.current = obj;
-      props.setGameStatus(E_GAME_STATUS.ACTIVE);
-      props.setLimitType(
-        value.limits.type === E_GAME_LIMIT_TYPES.TIME
-          ? E_GAME_LIMIT_TYPES.TIME
-          : E_GAME_LIMIT_TYPES.COUNT,
-      );
-      props.timeInSeconds.set(
-        value.limits.type === E_GAME_LIMIT_TYPES.TIME ? obj.limits.count : 0,
-      );
+      props.startGame({ ...obj });
     },
   });
   const formErrorMap = form.useStore((state) => state.errorMap);

@@ -71,7 +71,7 @@ const Post: React.FC<IProps> = (props) => {
           score,
           time:
             props.limitType === E_GAME_LIMIT_TYPES.TIME
-              ? props.settings.limits.time
+              ? props.settings.limits.type
               : props.time,
           min: props.settings.range.min,
           max: props.settings.range.max,
@@ -98,7 +98,7 @@ const Post: React.FC<IProps> = (props) => {
           <h3>
             {UIHandlers.formatTime(
               props.limitType === E_GAME_LIMIT_TYPES.TIME
-                ? props.settings.limits.time
+                ? props.settings.limits.type
                 : props.time,
             )}
           </h3>

@@ -6,7 +6,6 @@ import {
   INIT_GAME_SETTINGS,
   type T_GAME_SETTINGS,
 } from "../../types/game";
-import { deepCopyObject } from "../../utils/methods";
 import {
   generateQuestions,
   T_QUESTION_RESULT,
@@ -16,6 +15,7 @@ import Active from "./children/Active/Active";
 import Loading from "../Loading/Loading";
 import Post from "./children/Post/Post";
 import Locals from "./Locals";
+import { deepCopyObject } from "../../utils/methods";
 
 const QUESTION_CHUNK_SIZE: number = 10;
 
@@ -29,25 +29,23 @@ const Game: React.FC<IProps> = (props) => {
   );
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(1);
   const [questions, setQuestions] = useState<T_QUESTION[]>([]);
-  const [limitType, setLimitType] = useState<E_GAME_LIMIT_TYPES>(
-    E_GAME_LIMIT_TYPES.NULL,
-  );
   const [timeInSeconds, setTimeInSeconds] = useState<number | null>(null);
   const [questionResults, setQuestionResults] = useState<T_QUESTION_RESULT[]>(
     [],
   );
-
-  const gameSettings = useRef<T_GAME_SETTINGS>(
-    deepCopyObject(INIT_GAME_SETTINGS),
+  const [gameSettings, setGameSettings] = useState<T_GAME_SETTINGS | undefined>(
+    undefined,
   );
+
   const userGuesses = useRef<number[]>([]);
 
-  function restartGame(status: E_GAME_STATUS): void {
+  function startGame(settings: T_GAME_SETTINGS): void {
+    setGameSettings(settings);
     setCurrentQuestionIndex(1);
-    setGameStatus(status);
+    setGameStatus(E_GAME_STATUS.ACTIVE);
     setTimeInSeconds(() =>
-      limitType === E_GAME_LIMIT_TYPES.TIME
-        ? gameSettings.current.limits.time
+      gameSettings?.limit_type === E_GAME_LIMIT_TYPES.TIME
+        ? gameSettings.limit_amount
         : 0,
     );
     setQuestionResults([]);
@@ -58,48 +56,51 @@ const Game: React.FC<IProps> = (props) => {
   // generate questions on ACTIVE &&
   // generate results on POST
   useEffect(() => {
-    switch (gameStatus) {
-      case E_GAME_STATUS.ACTIVE:
-        switch (limitType) {
-          case E_GAME_LIMIT_TYPES.COUNT:
-            setQuestions((curr) =>
-              generateQuestions(
-                gameSettings.current,
-                gameSettings.current.limits.count,
-                curr.length !== undefined ? curr.length : 0,
-              ),
-            );
-            break;
-          case E_GAME_LIMIT_TYPES.TIME:
-            setQuestions((curr) =>
-              generateQuestions(
-                gameSettings.current,
-                QUESTION_CHUNK_SIZE,
-                curr.length !== undefined ? curr.length : 0,
-              ),
-            );
-            break;
-        }
-        break;
-      case E_GAME_STATUS.POST:
-        setQuestionResults(
-          Locals.generateResults(userGuesses.current, questions),
-        );
-        break;
+    if (gameSettings !== undefined) {
+      switch (gameStatus) {
+        case E_GAME_STATUS.ACTIVE:
+          switch (gameSettings.limit_type) {
+            case E_GAME_LIMIT_TYPES.COUNT:
+              setQuestions((curr) =>
+                generateQuestions(
+                  gameSettings,
+                  gameSettings.limit_amount,
+                  curr.length !== undefined ? curr.length : 0,
+                ),
+              );
+              break;
+            case E_GAME_LIMIT_TYPES.TIME:
+              setQuestions((curr) =>
+                generateQuestions(
+                  gameSettings,
+                  QUESTION_CHUNK_SIZE,
+                  curr.length !== undefined ? curr.length : 0,
+                ),
+              );
+              break;
+          }
+          break;
+        case E_GAME_STATUS.POST:
+          setQuestionResults(
+            Locals.generateResults(userGuesses.current, questions),
+          );
+          break;
+      }
     }
-  }, [gameStatus]);
+  }, [gameStatus, gameSettings]);
 
   // check if more questions need to be generated while in active mode
   useEffect(() => {
     if (
       gameStatus === E_GAME_STATUS.ACTIVE &&
-      Math.abs(questions.length - currentQuestionIndex) < 5 &&
-      limitType === E_GAME_LIMIT_TYPES.TIME
+      Math.abs(questions.length - currentQuestionIndex) <= 5 &&
+      gameSettings !== undefined &&
+      gameSettings.limit_type === E_GAME_LIMIT_TYPES.TIME
     ) {
       setQuestions((curr) => {
         curr.push(
           ...generateQuestions(
-            gameSettings.current,
+            gameSettings,
             QUESTION_CHUNK_SIZE,
             curr.length !== undefined ? curr.length : 0,
           ),
@@ -107,22 +108,11 @@ const Game: React.FC<IProps> = (props) => {
         return curr;
       });
     }
-  }, [currentQuestionIndex, gameStatus]);
+  }, [currentQuestionIndex, gameStatus, gameSettings]);
 
   switch (gameStatus) {
     case E_GAME_STATUS.PRE:
-      return (
-        <Settings
-          gameSettings={gameSettings}
-          setGameStatus={setGameStatus}
-          setLimitType={setLimitType}
-          timeInSeconds={{
-            set: setTimeInSeconds as React.Dispatch<
-              React.SetStateAction<number>
-            >,
-          }}
-        />
-      );
+      return <Settings startGame={startGame} />;
     case E_GAME_STATUS.ACTIVE:
       return questions.length > 0 && timeInSeconds !== null ? (
         <Active
@@ -161,7 +151,7 @@ const Game: React.FC<IProps> = (props) => {
             set: setCurrentQuestionIndex,
           }}
           timeInSeconds={{ curr: timeInSeconds, set: setTimeInSeconds }}
-          restartGame={restartGame}
+          restartGame={startGame}
         />
       ) : (
         <Loading />
