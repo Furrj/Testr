@@ -38,6 +38,7 @@ const Game: React.FC<IProps> = (props) => {
 	const userGuesses = useRef<number[]>([]);
 
 	function startGame(settings: T_GAME_SETTINGS): void {
+		setCurrentQuestionIndex(1);
 		setGameSettings(settings);
 		setGameStatus(E_GAME_STATUS.ACTIVE);
 		setTimeInSeconds(() =>
@@ -48,13 +49,11 @@ const Game: React.FC<IProps> = (props) => {
 	}
 
 	function restartGame() {
-		setCurrentQuestionIndex(1);
-		setGameStatus(E_GAME_STATUS.ACTIVE);
-		setTimeInSeconds(() =>
-			gameSettings?.limit_type === E_GAME_LIMIT_TYPES.TIME
-				? gameSettings.limit_amount
-				: 0,
-		);
+		resetQuestions();
+		gameSettings && startGame(gameSettings);
+	}
+
+	function resetQuestions() {
 		setQuestionResults([]);
 		setQuestions([]);
 		userGuesses.current = [];
@@ -159,6 +158,7 @@ const Game: React.FC<IProps> = (props) => {
 					}}
 					timeInSeconds={{ curr: timeInSeconds, set: setTimeInSeconds }}
 					restartGame={restartGame}
+					resetQuestions={resetQuestions}
 				/>
 			) : (
 				<Loading />

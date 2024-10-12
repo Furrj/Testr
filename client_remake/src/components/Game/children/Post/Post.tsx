@@ -34,6 +34,7 @@ interface IProps {
 		set: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 	restartGame: () => void;
+	resetQuestions: () => void;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -81,53 +82,58 @@ const Post: React.FC<IProps> = (props) => {
 
 	return (
 		<div className={styles.root}>
-			<div className={styles.info}>
-				<div className={styles.score}>
-					<h2>{score}%</h2>
+			<div className={styles.scroll}>
+				<div className={styles.info}>
+					<div className={styles.score}>
+						<h2>{score}%</h2>
+					</div>
+					<div className={styles.ratio}>
+						<h3>
+							{correctCount}/{questionsCount}
+						</h3>
+					</div>
+					<div className={styles.time}>
+						<h3>{UIHandlers.formatTime(time)}</h3>
+					</div>
 				</div>
-				<div className={styles.ratio}>
-					<h3>
-						{correctCount}/{questionsCount}
-					</h3>
-				</div>
-				<div className={styles.time}>
-					<h3>{UIHandlers.formatTime(time)}</h3>
-				</div>
-			</div>
 
-			<div className={styles.results}>
-				{props.results
-					.filter(({ correct }) => !correct)
-					.map((result) => {
-						return (
-							<div key={`question-${result.id}`} className={styles.incorrect}>
-								<div>#{result.id}</div>
-								<div>
-									{result.operands[0]}{" "}
-									{UIHandlers.convertOperatorToDisplay(result.operator)}{" "}
-									{result.operands[1]} = {result.answer}
+				<div className={styles.results}>
+					{props.results
+						.filter(({ correct }) => !correct)
+						.map((result) => {
+							return (
+								<div key={`question-${result.id}`} className={styles.incorrect}>
+									<div>#{result.id}</div>
+									<div>
+										{result.operands[0]}{" "}
+										{UIHandlers.convertOperatorToDisplay(result.operator)}{" "}
+										{result.operands[1]} = {result.answer}
+									</div>
+									<div>{result.guess}</div>
 								</div>
-								<div>{result.guess}</div>
-							</div>
-						);
-					})}
-			</div>
-
-			<div className={styles.buttons}>
-				<div className={styles.box}>
-					<div className={styles.button} onClick={props.restartGame}>
-						<FaRedoAlt className={styles.icon} />
-					</div>
-					Play Again
+							);
+						})}
 				</div>
-				<div className={styles.box}>
-					<div
-						className={styles.button}
-						onClick={() => props.gameStatus.set(E_GAME_STATUS.PRE)}
-					>
-						<FaPlus className={styles.icon} />
+
+				<div className={styles.buttons}>
+					<div className={styles.box}>
+						<div className={styles.button} onClick={props.restartGame}>
+							<FaRedoAlt className={styles.icon} />
+						</div>
+						Play Again
 					</div>
-					New Game
+					<div className={styles.box}>
+						<div
+							className={styles.button}
+							onClick={() => {
+								props.resetQuestions();
+								props.gameStatus.set(E_GAME_STATUS.PRE);
+							}}
+						>
+							<FaPlus className={styles.icon} />
+						</div>
+						New Game
+					</div>
 				</div>
 			</div>
 		</div>
