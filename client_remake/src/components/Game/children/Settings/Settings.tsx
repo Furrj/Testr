@@ -268,7 +268,6 @@ const Settings: React.FC<IProps> = (props) => {
                   className={`${styles.time} ${field.getValue() === E_GAME_LIMIT_TYPES.TIME ? styles.checked : styles.unchecked}`}
                   onClick={() => {
                     field.setValue(E_GAME_LIMIT_TYPES.TIME);
-                    console.log(field.getValue());
                   }}
                 >
                   <FaClock />
@@ -278,13 +277,61 @@ const Settings: React.FC<IProps> = (props) => {
                   className={`${styles.questions} ${field.getValue() === E_GAME_LIMIT_TYPES.COUNT ? styles.checked : styles.unchecked}`}
                   onClick={() => {
                     field.setValue(E_GAME_LIMIT_TYPES.COUNT);
-                    console.log(field.getValue());
                   }}
                 >
                   <FaQuestionCircle />
                 </div>
               </div>
             )}
+          />
+
+          <form.Field
+            name="limits.count"
+            children={(field) => (
+              <div className={styles.limit_count}>
+                <div>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className={
+                      field.state.meta.errors.length > 0 ? styles.errInput : ""
+                    }
+                  />
+                  {field.state.meta.errors.length > 0 ? (
+                    <div className={styles.err}>
+                      {field.state.meta.errors.join(", ")}
+                    </div>
+                  ) : null}
+                  <form.Subscribe
+                    selector={(state) => state.values.limits.type}
+                    children={(type) => (
+                      <span>
+                        {type === E_GAME_LIMIT_TYPES.TIME
+                          ? "Seconds"
+                          : "Questions"}
+                      </span>
+                    )}
+                  />
+                </div>
+              </div>
+            )}
+            validators={{
+              onSubmit: ({ value }) => {
+                if (value === "") {
+                  return "Cannot be empty";
+                } else if (Number.isNaN(value as string)) {
+                  return "Invalid value";
+                } else if (Number.parseInt(value as string) <= 1) {
+                  return "Must be greater than 0";
+                }
+
+                return undefined;
+              },
+            }}
           />
 
           <button type="submit">Start</button>

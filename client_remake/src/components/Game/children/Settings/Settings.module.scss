@@ -19,7 +19,8 @@ $form-bg: #ededed;
     padding-bottom: 20px;
 
     form {
-      width: 70%;
+      min-width: fit-content;
+      width: 50%;
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
@@ -31,18 +32,23 @@ $form-bg: #ededed;
 
       color: black;
 
-      div {
-        width: fit-content;
-        height: fit-content;
-      }
-
       input {
+        height: 5rem;
+
         border: 1px solid white;
         border-radius: $br;
         background: rgba($color: #b7b6b6, $alpha: 1);
 
         color: black;
         text-align: center;
+
+        font-size: 3rem;
+        font-weight: bold;
+
+        &.errInput {
+          border: 2px solid red;
+          background: rgba($color: #f00, $alpha: 0.5);
+        }
       }
 
       .range {
@@ -52,20 +58,15 @@ $form-bg: #ededed;
         padding: 10px;
 
         div {
+          @include full-size-percent;
           @include flex-center-col;
 
           input {
-            width: 100%;
-            height: 6rem;
-
-            font-size: 2.5rem;
-            font-weight: bold;
+            width: 10rem;
           }
         }
 
         .div {
-          width: 100%;
-
           font-size: 4rem;
           text-align: center;
         }
@@ -121,6 +122,7 @@ $form-bg: #ededed;
 
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        margin-top: 10px;
 
         border: 1px solid $form-bg;
 
@@ -151,6 +153,25 @@ $form-bg: #ededed;
           background: $main-bg;
 
           color: rgba($color: #fff, $alpha: 0.5);
+        }
+      }
+
+      .limit_count {
+        width: 100%;
+        @include flex-center-row;
+
+        margin-top: 10px;
+
+        div {
+          @include flex-center-col;
+
+          input {
+            width: 10rem;
+          }
+
+          span {
+            font-size: 2rem;
+          }
         }
       }
     }
