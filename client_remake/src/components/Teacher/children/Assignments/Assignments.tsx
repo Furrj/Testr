@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../../../../../../utils/consts";
-import { getUserSessionDataFromStorage } from "../../../../../../utils/methods";
-import { T_CLASS } from "../../../../../Register/Register";
 import styles from "./Assignments.module.scss";
-import NewAssignment from "./children/NewAssignment/NewAssignment";
-import { apiRequestGetAssignmentsTeacher } from "../../../../../../../requests";
-import Loading from "../../../../../Loading/Loading";
-import UIHandlers from "../../../../../../utils/uiHandlers";
+import { apiRequestGetAssignmentsTeacher } from "../../../../../requests";
+import { QUERY_KEYS } from "../../../../utils/consts";
+import { getUserSessionDataFromStorage } from "../../../../utils/methods";
+import UIHandlers from "../../../../utils/uiHandlers";
+import Loading from "../../../Loading/Loading";
+import type { T_CLASS } from "../../../Register/Register";
 
 interface IProps {
 	classes: T_CLASS[];

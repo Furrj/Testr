@@ -4,7 +4,7 @@ import { USER_ROLES } from "../../../../utils/consts";
 import Game from "../../../Game/Game";
 import Home from "../../../Home/Home";
 import Loading from "../../../Loading/Loading";
-import Teacher from "../../../Teacher/Teacher";
+import Classes from "../../../Teacher/children/Classes/Classes";
 
 interface IProps {
 	userData: T_USERDATA_STATE;
@@ -25,10 +25,10 @@ const ProtectedApp: React.FC<IProps> = (props) => {
 					element={<Game vertical={props.userData.vertical} />}
 				/>
 				<Route
-					path="/teacher/*"
+					path="/teacher/classes"
 					element={
 						props.userData.role === USER_ROLES.TEACHER ? (
-							<Teacher />
+							<Classes />
 						) : (
 							<Loading />
 						)

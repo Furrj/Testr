@@ -52,8 +52,14 @@ const NavBar: React.FC = () => {
 					</h3>
 				</Link>
 
-				<Link to={"/classes"} className={styles.link}>
-					<h3>Classes</h3>
+				<Link to={"/teacher/classes"} className={styles.link}>
+					<h3
+						className={
+							location.pathname === "/teacher/classes" ? styles.current : ""
+						}
+					>
+						Classes
+					</h3>
 				</Link>
 
 				<div className={styles.link}>

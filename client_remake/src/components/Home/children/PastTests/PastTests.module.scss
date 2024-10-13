@@ -1,16 +1,14 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
 
-$border: 1px solid white;
-
 .root {
 	max-height: 100%;
 
-	background: grey;
+	background: $grid-bg;
 
 	overflow: auto;
 
-	border: $border;
+	border: $grid-border;
 
 	.scroll {
 		height: 100%;
@@ -20,7 +18,7 @@ $border: 1px solid white;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
 
-		border-top: $border;
+		border-top: $grid-border;
 
 		div {
 			text-align: center;
@@ -29,22 +27,22 @@ $border: 1px solid white;
 		.date {
 			min-width: 8rch;
 
-			border-right: $border;
+			border-right: $grid-border;
 		}
 
 		.score {
-			border-right: $border;
+			border-right: $grid-border;
 			min-width: 8rch;
 		}
 
 		.count {
-			border-right: $border;
+			border-right: $grid-border;
 
 			min-width: 7rch;
 		}
 
 		.time {
-			border-right: $border;
+			border-right: $grid-border;
 			min-width: 5rch;
 		}
 
@@ -53,7 +51,7 @@ $border: 1px solid white;
 			grid-template-columns: repeat(2, 50%);
 
 			span {
-				border-right: $border;
+				border-right: $grid-border;
 
 				min-width: 5rch;
 			}
@@ -64,7 +62,7 @@ $border: 1px solid white;
 
 			@include flex-center-row;
 
-			border-right: $border;
+			border-right: $grid-border;
 		}
 
 		.ops {
@@ -77,7 +75,7 @@ $border: 1px solid white;
 
 				text-align: center;
 
-				border-right: $border;
+				border-right: $grid-border;
 
 				&.checked {
 					background: green;
@@ -94,12 +92,12 @@ $border: 1px solid white;
 		}
 
 		&.headers {
-			border-bottom: $border;
+			border-bottom: $grid-border;
 
 			position: sticky;
 			top: 0;
 
-			background: grey;
+			background: $grid-header-bg;
 
 			color: black;
 			font-size: 1.2rem;

@@ -2,84 +2,54 @@
 @import "../../../../styles/vars";
 
 .root {
-	width: 100%;
-	height: 100%;
+	@include full-size-percent;
 
-	@include flex-center;
+	background: $main-bg;
 
-	//border: 1px solid white;
+	overflow: auto;
 
-	h2 {
-		margin-top: 20px;
+	.scroll {
 		width: 100%;
-		@include flex-center;
-	}
+		min-height: 100%;
 
-	.content {
-		width: 60%;
-		height: 60%;
-		overflow: auto;
-
-		border: 1px solid white;
-
-		.scroll {
+		.row {
 			width: 100%;
-			height: 100%;
+			@include flex-center-row;
 
-			.link {
-				text-decoration: none;
-				color: white;
+			display: grid;
+			grid-template-columns: 75% 25%;
 
-				.box {
-					width: 100%;
-					height: 3.5rem;
-					@include flex-center;
-					border: 1px solid white;
+			background: $grid-bg;
 
-					font-size: 2rem;
+			border-bottom: $grid-border;
+			border-left: $grid-border;
+			border-right: $grid-border;
 
-					cursor: pointer;
+			div {
+				width: 100%;
+				@include flex-center-row;
 
-					&:hover {
-						background: $color-btn-hover;
-					}
+				border-right: $grid-border;
+
+				&:last-of-type {
+					border: none;
 				}
 			}
 
-			.box {
-				width: 100%;
-				height: 3.5rem;
-				@include flex-center;
-				border: 1px solid white;
+			&.headers {
+				background: $grid-header-bg;
 
-				font-size: 2rem;
-
-				cursor: pointer;
-
-				&:hover {
-					background: $color-btn-hover;
-				}
-			}
-
-			.new {
-				width: 100%;
-				height: 3rem;
-
-				display: flex;
-				border: 1px solid white;
-
-				input {
-					width: 100%;
-
-					font-size: 2rem;
-
-					text-align: center;
-				}
-
-				button {
-					width: 10%;
-				}
+				border-bottom: 2px solid white;
+				border-top: $grid-border;
 			}
 		}
+	}
+}
+
+@media only screen and (min-width: $mobile-width) {
+	.root .scroll .row:hover {
+		cursor: pointer;
+
+		background: lightgrey;
 	}
 }

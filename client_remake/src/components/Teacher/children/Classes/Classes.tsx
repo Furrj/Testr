@@ -1,23 +1,18 @@
 import { useRef, useState } from "react";
 import styles from "./Classes.module.scss";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import {
 	apiRequestAddClass,
+	apiRequestGetClasses,
 	I_PARAMS_APIREQUEST_ADD_CLASS,
 } from "../../../../../requests";
 import { Link } from "react-router-dom";
 import { QUERY_KEYS } from "../../../../utils/consts";
 import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import type { T_CLASS } from "../../../Register/Register";
-
-interface IProps {
-	activeClass: {
-		curr: T_CLASS | undefined;
-		set: React.Dispatch<React.SetStateAction<T_CLASS | undefined>>;
-	};
-	classes: T_CLASS[];
-}
+import Loading from "../../../Loading/Loading";
+import { DiVim } from "react-icons/di";
 
 const Classes: React.FC<IProps> = (props) => {
 	const [addingMode, setAddingMode] = useState<boolean>(false);
@@ -25,6 +20,14 @@ const Classes: React.FC<IProps> = (props) => {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const queryClient = useQueryClient();
+	const { isFetching, isSuccess, data } = useQuery({
+		queryKey: [QUERY_KEYS.CLASSES],
+		queryFn: () => apiRequestGetClasses(getUserSessionDataFromStorage()),
+		retry: false,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+	});
+
 	const mutation = useMutation({
 		mutationFn: (
 			params: I_PARAMS_APIREQUEST_ADD_CLASS,
@@ -40,59 +43,39 @@ const Classes: React.FC<IProps> = (props) => {
 		},
 	});
 
-	return (
-		<div className={styles.root}>
-			<h2>My Classes</h2>
-			<div className={styles.content}>
+	if (isSuccess && data) {
+		return (
+			<div className={styles.root}>
 				<div className={styles.scroll}>
-					{props.classes.length > 0 &&
-						props.classes.map((c) => (
-							<Link
-								to={"/teacher/class"}
-								onClick={() => {
-									props.activeClass.set(c);
-									// queryClient.invalidateQueries({
-									//   queryKey: [QUERY_KEYS.CLASS],
-									// });
-								}}
-								key={`class-${c.class_id}`}
-								className={styles.link}
-							>
-								<div className={styles.box}>{c.name}</div>
-							</Link>
-						))}
-					{addingMode ? (
-						<div className={`${styles.new}`}>
-							<input
-								className={styles.text}
-								type="text"
-								placeholder="Class Name"
-								ref={inputRef}
-							/>
-							<button
-								onClick={() => {
-									if (inputRef.current) {
-										mutation.mutate({
-											c: { name: inputRef.current.value, class_id: 0 },
-											tokens: getUserSessionDataFromStorage(),
-										});
-										setAddingMode(false);
-										inputRef.current.value = "";
-									}
-								}}
-							>
-								+
-							</button>
+					<div className={`${styles.row} ${styles.headers}`}>
+						<div className={styles.classes}>
+							<h3>My Classes</h3>
 						</div>
+
+						<div className={styles.students}>
+							<h3>Students</h3>
+						</div>
+					</div>
+
+					{data.data.length > 0 ? (
+						data.data.map((c) => {
+							return (
+								<div key={`class-${c.class_id}`} className={styles.row}>
+									<div className={styles.classes}>{c.name}</div>
+
+									<div className={styles.students}>{c.class_id}</div>
+								</div>
+							);
+						})
 					) : (
-						<div className={styles.box} onClick={() => setAddingMode(true)}>
-							+
-						</div>
+						<div>No classes</div>
 					)}
 				</div>
 			</div>
-		</div>
-	);
+		);
+	} else if (isFetching) {
+		return <Loading />;
+	} else return <div>Error, please refresh</div>;
 };
 
 export default Classes;
