@@ -61,13 +61,13 @@ const QGetTeacherClassesByUserID = `
 	ORDER BY class_id
 `
 
-func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]types.TeacherClass, error) {
-	classes := make([]types.TeacherClass, 0)
+func (dbHandler *DBHandler) GetTeacherClassesByUserID(id types.UserID) ([]types.TeacherClass, error) {
+	classes := []types.TeacherClass{}
 
 	rows, err := dbHandler.Conn.Query(
 		context.Background(),
 		QGetTeacherClassesByUserID,
-		UserID,
+		id,
 	)
 	if err != nil {
 		return nil, err
@@ -85,6 +85,7 @@ func (dbHandler *DBHandler) GetTeacherClassesByUserID(UserID types.UserID) ([]ty
 			return nil, err
 		}
 
+		class.TeacherID = id
 		classes = append(classes, class)
 	}
 

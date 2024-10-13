@@ -21,7 +21,7 @@ type resGetTeacherInfo struct {
 	Valid     bool                 `json:"valid"`
 }
 
-func GetTeacherInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
+func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		res := resGetTeacherInfo{
 			Valid: false,
