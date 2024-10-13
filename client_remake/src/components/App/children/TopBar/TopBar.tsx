@@ -65,11 +65,7 @@ const TopBar: React.FC = () => {
 				</div>
 			</div>
 
-			{showingNavbar && (
-				<div className={styles.navbar}>
-					<NavBar />
-				</div>
-			)}
+			{showingNavbar && data && data.valid && <NavBar />}
 		</div>
 	);
 };
