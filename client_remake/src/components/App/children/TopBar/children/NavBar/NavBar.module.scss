@@ -42,3 +42,9 @@ $current-bg: #00f;
 		}
 	}
 }
+
+@media only screen and (min-width: $mobile-width) {
+	.root {
+		display: none;
+	}
+}

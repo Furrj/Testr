@@ -23,16 +23,30 @@ const NavBar: React.FC = () => {
 					</div>
 				</Link>
 
-				<Link to={"/"} className={styles.link}>
-					<div>Assignments</div>
+				<Link to={"/assignments"} className={styles.link}>
+					<div
+						className={
+							location.pathname === "/assignments" ? styles.current : ""
+						}
+					>
+						Assignments
+					</div>
 				</Link>
 
-				<Link to={"/"} className={styles.link}>
-					<div>Stats</div>
+				<Link to={"/stats"} className={styles.link}>
+					<div className={location.pathname === "/stats" ? styles.current : ""}>
+						Stats
+					</div>
 				</Link>
 
-				<Link to={"/"} className={styles.link}>
-					<div>Classes</div>
+				<Link to={"/teacher/classes"} className={styles.link}>
+					<div
+						className={
+							location.pathname === "/teacher/classes" ? styles.current : ""
+						}
+					>
+						Classes
+					</div>
 				</Link>
 			</div>
 
