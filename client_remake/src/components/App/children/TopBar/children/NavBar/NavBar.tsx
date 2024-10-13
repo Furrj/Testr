@@ -60,7 +60,9 @@ const NavBar: React.FC = () => {
 					<h3
 						onClick={() => {
 							clearTokensFromLocalStorage();
-							queryClient.resetQueries();
+							queryClient.invalidateQueries({
+								queryKey: [QUERY_KEYS.USER_DATA],
+							});
 							navigate("/login");
 						}}
 					>

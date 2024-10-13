@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./TopBar.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import NavBar from "./children/NavBar/NavBar";
@@ -27,6 +27,11 @@ const TopBar: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
+	// close navbar if user gets logged out
+	useEffect(() => {
+		if (data && !data.valid) setShowingNavbar(false);
+	}, [data]);
+
 	return (
 		<div className={styles.root}>
 			<div className={styles.main}>
@@ -39,7 +44,9 @@ const TopBar: React.FC = () => {
 							<IoMdExit
 								onClick={() => {
 									clearTokensFromLocalStorage();
-									queryClient.resetQueries();
+									queryClient.invalidateQueries({
+										queryKey: [QUERY_KEYS.USER_DATA],
+									});
 									navigate("/login");
 								}}
 								className={styles.logout}

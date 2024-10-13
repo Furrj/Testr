@@ -31,9 +31,15 @@ const PastTests: React.FC<IProps> = (props) => {
 				<div className={styles.score}>
 					<h3>Score</h3>
 				</div>
-				<div className={styles.count}>Count</div>
-				<div className={styles.time}>Time</div>
-				<div className={styles.limit}>Limit</div>
+				<div className={styles.count}>
+					<h3>Count</h3>
+				</div>
+				<div className={styles.time}>
+					<h3>Time</h3>
+				</div>
+				<div className={styles.limit}>
+					<h3>Limit</h3>
+				</div>
 				<div className={styles.range}>
 					<span className={styles.min}>
 						<h3>Min</h3>

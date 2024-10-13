@@ -206,6 +206,22 @@ $btn-color: green;
 	}
 }
 
+@media only screen and (min-width: 600px) {
+	.root .scroll form {
+		.ops {
+			div:hover {
+				background: grey;
+			}
+		}
+
+		.limits {
+			div:hover {
+				background: grey;
+			}
+		}
+	}
+}
+
 @media only screen and (max-width: 600px) {
 	.root .scroll form {
 		width: 90%;
@@ -213,14 +229,6 @@ $btn-color: green;
 		.range {
 			div input {
 				width: 8rem;
-			}
-		}
-
-		.ops {
-			div {
-				&:hover {
-					background: none;
-				}
 			}
 		}
 	}

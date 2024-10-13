@@ -7,7 +7,7 @@ $navbar-link-border: 1px solid white;
 $current-bg: #00f;
 
 .root {
-	height: 100px;
+	height: 20dvh;
 	width: 100%;
 
 	background: $navbar-bg;
@@ -17,6 +17,10 @@ $current-bg: #00f;
 	position: absolute;
 
 	z-index: 20;
+
+	&:hover {
+		cursor: pointer;
+	}
 
 	.link {
 		text-decoration: none;
