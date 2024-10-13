@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
 import { FaPerson, FaLock, FaDoorOpen } from "react-icons/fa6";
-import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login.ts";
+import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login/login.ts";
 import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 
 const Login: React.FC = () => {

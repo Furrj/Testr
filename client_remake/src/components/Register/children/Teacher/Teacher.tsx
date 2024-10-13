@@ -13,7 +13,7 @@ import {
 import REGISTER_TEACHER, {
 	T_PARAMS,
 	T_RES,
-} from "../../../../api/routes/register_teacher";
+} from "../../../../api/routes/register/register_teacher";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -43,7 +43,7 @@ const Teacher: React.FC = () => {
 					break;
 				case E_REGISTER_RESULT.USERNAME_EXISTS:
 					setErrMessage(
-						`Username '${form.getFieldValue("username")}' already exists`,
+						`Username '${form.getFieldValue("username")}' already exists`
 					);
 			}
 		},

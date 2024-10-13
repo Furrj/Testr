@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
-import type { T_TOKENS } from "../../types";
-import route_prefix from "../route_prefix";
+import type { T_TOKENS } from "../../../types";
+import route_prefix from "../../route_prefix";
 
 const url = route_prefix("/login");
 
