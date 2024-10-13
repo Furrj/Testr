@@ -1,15 +1,11 @@
 import styles from "./Login.module.scss";
 import React, { useState } from "react";
-import { apiRequestLogin } from "../../../requests.ts";
-import {
-	INIT_USERINPUT_LOGIN,
-	type T_APIRESULT_LOGIN,
-	type T_USERINPUT_LOGIN,
-} from "../../types";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
 import { FaPerson, FaLock, FaDoorOpen } from "react-icons/fa6";
+import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login.ts";
+import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -19,11 +15,8 @@ const Login: React.FC = () => {
 
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (
-			userInput: T_USERINPUT_LOGIN,
-		): Promise<AxiosResponse<T_APIRESULT_LOGIN>> => {
-			return apiRequestLogin(userInput);
-		},
+		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
+			LOGIN.method(params),
 		onError(err) {
 			console.log(err);
 		},
