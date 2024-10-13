@@ -213,17 +213,17 @@ export async function apiRequestCheckUsername(
 	});
 }
 
-export type T_APIRESULT_GET_TEACHER_INFO = {
+export type T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE = {
 	first_name: string;
 	last_name: string;
 	school: string;
 	classes: T_CLASS[];
 	valid: boolean;
 };
-export async function apiRequestGetTeacherInfo(
+export async function apiRequestGetTeacherInfoForRegisterPage(
 	id: number,
-): Promise<AxiosResponse<T_APIRESULT_GET_TEACHER_INFO>> {
-	return await axios<T_APIRESULT_GET_TEACHER_INFO>({
+): Promise<AxiosResponse<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE>> {
+	return await axios<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE>({
 		method: "GET",
 		url: `${API_ROUTES.GET_TEACHER_INFO}/${id}`,
 	});

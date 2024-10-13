@@ -8,9 +8,9 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import {
-	apiRequestGetTeacherInfo,
+	apiRequestGetTeacherInfoForRegisterPage,
 	apiRequestRegisterStudent,
-	T_APIRESULT_GET_TEACHER_INFO,
+	T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE,
 } from "../../../../../../../requests";
 import { T_APIRESULT_REGISTER } from "../../../../../../types";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ interface IProps {
 
 const TeacherForm: React.FC<IProps> = (props) => {
 	const [teacherInfo, setTeacherInfo] =
-		useState<T_APIRESULT_GET_TEACHER_INFO | null>(null);
+		useState<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE | null>(null);
 	const [errMessage, setErrMessage] = useState<string>("");
 	const [classSelection, setClassSelection] = useState<number>(0);
 
@@ -56,8 +56,10 @@ const TeacherForm: React.FC<IProps> = (props) => {
 	const teacherMutation = useMutation({
 		mutationFn: (
 			id: number,
-		): Promise<AxiosResponse<T_APIRESULT_GET_TEACHER_INFO>> => {
-			return apiRequestGetTeacherInfo(id);
+		): Promise<
+			AxiosResponse<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE>
+		> => {
+			return apiRequestGetTeacherInfoForRegisterPage(id);
 		},
 		onError(err) {
 			console.log(err);
