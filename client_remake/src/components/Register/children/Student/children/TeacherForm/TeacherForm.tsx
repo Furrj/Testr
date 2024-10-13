@@ -4,17 +4,11 @@ import {
 	INIT_FORM_REGISTER_STUDENT,
 } from "../../../../Register";
 import styles from "./TeacherForm.module.scss";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import type { AxiosResponse } from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import {
-	apiRequestGetTeacherInfoForRegisterPage,
-	apiRequestRegisterStudent,
-	T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE,
-} from "../../../../../../../requests";
-import { T_APIRESULT_REGISTER } from "../../../../../../types";
-import { useEffect, useState } from "react";
-import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
+import { useState } from "react";
+import Locals from "./Locals";
+import { T_RES as T_TEACHER_INFO } from "../../../../../../api/routes/register/get_teacher_info_for_student_register";
 
 interface IProps {
 	formData: {
@@ -28,57 +22,22 @@ interface IProps {
 }
 
 const TeacherForm: React.FC<IProps> = (props) => {
-	const [teacherInfo, setTeacherInfo] =
-		useState<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE | null>(null);
+	const [teacherInfo, setTeacherInfo] = useState<T_TEACHER_INFO | undefined>(
+		undefined,
+	);
 	const [errMessage, setErrMessage] = useState<string>("");
 	const [classSelection, setClassSelection] = useState<number>(0);
 
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const formMutation = useMutation({
-		mutationFn: (
-			formData: T_FORM_REGISTER_STUDENT,
-		): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-			return apiRequestRegisterStudent(formData);
-		},
-		onError(err) {
-			console.log(err);
-			alert("Error, please refresh and try again");
-		},
-		onSuccess(data) {
-			sendTokensToLocalStorage(data.data.tokens);
-
-			queryClient.resetQueries();
-			navigate("/");
-		},
-	});
-
-	const teacherMutation = useMutation({
-		mutationFn: (
-			id: number,
-		): Promise<
-			AxiosResponse<T_APIRESULT_GET_TEACHER_INFO_FOR_REGISTER_PAGE>
-		> => {
-			return apiRequestGetTeacherInfoForRegisterPage(id);
-		},
-		onError(err) {
-			console.log(err);
-			alert("Error, please refresh and try again");
-		},
-		onSuccess(data) {
-			if (data.data.valid) {
-				setTeacherInfo(data.data);
-			} else {
-				setErrMessage(
-					`Teacher code '${props.formData.curr.teacher_id}' does not exist`,
-				);
-			}
-		},
-	});
-
-	useEffect(() => {
-		teacherInfo && setClassSelection(teacherInfo.classes[0].class_id);
-	}, [teacherInfo]);
+	const registerStudentMutation = Locals.useRegisterStudentMutation(
+		queryClient,
+		navigate,
+	);
+	const getTeacherInfoMutation = Locals.useTeacherMutation(
+		setTeacherInfo,
+		setErrMessage,
+	);
 
 	const form = useForm<T_FORM_REGISTER_STUDENT>({
 		defaultValues: {
@@ -93,7 +52,9 @@ const TeacherForm: React.FC<IProps> = (props) => {
 				};
 			});
 
-			teacherMutation.mutate(Number.parseInt(value.teacher_id as string));
+			getTeacherInfoMutation.mutate({
+				id: Number.parseInt(value.teacher_id as string),
+			});
 		},
 	});
 
@@ -118,7 +79,7 @@ const TeacherForm: React.FC<IProps> = (props) => {
 								onBlur={field.handleBlur}
 								onChange={(e) => {
 									errMessage !== "" && setErrMessage("");
-									teacherInfo && setTeacherInfo(null);
+									teacherInfo !== undefined && setTeacherInfo(undefined);
 									field.handleChange(e.target.value);
 								}}
 								className={
@@ -147,9 +108,9 @@ const TeacherForm: React.FC<IProps> = (props) => {
 						},
 					}}
 				/>
-				{!teacherInfo && <button type="submit">Search</button>}
+				{teacherInfo === undefined && <button type="submit">Search</button>}
 			</form>
-			{teacherInfo && (
+			{teacherInfo !== undefined && (
 				<>
 					<div className={styles.teacher}>
 						<div>
@@ -181,7 +142,7 @@ const TeacherForm: React.FC<IProps> = (props) => {
 					<button
 						className={styles.submit}
 						onClick={() =>
-							formMutation.mutate({
+							registerStudentMutation.mutate({
 								...props.formData.curr,
 								class_id: classSelection,
 							})

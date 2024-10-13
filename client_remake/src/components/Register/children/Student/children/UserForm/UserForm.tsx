@@ -5,12 +5,12 @@ import {
 } from "../../../../Register";
 import styles from "./UserForm.module.scss";
 import { useState } from "react";
-import {
-	apiRequestCheckUsername,
-	T_APIRESULT_CHECK_USERNAME,
-} from "../../../../../../../requests";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import CHECK_USERNAME, {
+	T_PARAMS,
+	T_RES,
+} from "../../../../../../api/routes/register/check_username";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -32,11 +32,8 @@ const UserForm: React.FC<IProps> = (props) => {
 	const [errMessage, setErrMessage] = useState<string>("");
 
 	const mutation = useMutation({
-		mutationFn: (
-			username: string,
-		): Promise<AxiosResponse<T_APIRESULT_CHECK_USERNAME>> => {
-			return apiRequestCheckUsername(username);
-		},
+		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
+			CHECK_USERNAME(params),
 		onError(err) {
 			console.log(err);
 			alert("Error, please refresh and try again");
@@ -66,7 +63,7 @@ const UserForm: React.FC<IProps> = (props) => {
 			};
 
 			props.formData.set(obj);
-			mutation.mutate(value.username.trim());
+			mutation.mutate({ username: value.username.trim() });
 		},
 	});
 

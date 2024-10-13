@@ -43,7 +43,7 @@ const Teacher: React.FC = () => {
 					break;
 				case E_REGISTER_RESULT.USERNAME_EXISTS:
 					setErrMessage(
-						`Username '${form.getFieldValue("username")}' already exists`
+						`Username '${form.getFieldValue("username")}' already exists`,
 					);
 			}
 		},

@@ -13,7 +13,7 @@ export type T_RES = {
 };
 
 async function REGISTER_TEACHER(
-	params: T_PARAMS
+	params: T_PARAMS,
 ): Promise<AxiosResponse<T_RES>> {
 	return await axios<T_RES>({
 		method: "POST",
