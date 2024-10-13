@@ -5,11 +5,11 @@ import { AxiosResponse } from "axios";
 import {
 	apiRequestAddClass,
 	I_PARAMS_APIREQUEST_ADD_CLASS,
-} from "../../../../../../../requests";
+} from "../../../../../requests";
 import { Link } from "react-router-dom";
-import { QUERY_KEYS } from "../../../../../../utils/consts";
-import { getUserSessionDataFromStorage } from "../../../../../../utils/methods";
-import type { T_CLASS } from "../../../../../Register/Register";
+import { QUERY_KEYS } from "../../../../utils/consts";
+import { getUserSessionDataFromStorage } from "../../../../utils/methods";
+import type { T_CLASS } from "../../../Register/Register";
 
 interface IProps {
 	activeClass: {

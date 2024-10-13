@@ -4,7 +4,7 @@ import Student from "./children/Student/Student";
 import Main from "./children/Main/Main";
 import Class from "./children/Class/Class";
 import { T_CLASS } from "../Register/Register";
-import Classes from "./children/Main/children/Classes/Classes";
+import Classes from "./children/Classes/Classes";
 import Assignments from "./children/Main/children/Assignments/Assignments";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../utils/consts";
