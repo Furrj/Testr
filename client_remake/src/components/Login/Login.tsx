@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
 		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
-			LOGIN.method(params),
+			LOGIN(params),
 		onError(err) {
 			console.log(err);
 		},

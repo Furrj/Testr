@@ -4,13 +4,16 @@ import { useForm } from "@tanstack/react-form";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { T_APIRESULT_REGISTER, E_REGISTER_RESULT } from "../../../../types";
+import { E_REGISTER_RESULT } from "../../../../types";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
 import {
 	INIT_FORM_REGISTER_TEACHER,
 	T_FORM_REGISTER_TEACHER,
 } from "../../Register";
-import { apiRequestRegisterTeacher } from "../../../../../requests";
+import REGISTER_TEACHER, {
+	T_PARAMS,
+	T_RES,
+} from "../../../../api/routes/register_teacher";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -23,11 +26,8 @@ const Teacher: React.FC = () => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
-		mutationFn: (
-			formData: T_FORM_REGISTER_TEACHER,
-		): Promise<AxiosResponse<T_APIRESULT_REGISTER>> => {
-			return apiRequestRegisterTeacher(formData);
-		},
+		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
+			REGISTER_TEACHER(params),
 		onError(err) {
 			console.log(err);
 			alert("Error, please refresh and try again");
