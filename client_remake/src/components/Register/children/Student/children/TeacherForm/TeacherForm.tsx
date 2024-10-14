@@ -1,12 +1,8 @@
-import { useForm } from "@tanstack/react-form";
-import {
-	type T_FORM_REGISTER_STUDENT,
-	INIT_FORM_REGISTER_STUDENT,
-} from "../../../../Register";
+import { type T_FORM_REGISTER_STUDENT } from "../../../../Register";
 import styles from "./TeacherForm.module.scss";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Locals from "./Locals";
 import { T_RES as T_TEACHER_INFO } from "../../../../../../api/routes/register/get_teacher_info_for_student_register";
 
@@ -39,24 +35,20 @@ const TeacherForm: React.FC<IProps> = (props) => {
 		setErrMessage,
 	);
 
-	const form = useForm<T_FORM_REGISTER_STUDENT>({
-		defaultValues: {
-			...INIT_FORM_REGISTER_STUDENT,
-		},
-		onSubmit: ({ value }) => {
-			props.formData.set((curr) => {
-				return {
-					...curr,
-					class_id: Number.parseInt(value.class_id as string),
-					teacher_id: Number.parseInt(value.teacher_id as string),
-				};
-			});
+	const form = Locals.useRegisterForm(
+		props.formData.set,
+		getTeacherInfoMutation,
+	);
 
-			getTeacherInfoMutation.mutate({
-				id: Number.parseInt(value.teacher_id as string),
-			});
-		},
-	});
+	// set classSelection to first class ID on teacher info fetch
+	useEffect(() => {
+		if (
+			getTeacherInfoMutation.isSuccess &&
+			getTeacherInfoMutation.data.data.classes.length > 0
+		) {
+			setClassSelection(getTeacherInfoMutation.data.data.classes[0].class_id);
+		}
+	}, [getTeacherInfoMutation.isSuccess]);
 
 	return (
 		<div className={styles.root}>

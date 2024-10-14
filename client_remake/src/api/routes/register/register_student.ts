@@ -15,6 +15,7 @@ export type T_RES = {
 async function REGISTER_STUDENT(
 	params: T_PARAMS,
 ): Promise<AxiosResponse<T_RES>> {
+	console.log(params);
 	return await axios<T_RES>({
 		method: "POST",
 		url,

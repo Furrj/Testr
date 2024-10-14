@@ -1,18 +1,42 @@
-import { useMutation, useQuery, type QueryClient } from "@tanstack/react-query";
-import REGISTER_STUDENT, {
-	T_PARAMS as T_REGISTER_STUDENT_PARAMS,
-	T_RES as T_REGISTER_STUDENT_RES,
-} from "../../../../../../api/routes/register/register_student";
+import {
+	useMutation,
+	type QueryClient,
+	type UseMutationResult,
+} from "@tanstack/react-query";
+import REGISTER_STUDENT from "../../../../../../api/routes/register/register_student";
 import GET_TEACHER_INFO_FOR_STUDENT_REGISTER, {
 	T_PARAMS as T_GET_TEACHER_PARAMS,
 	T_RES as T_GET_TEACHER_RES,
 } from "../../../../../../api/routes/register/get_teacher_info_for_student_register";
 import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
 import type { NavigateFunction } from "react-router-dom";
-import { QUERY_KEYS } from "../../../../../../utils/consts";
-import { AxiosError, HttpStatusCode } from "axios";
+import { AxiosError, HttpStatusCode, type AxiosResponse } from "axios";
+import { useForm } from "@tanstack/react-form";
+import {
+	type T_FORM_REGISTER_STUDENT,
+	INIT_FORM_REGISTER_STUDENT,
+} from "../../../../Register";
 
 const Locals = {
+	useTeacherMutation: (
+		setTeacherInfo: React.Dispatch<
+			React.SetStateAction<T_GET_TEACHER_RES | undefined>
+		>,
+		setErrMessage: React.Dispatch<React.SetStateAction<string>>,
+	) => {
+		return useMutation({
+			mutationFn: GET_TEACHER_INFO_FOR_STUDENT_REGISTER,
+			onError(err: AxiosError) {
+				if (err.status === HttpStatusCode.BadRequest)
+					setErrMessage(`Teacher code does not exist`);
+			},
+			onSuccess(data) {
+				if (data.data.valid) {
+					setTeacherInfo(data.data);
+				} else setErrMessage(`Teacher code does not exist`);
+			},
+		});
+	},
 	useRegisterStudentMutation: (
 		queryClient: QueryClient,
 		navigate: NavigateFunction,
@@ -31,22 +55,31 @@ const Locals = {
 			},
 		});
 	},
-	useTeacherMutation: (
-		setTeacherInfo: React.Dispatch<
-			React.SetStateAction<T_GET_TEACHER_RES | undefined>
+	useRegisterForm: (
+		setFormData: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_STUDENT>>,
+		getTeacherInfoMutation: UseMutationResult<
+			AxiosResponse<T_GET_TEACHER_RES, any>,
+			AxiosError<unknown, any>,
+			T_GET_TEACHER_PARAMS,
+			unknown
 		>,
-		setErrMessage: React.Dispatch<React.SetStateAction<string>>,
 	) => {
-		return useMutation({
-			mutationFn: GET_TEACHER_INFO_FOR_STUDENT_REGISTER,
-			onError(err: AxiosError) {
-				if (err.status === HttpStatusCode.BadRequest)
-					setErrMessage(`Teacher code does not exist`);
+		return useForm<T_FORM_REGISTER_STUDENT>({
+			defaultValues: {
+				...INIT_FORM_REGISTER_STUDENT,
 			},
-			onSuccess(data) {
-				if (data.data.valid) {
-					setTeacherInfo(data.data);
-				} else setErrMessage(`Teacher code does not exist`);
+			onSubmit: ({ value }) => {
+				setFormData((curr) => {
+					return {
+						...curr,
+						class_id: Number.parseInt(value.class_id as string),
+						teacher_id: Number.parseInt(value.teacher_id as string),
+					};
+				});
+
+				getTeacherInfoMutation.mutate({
+					id: Number.parseInt(value.teacher_id as string),
+				});
 			},
 		});
 	},
