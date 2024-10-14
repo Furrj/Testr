@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { T_USERDATA_STATE } from "../../../../types";
+import { T_USERDATA } from "../../../../types";
 import { USER_ROLES } from "../../../../utils/consts";
 import Game from "../../../Game/Game";
 import Home from "../../../Home/Home";
@@ -7,7 +7,7 @@ import Loading from "../../../Loading/Loading";
 import Classes from "../../../Teacher/children/Classes/Classes";
 
 interface IProps {
-	userData: T_USERDATA_STATE;
+	userData: T_USERDATA;
 }
 
 const ProtectedApp: React.FC<IProps> = (props) => {

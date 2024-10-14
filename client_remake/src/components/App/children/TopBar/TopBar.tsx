@@ -4,33 +4,26 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import NavBar from "./children/NavBar/NavBar";
 import { IoMdExit } from "react-icons/io";
 import { QUERY_KEYS } from "../../../../utils/consts";
-import {
-	clearTokensFromLocalStorage,
-	getAuthStatus,
-} from "../../../../utils/methods";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { clearTokensFromLocalStorage } from "../../../../utils/methods";
+import { useQueryClient } from "@tanstack/react-query";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 const TopBar: React.FC = () => {
-	const { isSuccess, data } = useQuery({
-		queryKey: [QUERY_KEYS.USER_DATA],
-		queryFn: getAuthStatus,
-		retry: false,
-		refetchOnWindowFocus: false,
-		staleTime: Infinity,
-	});
+	const authData = useAuthCtx();
 
 	const [showingNavbar, setShowingNavbar] = useState<boolean>(false);
 
 	const queryClient = useQueryClient();
+
 	const location = useLocation();
 	const navigate = useNavigate();
 
 	// close navbar if user gets logged out
 	useEffect(() => {
-		if (data && !data.valid) setShowingNavbar(false);
-	}, [data]);
+		if (!authData.valid) setShowingNavbar(false);
+	}, [authData]);
 
 	return (
 		<div className={styles.root}>
@@ -39,11 +32,12 @@ const TopBar: React.FC = () => {
 				<h1 className={styles.title}>Teachify</h1>
 
 				<div className={styles.right}>
-					{isSuccess && data.valid ? (
+					{authData.valid ? (
 						<div className={styles.logged_in}>
 							<IoMdExit
 								onClick={() => {
 									clearTokensFromLocalStorage();
+									authData.tokens.set(undefined);
 									queryClient.invalidateQueries({
 										queryKey: [QUERY_KEYS.USER_DATA],
 									});
@@ -72,7 +66,7 @@ const TopBar: React.FC = () => {
 				</div>
 			</div>
 
-			{showingNavbar && data && data.valid && <NavBar />}
+			{showingNavbar && authData.valid && <NavBar />}
 		</div>
 	);
 };

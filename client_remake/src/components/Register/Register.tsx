@@ -46,11 +46,6 @@ export const INIT_FORM_REGISTER_TEACHER: T_FORM_REGISTER_TEACHER = {
 	school: "",
 };
 
-export type T_CLASS = {
-	name: string;
-	class_id: number;
-};
-
 const Register: React.FC = () => {
 	return (
 		<>

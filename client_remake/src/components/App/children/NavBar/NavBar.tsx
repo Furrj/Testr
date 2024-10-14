@@ -1,17 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../../../../utils/consts";
-import { getAuthStatus } from "../../../../utils/methods";
+import { useUserDataQuery } from "../../../../queries/userData";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 const NavBar: React.FC = () => {
-	const { isSuccess, data } = useQuery({
-		queryKey: [QUERY_KEYS.USER_DATA],
-		queryFn: getAuthStatus,
-		retry: false,
-		refetchOnWindowFocus: false,
-		staleTime: Infinity,
-	});
+	const authData = useAuthCtx();
+	const { isSuccess, data } = useUserDataQuery(authData);
 	const location = useLocation();
 
 	return (
@@ -53,7 +47,7 @@ const NavBar: React.FC = () => {
 			{isSuccess && data && (
 				<div className={styles.bottom}>
 					<Link to={"/"} className={styles.link}>
-						<div>{data.user_data.username}</div>
+						<div>{data.data.user_data.username}</div>
 					</Link>
 				</div>
 			)}

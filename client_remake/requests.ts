@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import {
 	type T_APIRESULT_REGISTER,
 	type T_APIRESULT_VALIDATE_ACCESS_TOKEN,
-	T_USERDATA_STATE,
+	T_USERDATA,
 } from "./src/types";
 import { type T_TOKENS } from "./src/types";
 import type { T_GAME_SESSION } from "./src/types/game";
@@ -104,7 +104,7 @@ export async function apiRequestGetStudents(
 }
 
 export type T_APIRESULT_GET_USER_INFO = {
-	user_data: T_USERDATA_STATE;
+	user_data: T_USERDATA;
 	sessions: T_GAME_SESSION[];
 };
 export interface I_PARAMS_APIREQUEST_GET_USER_INFO {
@@ -188,7 +188,7 @@ export async function apiRequestGetClass(
 }
 
 export type T_APIRESULT_GET_STUDENT_INFO = {
-	user_data: T_USERDATA_STATE;
+	user_data: T_USERDATA;
 	sessions: T_GAME_SESSION[];
 	class: T_CLASS;
 };

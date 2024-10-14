@@ -11,7 +11,7 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-func ValidateSession(db *dbHandler.DBHandler) gin.HandlerFunc {
+func GetUserData(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var validationResponse types.ResponseValidateSession
 

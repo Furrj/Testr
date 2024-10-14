@@ -6,6 +6,7 @@ import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
 import { FaPerson, FaLock, FaDoorOpen } from "react-icons/fa6";
 import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login/login.ts";
 import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
+import { useAuthCtx } from "../../contexts/AuthProvider.tsx";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
 	const [error, setError] = useState<boolean>(false);
 	const [incorrectInfo, setIncorrectInfo] = useState<boolean>(false);
 
+	const auth = useAuthCtx();
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
 		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
@@ -24,6 +26,7 @@ const Login: React.FC = () => {
 		onSuccess(data) {
 			if (data.data.valid) {
 				sendTokensToLocalStorage(data.data.tokens);
+				auth.tokens.set(data.data.tokens);
 				queryClient.resetQueries();
 			} else {
 				setIncorrectInfo(true);

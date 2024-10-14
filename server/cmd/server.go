@@ -65,7 +65,6 @@ func main() {
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	router.POST(consts.RouteUrlLogin, routes.Login(db))
-	router.POST(consts.RouteUrlValidateSession, routes.ValidateSession(db))
 	router.POST(consts.RouteUrlSubmitGameSession, routes.SubmitGameSession(db))
 	router.POST(consts.RouteUrlUpdateVertical, routes.UpdateVertical(db))
 	router.POST(consts.RouteUrlAddClasses, routes.AddClasses(db))
@@ -74,8 +73,9 @@ func main() {
 	router.POST(consts.RouteUrlUpdateStudentClass, routes.UpdateStudentClass(db))
 	router.POST(consts.RouteUrlAddAssignment, routes.AddAssignment(db))
 	router.POST(consts.RouteUrlCheckPasswordResetCode, routes.CheckPasswordResetCode(db))
-	router.POST(consts.RouteUrlGetTeacherData, routes.GetTeacherData(db))
 
+	router.GET(consts.RouteUrlGetUserData, routes.GetUserData(db))
+	router.GET(consts.RouteUrlGetTeacherData, routes.GetTeacherData(db))
 	router.GET(consts.RouteUrlGetGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetStudents, routes.GetStudents(db))
 	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))

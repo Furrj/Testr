@@ -1,21 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../../../../../utils/consts";
-import {
-	clearTokensFromLocalStorage,
-	getAuthStatus,
-} from "../../../../../../utils/methods";
+import { clearTokensFromLocalStorage } from "../../../../../../utils/methods";
+import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
+import { useUserDataQuery } from "../../../../../../queries/userData";
 
 const NavBar: React.FC = () => {
+	const authData = useAuthCtx();
+	const { isSuccess, data } = useUserDataQuery(authData);
+
 	const queryClient = useQueryClient();
-	const { isSuccess, data } = useQuery({
-		queryKey: [QUERY_KEYS.USER_DATA],
-		queryFn: getAuthStatus,
-		retry: false,
-		refetchOnWindowFocus: false,
-		staleTime: Infinity,
-	});
+
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -25,7 +21,7 @@ const NavBar: React.FC = () => {
 				{isSuccess && data && (
 					<Link to={"/"} className={`${styles.link} ${styles.name}`}>
 						<h3 className={location.pathname === "/" ? styles.current : ""}>
-							{data.user_data.username}
+							{data.data.user_data.username}
 						</h3>
 					</Link>
 				)}
@@ -66,6 +62,7 @@ const NavBar: React.FC = () => {
 					<h3
 						onClick={() => {
 							clearTokensFromLocalStorage();
+							authData.tokens.set(undefined);
 							queryClient.invalidateQueries({
 								queryKey: [QUERY_KEYS.USER_DATA],
 							});
