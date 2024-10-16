@@ -4,40 +4,30 @@ import route_prefix from "../../route_prefix";
 const url = route_prefix("/login");
 
 export type T_PARAMS = {
-  username: string;
-  password: string;
+	username: string;
+	password: string;
 };
 
 export type T_RES = {
-  valid: boolean;
-  tokens: T_TOKENS;
+	valid: boolean;
+	tokens: T_TOKENS;
 };
 
 async function LOGIN(params: T_PARAMS): Promise<T_RES> {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-  });
+	const res = await fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(params),
+	});
 
-  if (!res.ok) {
-    throw new Error(res.status.toString());
-  }
+	if (!res.ok) {
+		throw new Error(res.status.toString());
+	}
 
-  const data: T_RES = await res.json();
-  return data;
+	const data: T_RES = await res.json();
+	return data;
 }
-
-// async function LOGIN(params: T_PARAMS): Promise<AxiosResponse<T_RES>> {
-// 	return await axios<T_RES>({
-// 		method: "POST",
-// 		url,
-// 		data: {
-// 			...params,
-// 		},
-// 	});
-// }
 
 export default LOGIN;

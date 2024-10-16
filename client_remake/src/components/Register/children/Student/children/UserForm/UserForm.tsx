@@ -1,16 +1,7 @@
-import { useForm } from "@tanstack/react-form";
-import {
-	INIT_FORM_REGISTER_STUDENT,
-	type T_FORM_REGISTER_STUDENT,
-} from "../../../../Register";
+import { type T_FORM_REGISTER_STUDENT } from "../../../../Register";
 import styles from "./UserForm.module.scss";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import CHECK_USERNAME, {
-	T_PARAMS,
-	T_RES,
-} from "../../../../../../api/routes/register/check_username";
+import Locals from "./Locals";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -31,41 +22,15 @@ interface IProps {
 const UserForm: React.FC<IProps> = (props) => {
 	const [errMessage, setErrMessage] = useState<string>("");
 
-	const mutation = useMutation({
-		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
-			CHECK_USERNAME(params),
-		onError(err) {
-			console.log(err);
-			alert("Error, please refresh and try again");
-		},
-		onSuccess(data) {
-			if (data.data.valid) {
-				props.teacherMode.set(true);
-			} else {
-				setErrMessage("Username already exists");
-			}
-		},
-	});
+	const checkUsernameMutation = Locals.useCheckUsernameMutation(
+		props.teacherMode.set,
+		setErrMessage,
+	);
 
-	const form = useForm<T_FORM_REGISTER_STUDENT>({
-		defaultValues: {
-			...INIT_FORM_REGISTER_STUDENT,
-		},
-		onSubmit: ({ value }) => {
-			const obj: T_FORM_REGISTER_STUDENT = {
-				first_name: value.first_name.trim(),
-				last_name: value.last_name.trim(),
-				username: value.username.trim(),
-				password: value.password.trim(),
-				confirm_password: value.password.trim(),
-				class_id: 0,
-				teacher_id: 0,
-			};
-
-			props.formData.set(obj);
-			mutation.mutate({ username: value.username.trim() });
-		},
-	});
+	const form = Locals.useRegisterForm(
+		props.formData.set,
+		checkUsernameMutation,
+	);
 
 	return (
 		<form
