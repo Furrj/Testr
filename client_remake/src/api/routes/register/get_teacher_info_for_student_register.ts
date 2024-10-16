@@ -1,5 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
-import type { T_CLASS } from "../../../components/Register/Register";
+import { T_CLASS } from "../../../types/teacherData";
 import route_prefix from "../../route_prefix";
 
 const url = route_prefix("/teacher/get");
@@ -18,14 +17,17 @@ export type T_RES = {
 
 async function GET_TEACHER_INFO_FOR_STUDENT_REGISTER(
 	params: T_PARAMS,
-): Promise<AxiosResponse<T_RES>> {
-	return await axios<T_RES>({
+): Promise<T_RES> {
+	const res = await fetch(`${url}/${params.id}`, {
 		method: "GET",
-		url: `${url}/${params.id.toString()}`,
-		data: {
-			...params,
-		},
 	});
+
+	if (!res.ok) {
+		throw new Error(res.status.toString());
+	}
+
+	const data: T_RES = await res.json();
+	return data;
 }
 
 export default GET_TEACHER_INFO_FOR_STUDENT_REGISTER;

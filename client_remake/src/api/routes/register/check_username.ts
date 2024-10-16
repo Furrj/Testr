@@ -1,4 +1,3 @@
-import axios, { type AxiosResponse } from "axios";
 import route_prefix from "../../route_prefix";
 
 const url = route_prefix("/register/checkUsername");
@@ -26,12 +25,5 @@ async function CHECK_USERNAME(params: T_PARAMS): Promise<T_RES> {
 	const data: T_RES = await res.json();
 	return data;
 }
-
-// async function CHECK_USERNAME(params: T_PARAMS): Promise<AxiosResponse<T_RES>> {
-// 	return await axios<T_RES>({
-// 		method: "GET",
-// 		url: `${url}/${params.username}`,
-// 	});
-// }
 
 export default CHECK_USERNAME;

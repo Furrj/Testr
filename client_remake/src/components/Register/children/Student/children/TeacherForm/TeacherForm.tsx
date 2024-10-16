@@ -44,9 +44,9 @@ const TeacherForm: React.FC<IProps> = (props) => {
 	useEffect(() => {
 		if (
 			getTeacherInfoMutation.isSuccess &&
-			getTeacherInfoMutation.data.data.classes.length > 0
+			getTeacherInfoMutation.data.classes.length > 0
 		) {
-			setClassSelection(getTeacherInfoMutation.data.data.classes[0].class_id);
+			setClassSelection(getTeacherInfoMutation.data.classes[0].class_id);
 		}
 	}, [getTeacherInfoMutation.isSuccess]);
 
