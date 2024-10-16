@@ -15,6 +15,7 @@ import {
 	type T_FORM_REGISTER_STUDENT,
 	INIT_FORM_REGISTER_STUDENT,
 } from "../../../../Register";
+import { T_AUTH } from "../../../../../../contexts/AuthProvider";
 
 const Locals = {
 	useTeacherMutation: (
@@ -37,6 +38,7 @@ const Locals = {
 		});
 	},
 	useRegisterStudentMutation: (
+		auth: T_AUTH,
 		queryClient: QueryClient,
 		navigate: NavigateFunction,
 	) => {
@@ -47,9 +49,10 @@ const Locals = {
 				alert("Error, please refresh and try again");
 			},
 			onSuccess(data) {
-				sendTokensToLocalStorage(data.data.tokens);
-
+				sendTokensToLocalStorage(data.tokens);
+				auth.tokens.set(data.tokens);
 				queryClient.resetQueries();
+
 				navigate("/");
 			},
 		});

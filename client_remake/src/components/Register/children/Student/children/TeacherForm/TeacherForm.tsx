@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Locals from "./Locals";
 import { T_RES as T_TEACHER_INFO } from "../../../../../../api/routes/register/get_teacher_info_for_student_register";
+import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
 
 interface IProps {
 	formData: {
@@ -24,15 +25,17 @@ const TeacherForm: React.FC<IProps> = (props) => {
 	const [errMessage, setErrMessage] = useState<string>("");
 	const [classSelection, setClassSelection] = useState<number>(0);
 
+	const auth = useAuthCtx();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const registerStudentMutation = Locals.useRegisterStudentMutation(
-		queryClient,
-		navigate,
-	);
 	const getTeacherInfoMutation = Locals.useTeacherMutation(
 		setTeacherInfo,
 		setErrMessage,
+	);
+	const registerStudentMutation = Locals.useRegisterStudentMutation(
+		auth,
+		queryClient,
+		navigate,
 	);
 
 	const form = Locals.useRegisterForm(

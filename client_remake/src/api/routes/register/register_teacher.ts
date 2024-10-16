@@ -1,4 +1,3 @@
-import axios, { type AxiosResponse } from "axios";
 import type { T_FORM_REGISTER_TEACHER } from "../../../components/Register/Register";
 import { E_REGISTER_RESULT, type T_TOKENS } from "../../../types";
 import route_prefix from "../../route_prefix";
@@ -12,16 +11,21 @@ export type T_RES = {
 	tokens: T_TOKENS;
 };
 
-async function REGISTER_TEACHER(
-	params: T_PARAMS,
-): Promise<AxiosResponse<T_RES>> {
-	return await axios<T_RES>({
+async function REGISTER_TEACHER(params: T_PARAMS): Promise<T_RES> {
+	const res = await fetch(url, {
 		method: "POST",
-		url,
-		data: {
-			...params,
+		headers: {
+			"Content-Type": "application/json",
 		},
+		body: JSON.stringify(params),
 	});
+
+	if (!res.ok) {
+		throw new Error(res.status.toString());
+	}
+
+	const data: T_RES = await res.json();
+	return data;
 }
 
 export default REGISTER_TEACHER;

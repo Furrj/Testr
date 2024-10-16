@@ -12,7 +12,6 @@ import { useUserDataQuery } from "../../queries/userData";
 const App: React.FC = () => {
 	// get auth status
 	const authData = useAuthCtx();
-	console.log(authData);
 
 	// get user info
 	const userDataQuery = useUserDataQuery(authData);

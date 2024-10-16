@@ -2,7 +2,6 @@ import styles from "./Teacher.module.scss";
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { E_REGISTER_RESULT } from "../../../../types";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
@@ -14,6 +13,7 @@ import REGISTER_TEACHER, {
 	T_PARAMS,
 	T_RES,
 } from "../../../../api/routes/register/register_teacher";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -23,20 +23,20 @@ function isAlpha(input: string): boolean {
 const Teacher: React.FC = () => {
 	const [errMessage, setErrMessage] = useState<string>("");
 
+	const auth = useAuthCtx();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
-		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
-			REGISTER_TEACHER(params),
+		mutationFn: (params: T_PARAMS): Promise<T_RES> => REGISTER_TEACHER(params),
 		onError(err) {
 			console.log(err);
 			alert("Error, please refresh and try again");
 		},
 		onSuccess(data) {
-			switch (data.data.result) {
+			switch (data.result) {
 				case E_REGISTER_RESULT.VALID:
-					sendTokensToLocalStorage(data.data.tokens);
-
+					sendTokensToLocalStorage(data.tokens);
+					auth.tokens.set(data.tokens);
 					queryClient.resetQueries();
 
 					navigate("/");

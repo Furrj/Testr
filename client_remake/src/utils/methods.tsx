@@ -44,13 +44,6 @@ export function sendTokensToLocalStorage(userDataTokens: T_TOKENS) {
 		LOCAL_STORAGE_KEYS.refresh_token,
 		userDataTokens.refresh_token,
 	);
-
-	console.log(
-		`${LOCAL_STORAGE_KEYS.access_token}: ${userDataTokens.access_token}`,
-	);
-	console.log(
-		`${LOCAL_STORAGE_KEYS.refresh_token}: ${userDataTokens.refresh_token}`,
-	);
 }
 
 export function clearTokensFromLocalStorage() {
