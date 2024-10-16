@@ -8,6 +8,7 @@ import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
 import Locals from "./Locals";
 import { useAuthCtx } from "../../contexts/AuthProvider";
 import { useUserDataQuery } from "../../queries/userData";
+import { USER_ROLES } from "../../utils/consts";
 
 const App: React.FC = () => {
 	// get auth status
@@ -19,7 +20,9 @@ const App: React.FC = () => {
 	// fetch teacher data if user role == teacher
 	const teacherDataQuery = Locals.useTeacherDataQuery(
 		authData.tokens.curr,
-		authData.valid,
+		authData.valid &&
+			userDataQuery.isSuccess &&
+			userDataQuery.data.user_data.role === USER_ROLES.TEACHER,
 	);
 
 	return (
@@ -35,7 +38,7 @@ const App: React.FC = () => {
 							<Route
 								path="*"
 								element={
-									<ProtectedApp userData={userDataQuery.data.data.user_data} />
+									<ProtectedApp userData={userDataQuery.data.user_data} />
 								}
 							/>
 						) : (

@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
 			{isSuccess && data && (
 				<div className={styles.bottom}>
 					<Link to={"/"} className={styles.link}>
-						<div>{data.data.user_data.username}</div>
+						<div>{data.user_data.username}</div>
 					</Link>
 				</div>
 			)}

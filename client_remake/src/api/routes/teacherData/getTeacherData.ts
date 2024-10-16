@@ -1,4 +1,3 @@
-import axios, { type AxiosResponse } from "axios";
 import route_prefix from "../../route_prefix";
 import { T_TOKENS } from "../../../types";
 import generateJwt from "../../generateJwt";
@@ -15,16 +14,20 @@ export type T_RES = {
 	teacher_data: T_TEACHER_DATA;
 };
 
-async function GET_TEACHER_DATA(
-	params: T_PARAMS,
-): Promise<AxiosResponse<T_RES>> {
-	return await axios<T_RES>({
+async function GET_TEACHER_DATA(params: T_PARAMS): Promise<T_RES> {
+	const res = await fetch(url, {
 		method: "GET",
-		url,
 		headers: {
 			Authorization: generateJwt(params.access_token),
 		},
 	});
+
+	if (!res.ok) {
+		throw new Error(res.status.toString());
+	}
+
+	const data: T_RES = await res.json();
+	return data;
 }
 
 export default GET_TEACHER_DATA;

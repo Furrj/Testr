@@ -1,6 +1,5 @@
 import NavBar from "../App/children/NavBar/NavBar";
 import styles from "./ContentBox.module.scss";
-import { useUserDataQuery } from "../../queries/userData";
 import { useAuthCtx } from "../../contexts/AuthProvider";
 
 interface IProps {
@@ -9,11 +8,10 @@ interface IProps {
 
 const ContentBox: React.FC<IProps> = (props) => {
 	const authData = useAuthCtx();
-	const { isSuccess, data } = useUserDataQuery(authData);
 
 	return (
 		<div className={styles.root}>
-			{isSuccess && data.data.user_data && <NavBar />}
+			{authData.valid && <NavBar />}
 			<div className={styles.content}>{props.children}</div>
 		</div>
 	);

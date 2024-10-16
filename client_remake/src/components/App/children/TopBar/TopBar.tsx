@@ -13,7 +13,7 @@ import { useAuthCtx } from "../../../../contexts/AuthProvider";
 const TopBar: React.FC = () => {
 	const authData = useAuthCtx();
 
-	const [showingNavbar, setShowingNavbar] = useState<boolean>(false);
+	const [navbarIsExpanded, setNavbarIsExpanded] = useState<boolean>(false);
 
 	const queryClient = useQueryClient();
 
@@ -22,7 +22,7 @@ const TopBar: React.FC = () => {
 
 	// close navbar if user gets logged out
 	useEffect(() => {
-		if (!authData.valid) setShowingNavbar(false);
+		if (!authData.valid) setNavbarIsExpanded(false);
 	}, [authData]);
 
 	return (
@@ -46,9 +46,9 @@ const TopBar: React.FC = () => {
 								className={styles.logout}
 							/>
 							<GiHamburgerMenu
-								onClick={() => setShowingNavbar((curr) => !curr)}
+								onClick={() => setNavbarIsExpanded((curr) => !curr)}
 								className={`${styles.hamburger} ${
-									showingNavbar ? styles.open : ""
+									navbarIsExpanded ? styles.open : ""
 								}`}
 							/>
 						</div>
@@ -66,7 +66,7 @@ const TopBar: React.FC = () => {
 				</div>
 			</div>
 
-			{showingNavbar && authData.valid && <NavBar />}
+			{navbarIsExpanded && authData.valid && <NavBar />}
 		</div>
 	);
 };
