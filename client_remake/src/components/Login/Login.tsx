@@ -1,12 +1,10 @@
 import styles from "./Login.module.scss";
 import React, { useState } from "react";
-import { AxiosResponse } from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { sendTokensToLocalStorage } from "../../utils/methods.tsx";
-import { FaPerson, FaLock, FaDoorOpen } from "react-icons/fa6";
-import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login/login.ts";
+import { useQueryClient } from "@tanstack/react-query";
+import { FaPerson, FaLock } from "react-icons/fa6";
 import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 import { useAuthCtx } from "../../contexts/AuthProvider.tsx";
+import Locals from "./Locals.ts";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -16,23 +14,11 @@ const Login: React.FC = () => {
 
 	const auth = useAuthCtx();
 	const queryClient = useQueryClient();
-	const mutation = useMutation({
-		mutationFn: (params: T_PARAMS): Promise<AxiosResponse<T_RES>> =>
-			LOGIN(params),
-		onError(err) {
-			console.log(err);
-		},
-		// TODO: handle error vs incorrect info
-		onSuccess(data) {
-			if (data.data.valid) {
-				sendTokensToLocalStorage(data.data.tokens);
-				auth.tokens.set(data.data.tokens);
-				queryClient.resetQueries();
-			} else {
-				setIncorrectInfo(true);
-			}
-		},
-	});
+	const loginMutation = Locals.useLoginMutation(
+		auth,
+		queryClient,
+		setIncorrectInfo,
+	);
 
 	// INPUT HANDLER
 	const inputHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -56,7 +42,7 @@ const Login: React.FC = () => {
 							e.preventDefault();
 							e.stopPropagation();
 
-							mutation.mutate(userInput);
+							loginMutation.mutate(userInput);
 						}}
 					>
 						<div className={styles.title}>
