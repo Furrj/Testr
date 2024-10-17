@@ -34,6 +34,7 @@ const QGetAllStudentsDataByTeacherID = `
 	FROM students.data
 	NATURAL JOIN users.data
 	WHERE teacher_id=$1
+	ORDER BY class_id
 `
 
 func (dbHandler *DBHandler) GetAllStudentsDataByTeacherID(UserID types.UserID) ([]types.StudentData, error) {
