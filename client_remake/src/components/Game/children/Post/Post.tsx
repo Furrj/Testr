@@ -1,21 +1,16 @@
 import styles from "./Post.module.scss";
 import type { T_QUESTION_RESULT } from "../../../../types/questions";
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-	apiRequestSubmitGameSession,
-	I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
-} from "../../../../../requests";
-import { HttpStatusCode, type AxiosResponse } from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 import {
 	E_GAME_LIMIT_TYPES,
 	E_GAME_STATUS,
 	T_GAME_SETTINGS,
 } from "../../../../types/game";
-import { getUserSessionDataFromStorage } from "../../../../utils/methods";
 import UIHandlers from "../../../../utils/uiHandlers";
-import { QUERY_KEYS } from "../../../../utils/consts";
 import { FaRedoAlt, FaPlus } from "react-icons/fa";
+import Locals from "./Locals";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 interface IProps {
 	results: T_QUESTION_RESULT[];
@@ -49,26 +44,18 @@ const Post: React.FC<IProps> = (props) => {
 			? props.gameSettings.curr.limit_amount
 			: props.time;
 
+	const auth = useAuthCtx();
 	const queryClient = useQueryClient();
-	const mutation = useMutation({
-		mutationFn: (
-			params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
-		): Promise<AxiosResponse> => apiRequestSubmitGameSession(params),
-		onSuccess(data) {
-			if (data.status === HttpStatusCode.Ok)
-				queryClient.invalidateQueries({
-					queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
-				});
-			else console.log("error");
-			setSent(true);
-		},
-	});
+	const submitGamesessionMutation = Locals.useSubmitGamesessionMutation(
+		queryClient,
+		setSent,
+	);
 
 	// submit on page load
 	useEffect(() => {
 		!sent &&
-			mutation.mutate({
-				tokens: getUserSessionDataFromStorage(),
+			submitGamesessionMutation.mutate({
+				tokens: auth.tokens.curr,
 				session: {
 					questions_count: questionsCount,
 					correct_count: correctCount,

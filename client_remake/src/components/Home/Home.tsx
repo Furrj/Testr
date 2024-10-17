@@ -13,6 +13,7 @@ const Home: React.FC<IProps> = (props) => {
 	const auth = useAuthCtx();
 
 	const { isSuccess, isPending, isFetching, data } = usePastTestsQuery(auth);
+
 	if (isPending) {
 		return <Loading />;
 	} else if (!isFetching && isSuccess && data && data !== undefined) {

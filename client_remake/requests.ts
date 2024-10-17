@@ -1,22 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import {
-	type T_APIRESULT_REGISTER,
-	type T_APIRESULT_VALIDATE_ACCESS_TOKEN,
-	T_USERDATA,
-} from "./src/types";
+import { T_USERDATA } from "./src/types";
 import { type T_TOKENS } from "./src/types";
 import type { T_GAME_SESSION } from "./src/types/game";
 import type { T_STUDENT_DATA } from "./src/types/users";
-import { T_FORM_REGISTER_STUDENT } from "./src/components/Register/Register";
 import { T_CLASS } from "./src/types/teacherData";
 import { T_ASSIGNMENT } from "./src/types/assignments";
 
 // Routes
 const ROUTE_PREFIX: string = import.meta.env.DEV ? "http://localhost:5000" : "";
 const API_ROUTES = {
-	REGISTER_STUDENT: ROUTE_PREFIX + "/api/register/student",
-	VALIDATE: ROUTE_PREFIX + "/api/validateSession",
-	SUBMIT_GAME_SESSION: ROUTE_PREFIX + "/api/submitGameSession",
 	GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
 	GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
 	UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
@@ -30,51 +22,6 @@ const API_ROUTES = {
 	GET_ASSIGNMENTS_TEACHER: ROUTE_PREFIX + "/api/assignments/get/teacher",
 	DELETE_STUDENT: ROUTE_PREFIX + "/api/users/delete/student",
 };
-
-export async function apiRequestRegisterStudent(
-	formData: T_FORM_REGISTER_STUDENT,
-): Promise<AxiosResponse<T_APIRESULT_REGISTER>> {
-	console.log(formData);
-	return await axios<T_APIRESULT_REGISTER>({
-		method: "POST",
-		url: API_ROUTES.REGISTER_STUDENT,
-		data: {
-			...formData,
-		},
-	});
-}
-
-export async function apiRequestValidateSession(
-	userDataTokens: T_TOKENS,
-): Promise<AxiosResponse<T_APIRESULT_VALIDATE_ACCESS_TOKEN>> {
-	console.log("Running apiRequestValidateSession");
-	return await axios<T_APIRESULT_VALIDATE_ACCESS_TOKEN>({
-		method: "POST",
-		url: API_ROUTES.VALIDATE,
-		headers: {
-			Authorization: `Bearer ${userDataTokens.access_token}`,
-		},
-	});
-}
-
-export interface I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION {
-	tokens: T_TOKENS;
-	session: T_GAME_SESSION;
-}
-export async function apiRequestSubmitGameSession(
-	params: I_PARAMS_APIREQUEST_SUBMIT_GAME_SESSION,
-): Promise<AxiosResponse> {
-	return await axios({
-		method: "POST",
-		url: API_ROUTES.SUBMIT_GAME_SESSION,
-		data: {
-			...params.session,
-		},
-		headers: {
-			Authorization: `Bearer ${params.tokens.access_token}`,
-		},
-	});
-}
 
 export async function apiRequestGetStudents(
 	tokens: T_TOKENS,

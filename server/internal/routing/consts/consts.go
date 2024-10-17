@@ -6,7 +6,7 @@ const (
 	HeaderTypeAuthorization               string = "Authorization"
 	RouteUrlBase                          string = "/api"
 	RouteUrlLogin                         string = RouteUrlBase + "/login"
-	RouteUrlSubmitGameSession             string = RouteUrlBase + "/submitGameSession"
+	RouteUrlSubmitGameSession             string = RouteUrlBase + "/gamesession"
 	RouteUrlGetUserData                   string = RouteUrlBase + "/user/get"
 	RouteUrlGetGameSessions               string = RouteUrlBase + "/user/get/gamesessions"
 	RouteUrlGetStudents                   string = RouteUrlBase + "/getStudents"
