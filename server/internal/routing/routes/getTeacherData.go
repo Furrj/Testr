@@ -63,14 +63,21 @@ func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		classesMap := make(map[uint]class)
+		classes := []class{}
 		for _, v := range teacherClasses {
-			c := class{
-				TeacherClass: v,
-				Population:   0,
+			pop, err := db.GetTeacherClassPopulationByClassID(v.ClassID)
+			if err != nil {
+				ctx.Status(http.StatusInternalServerError)
+				fmt.Fprintf(os.Stderr, "error in GetTeacherClassPopulationByUserID: %+v\n", err)
+				return
 			}
 
-			classesMap[c.ClassID] = c
+			class := class{
+				TeacherClass: v,
+				Population:   pop,
+			}
+
+			classes = append(classes, class)
 		}
 
 		// get students
@@ -79,18 +86,6 @@ func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Fprintf(os.Stderr, "error in GetAllStudentsDataByTeacherID: %+v\n", err)
 			return
-		}
-
-		for _, v := range students {
-			c := classesMap[v.ClassID]
-			c.Population++
-			classesMap[v.ClassID] = c
-		}
-
-		classes := []class{}
-
-		for _, v := range classesMap {
-			classes = append(classes, v)
 		}
 
 		res := getTeacherDataRes{

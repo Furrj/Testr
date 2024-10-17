@@ -96,6 +96,27 @@ func (dbHandler *DBHandler) GetTeacherClassesByUserID(id types.UserID) ([]types.
 	return classes, nil
 }
 
+const QGetTeacherClassPopulationByClassID = `
+	SELECT COUNT(*)
+	FROM students.data
+	WHERE class_id=$1
+`
+
+func (dbHandler *DBHandler) GetTeacherClassPopulationByClassID(classID uint) (uint, error) {
+	var pop uint
+
+	err := dbHandler.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherClassPopulationByClassID,
+		classID,
+	).Scan(&pop)
+	if err != nil {
+		return pop, err
+	}
+
+	return pop, nil
+}
+
 // Inserts
 
 const EInsertTeacherData = `

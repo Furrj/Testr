@@ -41,7 +41,7 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// bind payload
-		var payload []reqAddClass
+		var payload reqAddClass
 		if err = ctx.BindJSON(&payload); err != nil {
 			fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -49,15 +49,13 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// insert classes
-		for _, v := range payload {
-			class := types.TeacherClass{
-				Name: v.Name,
-			}
-			if err := db.InsertTeacherClass(userID, class); err != nil {
-				fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
-				ctx.Status(http.StatusInternalServerError)
-				return
-			}
+		class := types.TeacherClass{
+			Name: payload.Name,
+		}
+		if err := db.InsertTeacherClass(userID, class); err != nil {
+			fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
 		}
 
 		ctx.Status(http.StatusOK)
