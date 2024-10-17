@@ -12,7 +12,7 @@ const (
 	RouteUrlGetStudents                   string = RouteUrlBase + "/getStudents"
 	RouteUrlGetUserInfo                   string = RouteUrlBase + "/getUserInfo/:id"
 	RouteUrlUpdateVertical                string = RouteUrlBase + "/updateVertical"
-	RouteUrlAddClasses                    string = RouteUrlBase + "/classes/add"
+	RouteUrlAddClass                      string = RouteUrlBase + "/classes"
 	RouteUrlGetClasses                    string = RouteUrlBase + "/classes/get"
 	RouteUrlRegisterTeacher               string = RouteUrlBase + "/register/teacher"
 	RouteUrlRegisterStudent               string = RouteUrlBase + "/register/student"

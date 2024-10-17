@@ -15,7 +15,7 @@ type reqAddClass struct {
 	Name string `json:"name"`
 }
 
-func AddClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
+func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)

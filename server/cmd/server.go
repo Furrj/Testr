@@ -67,7 +67,7 @@ func main() {
 	router.POST(consts.RouteUrlLogin, routes.Login(db))
 	router.POST(consts.RouteUrlSubmitGameSession, routes.SubmitGameSession(db))
 	router.POST(consts.RouteUrlUpdateVertical, routes.UpdateVertical(db))
-	router.POST(consts.RouteUrlAddClasses, routes.AddClasses(db))
+	router.POST(consts.RouteUrlAddClass, routes.AddClass(db))
 	router.POST(consts.RouteUrlRegisterTeacher, routes.RegisterTeacher(db))
 	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
 	router.POST(consts.RouteUrlUpdateStudentClass, routes.UpdateStudentClass(db))
