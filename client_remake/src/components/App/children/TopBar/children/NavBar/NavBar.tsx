@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../../../../../utils/consts";
 import { clearTokensFromLocalStorage } from "../../../../../../utils/methods";
 import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
-import { useUserDataQuery } from "../../../../../../queries/userData";
+import useUserDataQuery from "../../../../../../queries/userData";
 
 const NavBar: React.FC = () => {
 	const authData = useAuthCtx();

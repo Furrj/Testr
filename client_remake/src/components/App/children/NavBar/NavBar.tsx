@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import { useUserDataQuery } from "../../../../queries/userData";
+import useUserDataQuery from "../../../../queries/userData";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 const NavBar: React.FC = () => {

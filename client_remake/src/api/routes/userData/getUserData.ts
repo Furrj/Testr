@@ -1,6 +1,6 @@
 import route_prefix from "../../route_prefix";
 import { T_USERDATA } from "../../../types";
-import generateJwt from "../../generateJwt";
+import generateAuthTokenStr from "../../generateAuthTokenStr";
 import { T_AUTH } from "../../../contexts/AuthProvider";
 
 const url = route_prefix("/user/get");
@@ -15,7 +15,7 @@ async function GET_USER_DATA(params: T_PARAMS): Promise<T_RES> {
 	const res = await fetch(url, {
 		method: "GET",
 		headers: {
-			Authorization: generateJwt(params.tokens.curr.access_token),
+			Authorization: generateAuthTokenStr(params.tokens.curr.access_token),
 		},
 	});
 

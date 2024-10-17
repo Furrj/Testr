@@ -1,28 +1,21 @@
 import styles from "./Home.module.scss";
-import { useQuery } from "@tanstack/react-query";
-import { apiRequestGetGameSessions } from "../../../requests";
-import { QUERY_KEYS } from "../../utils/consts";
-import { getUserSessionDataFromStorage } from "../../utils/methods";
 import Loading from "../Loading/Loading";
 import { T_USERDATA } from "../../types";
 import PastTests from "./children/PastTests/PastTests";
+import { useAuthCtx } from "../../contexts/AuthProvider";
+import usePastTestsQuery from "../../queries/pastTests";
 
 interface IProps {
 	userData: T_USERDATA;
 }
 
 const Home: React.FC<IProps> = (props) => {
-	const { isSuccess, isPending, isFetching, data } = useQuery({
-		queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
-		queryFn: () => apiRequestGetGameSessions(getUserSessionDataFromStorage()),
-		retry: false,
-		refetchOnWindowFocus: false,
-		staleTime: Infinity,
-	});
+	const auth = useAuthCtx();
 
+	const { isSuccess, isPending, isFetching, data } = usePastTestsQuery(auth);
 	if (isPending) {
 		return <Loading />;
-	} else if (!isFetching && isSuccess && data && data.data !== undefined) {
+	} else if (!isFetching && isSuccess && data && data !== undefined) {
 		return (
 			<div className={styles.root}>
 				<div className={styles.scroll}>
@@ -37,7 +30,7 @@ const Home: React.FC<IProps> = (props) => {
 								: "Teacher"}
 						</div> */}
 					</div>
-					<PastTests sessions={data.data} />
+					<PastTests sessions={data} />
 				</div>
 			</div>
 		);
@@ -45,12 +38,3 @@ const Home: React.FC<IProps> = (props) => {
 };
 
 export default Home;
-
-{
-	/* <div className={styles.past_tests}>
-{data.data.length > 0 &&
-  data.data.map((session, i) => {
-    return <PastTest key={`test-${i}`} session={session} />;
-  })}
-</div> */
-}

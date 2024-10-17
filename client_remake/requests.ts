@@ -7,10 +7,8 @@ import {
 import { type T_TOKENS } from "./src/types";
 import type { T_GAME_SESSION } from "./src/types/game";
 import type { T_STUDENT_DATA } from "./src/types/users";
-import {
-	T_CLASS,
-	T_FORM_REGISTER_STUDENT,
-} from "./src/components/Register/Register";
+import { T_FORM_REGISTER_STUDENT } from "./src/components/Register/Register";
+import { T_CLASS } from "./src/types/teacherData";
 import { T_ASSIGNMENT } from "./src/types/assignments";
 
 // Routes
@@ -19,7 +17,6 @@ const API_ROUTES = {
 	REGISTER_STUDENT: ROUTE_PREFIX + "/api/register/student",
 	VALIDATE: ROUTE_PREFIX + "/api/validateSession",
 	SUBMIT_GAME_SESSION: ROUTE_PREFIX + "/api/submitGameSession",
-	GET_GAME_SESSIONS: ROUTE_PREFIX + "/api/getGameSessions",
 	GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
 	GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
 	UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
@@ -75,18 +72,6 @@ export async function apiRequestSubmitGameSession(
 		},
 		headers: {
 			Authorization: `Bearer ${params.tokens.access_token}`,
-		},
-	});
-}
-
-export async function apiRequestGetGameSessions(
-	tokens: T_TOKENS,
-): Promise<AxiosResponse<T_GAME_SESSION[]>> {
-	return await axios<T_GAME_SESSION[]>({
-		method: "GET",
-		url: API_ROUTES.GET_GAME_SESSIONS,
-		headers: {
-			Authorization: `Bearer ${tokens.access_token}`,
 		},
 	});
 }

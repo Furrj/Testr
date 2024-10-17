@@ -7,7 +7,7 @@ import TopBar from "./children/TopBar/TopBar";
 import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
 import Locals from "./Locals";
 import { useAuthCtx } from "../../contexts/AuthProvider";
-import { useUserDataQuery } from "../../queries/userData";
+import useUserDataQuery from "../../queries/userData";
 import { USER_ROLES } from "../../utils/consts";
 
 const App: React.FC = () => {

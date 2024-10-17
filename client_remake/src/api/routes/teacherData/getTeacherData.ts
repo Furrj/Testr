@@ -1,6 +1,6 @@
 import route_prefix from "../../route_prefix";
 import { T_TOKENS } from "../../../types";
-import generateJwt from "../../generateJwt";
+import generateAuthTokenStr from "../../generateAuthTokenStr";
 import { T_CLASS, T_TEACHER_DATA } from "../../../types/teacherData";
 import { T_STUDENT_DATA } from "../../../types/users";
 
@@ -18,7 +18,7 @@ async function GET_TEACHER_DATA(params: T_PARAMS): Promise<T_RES> {
 	const res = await fetch(url, {
 		method: "GET",
 		headers: {
-			Authorization: generateJwt(params.access_token),
+			Authorization: generateAuthTokenStr(params.access_token),
 		},
 	});
 

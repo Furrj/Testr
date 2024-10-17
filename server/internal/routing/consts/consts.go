@@ -8,7 +8,7 @@ const (
 	RouteUrlLogin                         string = RouteUrlBase + "/login"
 	RouteUrlSubmitGameSession             string = RouteUrlBase + "/submitGameSession"
 	RouteUrlGetUserData                   string = RouteUrlBase + "/user/get"
-	RouteUrlGetGameSessions               string = RouteUrlBase + "/getGameSessions"
+	RouteUrlGetGameSessions               string = RouteUrlBase + "/user/get/gamesessions"
 	RouteUrlGetStudents                   string = RouteUrlBase + "/getStudents"
 	RouteUrlGetUserInfo                   string = RouteUrlBase + "/getUserInfo/:id"
 	RouteUrlUpdateVertical                string = RouteUrlBase + "/updateVertical"
