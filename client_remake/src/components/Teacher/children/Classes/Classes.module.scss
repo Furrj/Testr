@@ -43,6 +43,10 @@
 				border-top: $grid-border;
 			}
 		}
+
+		.add {
+			@include flex-center-row;
+		}
 	}
 }
 

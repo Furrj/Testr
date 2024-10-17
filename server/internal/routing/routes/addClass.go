@@ -47,6 +47,7 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
+		fmt.Printf("%+v\n", payload)
 
 		// insert classes
 		class := types.TeacherClass{

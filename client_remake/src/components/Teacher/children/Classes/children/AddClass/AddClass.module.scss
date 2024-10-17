@@ -1,0 +1,19 @@
+@import "../../../../../../styles/_mixins.scss";
+@import "../../../../../../styles/_vars.scss";
+
+button {
+	@include login-register-btn;
+
+	margin-top: 20px;
+}
+
+.card {
+	@include flex-center-col;
+	justify-content: space-between;
+
+	margin-top: 20px;
+
+	background: grey;
+	border-radius: 15px;
+	padding: 10px;
+}

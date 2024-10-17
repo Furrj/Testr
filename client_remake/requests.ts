@@ -12,9 +12,6 @@ const API_ROUTES = {
 	GET_STUDENTS: ROUTE_PREFIX + "/api/getStudents",
 	GET_USER_INFO: ROUTE_PREFIX + "/api/getUserInfo",
 	UPDATE_VERTICAL: ROUTE_PREFIX + "/api/updateVertical",
-	GET_CLASSES: ROUTE_PREFIX + "/api/classes/get",
-	GET_CLASS: ROUTE_PREFIX + "/api/class",
-	ADD_CLASS: ROUTE_PREFIX + "/api/classes/add",
 	CHECK_USERNAME: ROUTE_PREFIX + "/api/checkUsername",
 	GET_STUDENT_INFO: ROUTE_PREFIX + "/api/getStudent",
 	UPDATE_STUDENT_CLASS: ROUTE_PREFIX + "/api/updateStudent/class",
@@ -68,51 +65,6 @@ export async function apiRequestUpdateVertical(
 		data: {
 			vertical: params.vertical,
 		},
-		headers: {
-			Authorization: `Bearer ${params.tokens.access_token}`,
-		},
-	});
-}
-
-export async function apiRequestGetClasses(
-	tokens: T_TOKENS,
-): Promise<AxiosResponse<T_CLASS[]>> {
-	return await axios<T_CLASS[]>({
-		method: "GET",
-		url: API_ROUTES.GET_CLASSES,
-		headers: {
-			Authorization: `Bearer ${tokens.access_token}`,
-		},
-	});
-}
-
-export interface I_PARAMS_APIREQUEST_ADD_CLASS {
-	c: T_CLASS;
-	tokens: T_TOKENS;
-}
-export async function apiRequestAddClass(
-	params: I_PARAMS_APIREQUEST_ADD_CLASS,
-): Promise<AxiosResponse> {
-	return await axios({
-		method: "POST",
-		url: API_ROUTES.ADD_CLASS,
-		data: [params.c],
-		headers: {
-			Authorization: `Bearer ${params.tokens.access_token}`,
-		},
-	});
-}
-
-export interface I_PARAMS_APIREQUEST_GET_CLASS {
-	tokens: T_TOKENS;
-	id: number;
-}
-export async function apiRequestGetClass(
-	params: I_PARAMS_APIREQUEST_GET_CLASS,
-): Promise<AxiosResponse<T_STUDENT_DATA[]>> {
-	return await axios<T_STUDENT_DATA[]>({
-		method: "GET",
-		url: `${API_ROUTES.GET_CLASS}/${params.id}`,
 		headers: {
 			Authorization: `Bearer ${params.tokens.access_token}`,
 		},

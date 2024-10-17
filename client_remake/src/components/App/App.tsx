@@ -5,10 +5,10 @@ import ProtectedApp from "./children/ProtectedApp/ProtectedApp";
 import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";
 import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
-import Locals from "./Locals";
 import { useAuthCtx } from "../../contexts/AuthProvider";
 import useUserDataQuery from "../../queries/userData";
 import { USER_ROLES } from "../../utils/consts";
+import useTeacherDataQuery from "../../queries/teacherDataQuery";
 
 const App: React.FC = () => {
 	// get auth status
@@ -18,7 +18,7 @@ const App: React.FC = () => {
 	const userDataQuery = useUserDataQuery(authData);
 
 	// fetch teacher data if user role == teacher
-	const teacherDataQuery = Locals.useTeacherDataQuery(
+	const teacherDataQuery = useTeacherDataQuery(
 		authData.tokens.curr,
 		authData.valid &&
 			userDataQuery.isSuccess &&

@@ -1,49 +1,14 @@
-import { useRef, useState } from "react";
 import styles from "./Classes.module.scss";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import {
-	apiRequestAddClass,
-	apiRequestGetClasses,
-	I_PARAMS_APIREQUEST_ADD_CLASS,
-} from "../../../../../requests";
-import { Link } from "react-router-dom";
-import { QUERY_KEYS } from "../../../../utils/consts";
-import { getUserSessionDataFromStorage } from "../../../../utils/methods";
-import type { T_CLASS } from "../../../Register/Register";
 import Loading from "../../../Loading/Loading";
-import { DiVim } from "react-icons/di";
+import useTeacherDataQuery from "../../../../queries/teacherDataQuery";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
+import AddClass from "./children/AddClass/AddClass";
 
-const Classes: React.FC<IProps> = (props) => {
-	const [addingMode, setAddingMode] = useState<boolean>(false);
+const Classes: React.FC = () => {
+	const auth = useAuthCtx();
+	const classesDataQuery = useTeacherDataQuery(auth.tokens.curr, auth.valid);
 
-	const inputRef = useRef<HTMLInputElement>(null);
-
-	const queryClient = useQueryClient();
-	const { isFetching, isSuccess, data } = useQuery({
-		queryKey: [QUERY_KEYS.CLASSES],
-		queryFn: () => apiRequestGetClasses(getUserSessionDataFromStorage()),
-		retry: false,
-		refetchOnWindowFocus: false,
-		staleTime: Infinity,
-	});
-
-	const mutation = useMutation({
-		mutationFn: (
-			params: I_PARAMS_APIREQUEST_ADD_CLASS,
-		): Promise<AxiosResponse> => {
-			return apiRequestAddClass(params);
-		},
-		onError(err) {
-			console.log(err);
-			alert("Error, please refresh and try again");
-		},
-		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CLASSES] });
-		},
-	});
-
-	if (isSuccess && data) {
+	if (classesDataQuery.isSuccess && classesDataQuery.data) {
 		return (
 			<div className={styles.root}>
 				<div className={styles.scroll}>
@@ -57,23 +22,27 @@ const Classes: React.FC<IProps> = (props) => {
 						</div>
 					</div>
 
-					{data.data.length > 0 ? (
-						data.data.map((c) => {
+					{classesDataQuery.data.classes.length > 0 ? (
+						classesDataQuery.data.classes.map((c) => {
 							return (
 								<div key={`class-${c.class_id}`} className={styles.row}>
 									<div className={styles.classes}>{c.name}</div>
 
-									<div className={styles.students}>{c.class_id}</div>
+									<div className={styles.students}>{c.population}</div>
 								</div>
 							);
 						})
 					) : (
 						<div>No classes</div>
 					)}
+
+					<div className={styles.add}>
+						<AddClass />
+					</div>
 				</div>
 			</div>
 		);
-	} else if (isFetching) {
+	} else if (classesDataQuery.isFetching) {
 		return <Loading />;
 	} else return <div>Error, please refresh</div>;
 };
