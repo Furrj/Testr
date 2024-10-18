@@ -5,6 +5,8 @@ import Game from "../../../Game/Game";
 import Home from "../../../Home/Home";
 import Loading from "../../../Loading/Loading";
 import Classes from "../../../Teacher/children/Classes/Classes";
+import Class from "../../../Teacher/children/Classes/children/Class/Class";
+import Student from "../../../Teacher/children/Student/Student";
 
 interface IProps {
 	userData: T_USERDATA;
@@ -30,10 +32,31 @@ const ProtectedApp: React.FC<IProps> = (props) => {
 						props.userData.role === USER_ROLES.TEACHER ? (
 							<Classes />
 						) : (
-							<Loading />
+							<Navigate to={"/"} replace />
 						)
 					}
 				/>
+				<Route
+					path="/teacher/class/:id"
+					element={
+						props.userData.role === USER_ROLES.TEACHER ? (
+							<Class />
+						) : (
+							<Navigate to={"/"} replace />
+						)
+					}
+				/>
+				<Route
+					path="/teacher/student/:id"
+					element={
+						props.userData.role === USER_ROLES.TEACHER ? (
+							<Student />
+						) : (
+							<Navigate to={"/"} replace />
+						)
+					}
+				/>
+
 				<Route path="*" element={<Navigate to={"/"} replace />} />
 			</Routes>
 		</>

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../utils/consts";
 import { T_AUTH } from "../contexts/AuthProvider";
-import GET_PAST_TESTS from "../api/routes/userData/getPastTests";
+import GET_PAST_TESTS from "../api/routes/user/getPastTests";
 
 const usePastTestsQuery = (auth: T_AUTH) =>
 	useQuery({

@@ -2,7 +2,7 @@ import { QueryClient, useMutation } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../../../../../utils/consts";
 import ADD_CLASS, {
 	T_PARAMS,
-} from "../../../../../../api/routes/teacherData/classes/addClass";
+} from "../../../../../../api/routes/teacher/classes/addClass";
 
 const Locals = {
 	useAddClassMutation: (queryClient: QueryClient) =>

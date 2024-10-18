@@ -25,11 +25,6 @@ const Home: React.FC<IProps> = (props) => {
 							{props.userData.first_name} {props.userData.last_name}
 						</div>
 						<div>{props.userData.username}</div>
-						{/* <div>
-							{props.userData.role === USER_ROLES.STUDENT
-								? "Student"
-								: "Teacher"}
-						</div> */}
 					</div>
 					<PastTests sessions={data} />
 				</div>

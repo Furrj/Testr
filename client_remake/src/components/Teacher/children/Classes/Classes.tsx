@@ -3,6 +3,7 @@ import Loading from "../../../Loading/Loading";
 import useTeacherDataQuery from "../../../../queries/teacherDataQuery";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
 import AddClass from "./children/AddClass/AddClass";
+import { Link } from "react-router-dom";
 
 const Classes: React.FC = () => {
 	const auth = useAuthCtx();
@@ -25,11 +26,17 @@ const Classes: React.FC = () => {
 					{classesDataQuery.data.classes.length > 0 ? (
 						classesDataQuery.data.classes.map((c) => {
 							return (
-								<div key={`class-${c.class_id}`} className={styles.row}>
-									<div className={styles.classes}>{c.name}</div>
+								<Link
+									to={`/teacher/class/${c.class_id}`}
+									key={`class-${c.class_id}`}
+									className="link"
+								>
+									<div className={styles.row}>
+										<div className={styles.classes}>{c.name}</div>
 
-									<div className={styles.students}>{c.population}</div>
-								</div>
+										<div className={styles.students}>{c.population}</div>
+									</div>
+								</Link>
 							);
 						})
 					) : (

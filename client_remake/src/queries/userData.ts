@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../utils/consts";
-import GET_USER_DATA, {
-	type T_PARAMS,
-} from "../api/routes/userData/getUserData";
+import GET_USER_DATA, { type T_PARAMS } from "../api/routes/user/getUserData";
 
 const useUserDataQuery = (params: T_PARAMS) =>
 	useQuery({

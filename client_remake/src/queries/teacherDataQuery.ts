@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import GET_TEACHER_DATA, {
 	T_PARAMS,
-} from "../api/routes/teacherData/getTeacherData";
+} from "../api/routes/teacher/getTeacherData";
 import { QUERY_KEYS } from "../utils/consts";
 
 const useTeacherDataQuery = (params: T_PARAMS, enabled: boolean) =>
