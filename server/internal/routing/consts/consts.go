@@ -20,7 +20,7 @@ const (
 	RouteUrlGetTeacherInfoForRegisterPage string = RouteUrlBase + "/teacher/get/:id"
 	RouteUrlGetTeacherData                string = RouteUrlBase + "/teacher/get"
 	RouteUrlGetClass                      string = RouteUrlBase + "/class/:id"
-	RouteUrlGetStudentInfo                string = RouteUrlBase + "/getStudent/:id"
+	RouteUrlGetStudentData                string = RouteUrlBase + "/teacher/student/get/:id"
 	RouteUrlUpdateStudentClass            string = RouteUrlBase + "/updateStudent/class"
 	RouteUrlAddAssignment                 string = RouteUrlBase + "/assignments/add"
 	RouteUrlGetAssignmentsTeacher         string = RouteUrlBase + "/assignments/get/teacher"

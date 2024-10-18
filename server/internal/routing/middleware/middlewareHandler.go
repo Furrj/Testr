@@ -18,7 +18,7 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 			consts.RouteUrlAddClass:              {},
 			consts.RouteUrlGetClasses:            {},
 			consts.RouteUrlGetClass:              {},
-			consts.RouteUrlGetStudentInfo:        {},
+			consts.RouteUrlGetStudentData:        {},
 			consts.RouteUrlUpdateStudentClass:    {},
 			consts.RouteUrlAddAssignment:         {},
 			consts.RouteUrlGetAssignmentsTeacher: {},

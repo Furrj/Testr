@@ -83,7 +83,7 @@ func main() {
 	router.GET(consts.RouteUrlCheckUsername, routes.CheckUsername(db))
 	router.GET(consts.RouteUrlGetTeacherInfoForRegisterPage, routes.GetTeacherInfoForRegisterPage(db))
 	router.GET(consts.RouteUrlGetClass, routes.GetClass(db))
-	router.GET(consts.RouteUrlGetStudentInfo, routes.GetStudentInfo(db))
+	router.GET(consts.RouteUrlGetStudentData, routes.GetStudentData(db))
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, routes.GetAssignmentsTeacher(db))
 	router.GET(consts.RouteUrlGetPasswordResetCode, routes.GetPasswordResetCode(db))
 

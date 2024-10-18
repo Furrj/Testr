@@ -12,7 +12,7 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
+func GetStudentData(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -69,14 +69,6 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// get class
-		class, err := db.GetTeacherClassByClassID(studentData.ClassID)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error in GetTeacherClassByClassID: %+v\n", err)
-			ctx.Status(http.StatusInternalServerError)
-			return
-		}
-
 		// get sessions
 		sessions, err := db.GetAllGameSessionsByUserID(studentData.UserID)
 		if err != nil {
@@ -85,18 +77,6 @@ func GetStudentInfo(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		res := types.ResponseGetStudentInfo{
-			UserData: types.ResponseUserData{
-				FirstName: studentUserData.FirstName,
-				LastName:  studentUserData.LastName,
-				Username:  studentUserData.Username,
-				Role:      studentUserData.Role,
-				UserID:    studentUserData.UserID,
-			},
-			Sessions: sessions,
-			Class:    class,
-		}
-
-		ctx.JSON(http.StatusOK, res)
+		ctx.JSON(http.StatusOK, sessions)
 	}
 }
