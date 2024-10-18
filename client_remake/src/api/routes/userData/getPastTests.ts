@@ -10,7 +10,6 @@ export type T_PARAMS = T_TOKENS;
 export type T_RES = T_GAME_SESSION[];
 
 async function GET_PAST_TESTS(params: T_PARAMS): Promise<T_RES> {
-	console.log("getting tests");
 	const res = await fetch(url, {
 		method: "GET",
 		headers: {

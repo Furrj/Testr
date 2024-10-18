@@ -16,4 +16,20 @@ button {
 	background: grey;
 	border-radius: 15px;
 	padding: 10px;
+
+	input {
+		text-align: center;
+		border-radius: 20px;
+		padding: 5px;
+
+		border: none;
+		background: rgba($color: #fff, $alpha: 1);
+
+		overflow-x: auto;
+		color: black;
+
+		&:focus {
+			outline: none;
+		}
+	}
 }

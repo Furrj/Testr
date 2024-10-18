@@ -1,8 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
+import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
 import styles from "./AddClass.module.scss";
 import Locals from "./Locals";
-import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
-import { useQueryClient } from "@tanstack/react-query";
 
 enum E_MODES {
 	BUTTON = 0,
@@ -38,15 +38,10 @@ const AddClass: React.FC = () => {
 								},
 								tokens: auth.tokens.curr,
 							});
-							console.log({
-								name: ref.current.value.trim(),
-								class_id: 1,
-								teacher_id: 1,
-								population: 0,
-							});
 						}
 					}}
 				>
+					<label htmlFor="classname">Name</label>
 					<input
 						type="text"
 						name="classname"
