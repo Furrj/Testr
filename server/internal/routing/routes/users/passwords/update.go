@@ -1,4 +1,4 @@
-package users
+package passwords
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/user"
-	"mathtestr.com/server/internal/routing/routes"
+	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -19,7 +19,7 @@ type updatePasswordReq struct {
 	Password string `json:"password"`
 }
 
-func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Update(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// bind payload
 		var payload updatePasswordReq
@@ -37,7 +37,7 @@ func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// salt and hash password
-		salt, err := routes.GenerateSalt(16)
+		salt, err := utils.GenerateSalt(16)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Printf("error generating salt: %+v\n", err)

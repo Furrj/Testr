@@ -1,4 +1,4 @@
-package routes
+package classes
 
 import (
 	"fmt"
@@ -10,9 +10,14 @@ import (
 	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
+	"mathtestr.com/server/internal/types"
 )
 
-func GetClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
+type reqAddClass struct {
+	Name string `json:"name"`
+}
+
+func Add(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -37,14 +42,25 @@ func GetClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// get classes
-		classes, err := teacher.GetTeacherClassesByUserID(db, userID)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
+		// bind payload
+		var payload reqAddClass
+		if err = ctx.BindJSON(&payload); err != nil {
+			fmt.Fprintf(os.Stderr, "error binding request body %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
+		fmt.Printf("%+v\n", payload)
+
+		// insert classes
+		class := types.TeacherClass{
+			Name: payload.Name,
+		}
+		if err := teacher.InsertTeacherClass(db, userID, class); err != nil {
+			fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
-		ctx.JSON(http.StatusOK, classes)
+		ctx.Status(http.StatusOK)
 	}
 }

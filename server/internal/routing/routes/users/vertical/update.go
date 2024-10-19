@@ -1,4 +1,4 @@
-package routes
+package vertical
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ type updateVerticalReq struct {
 	Vertical bool `json:"vertical"`
 }
 
-func UpdateVertical(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Update(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// Get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)

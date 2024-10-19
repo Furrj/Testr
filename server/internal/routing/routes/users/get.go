@@ -1,4 +1,4 @@
-package routes
+package users
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-func GetUserData(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var validationResponse types.ResponseValidateSession
 

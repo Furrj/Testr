@@ -1,4 +1,4 @@
-package routes
+package teachers
 
 import (
 	"fmt"
@@ -25,7 +25,7 @@ type getTeacherDataRes struct {
 	TeacherData types.TeacherData   `json:"teacher_data"`
 }
 
-func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)

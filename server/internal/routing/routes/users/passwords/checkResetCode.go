@@ -1,4 +1,4 @@
-package routes
+package passwords
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ type reqCheckPasswordResetCode struct {
 	Code     string `json:"code"`
 }
 
-func CheckPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
+func CheckResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// bind payload
 		var payload reqCheckPasswordResetCode

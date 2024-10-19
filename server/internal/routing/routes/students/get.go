@@ -1,22 +1,21 @@
-package routes
+package students
 
 import (
-	"crypto/rand"
 	"fmt"
-	"math/big"
 	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/gamesession"
 	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
 
-func GetPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)
@@ -73,37 +72,14 @@ func GetPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// generate code
-		code, err := generateRandomCode(4)
+		// get sessions
+		sessions, err := gamesession.GetAllGameSessionsByUserID(db, studentData.UserID)
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "error in GetGameSessionsByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
-		// store code
-		rc := types.PasswordResetCode{
-			UserID: userParamID,
-			Code:   code,
-		}
-		if err := user.InsertPasswordResetCode(db, rc); err != nil {
-			ctx.Status(http.StatusInternalServerError)
-			return
-		}
-
-		ctx.JSON(http.StatusOK, rc)
+		ctx.JSON(http.StatusOK, sessions)
 	}
-}
-
-func generateRandomCode(length int) (string, error) {
-	const charset = "abcdefghijklmnopqrstuvwxyz0123456789"
-	code := make([]byte, length)
-	for i := range code {
-		// Select a random index from charset
-		num, err := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
-		if err != nil {
-			return "", err
-		}
-		code[i] = charset[num.Int64()]
-	}
-	return string(code), nil
 }

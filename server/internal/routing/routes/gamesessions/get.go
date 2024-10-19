@@ -1,4 +1,4 @@
-package routes
+package gamesessions
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"mathtestr.com/server/internal/routing/utils"
 )
 
-func GetGameSessions(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// get userID from jwt
 		userID, err := utils.GetJwtInfoFromCtx(ctx)

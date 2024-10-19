@@ -12,7 +12,7 @@ import (
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/dbHandler/user"
-	"mathtestr.com/server/internal/routing/routes"
+	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -64,7 +64,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// salt and hash password
-		salt, err := routes.GenerateSalt(16)
+		salt, err := utils.GenerateSalt(16)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("error generating salt: %+v\n", err)
