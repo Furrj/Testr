@@ -4,7 +4,7 @@ import { E_MODES } from "./Locals";
 import { type T_STUDENT_DATA } from "../../../../../../types/users";
 import { type T_CLASS } from "../../../../../../types/teacherData";
 import ChangeClass from "./children/ChangeClass/ChangeClass";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdLockReset } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Confirm from "./children/Confirm/Confirm";
 
@@ -32,6 +32,12 @@ const Info: React.FC<IProps> = (props) => {
 						<>
 							<span>
 								<FaEdit className={styles.icon} id={styles.edit} />
+								<div className={styles.context}>Edit</div>
+							</span>
+
+							<span>
+								<MdLockReset className={styles.icon} id={styles.reset} />
+								<div className={styles.context}>Reset Password</div>
 							</span>
 
 							<span>
@@ -40,6 +46,9 @@ const Info: React.FC<IProps> = (props) => {
 									id={styles.delete}
 									onClick={() => setMode(E_MODES.CONFIRM_DELETE)}
 								/>
+								<div className={styles.context} id={styles.last}>
+									Delete
+								</div>
 							</span>
 						</>
 					) : null}

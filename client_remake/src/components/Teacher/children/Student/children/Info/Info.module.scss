@@ -15,10 +15,12 @@
 
 	.buttons {
 		@include flex-center-row;
-		gap: 10px;
+		justify-content: space-around;
 
 		span {
 			cursor: pointer;
+
+			position: relative;
 
 			.icon {
 				font-size: 1.5rem;
@@ -32,10 +34,45 @@
 			#edit {
 				color: yellowgreen;
 			}
+
+			#reset {
+				color: blue;
+				font-size: 1.8rem;
+
+				transform: translateY(2px);
+			}
+
+			.context {
+				display: none;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: $mobile-width) {
+	.root .buttons span:hover {
+		.context {
+			background: $main-bg;
+			position: absolute;
+			z-index: 30;
+			display: block;
+
+			transform: translateX(-25%);
+
+			border-radius: 10px;
+			padding: 5px;
 		}
 
-		:nth-child(2) {
-			transform: translateY(1px);
+		#delete {
+			color: grey;
+		}
+
+		#edit {
+			color: grey;
+		}
+
+		#reset {
+			color: grey;
 		}
 	}
 }
