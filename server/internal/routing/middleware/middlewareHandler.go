@@ -9,15 +9,12 @@ type MiddlewareHandler struct {
 func NewMiddlewareHandler() *MiddlewareHandler {
 	MiddlewareHandler := MiddlewareHandler{
 		JWTValidatedRoutes: map[string]struct{}{
-			consts.RouteUrlGetUserData:           {},
-			consts.RouteUrlSubmitGameSession:     {},
-			consts.RouteUrlGetGameSessions:       {},
+			consts.RouteUrlUserData:              {},
+			consts.RouteUrlGameSessions:          {},
 			consts.RouteUrlGetStudents:           {},
 			consts.RouteUrlGetUserInfo:           {},
 			consts.RouteUrlUpdateVertical:        {},
-			consts.RouteUrlAddClass:              {},
-			consts.RouteUrlGetClasses:            {},
-			consts.RouteUrlGetClass:              {},
+			consts.RouteUrlClasses:               {},
 			consts.RouteUrlUpdateStudentClass:    {},
 			consts.RouteUrlAddAssignment:         {},
 			consts.RouteUrlGetAssignmentsTeacher: {},
