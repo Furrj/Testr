@@ -34,20 +34,8 @@
 			}
 		}
 
-		:first-child {
+		:nth-child(2) {
 			transform: translateY(1px);
-		}
-	}
-}
-
-@media only screen and (min-width: $mobile-width) {
-	.root .buttons span:hover {
-		#edit {
-			color: grey;
-		}
-
-		#delete {
-			color: grey;
 		}
 	}
 }

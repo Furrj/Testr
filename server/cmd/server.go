@@ -89,7 +89,7 @@ func main() {
 
 	router.PUT(consts.RouteUrlUpdatePassword, routes.UpdatePassword(db))
 
-	router.DELETE(consts.RouteUrlDeleteStudent, routes.DeleteStudent(db))
+	router.DELETE(consts.RouteUrlStudent, routes.DeleteStudent(db))
 
 	router.Use(spa.Middleware("/", "client"))
 

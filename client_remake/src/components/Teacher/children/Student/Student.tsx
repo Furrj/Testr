@@ -55,8 +55,8 @@ const Student: React.FC = () => {
 					)}
 				</div>
 			);
-		} else throw new Error("Error, please refresh");
-	} else return <div>Error</div>;
+		} else alert("error, please refresh");
+	} else alert("error, please refresh");
 };
 
 export default Student;
