@@ -11,11 +11,9 @@ func NewMiddlewareHandler() *MiddlewareHandler {
 		JWTValidatedRoutes: map[string]struct{}{
 			consts.RouteUrlUserData:              {},
 			consts.RouteUrlGameSessions:          {},
-			consts.RouteUrlGetStudents:           {},
 			consts.RouteUrlGetUserInfo:           {},
 			consts.RouteUrlUpdateVertical:        {},
 			consts.RouteUrlClasses:               {},
-			consts.RouteUrlUpdateStudentClass:    {},
 			consts.RouteUrlAddAssignment:         {},
 			consts.RouteUrlGetAssignmentsTeacher: {},
 			consts.RouteUrlStudent:               {},

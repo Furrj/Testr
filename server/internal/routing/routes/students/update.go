@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -53,7 +54,7 @@ func Update(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get student data
-		studentData, err := db.GetStudentDataByUserID(payload.UserID)
+		studentData, err := student.GetStudentDataByUserID(db, payload.UserID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetStudentDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

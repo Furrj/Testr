@@ -10,6 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -103,7 +104,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 			TeacherID: payload.TeacherID,
 			ClassID:   payload.ClassID,
 		}
-		if err := db.InsertStudentData(studentData); err != nil {
+		if err := student.InsertStudentData(db, studentData); err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("error inserting student: %+v\n", err)
 			return

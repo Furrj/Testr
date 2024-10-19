@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -63,7 +64,7 @@ func GetStudentData(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// check if student owned by teacher
-		studentData, err := db.GetStudentDataByUserID(userParamID)
+		studentData, err := student.GetStudentDataByUserID(db, userParamID)
 		if studentData.TeacherID != userID {
 			ctx.Status(http.StatusUnauthorized)
 			return
