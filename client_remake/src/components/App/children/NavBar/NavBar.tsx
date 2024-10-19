@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
 import useUserDataQuery from "../../../../queries/userData";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
+import { USER_ROLES } from "../../../../utils/consts";
 
 const NavBar: React.FC = () => {
 	const authData = useAuthCtx();
@@ -32,24 +33,28 @@ const NavBar: React.FC = () => {
 						Stats
 					</div>
 				</Link>
-
-				<Link to={"/teacher/classes"} className={styles.link}>
-					<div
-						className={
-							location.pathname === "/teacher/classes" ? styles.current : ""
-						}
-					>
-						Classes
-					</div>
-				</Link>
 			</div>
 
 			{isSuccess && data && (
-				<div className={styles.bottom}>
-					<Link to={"/"} className={styles.link}>
-						<div>{data.user_data.username}</div>
-					</Link>
-				</div>
+				<>
+					{data.user_data.role === USER_ROLES.TEACHER && (
+						<Link to={"/teacher/classes"} className={styles.link}>
+							<div
+								className={
+									location.pathname === "/teacher/classes" ? styles.current : ""
+								}
+							>
+								Classes
+							</div>
+						</Link>
+					)}
+
+					<div className={styles.bottom}>
+						<Link to={"/"} className={styles.link}>
+							<div>{data.user_data.username}</div>
+						</Link>
+					</div>
+				</>
 			)}
 		</div>
 	);

@@ -3,7 +3,7 @@ import { T_USERDATA } from "../../../types";
 import generateAuthTokenStr from "../../generateAuthTokenStr";
 import { T_AUTH } from "../../../contexts/AuthProvider";
 
-const url = route_prefix("/user/get");
+const url = route_prefix("/user");
 
 export type T_PARAMS = T_AUTH;
 

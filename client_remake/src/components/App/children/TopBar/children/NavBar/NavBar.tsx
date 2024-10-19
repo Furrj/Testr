@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.scss";
 import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../../../../../../utils/consts";
+import { QUERY_KEYS, USER_ROLES } from "../../../../../../utils/consts";
 import { clearTokensFromLocalStorage } from "../../../../../../utils/methods";
 import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
 import useUserDataQuery from "../../../../../../queries/userData";
@@ -48,15 +48,17 @@ const NavBar: React.FC = () => {
 					</h3>
 				</Link>
 
-				<Link to={"/teacher/classes"} className={styles.link}>
-					<h3
-						className={
-							location.pathname === "/teacher/classes" ? styles.current : ""
-						}
-					>
-						Classes
-					</h3>
-				</Link>
+				{isSuccess && data.user_data.role === USER_ROLES.TEACHER && (
+					<Link to={"/teacher/classes"} className={styles.link}>
+						<h3
+							className={
+								location.pathname === "/teacher/classes" ? styles.current : ""
+							}
+						>
+							Classes
+						</h3>
+					</Link>
+				)}
 
 				<div className={styles.link}>
 					<h3
