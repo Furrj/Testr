@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/student"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/testHelpers"
 
@@ -122,12 +123,12 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("InsertTeacherData", func(t *testing.T) {
-		if err := db.InsertTeacherData(testTeacherData); err != nil {
+		if err := teacher.InsertTeacherData(db, testTeacherData); err != nil {
 			t.Errorf("error inserting teacher data: %+v\n", err)
 		}
 	})
 	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
-		data, err := db.GetTeacherDataByUserID(testTeacherData.UserID)
+		data, err := teacher.GetTeacherDataByUserID(db, testTeacherData.UserID)
 		if err != nil {
 			t.Errorf("error getting teacher data: %+v\n", err)
 		}
@@ -136,12 +137,12 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("InsertTeacherClass", func(t *testing.T) {
-		if err := db.InsertTeacherClass(testTeacherData.UserID, testTeacherClass); err != nil {
+		if err := teacher.InsertTeacherClass(db, testTeacherData.UserID, testTeacherClass); err != nil {
 			t.Errorf("error in InsertTeacherClass: %+v\n", err)
 		}
 	})
 	t.Run("GetTeacherClassesByUserID", func(t *testing.T) {
-		_, err := db.GetTeacherClassesByUserID(testTeacherData.UserID)
+		_, err := teacher.GetTeacherClassesByUserID(db, testTeacherData.UserID)
 		if err != nil {
 			t.Errorf("error in GetTeacherClassesByUserID: %+v\n", err)
 		}

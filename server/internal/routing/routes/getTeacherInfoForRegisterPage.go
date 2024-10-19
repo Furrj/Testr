@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/types"
 )
@@ -54,7 +55,7 @@ func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get teacher data
-		teacherData, err := db.GetTeacherDataByUserID(userID)
+		teacherData, err := teacher.GetTeacherDataByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)
@@ -62,7 +63,7 @@ func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		classes, err := db.GetTeacherClassesByUserID(userID)
+		classes, err := teacher.GetTeacherClassesByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)

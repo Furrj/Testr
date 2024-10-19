@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -54,7 +55,7 @@ func AddClass(db *dbHandler.DBHandler) gin.HandlerFunc {
 		class := types.TeacherClass{
 			Name: payload.Name,
 		}
-		if err := db.InsertTeacherClass(userID, class); err != nil {
+		if err := teacher.InsertTeacherClass(db, userID, class); err != nil {
 			fmt.Fprintf(os.Stderr, "error in InsertTeacherClass %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return

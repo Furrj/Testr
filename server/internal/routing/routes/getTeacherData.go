@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/student"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -50,7 +51,7 @@ func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get teacher data
-		teacherData, err := db.GetTeacherDataByUserID(userID)
+		teacherData, err := teacher.GetTeacherDataByUserID(db, userID)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
@@ -58,7 +59,7 @@ func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		teacherClasses, err := db.GetTeacherClassesByUserID(userID)
+		teacherClasses, err := teacher.GetTeacherClassesByUserID(db, userID)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
@@ -67,7 +68,7 @@ func GetTeacherData(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		classes := []class{}
 		for _, v := range teacherClasses {
-			pop, err := db.GetTeacherClassPopulationByClassID(v.ClassID)
+			pop, err := teacher.GetTeacherClassPopulationByClassID(db, v.ClassID)
 			if err != nil {
 				ctx.Status(http.StatusInternalServerError)
 				fmt.Fprintf(os.Stderr, "error in GetTeacherClassPopulationByUserID: %+v\n", err)

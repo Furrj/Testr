@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 )
@@ -37,7 +38,7 @@ func GetClasses(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		classes, err := db.GetTeacherClassesByUserID(userID)
+		classes, err := teacher.GetTeacherClassesByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

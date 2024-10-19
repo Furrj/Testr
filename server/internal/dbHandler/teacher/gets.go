@@ -1,8 +1,9 @@
-package dbHandler
+package teacher
 
 import (
 	"context"
 
+	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -12,9 +13,9 @@ const QGetTeacherDataByUserID = `
 	WHERE user_id=$1
 `
 
-func (dbHandler *DBHandler) GetTeacherDataByUserID(UserID types.UserID) (types.TeacherData, error) {
+func GetTeacherDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.TeacherData, error) {
 	var TeacherData types.TeacherData
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetTeacherDataByUserID,
 		UserID,
@@ -35,10 +36,10 @@ const QGetTeacherClassByClassID = `
 	WHERE class_id=$1
 `
 
-func (dbHandler *DBHandler) GetTeacherClassByClassID(classID uint) (types.TeacherClass, error) {
+func GetTeacherClassByClassID(db *dbHandler.DBHandler, classID uint) (types.TeacherClass, error) {
 	var class types.TeacherClass
 
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetTeacherClassByClassID,
 		classID,
@@ -61,10 +62,10 @@ const QGetTeacherClassesByUserID = `
 	ORDER BY class_id
 `
 
-func (dbHandler *DBHandler) GetTeacherClassesByUserID(id types.UserID) ([]types.TeacherClass, error) {
+func GetTeacherClassesByUserID(db *dbHandler.DBHandler, id types.UserID) ([]types.TeacherClass, error) {
 	classes := []types.TeacherClass{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetTeacherClassesByUserID,
 		id,
@@ -102,10 +103,10 @@ const QGetTeacherClassPopulationByClassID = `
 	WHERE class_id=$1
 `
 
-func (dbHandler *DBHandler) GetTeacherClassPopulationByClassID(classID uint) (uint, error) {
+func GetTeacherClassPopulationByClassID(db *dbHandler.DBHandler, classID uint) (uint, error) {
 	var pop uint
 
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetTeacherClassPopulationByClassID,
 		classID,
@@ -115,43 +116,4 @@ func (dbHandler *DBHandler) GetTeacherClassPopulationByClassID(classID uint) (ui
 	}
 
 	return pop, nil
-}
-
-// Inserts
-
-const EInsertTeacherData = `
-	INSERT INTO teachers.data(user_id, email, school)
-	VALUES ($1, $2, $3)
-`
-
-func (dbHandler *DBHandler) InsertTeacherData(teacherData types.TeacherData) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertTeacherData,
-		teacherData.UserID,
-		teacherData.Email,
-		teacherData.School,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-const EInsertTeacherClass = `
-	INSERT INTO teachers.classes(teacher_id, name)
-	VALUES ($1, $2)
-`
-
-func (dbHandler *DBHandler) InsertTeacherClass(userID types.UserID, class types.TeacherClass) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertTeacherClass,
-		userID,
-		class.Name,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
 }
