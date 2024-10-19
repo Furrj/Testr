@@ -1,0 +1,10 @@
+@import "../../../../../../../../styles/vars";
+@import "../../../../../../../../styles/mixins";
+
+.root {
+	@include full-size-percent;
+	@include flex-center-row;
+	gap: 10px;
+
+	border-right: $grid-border;
+}

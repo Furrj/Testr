@@ -1,0 +1,53 @@
+@import "../../../../../../styles/vars";
+@import "../../../../../../styles/mixins";
+
+.root {
+	width: 100%;
+	display: flex;
+
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+
+	.box {
+		@include flex-center-col;
+		border-right: $grid-border;
+	}
+
+	.buttons {
+		@include flex-center-row;
+		gap: 10px;
+
+		span {
+			cursor: pointer;
+
+			.icon {
+				font-size: 1.5rem;
+			}
+
+			#delete {
+				font-size: 1.6rem;
+				color: red;
+			}
+
+			#edit {
+				color: yellowgreen;
+			}
+		}
+
+		:first-child {
+			transform: translateY(1px);
+		}
+	}
+}
+
+@media only screen and (min-width: $mobile-width) {
+	.root .buttons span:hover {
+		#edit {
+			color: grey;
+		}
+
+		#delete {
+			color: grey;
+		}
+	}
+}

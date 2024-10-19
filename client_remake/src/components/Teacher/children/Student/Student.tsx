@@ -5,6 +5,8 @@ import styles from "./Student.module.scss";
 import Loading from "../../../Loading/Loading";
 import useStudentDataQuery from "../../../../queries/studentData";
 import PastTests from "../../../Home/children/PastTests/PastTests";
+import { T_CLASS } from "../../../../types/teacherData";
+import Info from "./children/Info/Info";
 
 const Student: React.FC = () => {
 	const auth = useAuthCtx();
@@ -32,21 +34,28 @@ const Student: React.FC = () => {
 		const student = teacherDataQuery.data.students.find(
 			(s) => s.user_id.toString() === idStr,
 		);
-		return (
-			<div className={styles.root}>
-				<div className={styles.scroll}>
-					<div className={styles.info}>
-						<div>
-							{student?.first_name} {student?.last_name}
-						</div>
-						<div>{student?.username}</div>
-					</div>
-					{studentDataQuery.isSuccess && studentDataQuery.data.length > 0 && (
+
+		if (student !== undefined) {
+			const cl = teacherDataQuery.data.classes.find(
+				(c) => c.class_id === student.class_id,
+			) as T_CLASS;
+
+			return (
+				<div className={styles.root}>
+					<Info
+						student={student}
+						cl={cl}
+						classes={teacherDataQuery.data.classes}
+					/>
+
+					{studentDataQuery.isSuccess && studentDataQuery.data.length > 0 ? (
 						<PastTests sessions={studentDataQuery.data} />
+					) : (
+						<div>No past tests</div>
 					)}
 				</div>
-			</div>
-		);
+			);
+		} else throw new Error("Error, please refresh");
 	} else return <div>Error</div>;
 };
 
