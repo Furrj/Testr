@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styles from "./Info.module.scss";
-import { E_MODES } from "./Locals";
+import { E_MODES, T_EDITED_STUDENT_INFO } from "./Locals";
 import { type T_STUDENT_DATA } from "../../../../../../types/users";
 import { type T_CLASS } from "../../../../../../types/teacherData";
 import ChangeClass from "./children/ChangeClass/ChangeClass";
-import { MdDeleteForever, MdLockReset } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
 import Confirm from "./children/Confirm/Confirm";
+import EditNames from "./children/EditNames/EditNames";
+import Buttons from "./children/Buttons/Buttons";
 
 interface IProps {
 	student: T_STUDENT_DATA;
@@ -16,44 +16,30 @@ interface IProps {
 
 const Info: React.FC<IProps> = (props) => {
 	const [mode, setMode] = useState<E_MODES>(E_MODES.DISPLAY);
+	const [editedStudentInfo, setEditedStudentInfo] =
+		useState<T_EDITED_STUDENT_INFO>({
+			first_name: props.student.first_name,
+			last_name: props.student.last_name,
+			username: props.student.username,
+		});
 
 	return (
 		<>
 			<section className={styles.root}>
-				<div className={styles.box}>
-					<div style={{ fontSize: "1.5rem" }}>
-						{props.student.last_name}, {props.student.first_name}
-					</div>
-					<div>{props.student.username}</div>
-				</div>
+				<EditNames
+					mode={mode}
+					student={props.student}
+					editedStudentInfo={{
+						curr: editedStudentInfo,
+						set: setEditedStudentInfo,
+					}}
+				/>
+
 				<ChangeClass cl={props.cl} classes={props.classes} mode={mode} />
-				<div className={styles.buttons}>
-					{mode === E_MODES.DISPLAY ? (
-						<>
-							<span>
-								<FaEdit className={styles.icon} id={styles.edit} />
-								<div className={styles.context}>Edit</div>
-							</span>
 
-							<span>
-								<MdLockReset className={styles.icon} id={styles.reset} />
-								<div className={styles.context}>Reset Password</div>
-							</span>
-
-							<span>
-								<MdDeleteForever
-									className={styles.icon}
-									id={styles.delete}
-									onClick={() => setMode(E_MODES.CONFIRM_DELETE)}
-								/>
-								<div className={styles.context} id={styles.last}>
-									Delete
-								</div>
-							</span>
-						</>
-					) : null}
-				</div>
+				<Buttons mode={{ curr: mode, set: setMode }} />
 			</section>
+
 			{mode === E_MODES.CONFIRM_DELETE && (
 				<Confirm
 					cl={props.cl}

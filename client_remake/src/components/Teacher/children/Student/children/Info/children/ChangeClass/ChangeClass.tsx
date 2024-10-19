@@ -10,9 +10,7 @@ interface IProps {
 }
 
 const ChangeClass: React.FC<IProps> = (props) => {
-	const [mode, setMode] = useState<E_MODES>(E_MODES.DISPLAY);
-
-	switch (mode) {
+	switch (props.mode) {
 		case E_MODES.DISPLAY:
 			return <div className={styles.root}>{props.cl.name} </div>;
 		case E_MODES.EDITING:
