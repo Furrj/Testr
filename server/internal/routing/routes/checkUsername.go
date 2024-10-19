@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 )
 
 type resCheckUsername struct {
@@ -21,7 +22,7 @@ func CheckUsername(db *dbHandler.DBHandler) gin.HandlerFunc {
 		username := ctx.Param("username")
 
 		// check for username
-		_, err := db.GetUserIDByUsername(username)
+		_, err := user.GetUserIDByUsername(db, username)
 		if err != nil {
 			if !errors.Is(err, pgx.ErrNoRows) {
 				fmt.Printf("Error checking username validity: %+v\n", err)

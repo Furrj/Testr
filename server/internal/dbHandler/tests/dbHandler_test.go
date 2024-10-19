@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/student"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/testHelpers"
 
 	"github.com/joho/godotenv"
@@ -55,7 +56,7 @@ func TestDBHandler(t *testing.T) {
 
 	t.Run("InsertUserIds", func(t *testing.T) {
 		for range 2 {
-			_, err := db.InsertUser()
+			_, err := user.InsertUser(db)
 			if err != nil {
 				t.Errorf("Error in InsertUser: %+v\n", err)
 			}
@@ -63,17 +64,17 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("InsertUserDataTeacher", func(t *testing.T) {
-		if err := db.InsertUserData(testUserDataMichele); err != nil {
+		if err := user.InsertUserData(db, testUserDataMichele); err != nil {
 			t.Errorf("Error in InsertUserData: %+v\n", err)
 		}
 	})
 	t.Run("InsertUserDataStudent", func(t *testing.T) {
-		if err := db.InsertUserData(testUserDataJackson); err != nil {
+		if err := user.InsertUserData(db, testUserDataJackson); err != nil {
 			t.Errorf("Error in InsertUserData: %+v\n", err)
 		}
 	})
 	t.Run("GetUserDataByUserID", func(t *testing.T) {
-		userData, err := db.GetUserDataByUserID(testUserDataJackson.UserID)
+		userData, err := user.GetUserDataByUserID(db, testUserDataJackson.UserID)
 		if err != nil {
 			t.Errorf("Error in GetUserDataByUserID: %+v\n", err)
 		}
@@ -82,7 +83,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetUserIDByUsernameValid", func(t *testing.T) {
-		userID, err := db.GetUserIDByUsername(testUserDataJackson.Username)
+		userID, err := user.GetUserIDByUsername(db, testUserDataJackson.Username)
 		if err != nil {
 			t.Errorf("Error in GetUserIDByUsername: %+v\n", err)
 		}
@@ -91,7 +92,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetUserIDByUsernameInvalid", func(t *testing.T) {
-		_, err := db.GetUserIDByUsername("test")
+		_, err := user.GetUserIDByUsername(db, "test")
 		if !errors.Is(err, pgx.ErrNoRows) {
 			t.Errorf("Expected pgx.ErrNoRows: %+v\n", err)
 		}
@@ -190,18 +191,18 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("UpdateVerticalByUserID", func(t *testing.T) {
-		if err := db.UpdateVerticalByUserID(testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {
+		if err := user.UpdateVerticalByUserID(db, testUserDataJackson.UserID, !testUserDataJackson.Vertical); err != nil {
 			t.Errorf("error in UpdateVerticalByUserID: %+v\n", err)
 		}
 	})
 
 	t.Run("InsertPasswordResetCode", func(t *testing.T) {
-		if err := db.InsertPasswordResetCode(testPasswordResetCode); err != nil {
+		if err := user.InsertPasswordResetCode(db, testPasswordResetCode); err != nil {
 			t.Errorf("error in InsertPasswordResetCode: %+v\n", err)
 		}
 	})
 	t.Run("GetPasswordResetCodeByUserID", func(t *testing.T) {
-		rc, err := db.GetPasswordResetCodeByCode(testPasswordResetCode.Code)
+		rc, err := user.GetPasswordResetCodeByCode(db, testPasswordResetCode.Code)
 		if err != nil {
 			t.Errorf("error in GetPasswordResetCodeByUserID: %+v\n", err)
 		}
@@ -213,13 +214,13 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("DeletePasswordResetCodeByUserID", func(t *testing.T) {
-		if err := db.DeletePasswordResetCodeByUserID(testUserDataJackson.UserID); err != nil {
+		if err := user.DeletePasswordResetCodeByUserID(db, testUserDataJackson.UserID); err != nil {
 			t.Errorf("error in DeletePasswordResetCodeByUserID: %+v\n", err)
 		}
 	})
 
 	t.Run("DeleteUserByUserID", func(t *testing.T) {
-		if err := db.DeleteUserByUserID(testUserDataJackson.UserID); err != nil {
+		if err := user.DeleteUserByUserID(db, testUserDataJackson.UserID); err != nil {
 			t.Errorf("error in DeleteUserByUserID: %+v\n", err)
 		}
 	})

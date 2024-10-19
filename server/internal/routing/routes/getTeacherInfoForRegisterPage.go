@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -40,7 +41,7 @@ func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 		userID := types.UserID(userParamID32)
 
 		// get user data
-		userData, err := db.GetUserDataByUserID(userID)
+		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				fmt.Fprintf(os.Stderr, "could not find user by id %d: %+v\n", userID, err)

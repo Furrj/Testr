@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 )
 
 type reqCheckPasswordResetCode struct {
@@ -26,14 +27,14 @@ func CheckPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// search db for code
-		rc, err := db.GetPasswordResetCodeByCode(payload.Code)
+		rc, err := user.GetPasswordResetCodeByCode(db, payload.Code)
 		if err != nil {
 			ctx.Status(http.StatusBadRequest)
 			return
 		}
 
 		// get user info
-		info, err := db.GetUserDataByUserID(rc.UserID)
+		info, err := user.GetUserDataByUserID(db, rc.UserID)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			return

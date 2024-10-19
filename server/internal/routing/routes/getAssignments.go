@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -23,7 +24,7 @@ func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// get user data
-		userData, err := db.GetUserDataByUserID(userID)
+		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

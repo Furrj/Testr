@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 )
 
@@ -34,7 +35,7 @@ func UpdateVertical(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// update vertical
-		if err := db.UpdateVerticalByUserID(userID, payload.Vertical); err != nil {
+		if err := user.UpdateVerticalByUserID(db, userID, payload.Vertical); err != nil {
 			fmt.Fprintf(os.Stderr, "error in UpdateVerticalByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return

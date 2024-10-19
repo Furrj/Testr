@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/student"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -27,7 +28,7 @@ func GetPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// get user data
-		userData, err := db.GetUserDataByUserID(userID)
+		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, nil)
@@ -52,7 +53,7 @@ func GetPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 		userParamID := types.UserID(userParamID32)
 
 		// get student data
-		studentUserData, err := db.GetUserDataByUserID(userParamID)
+		studentUserData, err := user.GetUserDataByUserID(db, userParamID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -84,7 +85,7 @@ func GetPasswordResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 			UserID: userParamID,
 			Code:   code,
 		}
-		if err := db.InsertPasswordResetCode(rc); err != nil {
+		if err := user.InsertPasswordResetCode(db, rc); err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}

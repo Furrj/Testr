@@ -9,6 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -28,7 +29,7 @@ func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// search db for code
-		rc, err := db.GetPasswordResetCodeByCode(payload.Code)
+		rc, err := user.GetPasswordResetCodeByCode(db, payload.Code)
 		if err != nil {
 			ctx.Status(http.StatusBadRequest)
 			return
@@ -50,7 +51,7 @@ func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// update password
-		if err := db.UpdatePasswordAndSaltByUserID(rc.UserID, string(hashed), salt); err != nil {
+		if err := user.UpdatePasswordAndSaltByUserID(db, rc.UserID, string(hashed), salt); err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Printf("error in UpdatePasswordAndSaltByUserID: %+v\n", err)
 			return
@@ -68,7 +69,7 @@ func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// delete password reset code
-		if err := db.DeletePasswordResetCodeByUserID(rc.UserID); err != nil {
+		if err := user.DeletePasswordResetCodeByUserID(db, rc.UserID); err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}

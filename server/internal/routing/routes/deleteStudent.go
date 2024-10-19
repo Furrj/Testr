@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -24,7 +25,7 @@ func DeleteStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// get user data
-		userData, err := db.GetUserDataByUserID(userID)
+		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetUserDataByUserID %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -49,7 +50,7 @@ func DeleteStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		userParamID := types.UserID(userParamID32)
 
 		// delete student
-		if err := db.DeleteUserByUserID(userParamID); err != nil {
+		if err := user.DeleteUserByUserID(db, userParamID); err != nil {
 			fmt.Fprintf(os.Stderr, "error in DeleteUserByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return

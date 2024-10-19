@@ -13,6 +13,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -52,7 +53,7 @@ func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("%+v\n", payload)
 
 		// check if username currently exists
-		_, err := db.GetUserIDByUsername(payload.Username)
+		_, err := user.GetUserIDByUsername(db, payload.Username)
 		if err != nil {
 			if !errors.Is(err, pgx.ErrNoRows) {
 				fmt.Printf("Error checking username validity: %+v\n", err)
@@ -67,7 +68,7 @@ func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// insert User
-		userID, err := db.InsertUser()
+		userID, err := user.InsertUser(db)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("Error inserting user: %+v\n", err)
@@ -102,7 +103,7 @@ func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// insert UserData
-		if err := db.InsertUserData(UserData); err != nil {
+		if err := user.InsertUserData(db, UserData); err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("error inserting user: %+v\n", err)
 			return

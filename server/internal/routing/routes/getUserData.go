@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/user"
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/routing/utils"
@@ -25,7 +26,7 @@ func GetUserData(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// Get UserData
-		userData, err := db.GetUserDataByUserID(userID)
+		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, validationResponse)
 			fmt.Printf("Error getting UserData during POST->login: %+v\n", err)
