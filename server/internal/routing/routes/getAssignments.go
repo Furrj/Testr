@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/assignment"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -40,7 +41,7 @@ func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 		res := []types.Assignment{}
 
 		// get assignments
-		a, err := db.GetAllAssignmentsByTeacherID(userID)
+		a, err := assignment.GetAllAssignmentsByTeacherID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetAllAssignmentsDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
@@ -52,7 +53,7 @@ func GetAssignmentsTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 				Classes: []uint{},
 			}
 			// get classes for assignment
-			classes, err := db.GetAllAssignmentClassesByAssignmentID(v.AssignmentID)
+			classes, err := assignment.GetAllAssignmentClassesByAssignmentID(db, v.AssignmentID)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
 				ctx.Status(http.StatusInternalServerError)

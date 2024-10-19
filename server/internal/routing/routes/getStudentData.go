@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/gamesession"
 	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
@@ -72,7 +73,7 @@ func GetStudentData(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get sessions
-		sessions, err := db.GetAllGameSessionsByUserID(studentData.UserID)
+		sessions, err := gamesession.GetAllGameSessionsByUserID(db, studentData.UserID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetGameSessionsByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

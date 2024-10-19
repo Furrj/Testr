@@ -1,9 +1,10 @@
-package dbHandler
+package assignment
 
 import (
 	"context"
 
 	"github.com/google/uuid"
+	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -31,10 +32,10 @@ WHERE
 	assignment_id=$1
 `
 
-func (dbHandler *DBHandler) GetAssignmentByAssignmentID(id uuid.UUID) (types.Assignment, error) {
+func GetAssignmentByAssignmentID(db *dbHandler.DBHandler, id uuid.UUID) (types.Assignment, error) {
 	var a types.Assignment
 
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetAssignmentByAssignmentID,
 		id,
@@ -83,10 +84,10 @@ WHERE
 	teacher_id=$1
 `
 
-func (dbHandler *DBHandler) GetAllAssignmentsByTeacherID(id types.UserID) ([]types.Assignment, error) {
+func GetAllAssignmentsByTeacherID(db *dbHandler.DBHandler, id types.UserID) ([]types.Assignment, error) {
 	assignments := []types.Assignment{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetAllAssignmentsByTeacherID,
 		id,
@@ -133,10 +134,10 @@ const QGetAllAssignmentClassesByAssignmentID = `
 	WHERE assignment_id=$1
 `
 
-func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id uuid.UUID) ([]uint, error) {
+func GetAllAssignmentClassesByAssignmentID(db *dbHandler.DBHandler, id uuid.UUID) ([]uint, error) {
 	ids := []uint{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetAllAssignmentClassesByAssignmentID,
 		id,
@@ -161,62 +162,4 @@ func (dbHandler *DBHandler) GetAllAssignmentClassesByAssignmentID(id uuid.UUID) 
 	}
 
 	return ids, nil
-}
-
-// INSERTS
-const EInsertAssignment = `
-	INSERT INTO assignments.data
-		(
-		assignment_id,
-    teacher_id,
-		settings_id,
-    name,
-    due,
-   	is_active
-		)
-	VALUES
-		($1, $2, $3, $4, $5, $6) 
-`
-
-func (dbHandler *DBHandler) InsertAssignment(a types.Assignment) error {
-	id, err := dbHandler.InsertGameSessionSettings(a.DBGameSessionSettings)
-	if err != nil {
-		return err
-	}
-
-	a.SettingsID = id
-	_, err = dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertAssignment,
-		a.AssignmentID,
-		a.TeacherID,
-		a.SettingsID,
-		a.Name,
-		a.Due,
-		a.IsActive,
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-const EInsertAssignmentClass = `
-	INSERT INTO assignments.classes (assignment_id, class_id)
-	VALUES ($1, $2)
-`
-
-func (dbHandler *DBHandler) InsertAssignmentClass(c types.DBAssignmentClass) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertAssignmentClass,
-		c.AssignmentID,
-		c.ClassID,
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

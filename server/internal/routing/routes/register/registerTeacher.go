@@ -1,4 +1,4 @@
-package routes
+package register
 
 import (
 	"errors"
@@ -10,23 +10,35 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
-	"mathtestr.com/server/internal/dbHandler/student"
+	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
+	"mathtestr.com/server/internal/routing/routes"
 	"mathtestr.com/server/internal/types"
 )
 
-type ReqRS struct {
-	Username  string       `json:"username"`
-	Password  string       `json:"password"`
-	FirstName string       `json:"first_name"`
-	LastName  string       `json:"last_name"`
-	TeacherID types.UserID `json:"teacher_id"`
-	ClassID   uint         `json:"class_id"`
+const (
+	RESULT_NULL            int = -1
+	RESULT_USERNAME_EXISTS int = 0
+	RESULT_VALID           int = 1
+)
+
+type responseRegister struct {
+	Tokens types.AllTokens `json:"tokens"`
+	Result int             `json:"result"`
 }
 
-func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
+type ReqRT struct {
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	School    string `json:"school"`
+	Email     string `json:"email"`
+}
+
+func RegisterTeacher(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var payload ReqRS
+		var payload ReqRT
 		response := responseRegister{
 			Result: RESULT_NULL,
 		}
@@ -63,7 +75,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// salt and hash password
-		salt, err := generateSalt(16)
+		salt, err := routes.GenerateSalt(16)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("error generating salt: %+v\n", err)
@@ -85,7 +97,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 			Salt:      salt,
 			FirstName: payload.FirstName,
 			LastName:  payload.LastName,
-			Role:      "S",
+			Role:      "T",
 			Vertical:  false,
 		}
 
@@ -96,18 +108,15 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// insert StudentData
-		studentData := types.StudentData{
-			FirstName: payload.FirstName,
-			LastName:  payload.LastName,
-			Username:  payload.Username,
-			UserID:    userID,
-			TeacherID: payload.TeacherID,
-			ClassID:   payload.ClassID,
+		// insert TeacherData
+		teacherData := types.TeacherData{
+			Email:  payload.Email,
+			School: payload.School,
+			UserID: userID,
 		}
-		if err := student.InsertStudentData(db, studentData); err != nil {
+		if err := teacher.InsertTeacherData(db, teacherData); err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
-			fmt.Printf("error inserting student: %+v\n", err)
+			fmt.Printf("error inserting teacher: %+v\n", err)
 			return
 		}
 

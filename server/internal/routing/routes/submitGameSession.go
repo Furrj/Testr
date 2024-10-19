@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/gamesession"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
 )
@@ -60,7 +61,7 @@ func SubmitGameSession(db *dbHandler.DBHandler) gin.HandlerFunc {
 		} else {
 			session.LimitAmount = payload.QuestionsCount
 		}
-		if err = db.InsertGameSession(session); err != nil {
+		if err = gamesession.InsertGameSession(db, session); err != nil {
 			fmt.Fprintf(os.Stderr, "error inserting game session: %+v\n", err)
 		}
 

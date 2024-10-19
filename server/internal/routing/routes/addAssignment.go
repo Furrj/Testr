@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/assignment"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/routing/utils"
 	"mathtestr.com/server/internal/types"
@@ -71,7 +72,7 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 			TeacherID: userID,
 			IsActive:  true,
 		}
-		if err := db.InsertAssignment(a); err != nil {
+		if err := assignment.InsertAssignment(db, a); err != nil {
 			fmt.Fprintf(os.Stderr, "error in InsertAssignment: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
@@ -79,7 +80,7 @@ func AddAssignment(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		// insert assignment classes
 		for _, v := range payload.Classes {
-			if err := db.InsertAssignmentClass(types.DBAssignmentClass{
+			if err := assignment.InsertAssignmentClass(db, types.DBAssignmentClass{
 				AssignmentID: id,
 				ClassID:      v,
 			}); err != nil {

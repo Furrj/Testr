@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/gamesession"
 	"mathtestr.com/server/internal/routing/utils"
 )
 
@@ -22,7 +23,7 @@ func GetGameSessions(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("userID: %d\n", userID)
 
 		// get game sessions
-		sessions, err := db.GetAllGameSessionsByUserID(userID)
+		sessions, err := gamesession.GetAllGameSessionsByUserID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error getting gameSessions %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, nil)

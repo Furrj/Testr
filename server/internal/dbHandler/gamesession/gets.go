@@ -1,10 +1,11 @@
-package dbHandler
+package gamesession
 
 import (
 	"context"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -17,10 +18,10 @@ const QGetGameSessionByGameSessionID = `
   WHERE game_session_id=$1
 `
 
-func (dbHandler *DBHandler) GetGameSessionByGameSessionID(gameSessionID uuid.UUID) (types.GameSession, error) {
+func GetGameSessionByGameSessionID(db *dbHandler.DBHandler, gameSessionID uuid.UUID) (types.GameSession, error) {
 	var gameSession types.GameSession
 
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetGameSessionByGameSessionID,
 		gameSessionID,
@@ -55,10 +56,10 @@ const QGetAllGameSessionByUserID = `
 	ORDER BY timestamp DESC
 `
 
-func (dbHandler *DBHandler) GetAllGameSessionsByUserID(id types.UserID) ([]types.GameSession, error) {
+func GetAllGameSessionsByUserID(db *dbHandler.DBHandler, id types.UserID) ([]types.GameSession, error) {
 	sessions := []types.GameSession{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetAllGameSessionByUserID,
 		id,
@@ -114,10 +115,10 @@ const QGetMatchingSettings = `
   AND div = $8
 `
 
-func (dbHandler *DBHandler) CheckForExistingSettings(settings types.DBGameSessionSettings) (bool, uuid.UUID, error) {
+func CheckForExistingSettings(db *dbHandler.DBHandler, settings types.DBGameSessionSettings) (bool, uuid.UUID, error) {
 	var id uuid.UUID
 
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetMatchingSettings,
 		settings.LimitType,
@@ -137,82 +138,4 @@ func (dbHandler *DBHandler) CheckForExistingSettings(settings types.DBGameSessio
 	}
 
 	return true, id, nil
-}
-
-// INSERTS
-const EInsertGameSessionData = `
-  INSERT INTO game_sessions.data(game_session_id, user_id, settings_id, time, score, questions_count, correct_count)
-  VALUES($1, $2, $3, $4, $5, $6, $7)
-`
-
-func (dbHandler *DBHandler) InsertGameSessionData(session types.GameSession) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertGameSessionData,
-		session.GameSessionID,
-		session.UserID,
-		session.SettingsID,
-		session.Time,
-		session.Score,
-		session.QuestionsCount,
-		session.CorrectCount,
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-const EInsertGameSessionSettings = `
-	INSERT INTO game_sessions.settings(settings_id, limit_type, limit_amount, min, max, add, sub, mult, div)
-	VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
-`
-
-func (dbHandler *DBHandler) InsertGameSessionSettings(settings types.DBGameSessionSettings) (uuid.UUID, error) {
-	exists, id, err := dbHandler.CheckForExistingSettings(settings)
-	if err != nil {
-		return uuid.UUID{}, err
-	}
-
-	if !exists {
-		id, err = uuid.NewRandom()
-		if err != nil {
-			return uuid.UUID{}, err
-		}
-
-		_, err := dbHandler.Conn.Exec(
-			context.Background(),
-			EInsertGameSessionSettings,
-			id,
-			settings.LimitType,
-			settings.LimitAmount,
-			settings.Min,
-			settings.Max,
-			settings.Add,
-			settings.Sub,
-			settings.Mult,
-			settings.Div,
-		)
-		if err != nil {
-			return uuid.UUID{}, err
-		}
-
-	}
-
-	return id, nil
-}
-
-func (dbHandler *DBHandler) InsertGameSession(session types.GameSession) error {
-	id, err := dbHandler.InsertGameSessionSettings(session.DBGameSessionSettings)
-	if err != nil {
-		return err
-	}
-
-	session.SettingsID = id
-	if err := dbHandler.InsertGameSessionData(session); err != nil {
-		return err
-	}
-
-	return nil
 }

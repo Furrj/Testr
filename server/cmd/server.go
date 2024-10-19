@@ -6,7 +6,9 @@ import (
 	"os"
 
 	"mathtestr.com/server/internal/routing/routes"
+	"mathtestr.com/server/internal/routing/routes/register"
 	"mathtestr.com/server/internal/routing/routes/students"
+	"mathtestr.com/server/internal/routing/routes/users"
 
 	"mathtestr.com/server/internal/dbHandler"
 
@@ -69,8 +71,8 @@ func main() {
 	router.POST(consts.RouteUrlGameSessions, routes.SubmitGameSession(db))
 	router.POST(consts.RouteUrlUpdateVertical, routes.UpdateVertical(db))
 	router.POST(consts.RouteUrlClasses, routes.AddClass(db))
-	router.POST(consts.RouteUrlRegisterTeacher, routes.RegisterTeacher(db))
-	router.POST(consts.RouteUrlRegisterStudent, routes.RegisterStudent(db))
+	router.POST(consts.RouteUrlRegisterTeacher, register.RegisterTeacher(db))
+	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
 	router.POST(consts.RouteUrlAddAssignment, routes.AddAssignment(db))
 	router.POST(consts.RouteUrlCheckPasswordResetCode, routes.CheckPasswordResetCode(db))
 
@@ -78,13 +80,13 @@ func main() {
 	router.GET(consts.RouteUrlGetTeacherData, routes.GetTeacherData(db))
 	router.GET(consts.RouteUrlGameSessions, routes.GetGameSessions(db))
 	router.GET(consts.RouteUrlGetUserInfo, routes.GetUserInfo(db))
-	router.GET(consts.RouteUrlCheckUsername, routes.CheckUsername(db))
-	router.GET(consts.RouteUrlGetTeacherInfoForRegisterPage, routes.GetTeacherInfoForRegisterPage(db))
+	router.GET(consts.RouteUrlCheckUsername, register.CheckUsername(db))
+	router.GET(consts.RouteUrlGetTeacherInfoForRegisterPage, register.GetTeacherInfoForRegisterPage(db))
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, routes.GetAssignmentsTeacher(db))
 	router.GET(consts.RouteUrlGetPasswordResetCode, routes.GetPasswordResetCode(db))
 	router.GET(consts.RouteUrlStudent, routes.GetStudentData(db))
 
-	router.PUT(consts.RouteUrlUpdatePassword, routes.UpdatePassword(db))
+	router.PUT(consts.RouteUrlUpdatePassword, users.UpdatePassword(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, routes.DeleteStudent(db))

@@ -9,6 +9,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
+	"mathtestr.com/server/internal/dbHandler/assignment"
+	"mathtestr.com/server/internal/dbHandler/gamesession"
 	"mathtestr.com/server/internal/dbHandler/student"
 	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
@@ -100,12 +102,12 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("InsertGameSession", func(t *testing.T) {
-		if err := db.InsertGameSession(testGameSession); err != nil {
+		if err := gamesession.InsertGameSession(db, testGameSession); err != nil {
 			t.Errorf("Error inserting game session: %+v", err)
 		}
 	})
 	t.Run("GetGameSessionByGameSessionID", func(t *testing.T) {
-		gameSession, err := db.GetGameSessionByGameSessionID(testGameSession.GameSessionID)
+		gameSession, err := gamesession.GetGameSessionByGameSessionID(db, testGameSession.GameSessionID)
 		fmt.Printf("%+v\n", gameSession)
 		if err != nil {
 			t.Errorf("Error getting game session: %+v", err)
@@ -115,7 +117,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetGameSessionsByUserID", func(t *testing.T) {
-		sessions, err := db.GetAllGameSessionsByUserID(testGameSession.UserID)
+		sessions, err := gamesession.GetAllGameSessionsByUserID(db, testGameSession.UserID)
 		fmt.Printf("%+v\n", sessions)
 		if err != nil {
 			t.Errorf("Error in GetGameSessionsByUserID: %+v", err)
@@ -169,23 +171,23 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("InsertAssignment", func(t *testing.T) {
-		if err := db.InsertAssignment(testAssignment); err != nil {
+		if err := assignment.InsertAssignment(db, testAssignment); err != nil {
 			t.Errorf("error in InsertAssignment: %+v\n", err)
 		}
 	})
 	t.Run("InsertAssignmentClasses", func(t *testing.T) {
-		if err := db.InsertAssignmentClass(testAssignmentClass); err != nil {
+		if err := assignment.InsertAssignmentClass(db, testAssignmentClass); err != nil {
 			t.Errorf("error in InsertAssignmentClass: %+v\n", err)
 		}
 	})
 	t.Run("GetAssignmentByAssignmentID", func(t *testing.T) {
-		_, err := db.GetAssignmentByAssignmentID(testAssignment.AssignmentID)
+		_, err := assignment.GetAssignmentByAssignmentID(db, testAssignment.AssignmentID)
 		if err != nil {
 			t.Errorf("error in GetAssignmentDataByAssignmentID: %+v\n", err)
 		}
 	})
 	t.Run("GetAllAssignmentClassesByAssignmentID", func(t *testing.T) {
-		_, err := db.GetAllAssignmentClassesByAssignmentID(testAssignment.AssignmentID)
+		_, err := assignment.GetAllAssignmentClassesByAssignmentID(db, testAssignment.AssignmentID)
 		if err != nil {
 			t.Errorf("error in GetAllAssignmentClassesByAssignmentID: %+v\n", err)
 		}

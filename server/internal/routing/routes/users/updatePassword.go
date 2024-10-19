@@ -1,4 +1,4 @@
-package routes
+package users
 
 import (
 	"fmt"
@@ -10,6 +10,7 @@ import (
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/user"
+	"mathtestr.com/server/internal/routing/routes"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -36,7 +37,7 @@ func UpdatePassword(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// salt and hash password
-		salt, err := generateSalt(16)
+		salt, err := routes.GenerateSalt(16)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Printf("error generating salt: %+v\n", err)
