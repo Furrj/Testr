@@ -23,7 +23,7 @@ interface IProps {
 
 const PastTests: React.FC<IProps> = (props) => {
 	return (
-		<div className={styles.root}>
+		<section className={styles.root}>
 			<div className={`${styles.row} ${styles.headers}`}>
 				<div className={styles.date}>
 					<h3>Date</h3>
@@ -110,7 +110,7 @@ const PastTests: React.FC<IProps> = (props) => {
 					<div>No recent games</div>
 				)}
 			</div>
-		</div>
+		</section>
 	);
 };
 
