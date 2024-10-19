@@ -16,7 +16,6 @@ const Locals = {
 				console.log(err);
 			},
 			onSuccess() {
-				console.log("success");
 				queryClient.invalidateQueries({
 					queryKey: [QUERY_KEYS.USER_GAME_SESSIONS],
 				});

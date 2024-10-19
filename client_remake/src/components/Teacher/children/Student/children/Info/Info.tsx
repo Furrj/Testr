@@ -1,12 +1,13 @@
 import { useState } from "react";
 import styles from "./Info.module.scss";
-import { E_MODES, T_EDITED_STUDENT_INFO } from "./Locals";
+import { E_MODES } from "./Locals";
 import { type T_STUDENT_DATA } from "../../../../../../types/users";
 import { type T_CLASS } from "../../../../../../types/teacherData";
 import ChangeClass from "./children/ChangeClass/ChangeClass";
 import Confirm from "./children/Confirm/Confirm";
 import EditNames from "./children/EditNames/EditNames";
 import Buttons from "./children/Buttons/Buttons";
+import EditedStudentInfoProvider from "./EditedStudentInfoProvider";
 
 interface IProps {
 	student: T_STUDENT_DATA;
@@ -16,24 +17,18 @@ interface IProps {
 
 const Info: React.FC<IProps> = (props) => {
 	const [mode, setMode] = useState<E_MODES>(E_MODES.DISPLAY);
-	const [editedStudentInfo, setEditedStudentInfo] =
-		useState<T_EDITED_STUDENT_INFO>({
-			first_name: props.student.first_name,
-			last_name: props.student.last_name,
-			username: props.student.username,
-		});
 
 	return (
-		<>
+		<EditedStudentInfoProvider
+			init={{
+				first_name: props.student.first_name,
+				last_name: props.student.last_name,
+				username: props.student.username,
+				cl: props.student.class_id,
+			}}
+		>
 			<section className={styles.root}>
-				<EditNames
-					mode={mode}
-					student={props.student}
-					editedStudentInfo={{
-						curr: editedStudentInfo,
-						set: setEditedStudentInfo,
-					}}
-				/>
+				<EditNames mode={mode} student={props.student} />
 
 				<ChangeClass cl={props.cl} classes={props.classes} mode={mode} />
 
@@ -47,7 +42,7 @@ const Info: React.FC<IProps> = (props) => {
 					mode={{ curr: mode, set: setMode }}
 				/>
 			)}
-		</>
+		</EditedStudentInfoProvider>
 	);
 };
 

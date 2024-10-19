@@ -11,64 +11,63 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 const TopBar: React.FC = () => {
-	const authData = useAuthCtx();
+  const authData = useAuthCtx();
 
-	const [navbarIsExpanded, setNavbarIsExpanded] = useState<boolean>(false);
+  const [navbarIsExpanded, setNavbarIsExpanded] = useState<boolean>(false);
 
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	const location = useLocation();
-	const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-	// close navbar if user gets logged out
-	useEffect(() => {
-		if (!authData.valid) setNavbarIsExpanded(false);
-	}, [authData]);
+  // close navbar if user gets logged out
+  useEffect(() => {
+    if (!authData.valid) setNavbarIsExpanded(false);
+  }, [authData]);
 
-	return (
-		<div className={styles.root}>
-			<div className={styles.main}>
-				<PiMathOperationsBold className={styles.icon} />
-				<h1 className={styles.title}>Teachify</h1>
+  return (
+    <div className={styles.root}>
+      <div className={styles.main}>
+        <PiMathOperationsBold className={styles.icon} />
+        <h1 className={styles.title}>Times Trainer</h1>
 
-				<div className={styles.right}>
-					{authData.valid ? (
-						<div className={styles.logged_in}>
-							<IoMdExit
-								onClick={() => {
-									clearTokensFromLocalStorage();
-									authData.tokens.set(undefined);
-									queryClient.invalidateQueries({
-										queryKey: [QUERY_KEYS.USER_DATA],
-									});
-									navigate("/login");
-								}}
-								className={styles.logout}
-							/>
-							<GiHamburgerMenu
-								onClick={() => setNavbarIsExpanded((curr) => !curr)}
-								className={`${styles.hamburger} ${
-									navbarIsExpanded ? styles.open : ""
-								}`}
-							/>
-						</div>
-					) : (
-						<>
-							{location.pathname !== "/login" && (
-								<div className={styles.buttons}>
-									<Link to={"/login"} className={"link"}>
-										<button>Login</button>
-									</Link>
-								</div>
-							)}
-						</>
-					)}
-				</div>
-			</div>
+        <div className={styles.right}>
+          {authData.valid ? (
+            <div className={styles.logged_in}>
+              <IoMdExit
+                onClick={() => {
+                  clearTokensFromLocalStorage();
+                  authData.tokens.set(undefined);
+                  queryClient.invalidateQueries({
+                    queryKey: [QUERY_KEYS.USER_DATA],
+                  });
+                  navigate("/login");
+                }}
+                className={styles.logout}
+              />
+              <GiHamburgerMenu
+                onClick={() => setNavbarIsExpanded((curr) => !curr)}
+                className={`${styles.hamburger} ${navbarIsExpanded ? styles.open : ""
+                  }`}
+              />
+            </div>
+          ) : (
+            <>
+              {location.pathname !== "/login" && (
+                <div className={styles.buttons}>
+                  <Link to={"/login"} className={"link"}>
+                    <button>Login</button>
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
 
-			{navbarIsExpanded && authData.valid && <NavBar />}
-		</div>
-	);
+      {navbarIsExpanded && authData.valid && <NavBar />}
+    </div>
+  );
 };
 
 export default TopBar;

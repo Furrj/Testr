@@ -10,7 +10,7 @@ export type T_AUTH = {
 	valid: boolean;
 };
 
-const AuthCtx = createContext<T_AUTH | undefined>(undefined);
+const authCtx = createContext<T_AUTH | undefined>(undefined);
 
 interface IProps {
 	children: React.ReactNode;
@@ -31,16 +31,16 @@ export const AuthProvider: React.FC<IProps> = (props) => {
 	}, [tokens]);
 
 	return (
-		<AuthCtx.Provider
+		<authCtx.Provider
 			value={{ tokens: { curr: tokens as T_TOKENS, set: setTokens }, valid }}
 		>
 			{props.children}
-		</AuthCtx.Provider>
+		</authCtx.Provider>
 	);
 };
 
 export const useAuthCtx = (): T_AUTH => {
-	const ctx = useContext(AuthCtx);
+	const ctx = useContext(authCtx);
 
 	if (ctx === undefined) {
 		console.log("AuthCtx is undefined");

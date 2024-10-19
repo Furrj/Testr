@@ -1,17 +1,25 @@
 import { T_STUDENT_DATA } from "../../../../../../../../types/users";
-import { E_MODES, T_EDITED_STUDENT_INFO } from "../../Locals";
+import { E_MODES } from "../../Locals";
 import styles from "./EditNames.module.scss";
+import { useEditedStudentInfoCtx } from "../../EditedStudentInfoProvider";
 
 interface IProps {
 	mode: E_MODES;
 	student: T_STUDENT_DATA;
-	editedStudentInfo: {
-		curr: T_EDITED_STUDENT_INFO;
-		set: React.Dispatch<React.SetStateAction<T_EDITED_STUDENT_INFO>>;
-	};
 }
 
 const EditNames: React.FC<IProps> = (props) => {
+	const editedStudentInfoCtx = useEditedStudentInfoCtx();
+
+	function changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+		editedStudentInfoCtx.set((curr) => {
+			return {
+				...curr,
+				[e.target.name]: e.target.value,
+			};
+		});
+	}
+
 	return (
 		<div className={styles.root}>
 			{props.mode === E_MODES.DISPLAY ? (
@@ -22,7 +30,7 @@ const EditNames: React.FC<IProps> = (props) => {
 					<div>{props.student.username}</div>
 				</>
 			) : (
-				<form className={styles.edit}>
+				<form className={styles.edit} id="edit_names">
 					<label htmlFor="first_name">First Name</label>
 					<input
 						id="first_name"
@@ -30,7 +38,8 @@ const EditNames: React.FC<IProps> = (props) => {
 						type="text"
 						placeholder="first name"
 						autoComplete="off"
-						value={props.editedStudentInfo.curr.first_name}
+						value={editedStudentInfoCtx.curr.first_name}
+						onChange={changeHandler}
 					/>
 
 					<label htmlFor="last_name">Last Name</label>
@@ -40,7 +49,8 @@ const EditNames: React.FC<IProps> = (props) => {
 						id="last_name"
 						name="last_name"
 						autoComplete="off"
-						value={props.editedStudentInfo.curr.last_name}
+						value={editedStudentInfoCtx.curr.last_name}
+						onChange={changeHandler}
 					/>
 
 					<label htmlFor="username">Username</label>
@@ -50,7 +60,8 @@ const EditNames: React.FC<IProps> = (props) => {
 						autoComplete="off"
 						id="username"
 						name="username"
-						value={props.editedStudentInfo.curr.username}
+						value={editedStudentInfoCtx.curr.username}
+						onChange={changeHandler}
 					/>
 				</form>
 			)}

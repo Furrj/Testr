@@ -3,7 +3,7 @@ import { T_GAME_SESSION } from "../../../types/game";
 import generateAuthTokenStr from "../../generateAuthTokenStr";
 import route_prefix from "../../route_prefix";
 
-const url = route_prefix("/gamesession");
+const url = route_prefix("/user/gamesessions");
 
 export type T_PARAMS = {
 	tokens: T_TOKENS;

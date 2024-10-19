@@ -30,6 +30,16 @@
 			transform: translateY(2px);
 		}
 
+		#cancel {
+			font-size: 2rem;
+			color: red;
+		}
+
+		#confirm {
+			font-size: 2rem;
+			color: green;
+		}
+
 		.context {
 			display: none;
 
@@ -61,6 +71,14 @@
 		}
 
 		#reset {
+			color: grey;
+		}
+
+		#cancel {
+			color: grey;
+		}
+
+		#confirm {
 			color: grey;
 		}
 	}

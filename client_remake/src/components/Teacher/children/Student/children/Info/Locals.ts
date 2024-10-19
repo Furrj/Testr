@@ -12,12 +12,6 @@ export enum E_MODES {
 	CONFIRM_EDIT,
 }
 
-export type T_EDITED_STUDENT_INFO = {
-	first_name: string;
-	last_name: string;
-	username: string;
-};
-
 const Locals = {
 	useDeleteStudentMutation: (
 		queryClient: QueryClient,
