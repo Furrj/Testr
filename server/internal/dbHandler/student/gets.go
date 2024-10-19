@@ -1,8 +1,9 @@
-package dbHandler
+package student
 
 import (
 	"context"
 
+	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -12,9 +13,9 @@ const QGetStudentDataByUserID = `
 	WHERE user_id=$1
 `
 
-func (dbHandler *DBHandler) GetStudentDataByUserID(UserID types.UserID) (types.StudentData, error) {
+func GetStudentDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.StudentData, error) {
 	var StudentData types.StudentData
-	err := dbHandler.Conn.QueryRow(
+	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetStudentDataByUserID,
 		UserID,
@@ -37,10 +38,10 @@ const QGetAllStudentsDataByTeacherID = `
 	ORDER BY class_id
 `
 
-func (dbHandler *DBHandler) GetAllStudentsDataByTeacherID(UserID types.UserID) ([]types.StudentData, error) {
+func GetAllStudentsDataByTeacherID(db *dbHandler.DBHandler, UserID types.UserID) ([]types.StudentData, error) {
 	students := []types.StudentData{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetAllStudentsDataByTeacherID,
 		UserID,
@@ -81,10 +82,10 @@ const QGetStudentsDataByClassID = `
 	ORDER BY LOWER(last_name)
 `
 
-func (dbHandler *DBHandler) GetStudentsDataByClassID(classID uint) ([]types.StudentData, error) {
+func GetStudentsDataByClassID(db *dbHandler.DBHandler, classID uint) ([]types.StudentData, error) {
 	students := []types.StudentData{}
 
-	rows, err := dbHandler.Conn.Query(
+	rows, err := db.Conn.Query(
 		context.Background(),
 		QGetStudentsDataByClassID,
 		classID,
@@ -115,45 +116,4 @@ func (dbHandler *DBHandler) GetStudentsDataByClassID(classID uint) ([]types.Stud
 	}
 
 	return students, nil
-}
-
-// Inserts
-
-const EInsertStudentData = `
-	INSERT INTO students.data(user_id, teacher_id, class_id)
-	VALUES ($1, $2, $3)
-`
-
-func (dbHandler *DBHandler) InsertStudentData(studentData types.StudentData) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EInsertStudentData,
-		studentData.UserID,
-		studentData.TeacherID,
-		studentData.ClassID,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// Updates
-const EUpdateStudentClassIDByUserID = `
-	UPDATE students.data
-	SET class_id=$2
-	WHERE user_id=$1
-`
-
-func (dbHandler *DBHandler) UpdateStudentClassIDByUserID(userID types.UserID, classID uint) error {
-	_, err := dbHandler.Conn.Exec(
-		context.Background(),
-		EUpdateStudentClassIDByUserID,
-		userID,
-		classID,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
 }

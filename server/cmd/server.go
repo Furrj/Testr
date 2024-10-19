@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"mathtestr.com/server/internal/routing/routes"
+	"mathtestr.com/server/internal/routing/routes/students"
 
 	"mathtestr.com/server/internal/dbHandler"
 
@@ -86,6 +87,7 @@ func main() {
 	router.GET(consts.RouteUrlStudent, routes.GetStudentData(db))
 
 	router.PUT(consts.RouteUrlUpdatePassword, routes.UpdatePassword(db))
+	router.PUT(consts.RouteUrlStudent, students.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, routes.DeleteStudent(db))
 
