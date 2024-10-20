@@ -24,7 +24,8 @@ const Info: React.FC<IProps> = (props) => {
 				first_name: props.student.first_name,
 				last_name: props.student.last_name,
 				username: props.student.username,
-				cl: props.student.class_id,
+				class_id: props.student.class_id,
+				user_id: props.student.user_id,
 			}}
 		>
 			<section className={styles.root}>

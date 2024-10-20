@@ -33,28 +33,26 @@ const NavBar: React.FC = () => {
 						Stats
 					</div>
 				</Link>
+
+				{isSuccess && data.user_data.role === USER_ROLES.TEACHER && (
+					<Link to={"/teacher/classes"} className={styles.link}>
+						<div
+							className={
+								location.pathname === "/teacher/classes" ? styles.current : ""
+							}
+						>
+							Classes
+						</div>
+					</Link>
+				)}
 			</div>
 
 			{isSuccess && data && (
-				<>
-					{data.user_data.role === USER_ROLES.TEACHER && (
-						<Link to={"/teacher/classes"} className={styles.link}>
-							<div
-								className={
-									location.pathname === "/teacher/classes" ? styles.current : ""
-								}
-							>
-								Classes
-							</div>
-						</Link>
-					)}
-
-					<div className={styles.bottom}>
-						<Link to={"/"} className={styles.link}>
-							<div>{data.user_data.username}</div>
-						</Link>
-					</div>
-				</>
+				<div className={styles.bottom}>
+					<Link to={"/"} className={styles.link}>
+						<div>{data.user_data.username}</div>
+					</Link>
+				</div>
 			)}
 		</div>
 	);

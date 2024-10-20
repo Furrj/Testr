@@ -69,8 +69,22 @@ func Update(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// update student userData
+		d := types.UserData{
+			FirstName: payload.FirstName,
+			LastName:  payload.LastName,
+			Username:  payload.Username,
+			UserID:    payload.UserID,
+		}
+		if err := user.UpdateUserData(db, d); err != nil {
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
 
 		// update student class_id
+		if err := student.UpdateStudentClassIDByUserID(db, payload.UserID, payload.ClassID); err != nil {
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
 
 		ctx.Status(http.StatusAccepted)
 	}

@@ -47,3 +47,24 @@ func UpdatePasswordAndSaltByUserID(db *dbHandler.DBHandler, id types.UserID, pas
 	}
 	return nil
 }
+
+const EUpdateUserData = `
+	UPDATE users.data
+	SET first_name=$2, last_name=$3, username=$4
+	WHERE user_id=$1
+`
+
+func UpdateUserData(db *dbHandler.DBHandler, data types.UserData) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		EUpdateUserData,
+		data.UserID,
+		data.FirstName,
+		data.LastName,
+		data.Username,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}

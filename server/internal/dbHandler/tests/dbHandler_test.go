@@ -76,6 +76,11 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("Error in InsertUserData: %+v\n", err)
 		}
 	})
+	t.Run("UpdateUserData", func(t *testing.T) {
+		if err := user.UpdateUserData(db, testUserDataJackson); err != nil {
+			t.Errorf("Error in UpdateUserData: %+v\n", err)
+		}
+	})
 	t.Run("GetUserDataByUserID", func(t *testing.T) {
 		userData, err := user.GetUserDataByUserID(db, testUserDataJackson.UserID)
 		if err != nil {

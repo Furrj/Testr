@@ -5,9 +5,11 @@ import {
 	MdCancel,
 	MdCheckCircle,
 } from "react-icons/md";
-import { E_MODES } from "../../Locals";
+import Locals, { E_MODES } from "../../Locals";
 import styles from "./Buttons.module.scss";
 import { useEditedStudentInfoCtx } from "../../EditedStudentInfoProvider";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthCtx } from "../../../../../../../../contexts/AuthProvider";
 
 interface IProps {
 	mode: {
@@ -18,6 +20,10 @@ interface IProps {
 
 const Buttons: React.FC<IProps> = (props) => {
 	const editedStudentInfoCtx = useEditedStudentInfoCtx();
+
+	const authCtx = useAuthCtx();
+	const queryClient = useQueryClient();
+	const updateStudentMutation = Locals.useUpdateStudentMutation(queryClient);
 
 	switch (props.mode.curr) {
 		case E_MODES.DISPLAY:
@@ -44,7 +50,14 @@ const Buttons: React.FC<IProps> = (props) => {
 		case E_MODES.EDITING:
 			return (
 				<div className={styles.root}>
-					<span onClick={() => console.log(editedStudentInfoCtx.curr)}>
+					<span
+						onClick={() =>
+							updateStudentMutation.mutate({
+								tokens: authCtx.tokens.curr,
+								info: editedStudentInfoCtx.curr,
+							})
+						}
+					>
 						<MdCheckCircle className={styles.icon} id={styles.confirm} />
 						<div className={styles.context}>Confirm</div>
 					</span>

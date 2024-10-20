@@ -16,7 +16,7 @@ const ChangeClass: React.FC<IProps> = (props) => {
 		editedStudentInfoCtx.set((curr) => {
 			return {
 				...curr,
-				cl: Number.parseInt(e.target.value),
+				class_id: Number.parseInt(e.target.value),
 			};
 		});
 	}
@@ -30,7 +30,7 @@ const ChangeClass: React.FC<IProps> = (props) => {
 					<select
 						name="class_select"
 						id="class_select"
-						value={editedStudentInfoCtx.curr.cl}
+						value={editedStudentInfoCtx.curr.class_id}
 						onChange={changeHandler}
 					>
 						{props.classes.map((cl) => {
