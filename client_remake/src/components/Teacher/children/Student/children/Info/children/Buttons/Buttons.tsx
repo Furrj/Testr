@@ -24,6 +24,7 @@ const Buttons: React.FC<IProps> = (props) => {
 	const authCtx = useAuthCtx();
 	const queryClient = useQueryClient();
 	const updateStudentMutation = Locals.useUpdateStudentMutation(queryClient);
+	const getPasswordResetCodeMutation = Locals.useGetPasswordResetCodeMutation();
 
 	switch (props.mode.curr) {
 		case E_MODES.DISPLAY:
@@ -34,7 +35,14 @@ const Buttons: React.FC<IProps> = (props) => {
 						<div className={styles.context}>Edit</div>
 					</span>
 
-					<span>
+					<span
+						onClick={() =>
+							getPasswordResetCodeMutation.mutate({
+								tokens: authCtx.tokens.curr,
+								id: editedStudentInfoCtx.curr.user_id,
+							})
+						}
+					>
 						<MdLockReset className={styles.icon} id={styles.reset} />
 						<div className={styles.context}>Reset Password</div>
 					</span>

@@ -5,6 +5,7 @@ import { FaPerson, FaLock } from "react-icons/fa6";
 import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 import { useAuthCtx } from "../../contexts/AuthProvider.tsx";
 import Locals from "./Locals.ts";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -77,6 +78,10 @@ const Login: React.FC = () => {
 								autoComplete="on"
 							/>
 						</div>
+
+						<Link to={"/password/reset"} className={styles.link}>
+							<div className={styles.forgot_password}>Forgot Password?</div>
+						</Link>
 
 						{incorrectInfo && (
 							<div style={{ color: "red", marginTop: "10px" }}>

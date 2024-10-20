@@ -40,8 +40,8 @@ func CheckResetCode(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 		if !strings.EqualFold(info.Username, payload.Username) {
-			ctx.Status(http.StatusBadRequest)
 			fmt.Fprintf(os.Stderr, "username mismatch, wanted %s got %s\n", info.Username, payload.Username)
+			ctx.Status(http.StatusBadRequest)
 			return
 		}
 

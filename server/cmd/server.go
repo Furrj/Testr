@@ -81,7 +81,7 @@ func main() {
 	router.POST(consts.RouteUrlRegisterTeacher, register.RegisterTeacher(db))
 	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
 	router.POST(consts.RouteUrlAssignment, assignments.Add(db))
-	router.POST(consts.RouteUrlCheckPasswordResetCode, passwords.CheckResetCode(db))
+	router.POST(consts.RouteUrlPasswordResetCode, passwords.CheckResetCode(db))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))
@@ -89,10 +89,10 @@ func main() {
 	router.GET(consts.RouteUrlCheckUsername, register.CheckUsername(db))
 	router.GET(consts.RouteUrlGetTeacherInfoForRegisterPage, register.GetTeacherInfoForRegisterPage(db))
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, teacher_assignments.Get(db))
-	router.GET(consts.RouteUrlGetPasswordResetCode, passwords.Get(db))
+	router.GET(consts.RouteUrlPasswordResetCode, passwords.Get(db))
 	router.GET(consts.RouteUrlStudent, students.Get(db))
 
-	router.PUT(consts.RouteUrlUpdatePassword, passwords.Update(db))
+	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, students.Delete(db))

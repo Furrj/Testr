@@ -7,6 +7,10 @@ import { NavigateFunction } from "react-router-dom";
 import UPDATE_STUDENT_DATA, {
 	T_PARAMS as T_UPDATE_PARAMS,
 } from "../../../../../../api/routes/teacher/students/updateStudent";
+import GET_PASSWORD_RESET_CODE, {
+	T_PARAMS as T_RESET_PARAMS,
+	T_RES as T_RESET_RES,
+} from "../../../../../../api/routes/teacher/students/getPasswordResetCode";
 
 export enum E_MODES {
 	DISPLAY = 0,
@@ -43,6 +47,18 @@ const Locals = {
 			},
 			onSuccess() {
 				queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TEACHER_DATA] });
+			},
+		}),
+	useGetPasswordResetCodeMutation: () =>
+		useMutation({
+			mutationFn: (params: T_RESET_PARAMS): Promise<T_RESET_RES> =>
+				GET_PASSWORD_RESET_CODE(params),
+			onError(err) {
+				console.log(err);
+				alert("Error, please refresh and try again");
+			},
+			onSuccess(data) {
+				alert(`Code: ${data.code}`);
 			},
 		}),
 };

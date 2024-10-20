@@ -129,6 +129,16 @@ $br: 20px;
 					}
 				}
 			}
+
+			.forgot_password {
+				color: blue;
+			}
 		}
+	}
+}
+
+@media only screen and (min-width: $mobile-width) {
+	.root .scroll .main .forgot_password:hover {
+		color: grey;
 	}
 }
