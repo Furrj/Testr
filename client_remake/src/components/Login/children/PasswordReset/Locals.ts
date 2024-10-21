@@ -13,6 +13,7 @@ import { sendTokensToLocalStorage } from "../../../../utils/methods";
 import UPDATE_PASSWORD, {
 	T_PARAMS as T_UPDATE_PARAMS,
 } from "../../../../api/routes/login/updatePassword";
+import { T_AUTH } from "../../../../contexts/AuthProvider";
 
 export enum E_DISPLAY_STATE {
 	INIT = 0,
@@ -53,6 +54,7 @@ const Locals = {
 		}),
 	usePasswordUpdateMutation: (
 		queryClient: QueryClient,
+		authCtx: T_AUTH,
 		navigate: NavigateFunction,
 		setError: React.Dispatch<React.SetStateAction<string>>,
 	) =>
@@ -66,6 +68,7 @@ const Locals = {
 			},
 			onSuccess(data) {
 				sendTokensToLocalStorage(data);
+				authCtx.tokens.set(data);
 				queryClient.resetQueries();
 				navigate("/");
 			},

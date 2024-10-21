@@ -1,7 +1,7 @@
 import { T_USERDATA } from "../../../types";
 import route_prefix from "../../route_prefix";
 
-const url = route_prefix("/password/reset/0");
+const url = route_prefix("/password/reset/code");
 
 export type T_PARAMS = {
 	username: string;

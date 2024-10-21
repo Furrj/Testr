@@ -5,6 +5,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Locals, { E_DISPLAY_STATE } from "./Locals";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
 
 const PasswordReset: React.FC = () => {
 	const [code, setCode] = useState<string>("");
@@ -13,6 +14,7 @@ const PasswordReset: React.FC = () => {
 	);
 	const [error, setError] = useState<string>("");
 
+	const authCtx = useAuthCtx();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
@@ -23,6 +25,7 @@ const PasswordReset: React.FC = () => {
 	);
 	const passwordUpdateMutation = Locals.usePasswordUpdateMutation(
 		queryClient,
+		authCtx,
 		navigate,
 		setError,
 	);
