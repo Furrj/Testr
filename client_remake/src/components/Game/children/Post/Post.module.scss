@@ -1,8 +1,8 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@use "../../../../styles/mixins";
+@use "../../../../styles/vars";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
 	overflow: auto;
 
@@ -10,7 +10,7 @@
 		min-height: 100%;
 		width: 100%;
 
-		@include flex-center-col;
+		@include mixins.flex-center-col;
 		gap: 10%;
 
 		//border: 1px solid white;
@@ -81,12 +81,12 @@
 			margin-top: 20px;
 
 			.box {
-				@include flex-center;
+				@include mixins.flex-center;
 
 				.button {
 					width: 75px;
 					height: 75px;
-					@include flex-center;
+					@include mixins.flex-center;
 					border: 1px solid white;
 					border-radius: 15px;
 					background: green;

@@ -1,8 +1,7 @@
-@import "../../../../styles/vars";
-@import "../../../../styles/mixins";
+@use "../../../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 	display: flex;
 	flex-direction: column;
 

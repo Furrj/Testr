@@ -1,8 +1,8 @@
-@import "../../../../../../../../styles/vars";
-@import "../../../../../../../../styles/mixins";
+@use "../../../../../../../../styles/vars";
+@use "../../../../../../../../styles/mixins";
 
 .root {
-	@include flex-center-row;
+	@include mixins.flex-center-row;
 	justify-content: space-around;
 
 	span {
@@ -48,10 +48,10 @@
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root span:hover {
 		.context {
-			background: $main-bg;
+			background: vars.$main-bg;
 			position: absolute;
 			z-index: 30;
 			display: block;

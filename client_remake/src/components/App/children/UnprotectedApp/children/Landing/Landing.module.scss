@@ -1,8 +1,8 @@
-@import "../../../../../../styles/vars";
-@import "../../../../../../styles/mixins";
+@use "../../../../../../styles/vars";
+@use "../../../../../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
 	// display: grid;
 	// grid-template-columns: repeat(2, 1fr);
@@ -13,14 +13,14 @@
 		min-width: 100%;
 		min-height: 100%;
 
-		@include flex-center-col;
+		@include mixins.flex-center-col;
 		gap: 50px;
 
 		padding: 20px;
 
 		.words {
 			width: 100%;
-			@include flex-center-col;
+			@include mixins.flex-center-col;
 
 			//border-bottom: 1px solid white;
 
@@ -50,7 +50,7 @@
 				&:hover {
 					cursor: pointer;
 
-					background: $logo-accent;
+					background: vars.$logo-accent;
 				}
 			}
 		}
@@ -58,7 +58,7 @@
 }
 
 .accent {
-	color: $logo-accent;
+	color: vars.$logo-accent;
 }
 
 @media only screen and (max-width: 500px) {

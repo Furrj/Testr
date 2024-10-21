@@ -1,9 +1,9 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@use "../../../../styles/mixins";
+@use "../../../../styles/vars";
 
 .root {
-	@include full-size-percent;
-	@include flex-center;
+	@include mixins.full-size-percent;
+	@include mixins.flex-center;
 	flex-direction: row;
 	gap: 10px;
 
@@ -15,10 +15,10 @@
 		div {
 			border: 1px solid white;
 			padding: 10px;
-			border-radius: $border-radius;
+			border-radius: vars.$border-radius;
 
 			&:hover {
-				background-color: $color-btn-hover;
+				background-color: vars.$color-btn-hover;
 			}
 		}
 	}

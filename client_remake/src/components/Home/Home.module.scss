@@ -1,7 +1,7 @@
-@import "../../styles/mixins";
+@use "../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 	overflow: auto;
 
 	.scroll {
@@ -12,7 +12,7 @@
 
 		.info {
 			width: 100%;
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 
 			//background: #6f6f6f;
 

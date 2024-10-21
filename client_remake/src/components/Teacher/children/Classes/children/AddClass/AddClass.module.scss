@@ -1,14 +1,13 @@
-@import "../../../../../../styles/_mixins.scss";
-@import "../../../../../../styles/_vars.scss";
+@use "../../../../../../styles/_mixins.scss";
 
 button {
-	@include login-register-btn;
+	@include mixins.login-register-btn;
 
 	margin-top: 20px;
 }
 
 .card {
-	@include flex-center-col;
+	@include mixins.flex-center-col;
 	justify-content: space-between;
 
 	margin-top: 20px;

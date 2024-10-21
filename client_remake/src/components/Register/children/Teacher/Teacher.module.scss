@@ -1,8 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@use "../../../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -41,7 +40,7 @@
 		}
 
 		button {
-			@include login-register-btn;
+			@include mixins.login-register-btn;
 		}
 	}
 }

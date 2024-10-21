@@ -1,10 +1,10 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@use "../../../../styles/mixins";
+@use "../../../../styles/vars";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
-	background: $main-bg;
+	background: vars.$main-bg;
 
 	overflow: auto;
 
@@ -14,22 +14,22 @@
 
 		.row {
 			width: 100%;
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 
 			display: grid;
 			grid-template-columns: 75% 25%;
 
-			background: $grid-bg;
+			background: vars.$grid-bg;
 
-			border-bottom: $grid-border;
-			border-left: $grid-border;
-			border-right: $grid-border;
+			border-bottom: vars.$grid-border;
+			border-left: vars.$grid-border;
+			border-right: vars.$grid-border;
 
 			div {
 				width: 100%;
-				@include flex-center-row;
+				@include mixins.flex-center-row;
 
-				border-right: $grid-border;
+				border-right: vars.$grid-border;
 
 				&:last-of-type {
 					border: none;
@@ -37,20 +37,20 @@
 			}
 
 			&.headers {
-				background: $grid-header-bg;
+				background: vars.$grid-header-bg;
 
 				border-bottom: 2px solid white;
-				border-top: $grid-border;
+				border-top: vars.$grid-border;
 			}
 		}
 
 		.add {
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 		}
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root .scroll .row:hover {
 		cursor: pointer;
 

@@ -1,12 +1,12 @@
-@import "../../../../../../../../styles/vars";
-@import "../../../../../../../../styles/mixins";
+@use "../../../../../../../../styles/vars";
+@use "../../../../../../../../styles/mixins";
 
 .root {
-	@include flex-center-col;
-	border-right: $grid-border;
+	@include mixins.flex-center-col;
+	border-right: vars.$grid-border;
 
 	.edit {
-		@include flex-center-col;
+		@include mixins.flex-center-col;
 		padding: 5px;
 
 		label {

@@ -1,10 +1,10 @@
-@import "../../styles/mixins";
-@import "../../styles/vars";
+@use "../../styles/mixins";
+@use "../../styles/vars";
 
 $br: 20px;
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
 	overflow: auto;
 
@@ -12,7 +12,7 @@ $br: 20px;
 		min-width: 100%;
 		min-height: 100%;
 
-		@include flex-center-col;
+		@include mixins.flex-center-col;
 
 		padding: 20px;
 
@@ -25,8 +25,8 @@ $br: 20px;
 			-moz-box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
 
 			.logo {
-				background: $logo-accent;
-				@include flex-center-row;
+				background: vars.$logo-accent;
+				@include mixins.flex-center-row;
 
 				border-top-left-radius: $br;
 				border-bottom-left-radius: $br;
@@ -37,11 +37,11 @@ $br: 20px;
 			}
 
 			form {
-				@include flex-center-col;
+				@include mixins.flex-center-col;
 
 				position: relative;
 
-				background: $form-bg;
+				background: vars.$form-bg;
 				backdrop-filter: blur(2rem);
 				-webkit-backdrop-filter: blur(2rem);
 
@@ -58,7 +58,7 @@ $br: 20px;
 				.title {
 					height: 100%;
 
-					@include flex-center-col;
+					@include mixins.flex-center-col;
 
 					h2 {
 						font-size: 4rem;
@@ -73,7 +73,7 @@ $br: 20px;
 				}
 
 				.input {
-					@include flex-center-row;
+					@include mixins.flex-center-row;
 
 					border: 1px solid white;
 					border-radius: $br;
@@ -82,7 +82,7 @@ $br: 20px;
 					div {
 						aspect-ratio: 1/1;
 						height: 100%;
-						@include flex-center-row;
+						@include mixins.flex-center-row;
 
 						padding: 5px;
 						background: rgba($color: #000, $alpha: 0.1);
@@ -137,7 +137,7 @@ $br: 20px;
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root .scroll .main .forgot_password:hover {
 		color: grey;
 	}

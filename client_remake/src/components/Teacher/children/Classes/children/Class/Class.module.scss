@@ -1,32 +1,32 @@
-@import "../../../../../../styles/mixins";
-@import "../../../../../../styles/vars";
+@use "../../../../../../styles/mixins";
+@use "../../../../../../styles/vars";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 	display: flex;
 	flex-direction: column;
-	background: $main-bg;
+	background: vars.$main-bg;
 
 	overflow: hidden;
 
 	.row {
 		width: 100%;
-		@include flex-center-row;
+		@include mixins.flex-center-row;
 
 		display: grid;
 		grid-template-columns: 60% 40%;
 
-		background: $grid-bg;
+		background: vars.$grid-bg;
 
-		border-bottom: $grid-border;
-		border-left: $grid-border;
-		border-right: $grid-border;
+		border-bottom: vars.$grid-border;
+		border-left: vars.$grid-border;
+		border-right: vars.$grid-border;
 
 		div {
 			width: 100%;
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 
-			border-right: $grid-border;
+			border-right: vars.$grid-border;
 
 			&:last-of-type {
 				border: none;
@@ -40,17 +40,17 @@
 
 		text-align: center;
 
-		background: $main-bg;
+		background: vars.$main-bg;
 
 		.info {
 			font-size: 2rem;
-			background: $main-bg;
+			background: vars.$main-bg;
 		}
 
 		.headers {
-			background: $grid-header-bg;
+			background: vars.$grid-header-bg;
 
-			border: $grid-border;
+			border: vars.$grid-border;
 		}
 	}
 
@@ -67,7 +67,7 @@
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root .scroll .row:hover {
 		cursor: pointer;
 

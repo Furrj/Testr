@@ -1,5 +1,5 @@
-@import "../../../../../../styles/vars";
-@import "../../../../../../styles/mixins";
+@use "../../../../../../styles/vars";
+@use "../../../../../../styles/mixins";
 
 $link-height: 2rem;
 $name-color: rgb(162, 225, 37);
@@ -10,7 +10,7 @@ $current-bg: #00f;
 	height: 20dvh;
 	width: 100%;
 
-	background: $navbar-bg;
+	background: vars.$navbar-bg;
 
 	overflow: auto;
 
@@ -28,7 +28,7 @@ $current-bg: #00f;
 
 		h3 {
 			height: $link-height;
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 
 			border-bottom: $navbar-link-border;
 
@@ -43,7 +43,7 @@ $current-bg: #00f;
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root {
 		display: none;
 	}

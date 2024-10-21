@@ -1,5 +1,4 @@
-@import "../../../../../../styles/vars";
-@import "../../../../../../styles/mixins";
+@use "../../../../../../styles/mixins";
 
 .root {
 	width: 100%;
@@ -9,8 +8,8 @@
 	grid-template-columns: repeat(3, 1fr);
 
 	.edit {
-		@include full-size-percent;
-		@include flex-center-col;
+		@include mixins.full-size-percent;
+		@include mixins.flex-center-col;
 		gap: 10px;
 		padding: 10px;
 

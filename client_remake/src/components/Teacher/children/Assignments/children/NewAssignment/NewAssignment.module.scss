@@ -1,5 +1,4 @@
-@import "../../../../../../../../styles/mixins";
-@import "../../../../../../../../styles/vars";
+@use "../../../../../../../../styles/mixins";
 
 .root {
 	width: 100%;
@@ -12,7 +11,7 @@
 
 	.date {
 		font-size: 1.3rem;
-		@include flex-center;
+		@include mixins.flex-center;
 
 		.date_picker {
 			input[type="text"] {
@@ -33,7 +32,7 @@
 		//border-radius: 10px;
 
 		.box {
-			@include flex-center;
+			@include mixins.flex-center;
 			border: 1px solid white;
 			padding: 5px;
 		}
@@ -95,7 +94,7 @@
 			}
 
 			div {
-				@include flex-center;
+				@include mixins.flex-center;
 				//border: 1px solid white;
 
 				padding: 5px;
@@ -111,13 +110,13 @@
 		}
 
 		.ops {
-			@include full-size-percent;
+			@include mixins.full-size-percent;
 			display: grid;
 			grid-template-columns: repeat(4, 25%);
 			border-bottom: 1px solid white;
 
 			div {
-				@include flex-center;
+				@include mixins.flex-center;
 			}
 
 			.add {
@@ -154,7 +153,7 @@
 			}
 
 			div {
-				@include flex-center;
+				@include mixins.flex-center;
 				padding: 5px;
 
 				.err {

@@ -1,5 +1,5 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@use "../../../../styles/mixins";
+@use "../../../../styles/vars";
 
 $border: 1px solid black;
 $br: 10px;
@@ -11,14 +11,14 @@ $hover: rgba(
 $btn-color: green;
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
 	overflow: auto;
 
 	.scroll {
 		min-width: 100%;
 		min-height: 100%;
-		@include flex-center;
+		@include mixins.flex-center;
 
 		padding-top: 20px;
 		padding-bottom: 20px;
@@ -35,7 +35,7 @@ $btn-color: green;
 
 			user-select: none;
 
-			//background: $form-bg;
+			//background: vars.$form-bg;
 			//color: black;
 
 			input {
@@ -64,8 +64,8 @@ $btn-color: green;
 				padding: 10px;
 
 				div {
-					@include full-size-percent;
-					@include flex-center-col;
+					@include mixins.full-size-percent;
+					@include mixins.flex-center-col;
 
 					input {
 						width: 10rem;
@@ -84,14 +84,14 @@ $btn-color: green;
 				display: grid;
 				grid-template-columns: repeat(4, 25%);
 
-				border: 1px solid $form-bg;
+				border: 1px solid vars.$form-bg;
 
 				div {
 					width: 100%;
 					height: 100%;
-					@include flex-center-col;
+					@include mixins.flex-center-col;
 
-					border-right: 1px solid $form-bg;
+					border-right: 1px solid vars.$form-bg;
 
 					font-size: 4rem;
 					font-weight: 900;
@@ -117,7 +117,7 @@ $btn-color: green;
 				}
 
 				.unchecked {
-					background: $main-bg;
+					background: vars.$main-bg;
 
 					color: rgba($color: #fff, $alpha: 0.5);
 				}
@@ -130,18 +130,18 @@ $btn-color: green;
 				grid-template-columns: repeat(2, 1fr);
 				margin-top: 10px;
 
-				border: 1px solid $form-bg;
+				border: 1px solid vars.$form-bg;
 
 				div {
 					width: 100%;
-					@include flex-center-col;
+					@include mixins.flex-center-col;
 
 					font-size: 4rem;
 
 					padding: 10px;
 
 					&:first-of-type {
-						border-right: 1px solid $form-bg;
+						border-right: 1px solid vars.$form-bg;
 					}
 
 					&:hover {
@@ -156,7 +156,7 @@ $btn-color: green;
 				}
 
 				.unchecked {
-					background: $main-bg;
+					background: vars.$main-bg;
 
 					color: rgba($color: #fff, $alpha: 0.5);
 				}
@@ -164,12 +164,12 @@ $btn-color: green;
 
 			.limit_count {
 				width: 100%;
-				@include flex-center-row;
+				@include mixins.flex-center-row;
 
 				margin-top: 10px;
 
 				div {
-					@include flex-center-col;
+					@include mixins.flex-center-col;
 
 					input {
 						width: 10rem;
@@ -186,7 +186,7 @@ $btn-color: green;
 			aspect-ratio: 1/1;
 			width: 20%;
 
-			@include flex-center-col;
+			@include mixins.flex-center-col;
 
 			border-radius: $br;
 
@@ -197,7 +197,7 @@ $btn-color: green;
 			background: $btn-color;
 
 			.img {
-				@include full-size-percent;
+				@include mixins.full-size-percent;
 				padding: 10px;
 
 				transform: translateX(4px);

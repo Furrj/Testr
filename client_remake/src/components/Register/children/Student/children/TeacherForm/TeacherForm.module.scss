@@ -1,8 +1,7 @@
-@import "../../../../../../styles/mixins";
-@import "../../../../../../styles/vars";
+@use "../../../../../../styles/mixins";
 
 .root {
-	@include full-size-percent;
+	@include mixins.full-size-percent;
 
 	padding-top: 50px;
 
@@ -14,11 +13,11 @@
 	overflow-y: auto;
 
 	button {
-		@include login-register-btn;
+		@include mixins.login-register-btn;
 	}
 
 	.form {
-		@include flex-center;
+		@include mixins.flex-center;
 		gap: 5px;
 
 		label {
@@ -46,7 +45,7 @@
 	}
 
 	div.classes {
-		@include flex-center;
+		@include mixins.flex-center;
 		margin-top: 30px;
 
 		label {

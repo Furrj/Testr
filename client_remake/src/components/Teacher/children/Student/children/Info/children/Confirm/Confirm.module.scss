@@ -1,11 +1,11 @@
-@import "../../../../../../../../styles/vars";
-@import "../../../../../../../../styles/mixins";
+@use "../../../../../../../../styles/vars";
+@use "../../../../../../../../styles/mixins";
 
 .root {
 	width: 100%;
-	height: calc(100% - $topbar-height);
+	height: calc(100% - vars.$topbar-height);
 
-	@include flex-center;
+	@include mixins.flex-center;
 
 	position: absolute;
 	bottom: 0;
@@ -16,9 +16,9 @@
 
 	.content {
 		width: 50%;
-		@include flex-center-col;
+		@include mixins.flex-center-col;
 
-		border-radius: $border-radius;
+		border-radius: vars.$border-radius;
 		padding: 10px;
 		background: white;
 		color: black;
@@ -33,7 +33,7 @@
 		}
 
 		.buttons {
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 			gap: 10px;
 
 			span {
@@ -51,7 +51,7 @@
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root .content .buttons {
 		#check:hover {
 			color: grey;

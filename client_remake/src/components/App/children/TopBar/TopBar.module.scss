@@ -1,5 +1,5 @@
-@import "../../../../styles/vars";
-@import "../../../../styles/mixins";
+@use "../../../../styles/vars";
+@use "../../../../styles/mixins";
 
 @mixin topbar_btn {
 	background: black;
@@ -21,11 +21,11 @@
 
 	.main {
 		width: 100%;
-		height: $topbar-height;
+		height: vars.$topbar-height;
 
-		background: $topbar-bg;
+		background: vars.$topbar-bg;
 
-		@include flex-center-row;
+		@include mixins.flex-center-row;
 
 		.icon {
 			width: 50px;
@@ -34,27 +34,27 @@
 			position: absolute;
 			left: 0;
 
-			color: $logo-accent;
+			color: vars.$logo-accent;
 		}
 
 		.title {
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 			height: 100%;
 			width: fit-content;
 			padding-left: 5px;
 		}
 
 		.right {
-			height: $topbar-height;
+			height: vars.$topbar-height;
 
-			@include flex-center-row;
+			@include mixins.flex-center-row;
 			gap: 10px;
 
 			position: absolute;
 			right: 0;
 
 			.logged_in {
-				@include flex-center-row;
+				@include mixins.flex-center-row;
 
 				font-size: 2.5rem;
 
@@ -68,7 +68,7 @@
 			}
 
 			.buttons {
-				@include flex-center-row;
+				@include mixins.flex-center-row;
 				gap: 10px;
 
 				margin-right: 10px;
@@ -95,7 +95,7 @@
 	}
 }
 
-@media only screen and (min-width: $mobile-width) {
+@media only screen and (min-width: vars.$mobile-width) {
 	.root .main .right {
 		.hamburger {
 			display: none;
@@ -103,7 +103,7 @@
 	}
 }
 
-@media only screen and (max-width: $mobile-width) {
+@media only screen and (max-width: vars.$mobile-width) {
 	.root .main .right .logged_in {
 		.logout {
 			display: none;

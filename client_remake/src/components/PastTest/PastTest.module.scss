@@ -1,5 +1,5 @@
-@import "../../styles/mixins";
-@import "../../styles/vars";
+@use "../../styles/mixins";
+@use "../../styles/vars";
 
 .root {
 	border: 1px solid white;
@@ -14,7 +14,7 @@
 	}
 
 	.stats {
-		@include flex-center;
+		@include mixins.flex-center;
 		gap: 5px;
 		flex-direction: row;
 		flex-wrap: wrap;
