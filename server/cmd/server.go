@@ -81,7 +81,7 @@ func main() {
 	router.POST(consts.RouteUrlRegisterTeacher, register.RegisterTeacher(db))
 	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
 	router.POST(consts.RouteUrlAssignment, assignments.Add(db))
-	router.POST(consts.RouteUrlPasswordResetCode, passwords.CheckResetCode(db))
+	router.POST(consts.RouteUrlPasswordResetCodeCheck, passwords.CheckResetCode(db))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))

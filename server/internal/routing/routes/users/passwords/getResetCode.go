@@ -89,6 +89,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
+		fmt.Printf("success, sending %+v\n", rc)
 
 		ctx.JSON(http.StatusOK, rc)
 	}

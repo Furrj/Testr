@@ -19,5 +19,6 @@ const (
 	RouteUrlGetAssignmentsTeacher         string = RouteUrlBase + "/assignments/get/teacher"
 	RouteUrlStudent                       string = RouteUrlBase + "/teacher/student/:id"
 	RouteUrlPasswordResetCode             string = RouteUrlBase + "/password/reset/:id"
+	RouteUrlPasswordResetCodeCheck        string = RouteUrlBase + "/password/reset/code"
 	RouteUrlPassword                      string = RouteUrlBase + "/password"
 )
