@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuthCtx } from "../../contexts/AuthProvider";
 import useUserDataQuery from "../../queries/userDataQuery";
 import Loading from "../Loading/Loading";
@@ -5,9 +6,11 @@ import Locals from "./Locals";
 import styles from "./Settings.module.scss";
 
 const Settings: React.FC = () => {
+	const queryClient = useQueryClient();
 	const authCtx = useAuthCtx();
 	const userDataQuery = useUserDataQuery(authCtx);
 	const updateVerticalPrefMutation = Locals.useUpdateVerticalPrefMutation(
+		queryClient,
 		authCtx.tokens.curr,
 	);
 

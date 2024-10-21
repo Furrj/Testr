@@ -7,15 +7,8 @@ import {
 	E_GAME_STATUS,
 	type T_GAME_SETTINGS,
 } from "../../../../types/game";
-import { PiDeviceRotateBold } from "react-icons/pi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosResponse, HttpStatusCode } from "axios";
-import {
-	I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
-	apiRequestUpdateVertical,
-} from "../../../../../requests";
-import { QUERY_KEYS } from "../../../../utils/consts";
-import { getUserSessionDataFromStorage } from "../../../../utils/methods";
+import { useAuthCtx } from "../../../../contexts/AuthProvider";
+import useUserDataQuery from "../../../../queries/userDataQuery";
 
 interface IProps {
 	questions: T_QUESTION[];
@@ -37,14 +30,18 @@ interface IProps {
 
 const Active: React.FC<IProps> = (props) => {
 	const [inputErr, setInputErr] = useState<boolean>(false);
-	const [verticalMode, setVerticalMode] = useState<boolean>(false);
 
 	const currQuestion = props.questions[props.currentQuestionIndex.curr - 1];
-	const savedVerticalMode = useRef<boolean>(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const limitType = props.gameSettings.curr.limit_type;
+
+	const authCtx = useAuthCtx();
+	const userDataQuery = useUserDataQuery(authCtx);
+
+	const vertical: boolean =
+		(userDataQuery.data && userDataQuery.data.user_data.vertical) || false;
 
 	// focus on input box on page load
 	useEffect(() => {
@@ -82,46 +79,9 @@ const Active: React.FC<IProps> = (props) => {
 		}
 	}, [props.timeInSeconds]);
 
-	// init vertical mode
-	useEffect(() => {
-		savedVerticalMode.current = props.vertical;
-
-		if (rootRef.current) {
-			if (rootRef.current.clientWidth >= 800) {
-				setVerticalMode(savedVerticalMode.current);
-			}
-		}
-	}, [props.vertical]);
-
-	// set up window resize listener for disabling vertical mode
-	useEffect(() => {
-		function checkResizeForVerticalEligibility() {
-			if (rootRef.current) {
-				if (rootRef.current.clientWidth < 800 && verticalMode) {
-					setVerticalMode(false);
-				} else if (
-					rootRef.current.clientWidth >= 800 &&
-					verticalMode !== savedVerticalMode.current
-				) {
-					setVerticalMode(savedVerticalMode.current);
-				}
-			}
-		}
-		window.addEventListener("resize", checkResizeForVerticalEligibility);
-
-		return () =>
-			window.removeEventListener("resize", checkResizeForVerticalEligibility);
-	}, [verticalMode]);
-
-	const mutation = useMutation({
-		mutationFn: (
-			params: I_PARAMS_APIREQUEST_UPDATE_VERTICAL,
-		): Promise<AxiosResponse> => apiRequestUpdateVertical(params),
-	});
-
 	return (
 		<div
-			className={`${styles.root} ${verticalMode ? styles.vertical : ""}`}
+			className={`${styles.root} ${vertical ? styles.vertical : ""}`}
 			ref={rootRef}
 		>
 			<div className={styles.container}>
@@ -188,20 +148,6 @@ const Active: React.FC<IProps> = (props) => {
 							}}
 							onChange={() => inputErr && setInputErr(false)}
 						/>
-						<div
-							className={styles.rotate}
-							onClick={() => {
-								savedVerticalMode.current = !savedVerticalMode.current;
-								setVerticalMode((curr) => !curr);
-
-								mutation.mutate({
-									vertical: savedVerticalMode.current,
-									tokens: getUserSessionDataFromStorage(),
-								});
-							}}
-						>
-							<PiDeviceRotateBold />
-						</div>
 					</div>
 				</div>
 			</div>

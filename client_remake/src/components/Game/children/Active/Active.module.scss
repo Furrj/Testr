@@ -122,29 +122,6 @@
 					border: red;
 					background: red;
 				}
-
-				.rotate {
-					@include mixins.flex-center;
-
-					width: fit-content;
-					height: fit-content;
-
-					font-size: 3rem;
-					padding: 5px;
-
-					border: 1px solid white;
-					border-radius: 10px;
-
-					position: absolute;
-					bottom: 50%;
-					transform: translateY(50%);
-					right: 10px;
-
-					&:hover {
-						background: vars.$color-btn-hover;
-						cursor: pointer;
-					}
-				}
 			}
 		}
 	}
@@ -192,12 +169,6 @@
 				width: fit-content;
 				height: fit-content;
 			}
-
-			.bottom {
-				.rotate {
-					right: -50%;
-				}
-			}
 		}
 	}
 }
@@ -215,10 +186,6 @@
 
 	.root.vertical .container {
 		margin-bottom: 80px;
-	}
-
-	.rotate {
-		visibility: hidden;
 	}
 }
 
