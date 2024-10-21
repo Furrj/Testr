@@ -7,7 +7,7 @@ $navbar-link-border: 1px solid black;
 $navbar-width: 135px;
 
 .root {
-	width: fit-content;
+	width: $navbar-width;
 	height: 100%;
 
 	display: flex;
@@ -53,6 +53,16 @@ $navbar-width: 135px;
 
 			&:hover {
 				background: #424141;
+			}
+		}
+
+		#username {
+			justify-content: flex-start;
+
+			span {
+				width: 70%;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 		}
 	}

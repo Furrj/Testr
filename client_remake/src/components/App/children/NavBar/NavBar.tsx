@@ -50,7 +50,9 @@ const NavBar: React.FC = () => {
 			{isSuccess && data && (
 				<div className={styles.bottom}>
 					<Link to={"/"} className={styles.link}>
-						<div>{data.user_data.username}</div>
+						<div id={styles.username}>
+							<span>{data.user_data.username}</span>
+						</div>
 					</Link>
 				</div>
 			)}
