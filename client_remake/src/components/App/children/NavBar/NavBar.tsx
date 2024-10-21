@@ -11,7 +11,7 @@ const NavBar: React.FC = () => {
 	const location = useLocation();
 
 	return (
-		<div className={styles.root}>
+		<nav className={styles.root}>
 			<div className={styles.top}>
 				<Link to={"/game"} className={styles.link}>
 					<div className={location.pathname === "/game" ? styles.current : ""}>
@@ -60,7 +60,7 @@ const NavBar: React.FC = () => {
 					</div>
 				</div>
 			)}
-		</div>
+		</nav>
 	);
 };
 

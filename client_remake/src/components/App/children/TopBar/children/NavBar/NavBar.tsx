@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className={styles.root}>
+		<nav className={styles.root}>
 			<div className={styles.scroll}>
 				{isSuccess && data && (
 					<Link to={"/"} className={`${styles.link} ${styles.name}`}>
@@ -60,6 +60,14 @@ const NavBar: React.FC = () => {
 					</Link>
 				)}
 
+				<Link to={"/settings"} className={styles.link}>
+					<h3
+						className={location.pathname === "/settings" ? styles.current : ""}
+					>
+						Settings
+					</h3>
+				</Link>
+
 				<div className={styles.link}>
 					<h3
 						onClick={() => {
@@ -75,7 +83,7 @@ const NavBar: React.FC = () => {
 					</h3>
 				</div>
 			</div>
-		</div>
+		</nav>
 	);
 };
 

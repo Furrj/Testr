@@ -7,7 +7,7 @@ $navbar-link-border: 1px solid white;
 $current-bg: #00f;
 
 .root {
-	height: 20dvh;
+	max-height: 20dvh;
 	width: 100%;
 
 	background: vars.$navbar-bg;
