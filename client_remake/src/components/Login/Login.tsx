@@ -60,6 +60,7 @@ const Login: React.FC = () => {
 								onChange={inputHandler}
 								placeholder="Username"
 								autoComplete="on"
+								required={true}
 							/>
 						</div>
 						<br />
@@ -76,6 +77,7 @@ const Login: React.FC = () => {
 								onChange={inputHandler}
 								placeholder="Password"
 								autoComplete="on"
+								required={true}
 							/>
 						</div>
 
