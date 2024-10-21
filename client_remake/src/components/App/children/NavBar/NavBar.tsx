@@ -3,6 +3,7 @@ import styles from "./NavBar.module.scss";
 import useUserDataQuery from "../../../../queries/userData";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
 import { USER_ROLES } from "../../../../utils/consts";
+import { IoMdSettings } from "react-icons/io";
 
 const NavBar: React.FC = () => {
 	const authData = useAuthCtx();
@@ -49,11 +50,14 @@ const NavBar: React.FC = () => {
 
 			{isSuccess && data && (
 				<div className={styles.bottom}>
-					<Link to={"/"} className={styles.link}>
+					<div className={styles.link}>
 						<div id={styles.username}>
 							<span>{data.user_data.username}</span>
+							<Link to={"/settings"}>
+								<IoMdSettings />
+							</Link>
 						</div>
-					</Link>
+					</div>
 				</div>
 			)}
 		</div>

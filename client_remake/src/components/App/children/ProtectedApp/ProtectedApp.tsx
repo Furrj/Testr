@@ -7,6 +7,7 @@ import Loading from "../../../Loading/Loading";
 import Classes from "../../../Teacher/children/Classes/Classes";
 import Class from "../../../Teacher/children/Classes/children/Class/Class";
 import Student from "../../../Teacher/children/Student/Student";
+import Settings from "../../../Settings/Settings";
 
 interface IProps {
 	userData: T_USERDATA;
@@ -56,6 +57,7 @@ const ProtectedApp: React.FC<IProps> = (props) => {
 						)
 					}
 				/>
+				<Route path={"/settings"} element={<Settings />} />
 
 				<Route path="*" element={<Navigate to={"/"} replace />} />
 			</Routes>

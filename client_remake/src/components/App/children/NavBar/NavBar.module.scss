@@ -23,6 +23,8 @@ $navbar-width: 135px;
 		text-decoration: none;
 		color: white;
 
+		user-select: none;
+
 		div {
 			width: 100%;
 			height: $link-height;
@@ -57,12 +59,27 @@ $navbar-width: 135px;
 		}
 
 		#username {
-			justify-content: flex-start;
+			display: grid;
+			grid-template-columns: 75% 25%;
+			padding: 0;
 
-			span {
-				width: 70%;
+			cursor: default;
+
+			:first-child {
+				padding-left: 5px;
 				overflow: hidden;
 				text-overflow: ellipsis;
+			}
+
+			:nth-child(2) {
+				@include mixins.flex-center-row;
+				color: white;
+				font-size: 1.5rem;
+
+				&:hover {
+					cursor: pointer;
+					color: grey;
+				}
 			}
 		}
 	}
