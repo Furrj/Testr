@@ -6,7 +6,7 @@ import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";
 import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
 import { useAuthCtx } from "../../contexts/AuthProvider";
-import useUserDataQuery from "../../queries/userData";
+import useUserDataQuery from "../../queries/userDataQuery";
 import { USER_ROLES } from "../../utils/consts";
 import useTeacherDataQuery from "../../queries/teacherDataQuery";
 

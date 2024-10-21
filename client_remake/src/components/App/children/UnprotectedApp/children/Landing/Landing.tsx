@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import styles from "./Landing.module.scss";
+import { Link } from "react-router-dom";
 
 const Landing: React.FC = () => {
 	const rootRef = useRef<HTMLDivElement>(null);
@@ -16,7 +17,9 @@ const Landing: React.FC = () => {
 				</div>
 
 				<div className={styles.get_started}>
-					<div>Get Started</div>
+					<Link to={"/register"} className="link">
+						<div>Get Started</div>
+					</Link>
 				</div>
 			</div>
 		</div>

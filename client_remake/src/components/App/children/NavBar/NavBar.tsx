@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import useUserDataQuery from "../../../../queries/userData";
+import useUserDataQuery from "../../../../queries/userDataQuery";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
 import { USER_ROLES } from "../../../../utils/consts";
 import { IoMdSettings } from "react-icons/io";

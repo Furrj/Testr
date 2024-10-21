@@ -76,7 +76,6 @@ func main() {
 
 	router.POST(consts.RouteUrlLogin, login.Login(db))
 	router.POST(consts.RouteUrlGameSessions, gamesessions.Add(db))
-	router.POST(consts.RouteUrlVertical, vertical.Update(db))
 	router.POST(consts.RouteUrlClasses, classes.Add(db))
 	router.POST(consts.RouteUrlRegisterTeacher, register.RegisterTeacher(db))
 	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
@@ -94,6 +93,7 @@ func main() {
 
 	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))
+	router.PUT(consts.RouteUrlVertical, vertical.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, students.Delete(db))
 
