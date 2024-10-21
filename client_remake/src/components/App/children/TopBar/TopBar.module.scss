@@ -65,6 +65,10 @@
 						color: green;
 					}
 				}
+
+				.hamburger {
+					display: none;
+				}
 			}
 
 			.buttons {
@@ -95,14 +99,6 @@
 	}
 }
 
-@media only screen and (min-width: vars.$mobile-width) {
-	.root .main .right {
-		.hamburger {
-			display: none;
-		}
-	}
-}
-
 @media only screen and (max-width: vars.$mobile-width) {
 	.root .main .right .logged_in {
 		.logout {
@@ -110,17 +106,32 @@
 		}
 
 		.hamburger {
-			font-size: 4rem;
+			display: block;
+			font-size: 3rem;
 
-			&:hover {
-				color: white;
+			border: 2px solid white;
+			border-radius: 10px;
 
-				user-select: none;
-				cursor: pointer;
-			}
+			user-select: none;
+
+			cursor: pointer;
 
 			&.open {
-				color: blue;
+				background: #3b3a3a;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.root .main {
+		.title {
+			font-size: 1.5rem;
+		}
+
+		.right .logged_in {
+			.hamburger {
+				font-size: 3rem;
 			}
 		}
 	}
