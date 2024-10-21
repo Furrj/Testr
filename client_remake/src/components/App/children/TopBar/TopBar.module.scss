@@ -73,12 +73,15 @@
 
 			.buttons {
 				@include mixins.flex-center-row;
+				height: 100%;
 				gap: 10px;
 
 				margin-right: 10px;
 
 				button {
 					@include topbar_btn;
+
+					margin-top: 0;
 				}
 			}
 
