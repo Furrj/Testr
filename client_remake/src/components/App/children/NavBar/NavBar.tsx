@@ -13,6 +13,12 @@ const NavBar: React.FC = () => {
 	return (
 		<nav className={styles.root}>
 			<div className={styles.top}>
+				<Link to={"/"} className={styles.link}>
+					<div className={location.pathname === "/" ? styles.current : ""}>
+						Home
+					</div>
+				</Link>
+
 				<Link to={"/game"} className={styles.link}>
 					<div className={location.pathname === "/game" ? styles.current : ""}>
 						Play

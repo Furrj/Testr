@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
 				{isSuccess && data && (
 					<Link to={"/"} className={`${styles.link} ${styles.name}`}>
 						<h3 className={location.pathname === "/" ? styles.current : ""}>
-							{data.user_data.username}
+							Home
 						</h3>
 					</Link>
 				)}
