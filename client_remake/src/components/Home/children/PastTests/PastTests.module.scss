@@ -6,94 +6,12 @@
 
 	background: vars.$grid-bg;
 
-	overflow: hidden;
-
-	border: vars.$grid-border;
+	overflow: auto;
 
 	.scroll {
 		max-height: 100%;
 
-		overflow: auto;
-	}
-
-	.row {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
-
-		border-top: vars.$grid-border;
-
-		div {
-			text-align: center;
-		}
-
-		.date {
-			min-width: 8rch;
-
-			border-right: vars.$grid-border;
-		}
-
-		.score {
-			border-right: vars.$grid-border;
-			min-width: 8rch;
-		}
-
-		.count {
-			border-right: vars.$grid-border;
-
-			min-width: 7rch;
-		}
-
-		.time {
-			border-right: vars.$grid-border;
-			min-width: 5rch;
-		}
-
-		.range {
-			display: grid;
-			grid-template-columns: repeat(2, 50%);
-
-			span {
-				border-right: vars.$grid-border;
-
-				min-width: 5rch;
-			}
-		}
-
-		.limit {
-			min-width: 7rch;
-
-			@include mixins.flex-center-row;
-
-			border-right: vars.$grid-border;
-		}
-
-		.ops {
-			display: flex;
-			justify-content: space-between;
-
-			span {
-				min-width: 3rch;
-				width: 100%;
-
-				text-align: center;
-
-				border-right: vars.$grid-border;
-
-				&.checked {
-					background: green;
-				}
-
-				&.unchecked {
-					background: red;
-				}
-
-				&:last-of-type {
-					border: none;
-				}
-			}
-		}
-
-		&.headers {
+		#headers {
 			border-bottom: vars.$grid-border;
 
 			position: sticky;
@@ -108,6 +26,91 @@
 			.limit {
 				@include mixins.flex-center-col;
 			}
+		}
+
+		.row {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+
+			border-bottom: vars.$grid-border;
+			border-left: vars.$grid-border;
+			border-right: vars.$grid-border;
+
+			div {
+				text-align: center;
+			}
+
+			.date {
+				min-width: 8rch;
+
+				border-right: vars.$grid-border;
+			}
+
+			.score {
+				border-right: vars.$grid-border;
+				min-width: 8rch;
+			}
+
+			.count {
+				border-right: vars.$grid-border;
+
+				min-width: 7rch;
+			}
+
+			.time {
+				border-right: vars.$grid-border;
+				min-width: 5rch;
+			}
+
+			.range {
+				display: grid;
+				grid-template-columns: repeat(2, 50%);
+
+				span {
+					border-right: vars.$grid-border;
+
+					min-width: 5rch;
+				}
+			}
+
+			.limit {
+				min-width: 7rch;
+
+				@include mixins.flex-center-row;
+
+				border-right: vars.$grid-border;
+			}
+
+			.ops {
+				display: flex;
+				justify-content: space-between;
+
+				span {
+					min-width: 3rch;
+					width: 100%;
+
+					text-align: center;
+
+					border-right: vars.$grid-border;
+
+					&.checked {
+						background: green;
+					}
+
+					&.unchecked {
+						background: red;
+					}
+
+					&:last-of-type {
+						border: none;
+					}
+				}
+			}
+		}
+
+		#empty {
+			width: 100%;
+			text-align: center;
 		}
 	}
 }

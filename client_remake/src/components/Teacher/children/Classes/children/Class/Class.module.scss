@@ -9,31 +9,6 @@
 
 	overflow: hidden;
 
-	.row {
-		width: 100%;
-		@include mixins.flex-center-row;
-
-		display: grid;
-		grid-template-columns: 60% 40%;
-
-		background: vars.$grid-bg;
-
-		border-bottom: vars.$grid-border;
-		border-left: vars.$grid-border;
-		border-right: vars.$grid-border;
-
-		div {
-			width: 100%;
-			@include mixins.flex-center-row;
-
-			border-right: vars.$grid-border;
-
-			&:last-of-type {
-				border: none;
-			}
-		}
-	}
-
 	.top {
 		width: 100%;
 		height: fit-content;
@@ -46,12 +21,6 @@
 			font-size: 2rem;
 			background: vars.$main-bg;
 		}
-
-		.headers {
-			background: vars.$grid-header-bg;
-
-			border: vars.$grid-border;
-		}
 	}
 
 	.students {
@@ -63,6 +32,48 @@
 		.scroll {
 			width: 100%;
 			flex-direction: column;
+
+			#headers {
+				background: vars.$grid-header-bg;
+
+				border-top: vars.$grid-border;
+				border-bottom: vars.$grid-border;
+
+				position: sticky;
+				top: 0;
+			}
+
+			.empty {
+				width: 100%;
+				text-align: center;
+
+				background: vars.$grid-bg;
+			}
+
+			.row {
+				width: 100%;
+				@include mixins.flex-center-row;
+
+				display: grid;
+				grid-template-columns: 60% 40%;
+
+				background: vars.$grid-bg;
+
+				border-bottom: vars.$grid-border;
+				border-left: vars.$grid-border;
+				border-right: vars.$grid-border;
+
+				div {
+					width: 100%;
+					@include mixins.flex-center-row;
+
+					border-right: vars.$grid-border;
+
+					&:last-of-type {
+						border: none;
+					}
+				}
+			}
 		}
 	}
 }

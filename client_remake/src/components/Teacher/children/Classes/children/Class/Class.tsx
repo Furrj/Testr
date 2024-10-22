@@ -23,18 +23,19 @@ const Class: React.FC = () => {
 			<div className={styles.root}>
 				<div className={styles.top}>
 					<div className={styles.info}>{cl?.name}</div>
-					<div className={`${styles.row} ${styles.headers}`}>
-						<div>
-							<h3>Student</h3>
-						</div>
-						<div>
-							<h3>Username</h3>
-						</div>
-					</div>
 				</div>
 
 				<div className={styles.students}>
 					<div className={styles.scroll}>
+						<div className={styles.row} id={styles.headers}>
+							<div>
+								<h3>Student</h3>
+							</div>
+							<div>
+								<h3>Username</h3>
+							</div>
+						</div>
+
 						{students.length > 0 ? (
 							students.map((s) => {
 								return (
@@ -53,7 +54,7 @@ const Class: React.FC = () => {
 								);
 							})
 						) : (
-							<div>No students</div>
+							<div className={styles.empty}>No students</div>
 						)}
 					</div>
 				</div>

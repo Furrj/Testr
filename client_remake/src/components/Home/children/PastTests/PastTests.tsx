@@ -24,47 +24,47 @@ interface IProps {
 const PastTests: React.FC<IProps> = (props) => {
 	return (
 		<section className={styles.root}>
-			<div className={`${styles.row} ${styles.headers}`}>
-				<div className={styles.date}>
-					<h3>Date</h3>
-				</div>
-				<div className={styles.score}>
-					<h3>Score</h3>
-				</div>
-				<div className={styles.count}>
-					<h3>Count</h3>
-				</div>
-				<div className={styles.time}>
-					<h3>Time</h3>
-				</div>
-				<div className={styles.limit}>
-					<h3>Limit</h3>
-				</div>
-				<div className={styles.range}>
-					<span className={styles.min}>
-						<h3>Min</h3>
-					</span>
-					<span className={styles.max}>
-						<h3>Max</h3>
-					</span>
-				</div>
-				<div className={styles.ops}>
-					<span>
-						<h3>+</h3>
-					</span>
-					<span>
-						<h3>-</h3>
-					</span>
-					<span>
-						<h3>×</h3>
-					</span>
-					<span>
-						<h3>÷</h3>
-					</span>
-				</div>
-			</div>
-
 			<div className={styles.scroll}>
+				<div className={styles.row} id={styles.headers}>
+					<div className={styles.date}>
+						<h3>Date</h3>
+					</div>
+					<div className={styles.score}>
+						<h3>Score</h3>
+					</div>
+					<div className={styles.count}>
+						<h3>Count</h3>
+					</div>
+					<div className={styles.time}>
+						<h3>Time</h3>
+					</div>
+					<div className={styles.limit}>
+						<h3>Limit</h3>
+					</div>
+					<div className={styles.range}>
+						<span className={styles.min}>
+							<h3>Min</h3>
+						</span>
+						<span className={styles.max}>
+							<h3>Max</h3>
+						</span>
+					</div>
+					<div className={styles.ops}>
+						<span>
+							<h3>+</h3>
+						</span>
+						<span>
+							<h3>-</h3>
+						</span>
+						<span>
+							<h3>×</h3>
+						</span>
+						<span>
+							<h3>÷</h3>
+						</span>
+					</div>
+				</div>
+
 				{props.sessions.length > 0 ? (
 					props.sessions.map((s, i) => {
 						return (
@@ -107,7 +107,7 @@ const PastTests: React.FC<IProps> = (props) => {
 						);
 					})
 				) : (
-					<div>No recent games</div>
+					<div id={styles.empty}>No recent games</div>
 				)}
 			</div>
 		</section>
