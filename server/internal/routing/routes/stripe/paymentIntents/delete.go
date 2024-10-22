@@ -13,10 +13,16 @@ import (
 
 func Delete(db *dbHandler.DBHandler, key string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		stripe.Key = key
+		// get param
+		id := ctx.Param("id")
 
+		// setup stripe
+		stripe.Key = key
 		params := &stripe.PaymentIntentCancelParams{}
-		_, err := paymentintent.Cancel("pi_3QCnZ1AhU9omvuzo1MOg1L5x", params)
+		_, err := paymentintent.Cancel(
+			id,
+			params,
+		)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error cancelling payment intent: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)

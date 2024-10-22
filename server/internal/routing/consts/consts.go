@@ -22,4 +22,5 @@ const (
 	RouteUrlPasswordResetCodeCheck        string = RouteUrlBase + "/password/reset/code"
 	RouteUrlPassword                      string = RouteUrlBase + "/password"
 	RouteUrlPaymentIntents                string = RouteUrlBase + "/payment_intents"
+	RouteUrlPaymentIntentsWithID          string = RouteUrlBase + "/payment_intents/:id"
 )

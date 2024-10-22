@@ -11,16 +11,12 @@ import (
 	"mathtestr.com/server/internal/dbHandler"
 )
 
-const (
-	UNINITIALIZED int  = -1
-	FREE          uint = 0
-	TRIAL         uint = 1
-	BASIC         uint = 2
-	PREMIUM       uint = 3
-)
-
 type reqCreatePaymentIntent struct {
 	Type uint `json:"type"`
+}
+
+type resCreatePaymentIntent struct {
+	ClientSecret string `json:"client_secret"`
 }
 
 func Create(db *dbHandler.DBHandler, key string) gin.HandlerFunc {
@@ -38,8 +34,6 @@ func Create(db *dbHandler.DBHandler, key string) gin.HandlerFunc {
 		// create intent
 		stripe.Key = key
 
-		fmt.Print(key)
-
 		params := &stripe.PaymentIntentParams{
 			Amount:   stripe.Int64(1099),
 			Currency: stripe.String(string(stripe.CurrencyUSD)),
@@ -50,6 +44,11 @@ func Create(db *dbHandler.DBHandler, key string) gin.HandlerFunc {
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
-		fmt.Printf("%+v\n", intent)
+
+		res := resCreatePaymentIntent{
+			ClientSecret: intent.ClientSecret,
+		}
+
+		ctx.JSON(http.StatusOK, res)
 	}
 }

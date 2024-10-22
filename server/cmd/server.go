@@ -104,7 +104,7 @@ func main() {
 	router.PUT(consts.RouteUrlVertical, vertical.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, students.Delete(db))
-	router.DELETE(consts.RouteUrlPaymentIntents, paymentintents.Delete(db, STRIPE_KEY))
+	router.DELETE(consts.RouteUrlPaymentIntentsWithID, paymentintents.Delete(db, STRIPE_KEY))
 
 	router.Use(spa.Middleware("/", "client"))
 

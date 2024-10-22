@@ -9,6 +9,7 @@ const stripePromise = loadStripe(KEY);
 
 const Payment: React.FC = () => {
 	const createPaymentIntentMutation = Locals.useCreatePaymentIntentMutation();
+	const deletePaymentIntentMutation = Locals.useDeletePaymentIntentMutation();
 
 	const options = {
 		clientSecret: "{{CLIENT_SECRET}}",
@@ -24,6 +25,16 @@ const Payment: React.FC = () => {
 				}
 			>
 				Create Intent
+			</button>
+
+			<button
+				onClick={() =>
+					deletePaymentIntentMutation.mutate({
+						id: 1,
+					})
+				}
+			>
+				Delete Intent
 			</button>
 			{/* <form> */}
 			{/*   <CardElement /> */}
