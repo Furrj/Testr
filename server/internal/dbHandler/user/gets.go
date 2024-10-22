@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/types"
 )
@@ -65,4 +66,29 @@ func GetPasswordResetCodeByCode(db *dbHandler.DBHandler, code string) (types.Pas
 		return rc, err
 	}
 	return rc, nil
+}
+
+const QGetPasswordResetCodeByUserID = `
+	SELECT code
+	FROM users.password_reset_codes
+	WHERE user_id=$1
+`
+
+func GetPasswordResetCodeByUserID(db *dbHandler.DBHandler, id types.UserID) (string, error) {
+	var code string
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		QGetPasswordResetCodeByUserID,
+		id,
+	).Scan(
+		&code,
+	)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return "", nil
+		}
+		return code, err
+	}
+	return code, nil
 }

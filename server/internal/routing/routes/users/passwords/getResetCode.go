@@ -73,9 +73,28 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 			return
 		}
 
-		// generate code
-		code, err := generateRandomCode(4)
+		// check for existing codes
+		code, err := user.GetPasswordResetCodeByUserID(db, userParamID)
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "error in GetPasswordResetCodeByUserID: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
+
+		// if code exists
+		if code != "" {
+			rc := types.PasswordResetCode{
+				UserID: userParamID,
+				Code:   code,
+			}
+			ctx.JSON(http.StatusOK, rc)
+			return
+		}
+
+		// generate code
+		code, err = generateRandomCode(4)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error in generateRandomCode: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
@@ -86,6 +105,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 			Code:   code,
 		}
 		if err := user.InsertPasswordResetCode(db, rc); err != nil {
+			fmt.Fprintf(os.Stderr, "error in InsertPasswordResetCode: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
