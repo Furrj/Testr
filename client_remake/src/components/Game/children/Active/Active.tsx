@@ -30,6 +30,7 @@ interface IProps {
 
 const Active: React.FC<IProps> = (props) => {
 	const [inputErr, setInputErr] = useState<boolean>(false);
+	const [vertical, setVertical] = useState<boolean>(false);
 
 	const currQuestion = props.questions[props.currentQuestionIndex.curr - 1];
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -39,9 +40,7 @@ const Active: React.FC<IProps> = (props) => {
 
 	const authCtx = useAuthCtx();
 	const userDataQuery = useUserDataQuery(authCtx);
-
-	const vertical: boolean =
-		(userDataQuery.data && userDataQuery.data.user_data.vertical) || false;
+	const savedVerticalPref = useRef<boolean>(false);
 
 	// focus on input box on page load
 	useEffect(() => {
@@ -79,75 +78,105 @@ const Active: React.FC<IProps> = (props) => {
 		}
 	}, [props.timeInSeconds]);
 
+	// set vertical on page load
+	useEffect(() => {
+		if (userDataQuery.isSuccess) {
+			savedVerticalPref.current = userDataQuery.data.user_data.vertical;
+			setVertical(userDataQuery.data.user_data.vertical);
+		}
+	}, [userDataQuery.isSuccess]);
+
+	// set up window resize listener for disabling vertical mode
+	useEffect(() => {
+		function checkResizeForVerticalEligibility() {
+			if (rootRef.current) {
+				if (rootRef.current.clientWidth < 800 && vertical) {
+					setVertical(false);
+				} else if (
+					rootRef.current.clientWidth >= 800 &&
+					vertical !== savedVerticalPref.current
+				) {
+					setVertical(savedVerticalPref.current);
+				}
+			}
+		}
+		window.addEventListener("resize", checkResizeForVerticalEligibility);
+
+		return () =>
+			window.removeEventListener("resize", checkResizeForVerticalEligibility);
+	}, [vertical]);
+
 	return (
 		<div
 			className={`${styles.root} ${vertical ? styles.vertical : ""}`}
 			ref={rootRef}
 		>
-			<div className={styles.container}>
-				<div className={styles.info}>
-					<div className={styles.number}>
-						# {props.currentQuestionIndex.curr}
-						{limitType === E_GAME_LIMIT_TYPES.COUNT &&
-							`/${props.gameSettings.curr.limit_amount}`}
-					</div>
-					<div
-						className={styles.timer}
-						style={{
-							color:
-								props.timeInSeconds.curr < 10 &&
-								limitType === E_GAME_LIMIT_TYPES.TIME
-									? "red"
-									: "",
-						}}
-					>
-						{UIHandlers.formatTime(props.timeInSeconds.curr)}
-					</div>
-				</div>
-
-				<div className={styles.content}>
-					<div className={styles.top}>
-						<div className={styles.left}>
-							<h2>{currQuestion.operands[0]}</h2>
+			<div className={styles.scroll}>
+				<div className={styles.container}>
+					<div className={styles.info}>
+						<div className={styles.number}>
+							{props.currentQuestionIndex.curr}
+							{limitType === E_GAME_LIMIT_TYPES.COUNT &&
+								`/${props.gameSettings.curr.limit_amount}`}
 						</div>
-						<div className={styles.middle}>
-							<h2>
-								{UIHandlers.convertOperatorToDisplay(currQuestion.operator)}
-							</h2>
-						</div>
-						<div className={styles.right}>
-							<h2>{currQuestion.operands[1]}</h2>
-						</div>
-					</div>
-					<div className={styles.bottom}>
-						<input
-							className={inputErr ? styles.err : ""}
-							type="number"
-							name="userAnswer"
-							ref={inputRef}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									// submit answer
-									if (inputRef.current?.value !== "") {
-										props.userGuesses.current.push(
-											e.currentTarget.valueAsNumber,
-										);
-
-										// if last question set gameState to 'post' else increase index
-										if (
-											limitType === E_GAME_LIMIT_TYPES.COUNT &&
-											props.currentQuestionIndex.curr >=
-												props.gameSettings.curr.limit_amount
-										) {
-											props.gameStatus.set(E_GAME_STATUS.POST);
-										} else {
-											props.currentQuestionIndex.set((curr) => curr + 1);
-										}
-									} else setInputErr(true);
-								}
+						<div
+							className={styles.timer}
+							style={{
+								color:
+									props.timeInSeconds.curr < 10 &&
+									limitType === E_GAME_LIMIT_TYPES.TIME
+										? "red"
+										: "",
 							}}
-							onChange={() => inputErr && setInputErr(false)}
-						/>
+						>
+							{UIHandlers.formatTime(props.timeInSeconds.curr)}
+						</div>
+					</div>
+
+					<div className={styles.content}>
+						<div className={styles.top}>
+							<div className={styles.left}>
+								<h2>{currQuestion.operands[0]}</h2>
+							</div>
+							<div className={styles.middle}>
+								<h2>
+									{UIHandlers.convertOperatorToDisplay(currQuestion.operator)}
+								</h2>
+							</div>
+							<div className={styles.right}>
+								<h2>{currQuestion.operands[1]}</h2>
+							</div>
+						</div>
+						<div className={styles.bottom}>
+							<input
+								className={inputErr ? styles.err : ""}
+								type="number"
+								name="userAnswer"
+								ref={inputRef}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										// submit answer
+										if (inputRef.current?.value !== "") {
+											props.userGuesses.current.push(
+												e.currentTarget.valueAsNumber,
+											);
+
+											// if last question set gameState to 'post' else increase index
+											if (
+												limitType === E_GAME_LIMIT_TYPES.COUNT &&
+												props.currentQuestionIndex.curr >=
+													props.gameSettings.curr.limit_amount
+											) {
+												props.gameStatus.set(E_GAME_STATUS.POST);
+											} else {
+												props.currentQuestionIndex.set((curr) => curr + 1);
+											}
+										} else setInputErr(true);
+									}
+								}}
+								onChange={() => inputErr && setInputErr(false)}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

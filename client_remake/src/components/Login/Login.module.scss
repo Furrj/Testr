@@ -24,6 +24,8 @@ $br: 20px;
 			-webkit-box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
 			-moz-box-shadow: 4px 94px 211px 3px rgba(0, 0, 0, 0.77);
 
+			border-radius: $br;
+
 			.logo {
 				background: vars.$logo-accent;
 				@include mixins.flex-center-row;
@@ -177,7 +179,7 @@ $br: 20px;
 			}
 
 			button {
-				border-bottom-left-radius: $br;
+				border-bottom-left-radius: calc($br - 1px);
 			}
 		}
 
