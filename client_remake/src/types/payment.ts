@@ -1,0 +1,7 @@
+export enum E_MEMBERSHIP_TYPES {
+	UNINITIALIZED = -1,
+	FREE,
+	TRIAL,
+	BASIC,
+	PREMIUM,
+}

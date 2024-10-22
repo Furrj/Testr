@@ -3,6 +3,7 @@ import Landing from "./children/Landing/Landing";
 import Login from "../../../Login/Login";
 import Register from "../../../Register/Register";
 import PasswordReset from "../../../Login/children/PasswordReset/PasswordReset";
+import Payment from "../../../Payment/Payment";
 
 const UnprotectedApp: React.FC = () => {
 	return (
@@ -11,6 +12,7 @@ const UnprotectedApp: React.FC = () => {
 			<Route path={"/login"} element={<Login />} />
 			<Route path={"/register/*"} element={<Register />} />
 			<Route path={"/password/reset"} element={<PasswordReset />} />
+			<Route path={"/payment"} element={<Payment />} />
 			<Route path={"/*"} element={<Navigate to={"/"} replace />} />
 		</Routes>
 	);
