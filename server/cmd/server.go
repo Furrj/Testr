@@ -9,6 +9,7 @@ import (
 	"mathtestr.com/server/internal/routing/routes/gamesessions"
 	"mathtestr.com/server/internal/routing/routes/login"
 	"mathtestr.com/server/internal/routing/routes/register"
+	paymentintents "mathtestr.com/server/internal/routing/routes/stripe/paymentIntents"
 	"mathtestr.com/server/internal/routing/routes/students"
 	"mathtestr.com/server/internal/routing/routes/teachers"
 	teacher_assignments "mathtestr.com/server/internal/routing/routes/teachers/assignments"
@@ -28,10 +29,12 @@ import (
 	"mathtestr.com/server/internal/routing/middleware"
 )
 
+const ENV string = "../config/config.env"
+
 func main() {
-	// ENV CONFIG
+	// load env for dev
 	if os.Getenv("MODE") != "PROD" {
-		if err := godotenv.Load("../config/config.env"); err != nil {
+		if err := godotenv.Load(ENV); err != nil {
 			fmt.Printf("%+v\n", err)
 			os.Exit(1)
 		}
@@ -42,13 +45,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Test backup
-	// cmd := exec.Command("./backup.sh")
-	// if err := cmd.Run(); err != nil {
-	// 	log.Printf("Error backing up Postgres: %+v\n", err)
-	// }
+	// stripe key
+	STRIPE_KEY := os.Getenv("STRIPE_KEY")
+	if STRIPE_KEY == "" {
+		fmt.Fprint(os.Stderr, "STRIPE_KEY env var not found")
+		os.Exit(1)
+	}
 
-	// Conn
+	// db conn
 	db, err := dbHandler.InitDBHandler(os.Getenv("DB_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error initializing db conn: %+v\n", err)
@@ -56,8 +60,10 @@ func main() {
 	}
 	defer db.Conn.Close()
 
-	// ROUTING
+	// init router
 	router := gin.Default()
+
+	// gin config
 	if os.Getenv("MODE") == "DEV" {
 		fmt.Println("**DEV MODE DETECTED, ENABLING CORS**")
 		config := cors.DefaultConfig()
@@ -74,6 +80,7 @@ func main() {
 
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
+	// register routes
 	router.POST(consts.RouteUrlLogin, login.Login(db))
 	router.POST(consts.RouteUrlGameSessions, gamesessions.Add(db))
 	router.POST(consts.RouteUrlClasses, classes.Add(db))
@@ -81,6 +88,7 @@ func main() {
 	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
 	router.POST(consts.RouteUrlAssignment, assignments.Add(db))
 	router.POST(consts.RouteUrlPasswordResetCodeCheck, passwords.CheckResetCode(db))
+	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, STRIPE_KEY))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))
@@ -96,6 +104,7 @@ func main() {
 	router.PUT(consts.RouteUrlVertical, vertical.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, students.Delete(db))
+	router.DELETE(consts.RouteUrlPaymentIntents, paymentintents.Delete(db, STRIPE_KEY))
 
 	router.Use(spa.Middleware("/", "client"))
 
