@@ -4,13 +4,10 @@
 .root {
 	@include mixins.full-size-percent;
 
-	// display: grid;
-	// grid-template-columns: repeat(2, 1fr);
-
 	overflow: auto;
 
 	.scroll {
-		min-width: 100%;
+		width: 100%;
 		min-height: 100%;
 
 		@include mixins.flex-center-col;
@@ -22,8 +19,6 @@
 			width: 100%;
 			@include mixins.flex-center-col;
 
-			//border-bottom: 1px solid white;
-
 			div {
 				width: 60%;
 
@@ -34,12 +29,14 @@
 		}
 
 		.get_started {
-			width: fit-content;
+			width: 100%;
 
-			div {
+			@include mixins.flex-center-col;
+
+			span {
+				font-size: 2rem;
 				text-align: center;
 
-				font-size: 2rem;
 				background: rgb(15, 117, 67);
 				border-radius: 15px;
 				padding-left: 10px;

@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
 
 				<div className={styles.get_started}>
 					<Link to={"/register"} className="link">
-						<div>Get Started</div>
+						<span>Get Started</span>
 					</Link>
 				</div>
 			</div>
