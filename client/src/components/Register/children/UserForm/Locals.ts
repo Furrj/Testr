@@ -5,13 +5,14 @@ import CHECK_USERNAME, {
 } from "../../../../api/routes/register/check_username";
 import { useForm } from "@tanstack/react-form";
 import {
-	T_FORM_REGISTER_STUDENT,
-	INIT_FORM_REGISTER_STUDENT,
 	T_FORM_REGISTER_USER,
+	INIT_FORM_REGISTER_USER,
 } from "../../../../types/register";
+import { E_DISPLAY_MODES } from "../Teach/Locals";
 
 const Locals = {
 	useCheckUsernameMutation: (
+		setDisplayMode: React.Dispatch<React.SetStateAction<E_DISPLAY_MODES>>,
 		setErrMessage: React.Dispatch<React.SetStateAction<string>>,
 	) =>
 		useMutation({
@@ -21,29 +22,28 @@ const Locals = {
 				alert("Error, please refresh and try again");
 			},
 			onSuccess(data) {
-				!data.valid && setErrMessage("Username already exists");
+				if (data.valid) setDisplayMode(E_DISPLAY_MODES.TEACHER);
+				else setErrMessage("Username already exists");
 			},
 		}),
 	useRegisterForm: (
-		setFormData: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER>>,
+		setUserData: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER>>,
 		checkUsernameMutation: UseMutationResult<T_RES, Error, T_PARAMS, unknown>,
 	) =>
-		useForm<T_FORM_REGISTER_STUDENT>({
+		useForm<T_FORM_REGISTER_USER>({
 			defaultValues: {
-				...INIT_FORM_REGISTER_STUDENT,
+				...INIT_FORM_REGISTER_USER,
 			},
 			onSubmit: ({ value }) => {
-				const obj: T_FORM_REGISTER_STUDENT = {
+				const obj: T_FORM_REGISTER_USER = {
 					first_name: value.first_name.trim(),
 					last_name: value.last_name.trim(),
 					username: value.username.trim(),
 					password: value.password.trim(),
 					confirm_password: value.password.trim(),
-					class_id: 0,
-					teacher_id: 0,
 				};
 
-				setFormData(obj);
+				setUserData(obj);
 				checkUsernameMutation.mutate({ username: value.username.trim() });
 			},
 		}),

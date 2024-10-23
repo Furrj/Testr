@@ -10,7 +10,7 @@
 		min-height: 100%;
 
 		@include mixins.flex-center-col;
-		gap: 50px;
+		gap: 20px;
 
 		padding: 20px;
 
@@ -19,7 +19,7 @@
 		}
 
 		.form_wrapper {
-			width: 80%;
+			width: 60%;
 			border: 1px solid white;
 
 			background: black;
