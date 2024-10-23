@@ -27,16 +27,11 @@ export const INIT_FORM_REGISTER_STUDENT: T_FORM_REGISTER_STUDENT = {
 	class_id: "",
 };
 
-export type T_FORM_REGISTER_TEACHER = T_FORM_REGISTER_USER & {
+export type T_FORM_REGISTER_TEACHER = {
 	email: string;
 	school: string;
 };
 export const INIT_FORM_REGISTER_TEACHER: T_FORM_REGISTER_TEACHER = {
-	username: "",
-	password: "",
-	confirm_password: "",
-	first_name: "",
-	last_name: "",
 	email: "",
 	school: "",
 };

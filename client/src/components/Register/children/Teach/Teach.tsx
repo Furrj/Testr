@@ -5,59 +5,60 @@ import {
 	T_FORM_REGISTER_TEACHER,
 	T_FORM_REGISTER_USER,
 	INIT_FORM_REGISTER_USER,
+	INIT_FORM_REGISTER_TEACHER,
 } from "../../../../types/register";
 import UserForm from "../UserForm/UserForm";
 import { E_DISPLAY_MODES } from "./Locals";
+import TeacherForm from "./children/TeacherForm/TeacherForm";
 
 const Teach: React.FC = () => {
 	const [displayMode, setDisplayMode] = useState<E_DISPLAY_MODES>(
 		E_DISPLAY_MODES.USER,
 	);
-	const [data, setData] = useState<T_FORM_REGISTER_TEACHER | undefined>(
-		undefined,
-	);
-	const [userData, setUserData] = useState<T_FORM_REGISTER_USER>(
-		deepCopyObject(INIT_FORM_REGISTER_USER),
-	);
-	const [currentForm, setCurrentForm] = useState<JSX.Element>(
-		<UserForm
-			setDisplayMode={setDisplayMode}
-			data={{ curr: userData, set: setUserData }}
-		/>,
-	);
+	const [teacherData, setTeacherData] = useState<T_FORM_REGISTER_TEACHER>({
+		...INIT_FORM_REGISTER_TEACHER,
+	});
+	const [userData, setUserData] = useState<T_FORM_REGISTER_USER>({
+		...INIT_FORM_REGISTER_USER,
+	});
 
-	// change form based on displayMode
-	useEffect(() => {
-		switch (displayMode) {
-			case E_DISPLAY_MODES.USER:
-				setCurrentForm(
-					<UserForm
-						setDisplayMode={setDisplayMode}
-						data={{ curr: userData, set: setUserData }}
-					/>,
-				);
-				break;
-			case E_DISPLAY_MODES.TEACHER:
-				setCurrentForm(<div>Teacher</div>);
-				break;
-			case E_DISPLAY_MODES.CLASSES:
-				setCurrentForm(<div>Classes</div>);
-				break;
-		}
-	}, [displayMode]);
+	switch (displayMode) {
+		case E_DISPLAY_MODES.USER:
+			return (
+				<main className={styles.root}>
+					<div className={styles.scroll}>
+						<div>
+							<h1>Step 1:</h1>
+							<h2>Create An Account</h2>
+						</div>
 
-	return (
-		<main className={styles.root}>
-			<div className={styles.scroll}>
-				<div>
-					<h1>Step 1:</h1>
-					<h2>Create An Account</h2>
-				</div>
+						<div className={styles.form_wrapper}>
+							<UserForm
+								setDisplayMode={setDisplayMode}
+								data={{ curr: userData, set: setUserData }}
+							/>
+						</div>
+					</div>
+				</main>
+			);
+		case E_DISPLAY_MODES.TEACHER:
+			return (
+				<main className={styles.root}>
+					<div className={styles.scroll}>
+						<div>
+							<h1>Step 2:</h1>
+							<h2>Enter Your Teacher Information</h2>
+						</div>
 
-				<div className={styles.form_wrapper}>{currentForm}</div>
-			</div>
-		</main>
-	);
+						<div className={styles.form_wrapper}>
+							<TeacherForm setTeacherData={setTeacherData} />
+						</div>
+					</div>
+				</main>
+			);
+		case E_DISPLAY_MODES.CLASSES:
+			return <div>classes</div>;
+	}
 };
 
 export default Teach;
