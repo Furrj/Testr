@@ -1,47 +1,51 @@
-import { CardElement, Elements } from "@stripe/react-stripe-js";
+import {
+	EmbeddedCheckout,
+	EmbeddedCheckoutProvider,
+} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Locals from "./Locals";
 import { E_MEMBERSHIP_TYPES } from "../../types/payment";
+import { useState } from "react";
+import styles from "./Payment.module.scss";
 
 const KEY = import.meta.env.VITE_STRIPE_KEY;
 
 const stripePromise = loadStripe(KEY);
 
 const Payment: React.FC = () => {
-	const createPaymentIntentMutation = Locals.useCreatePaymentIntentMutation();
-	const deletePaymentIntentMutation = Locals.useDeletePaymentIntentMutation();
-
-	const options = {
-		clientSecret: "{{CLIENT_SECRET}}",
-	};
-
-	return (
-		<Elements stripe={stripePromise}>
-			<button
-				onClick={() =>
-					createPaymentIntentMutation.mutate({
-						type: E_MEMBERSHIP_TYPES.BASIC,
-					})
-				}
-			>
-				Create Intent
-			</button>
-
-			<button
-				onClick={() =>
-					deletePaymentIntentMutation.mutate({
-						id: 1,
-					})
-				}
-			>
-				Delete Intent
-			</button>
-			{/* <form> */}
-			{/*   <CardElement /> */}
-			{/*   <button type="submit">Submit</button> */}
-			{/* </form> */}
-		</Elements>
+	const [clientSecret, setClientSecret] = useState<string | undefined>(
+		undefined,
 	);
+
+	const createCheckoutSessionMutation =
+		Locals.useCreateCheckoutSessionMutation(setClientSecret);
+
+	if (clientSecret === undefined) {
+		return (
+			<button
+				onClick={() =>
+					createCheckoutSessionMutation.mutate({
+						membership_type: E_MEMBERSHIP_TYPES.PREMIUM,
+					})
+				}
+			>
+				$10.00/month
+			</button>
+		);
+	} else {
+		return (
+			<EmbeddedCheckoutProvider
+				stripe={stripePromise}
+				options={{ clientSecret }}
+			>
+				<div className={styles.root}>
+					<div className={styles.scroll}>
+						<EmbeddedCheckout id={styles.form} />
+					</div>
+				</div>
+			</EmbeddedCheckoutProvider>
+		);
+	}
 };
 
 export default Payment;
