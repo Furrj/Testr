@@ -1,4 +1,4 @@
-package paymentintents
+package stripe
 
 const (
 	UNINITIALIZED int  = -1

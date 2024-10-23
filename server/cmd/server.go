@@ -9,6 +9,7 @@ import (
 	"mathtestr.com/server/internal/routing/routes/gamesessions"
 	"mathtestr.com/server/internal/routing/routes/login"
 	"mathtestr.com/server/internal/routing/routes/register"
+	checkoutsessions "mathtestr.com/server/internal/routing/routes/stripe/checkoutSessions"
 	paymentintents "mathtestr.com/server/internal/routing/routes/stripe/paymentIntents"
 	"mathtestr.com/server/internal/routing/routes/students"
 	"mathtestr.com/server/internal/routing/routes/teachers"
@@ -89,6 +90,7 @@ func main() {
 	router.POST(consts.RouteUrlAssignment, assignments.Add(db))
 	router.POST(consts.RouteUrlPasswordResetCodeCheck, passwords.CheckResetCode(db))
 	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, STRIPE_KEY))
+	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, STRIPE_KEY))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))
@@ -98,6 +100,7 @@ func main() {
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, teacher_assignments.Get(db))
 	router.GET(consts.RouteUrlPasswordResetCode, passwords.Get(db))
 	router.GET(consts.RouteUrlStudent, students.Get(db))
+	router.GET(consts.RouteUrlCheckoutSessionWithID, checkoutsessions.Get(db, STRIPE_KEY))
 
 	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))

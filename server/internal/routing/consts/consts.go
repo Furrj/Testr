@@ -23,4 +23,6 @@ const (
 	RouteUrlPassword                      string = RouteUrlBase + "/password"
 	RouteUrlPaymentIntents                string = RouteUrlBase + "/payment_intents"
 	RouteUrlPaymentIntentsWithID          string = RouteUrlBase + "/payment_intents/:id"
+	RouteUrlCheckoutSession               string = RouteUrlBase + "/checkout"
+	RouteUrlCheckoutSessionWithID         string = RouteUrlBase + "/checkout/:id"
 )
