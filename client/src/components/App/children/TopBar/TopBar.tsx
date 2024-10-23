@@ -29,7 +29,7 @@ const TopBar: React.FC = () => {
 		<div className={styles.root}>
 			<div className={styles.main}>
 				<PiMathOperationsBold className={styles.icon} />
-				<h1 className={styles.title}>Times Trainer</h1>
+				<h1 className={styles.title}>TimesTrainer</h1>
 
 				<div className={styles.right}>
 					{authData.valid ? (

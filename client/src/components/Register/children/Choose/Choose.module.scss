@@ -3,23 +3,47 @@
 
 .root {
 	@include mixins.full-size-percent;
-	@include mixins.flex-center;
-	flex-direction: row;
-	gap: 10px;
+	overflow: auto;
 
-	//border: 1px solid white;
+	.scroll {
+		width: 100%;
+		min-height: 100%;
 
-	.link {
-		text-decoration: none;
-		color: white;
-		div {
-			border: 1px solid white;
-			padding: 10px;
-			border-radius: vars.$border-radius;
+		@include mixins.flex-center-col;
+		gap: 20px;
 
-			&:hover {
-				background-color: vars.$color-btn-hover;
+		.prompt {
+			width: 80%;
+			text-align: center;
+			font-size: 3rem;
+			font-weight: bold;
+		}
+
+		.links {
+			width: 50%;
+			@include mixins.flex-center-row;
+			justify-content: space-evenly;
+
+			.link {
+				text-decoration: none;
+				color: white;
+
+				font-size: 2rem;
+
+				div {
+					@include mixins.flex-center-col;
+					padding: 10px;
+					border-radius: vars.$border-radius;
+
+					background: vars.$btn-brand-bg;
+				}
 			}
 		}
+	}
+}
+
+@media only screen and (min-width: vars.$mobile-width) {
+	.root .scroll .links .link div:hover {
+		background-color: vars.$color-btn-hover;
 	}
 }
