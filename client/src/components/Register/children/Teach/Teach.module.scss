@@ -10,5 +10,22 @@
 		min-height: 100%;
 
 		@include mixins.flex-center-col;
+		gap: 50px;
+
+		padding: 20px;
+
+		h1 {
+			text-align: center;
+		}
+
+		.form_wrapper {
+			width: 80%;
+			border: 1px solid white;
+
+			background: black;
+			border-radius: vars.$border-radius;
+
+			padding-top: 10px;
+		}
 	}
 }

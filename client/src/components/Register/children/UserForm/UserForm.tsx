@@ -1,7 +1,7 @@
-import { type T_FORM_REGISTER_STUDENT } from "../../../../Register";
 import styles from "./UserForm.module.scss";
 import { useState } from "react";
 import Locals from "./Locals";
+import type { T_FORM_REGISTER_USER } from "../../../../types/register";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;
@@ -9,28 +9,18 @@ function isAlpha(input: string): boolean {
 }
 
 interface IProps {
-	formData: {
-		curr: T_FORM_REGISTER_STUDENT;
-		set: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_STUDENT>>;
-	};
-	teacherMode: {
-		curr: boolean;
-		set: React.Dispatch<React.SetStateAction<boolean>>;
+	data: {
+		curr: T_FORM_REGISTER_USER;
+		set: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER>>;
 	};
 }
 
 const UserForm: React.FC<IProps> = (props) => {
 	const [errMessage, setErrMessage] = useState<string>("");
 
-	const checkUsernameMutation = Locals.useCheckUsernameMutation(
-		props.teacherMode.set,
-		setErrMessage,
-	);
+	const checkUsernameMutation = Locals.useCheckUsernameMutation(setErrMessage);
 
-	const form = Locals.useRegisterForm(
-		props.formData.set,
-		checkUsernameMutation,
-	);
+	const form = Locals.useRegisterForm(props.data.set, checkUsernameMutation);
 
 	return (
 		<form

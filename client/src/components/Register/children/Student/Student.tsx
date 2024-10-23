@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { deepCopyObject } from "../../../../utils/methods";
-import UserForm from "./children/UserForm/UserForm";
 import TeacherForm from "./children/TeacherForm/TeacherForm";
 import {
 	T_FORM_REGISTER_STUDENT,
 	INIT_FORM_REGISTER_STUDENT,
 } from "../../../../types/register";
+import UserForm from "../UserForm/UserForm";
 
 const Student: React.FC = () => {
 	const [teacherMode, setTeacherMode] = useState<boolean>(false);
@@ -21,12 +21,12 @@ const Student: React.FC = () => {
 			/>
 		);
 	} else {
-		return (
-			<UserForm
-				formData={{ curr: formData, set: setFormData }}
-				teacherMode={{ curr: teacherMode, set: setTeacherMode }}
-			/>
-		);
+		// return (
+		// 	<UserForm
+		// 		data={{ curr: formData, set: setFormData }}
+		// 		teacherMode={{ curr: teacherMode, set: setTeacherMode }}
+		// 	/>
+		// );
 	}
 };
 

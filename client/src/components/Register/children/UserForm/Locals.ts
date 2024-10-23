@@ -2,16 +2,16 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import CHECK_USERNAME, {
 	T_PARAMS,
 	T_RES,
-} from "../../../../../../api/routes/register/check_username";
+} from "../../../../api/routes/register/check_username";
 import { useForm } from "@tanstack/react-form";
 import {
 	T_FORM_REGISTER_STUDENT,
 	INIT_FORM_REGISTER_STUDENT,
-} from "../../../../../../types/register";
+	T_FORM_REGISTER_USER,
+} from "../../../../types/register";
 
 const Locals = {
 	useCheckUsernameMutation: (
-		setTeacherMode: React.Dispatch<React.SetStateAction<boolean>>,
 		setErrMessage: React.Dispatch<React.SetStateAction<string>>,
 	) =>
 		useMutation({
@@ -21,15 +21,11 @@ const Locals = {
 				alert("Error, please refresh and try again");
 			},
 			onSuccess(data) {
-				if (data.valid) {
-					setTeacherMode(true);
-				} else {
-					setErrMessage("Username already exists");
-				}
+				!data.valid && setErrMessage("Username already exists");
 			},
 		}),
 	useRegisterForm: (
-		setFormData: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_STUDENT>>,
+		setFormData: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER>>,
 		checkUsernameMutation: UseMutationResult<T_RES, Error, T_PARAMS, unknown>,
 	) =>
 		useForm<T_FORM_REGISTER_STUDENT>({
