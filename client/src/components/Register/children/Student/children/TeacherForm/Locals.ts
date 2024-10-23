@@ -11,11 +11,11 @@ import GET_TEACHER_INFO_FOR_STUDENT_REGISTER, {
 import { sendTokensToLocalStorage } from "../../../../../../utils/methods";
 import type { NavigateFunction } from "react-router-dom";
 import { useForm } from "@tanstack/react-form";
-import {
-	type T_FORM_REGISTER_STUDENT,
-	INIT_FORM_REGISTER_STUDENT,
-} from "../../../../Register";
 import { T_AUTH } from "../../../../../../contexts/AuthProvider";
+import {
+	T_FORM_REGISTER_STUDENT,
+	INIT_FORM_REGISTER_STUDENT,
+} from "../../../../../../types/register";
 
 const Locals = {
 	useTeacherMutation: (

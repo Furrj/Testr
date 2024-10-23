@@ -5,15 +5,15 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { E_REGISTER_RESULT } from "../../../../types";
 import { sendTokensToLocalStorage } from "../../../../utils/methods";
-import {
-	INIT_FORM_REGISTER_TEACHER,
-	T_FORM_REGISTER_TEACHER,
-} from "../../Register";
 import REGISTER_TEACHER, {
 	T_PARAMS,
 	T_RES,
 } from "../../../../api/routes/register/register_teacher";
 import { useAuthCtx } from "../../../../contexts/AuthProvider";
+import {
+	INIT_FORM_REGISTER_TEACHER,
+	T_FORM_REGISTER_TEACHER,
+} from "../../../../types/register";
 
 function isAlpha(input: string): boolean {
 	let regex = /^[a-zA-Z]+$/;

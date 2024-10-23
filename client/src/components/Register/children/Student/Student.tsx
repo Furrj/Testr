@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { deepCopyObject } from "../../../../utils/methods";
-import {
-	INIT_FORM_REGISTER_STUDENT,
-	T_FORM_REGISTER_STUDENT,
-} from "../../Register";
 import UserForm from "./children/UserForm/UserForm";
 import TeacherForm from "./children/TeacherForm/TeacherForm";
+import {
+	T_FORM_REGISTER_STUDENT,
+	INIT_FORM_REGISTER_STUDENT,
+} from "../../../../types/register";
 
 const Student: React.FC = () => {
 	const [teacherMode, setTeacherMode] = useState<boolean>(false);

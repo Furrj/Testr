@@ -7,7 +7,7 @@ import { useForm } from "@tanstack/react-form";
 import {
 	T_FORM_REGISTER_STUDENT,
 	INIT_FORM_REGISTER_STUDENT,
-} from "../../../../Register";
+} from "../../../../../../types/register";
 
 const Locals = {
 	useCheckUsernameMutation: (
