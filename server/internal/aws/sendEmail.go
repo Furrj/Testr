@@ -21,24 +21,45 @@ func SendEmail() {
 	client := ses.NewFromConfig(cfg)
 
 	from := FROM
+	bodyHtml := BODY_HTML
+	bodyText := BODY_TEXT
+	charset := CHARSET
+	subject := SUBJECT
 
 	email := &ses.SendEmailInput{
 		Content: &types.EmailContent{
-			Raw: &types.RawMessage{Data: []byte(EMAIL_STR)},
+			Simple: &types.Message{
+				Body: &types.Body{
+					Html: &types.Content{
+						Data:    &bodyHtml,
+						Charset: &charset,
+					},
+					Text: &types.Content{
+						Data:    &bodyText,
+						Charset: &charset,
+					},
+				},
+				Subject: &types.Content{
+					Data:    &subject,
+					Charset: &charset,
+				},
+			},
 		},
 		Destination:      &types.Destination{ToAddresses: []string{TO}},
 		FromEmailAddress: &from,
 	}
-	res, err := client.SendEmail(context.TODO(), email)
+	_, err := client.SendEmail(context.TODO(), email)
 	if err != nil {
 		log.Printf("error sending email: %+v\n", err)
 	}
-
-	log.Printf("res: %+v\n", *res)
 }
 
 const (
-	TO     string = "jackson.a.furr@gmail.com"
-	FROM   string = "registration@timestrainer.com"
-	REGION string = "us-east-2"
+	TO        string = "jackson.a.furr@gmail.com"
+	FROM      string = "registration@timestrainer.com"
+	REGION    string = "us-east-2"
+	SUBJECT   string = "Validate Email"
+	BODY_HTML string = `Please click on this link to validate your account: <a href="https://timestrainer.com">Validate</a>`
+	BODY_TEXT string = `Please go to this link to validate your account: https://timestrainer.com`
+	CHARSET   string = "UTF-8"
 )
