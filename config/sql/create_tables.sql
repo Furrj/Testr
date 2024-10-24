@@ -21,9 +21,10 @@ CREATE TABLE teachers.data
 
 CREATE TABLE teachers.registration
 (
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    code       UUID,
-    expiry     BIGINT DEFAULT EXTRACT(EPOCH FROM (NOW() + INTERVAL '24 hours'))
+    user_id INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    email   TEXT UNIQUE,
+    code    UUID,
+    expiry  BIGINT DEFAULT EXTRACT(EPOCH FROM (NOW() + INTERVAL '24 hours'))
 );
 
 CREATE TABLE teachers.classes
