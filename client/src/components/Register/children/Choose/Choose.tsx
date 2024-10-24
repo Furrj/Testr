@@ -11,7 +11,10 @@ const Choose: React.FC = () => {
 					<Link className={`link ${styles.link}`} to={"/register/student"}>
 						Student
 					</Link>
-					<Link className={`link ${styles.link}`} to={"/register/teacher"}>
+					<Link
+						className={`link ${styles.link}`}
+						to={"/register/teacher/account"}
+					>
 						Teacher
 					</Link>
 				</section>

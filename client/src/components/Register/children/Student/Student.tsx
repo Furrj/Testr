@@ -5,7 +5,6 @@ import {
 	T_FORM_REGISTER_STUDENT,
 	INIT_FORM_REGISTER_STUDENT,
 } from "../../../../types/register";
-import UserForm from "../UserForm/UserForm";
 
 const Student: React.FC = () => {
 	const [teacherMode, setTeacherMode] = useState<boolean>(false);
@@ -20,14 +19,7 @@ const Student: React.FC = () => {
 				teacherMode={{ curr: teacherMode, set: setTeacherMode }}
 			/>
 		);
-	} else {
-		// return (
-		// 	<UserForm
-		// 		data={{ curr: formData, set: setFormData }}
-		// 		teacherMode={{ curr: teacherMode, set: setTeacherMode }}
-		// 	/>
-		// );
-	}
+	} else return <div>student</div>;
 };
 
 export default Student;

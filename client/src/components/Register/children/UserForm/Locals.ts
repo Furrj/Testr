@@ -41,6 +41,7 @@ const Locals = {
 					username: value.username.trim(),
 					password: value.password.trim(),
 					confirm_password: value.password.trim(),
+					email: value.email ? value.email.trim() : "",
 				};
 
 				setUserData(obj);

@@ -7,7 +7,7 @@ const Register: React.FC = () => {
 	return (
 		<Routes>
 			<Route path="/student" element={<Student />} />
-			<Route path="/teacher" element={<Teach />} />
+			<Route path="/teacher/*" element={<Teach />} />
 			<Route path="/" element={<Choose />} />
 		</Routes>
 	);

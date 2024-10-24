@@ -10,22 +10,16 @@ function isAlpha(input: string): boolean {
 }
 
 interface IProps {
-	setDisplayMode?: React.Dispatch<React.SetStateAction<E_DISPLAY_MODES>>;
 	data: {
-		curr: T_FORM_REGISTER_USER;
-		set: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER>>;
+		curr: T_FORM_REGISTER_USER | undefined;
+		set: React.Dispatch<React.SetStateAction<T_FORM_REGISTER_USER | undefined>>;
 	};
 }
 
 const UserForm: React.FC<IProps> = (props) => {
 	const [errMessage, setErrMessage] = useState<string>("");
 
-	const checkUsernameMutation = Locals.useCheckUsernameMutation(
-		props.setDisplayMode as React.Dispatch<
-			React.SetStateAction<E_DISPLAY_MODES>
-		>,
-		setErrMessage,
-	);
+	const checkUsernameMutation = Locals.useCheckUsernameMutation(setErrMessage);
 
 	const form = Locals.useRegisterForm(props.data.set, checkUsernameMutation);
 
