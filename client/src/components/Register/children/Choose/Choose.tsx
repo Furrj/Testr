@@ -8,11 +8,11 @@ const Choose: React.FC = () => {
 				<section className={styles.prompt}>Which are you?</section>
 
 				<section className={styles.links}>
-					<Link className={styles.link} to={"/register/student"}>
-						<div>Student</div>
+					<Link className={`link ${styles.link}`} to={"/register/student"}>
+						Student
 					</Link>
-					<Link className={styles.link} to={"/register/teacher"}>
-						<div>Teacher</div>
+					<Link className={`link ${styles.link}`} to={"/register/teacher"}>
+						Teacher
 					</Link>
 				</section>
 			</div>

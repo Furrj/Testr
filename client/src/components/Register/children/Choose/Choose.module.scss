@@ -20,30 +20,27 @@
 		}
 
 		.links {
-			width: 50%;
+			width: 100%;
 			@include mixins.flex-center-row;
-			justify-content: space-evenly;
+
+			gap: 25px;
 
 			.link {
-				text-decoration: none;
-				color: white;
+				@include mixins.flex-center-col;
 
 				font-size: 2rem;
 
-				div {
-					@include mixins.flex-center-col;
-					padding: 10px;
-					border-radius: vars.$border-radius;
+				padding: 10px;
+				border-radius: vars.$border-radius;
 
-					background: vars.$btn-brand-bg;
-				}
+				background: vars.$btn-brand-bg;
 			}
 		}
 	}
 }
 
 @media only screen and (min-width: vars.$mobile-width) {
-	.root .scroll .links .link div:hover {
+	.root .scroll .links .link:hover {
 		background-color: vars.$color-btn-hover;
 	}
 }
