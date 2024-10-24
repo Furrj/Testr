@@ -35,6 +35,7 @@ func TestDBHandler(t *testing.T) {
 	testUserDataMichele := testHelpers.TestUserDataMichele
 	testStudentData := testHelpers.TestStudentData
 	testTeacherData := testHelpers.TestTeacherData
+	testTeacherRegistration := testHelpers.TestTeacherRegistration
 	testGameSession := testHelpers.TestGameSession
 	testTeacherClass := testHelpers.TestTeacherClass
 	testAssignment := testHelpers.TestAssignment
@@ -126,6 +127,12 @@ func TestDBHandler(t *testing.T) {
 		fmt.Printf("%+v\n", sessions)
 		if err != nil {
 			t.Errorf("Error in GetGameSessionsByUserID: %+v", err)
+		}
+	})
+
+	t.Run("InsertTeacherRegistration", func(t *testing.T) {
+		if err := teacher.InsertTeacherRegistration(db, testTeacherRegistration); err != nil {
+			t.Errorf("error inserting teacher data: %+v\n", err)
 		}
 	})
 

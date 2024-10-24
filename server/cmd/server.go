@@ -9,6 +9,7 @@ import (
 	"mathtestr.com/server/internal/routing/routes/gamesessions"
 	"mathtestr.com/server/internal/routing/routes/login"
 	"mathtestr.com/server/internal/routing/routes/register"
+	emailvalidation "mathtestr.com/server/internal/routing/routes/register/emailValidation"
 	checkoutsessions "mathtestr.com/server/internal/routing/routes/stripe/checkoutSessions"
 	paymentintents "mathtestr.com/server/internal/routing/routes/stripe/paymentIntents"
 	"mathtestr.com/server/internal/routing/routes/students"
@@ -101,6 +102,7 @@ func main() {
 	router.GET(consts.RouteUrlPasswordResetCode, passwords.Get(db))
 	router.GET(consts.RouteUrlStudent, students.Get(db))
 	router.GET(consts.RouteUrlCheckoutSessionWithID, checkoutsessions.Get(db, STRIPE_KEY))
+	router.GET(consts.RouteUrlRegisterTeacher, emailvalidation.SendEmail(db))
 
 	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))

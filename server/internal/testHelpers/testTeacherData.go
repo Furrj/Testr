@@ -1,6 +1,9 @@
 package testHelpers
 
-import "mathtestr.com/server/internal/types"
+import (
+	"github.com/google/uuid"
+	"mathtestr.com/server/internal/types"
+)
 
 var TestTeacherData = types.TeacherData{
 	UserID: 1,
@@ -11,4 +14,10 @@ var TestTeacherData = types.TeacherData{
 var TestTeacherClass = types.TeacherClass{
 	ClassID: 1,
 	Name:    "testclass",
+}
+
+var TestTeacherRegistration = types.TeacherRegistration{
+	Email:  "jackson.a.furr@gmail.com",
+	UserID: 1,
+	Code:   uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
 }

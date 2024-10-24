@@ -45,3 +45,22 @@ func InsertTeacherClass(db *dbHandler.DBHandler, userID types.UserID, class type
 	}
 	return nil
 }
+
+const EInsertTeacherRegistration = `
+	INSERT INTO teachers.registration(user_id, email, code)
+	VALUES ($1, $2, $3)
+`
+
+func InsertTeacherRegistration(db *dbHandler.DBHandler, t types.TeacherRegistration) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		EInsertTeacherRegistration,
+		t.UserID,
+		t.Email,
+		t.Code,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
