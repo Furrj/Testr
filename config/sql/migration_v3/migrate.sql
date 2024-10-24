@@ -1,0 +1,14 @@
+BEGIN;
+
+ALTER TABLE teachers.data
+    ADD column is_active boolean;
+
+CREATE TABLE teachers.registration
+(
+    user_id INTEGER REFERENCES users.data (user_id) ON DELETE CASCADE,
+    email   TEXT UNIQUE,
+    code    UUID,
+    expiry  BIGINT DEFAULT EXTRACT(EPOCH FROM (NOW() + INTERVAL '24 hours'))
+);
+
+COMMIT;

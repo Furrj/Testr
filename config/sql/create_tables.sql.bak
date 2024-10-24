@@ -13,17 +13,9 @@ CREATE TABLE users.ids
 
 CREATE TABLE teachers.data
 (
-    user_id   INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    email     TEXT UNIQUE,
-    school    TEXT,
-    is_active BOOLEAN
-);
-
-CREATE TABLE teachers.registration
-(
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    code       UUID,
-    expiry     BIGINT DEFAULT EXTRACT(EPOCH FROM (NOW() + INTERVAL '24 hours'))
+    user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
+    email   TEXT UNIQUE,
+    school  TEXT
 );
 
 CREATE TABLE teachers.classes
