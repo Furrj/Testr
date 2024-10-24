@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Teach.module.scss";
-import { deepCopyObject } from "../../../../utils/methods";
 import {
 	T_FORM_REGISTER_TEACHER,
 	T_FORM_REGISTER_USER,
@@ -56,8 +55,6 @@ const Teach: React.FC = () => {
 					</div>
 				</main>
 			);
-		case E_DISPLAY_MODES.CLASSES:
-			return <div>classes</div>;
 	}
 };
 

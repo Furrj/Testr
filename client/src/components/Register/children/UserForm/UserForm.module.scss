@@ -6,10 +6,8 @@
 	@include mixins.flex-center-col;
 	gap: 5px;
 
-	.spacer {
-		min-height: 50px;
-		min-width: 100%;
-	}
+	margin-left: 50px;
+	margin-right: 50px;
 
 	h2 {
 		text-align: center;

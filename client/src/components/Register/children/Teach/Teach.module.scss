@@ -19,11 +19,12 @@
 		}
 
 		.form_wrapper {
-			width: 60%;
+			@include mixins.flex-center-col;
+
 			border: 1px solid white;
+			border-radius: vars.$border-radius;
 
 			background: black;
-			border-radius: vars.$border-radius;
 
 			padding-top: 10px;
 		}

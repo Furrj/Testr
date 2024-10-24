@@ -108,6 +108,38 @@ const UserForm: React.FC<IProps> = (props) => {
 					},
 				}}
 			/>
+
+			<form.Field
+				name="email"
+				children={(field) => (
+					<>
+						<h2>Email</h2>
+						<input
+							name={field.name}
+							value={field.state.value}
+							onBlur={field.handleBlur}
+							onChange={(e) => field.handleChange(e.target.value)}
+							className={field.state.meta.errors.length > 0 ? styles.err : ""}
+							type="email"
+							inputMode="email"
+						/>
+						{field.state.meta.errors ? (
+							<div className={styles.err}>
+								{field.state.meta.errors.join(", ")}
+							</div>
+						) : null}
+					</>
+				)}
+				validators={{
+					// onChange: ({ value }) => {
+					//
+					//   return undefined;
+					// },
+					onSubmit: ({ value }) => {
+						return value === "" ? "Cannot be empty" : undefined;
+					},
+				}}
+			/>
 			<form.Field
 				name="username"
 				children={(field) => (
