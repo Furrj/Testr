@@ -20,7 +20,7 @@
 			@include mixins.flex-center-col;
 
 			div {
-				width: 60%;
+				width: 70%;
 
 				font-size: 4rem;
 				font-weight: 900;
@@ -30,10 +30,10 @@
 
 		.get_started {
 			width: 100%;
-
 			@include mixins.flex-center-col;
 
-			span {
+			#start {
+				max-width: 40%;
 				font-size: 2rem;
 				text-align: center;
 
@@ -58,6 +58,19 @@
 	color: vars.$logo-accent;
 }
 
+@media only screen and (max-width: 900px) {
+	.root .scroll {
+		.words div {
+			font-size: 3rem;
+			width: 95%;
+		}
+
+		.get_started #start {
+			max-width: 50%;
+		}
+	}
+}
+
 @media only screen and (max-width: 500px) {
 	.root .scroll {
 		.words div {
@@ -65,8 +78,8 @@
 			width: 95%;
 		}
 
-		.get_started div {
-			max-width: 70%;
+		.get_started #start {
+			max-width: 90%;
 		}
 	}
 }

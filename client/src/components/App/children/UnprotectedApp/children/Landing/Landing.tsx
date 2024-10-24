@@ -7,22 +7,22 @@ const Landing: React.FC = () => {
 	const scrollRef = useRef<HTMLDivElement>(null);
 
 	return (
-		<div className={styles.root} ref={rootRef}>
+		<main className={styles.root} ref={rootRef}>
 			<div className={styles.scroll} ref={scrollRef}>
-				<div className={styles.words}>
+				<section className={styles.words}>
 					<div>
 						Help your students <span className={styles.accent}>master</span>{" "}
 						math.
 					</div>
-				</div>
+				</section>
 
-				<div className={styles.get_started}>
-					<Link to={"/register"} className="link">
-						<span>Get Started</span>
+				<section className={styles.get_started}>
+					<Link to={"/register"} className="link" id={styles.start}>
+						Get Started With A Free Trial
 					</Link>
-				</div>
+				</section>
 			</div>
-		</div>
+		</main>
 	);
 };
 
