@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"mathtestr.com/server/internal/envvars"
 	"mathtestr.com/server/internal/routing/routes/assignments"
 	"mathtestr.com/server/internal/routing/routes/gamesessions"
 	"mathtestr.com/server/internal/routing/routes/login"
@@ -30,36 +31,16 @@ import (
 	"github.com/mandrigin/gin-spa/spa"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"mathtestr.com/server/internal/routing/consts"
 	"mathtestr.com/server/internal/routing/middleware"
 )
 
-const ENV string = "../config/config.env"
-
 func main() {
-	// load env for dev
-	if os.Getenv("MODE") != "PROD" {
-		if err := godotenv.Load(ENV); err != nil {
-			fmt.Printf("%+v\n", err)
-			os.Exit(1)
-		}
-	}
-	PORT := os.Getenv("PORT")
-	if PORT == "" {
-		fmt.Println("No env variable PORT")
-		os.Exit(1)
-	}
-
-	// stripe key
-	STRIPE_KEY := os.Getenv("STRIPE_KEY")
-	if STRIPE_KEY == "" {
-		fmt.Fprint(os.Stderr, "STRIPE_KEY env var not found")
-		os.Exit(1)
-	}
+	// load envvars
+	envVars := envvars.InitEnvVars()
 
 	// db conn
-	db, err := dbHandler.InitDBHandler(os.Getenv("DB_URL"))
+	db, err := dbHandler.InitDBHandler(envVars.DB.Core)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error initializing db conn: %+v\n", err)
 		os.Exit(1)
@@ -67,13 +48,9 @@ func main() {
 	defer db.Conn.Close()
 
 	// aws client
-	region := os.Getenv("AWS_REGION")
-	if region == "" {
-		log.Fatalf("AWS_REGION env var not found")
-	}
 	cfg, err := config.LoadDefaultConfig(
 		context.TODO(),
-		config.WithRegion(region),
+		config.WithRegion(envVars.ValidationEmail.Region),
 	)
 	if err != nil {
 		log.Fatalf("error establishing aws client: %+v\n", err)
@@ -109,8 +86,8 @@ func main() {
 	router.POST(consts.RouteUrlRegisterStudent, register.RegisterStudent(db))
 	router.POST(consts.RouteUrlAssignment, assignments.Add(db))
 	router.POST(consts.RouteUrlPasswordResetCodeCheck, passwords.CheckResetCode(db))
-	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, STRIPE_KEY))
-	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, STRIPE_KEY))
+	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, envVars.ApiKeys.Stripe))
+	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, envVars.ApiKeys.Stripe))
 	router.POST(consts.RouteUrlRegisterTeacherEmail, emailvalidation.Send(db, client))
 	router.POST(consts.RouteUrlRegisterTeacherEmailValidation, emailvalidation.Verify(db))
 
@@ -122,16 +99,16 @@ func main() {
 	router.GET(consts.RouteUrlGetAssignmentsTeacher, teacher_assignments.Get(db))
 	router.GET(consts.RouteUrlPasswordResetCode, passwords.Get(db))
 	router.GET(consts.RouteUrlStudent, students.Get(db))
-	router.GET(consts.RouteUrlCheckoutSessionWithID, checkoutsessions.Get(db, STRIPE_KEY))
+	router.GET(consts.RouteUrlCheckoutSessionWithID, checkoutsessions.Get(db, envVars.ApiKeys.Stripe))
 
 	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))
 	router.PUT(consts.RouteUrlVertical, vertical.Update(db))
 
 	router.DELETE(consts.RouteUrlStudent, students.Delete(db))
-	router.DELETE(consts.RouteUrlPaymentIntentsWithID, paymentintents.Delete(db, STRIPE_KEY))
+	router.DELETE(consts.RouteUrlPaymentIntentsWithID, paymentintents.Delete(db, envVars.ApiKeys.Stripe))
 
 	router.Use(spa.Middleware("/", "client"))
 
-	log.Panic(router.Run(PORT))
+	log.Panic(router.Run(envVars.Port))
 }
