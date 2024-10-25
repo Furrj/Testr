@@ -20,7 +20,7 @@ type reqSendEmail struct {
 	Email string `json:"email"`
 }
 
-func SendEmail(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
+func Send(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// bind request body
 		var payload reqSendEmail
