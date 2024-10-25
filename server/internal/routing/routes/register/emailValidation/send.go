@@ -29,7 +29,6 @@ func Send(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
 			ctx.Status(http.StatusBadRequest)
 			return
 		}
-		fmt.Printf("%+v\n", payload)
 
 		// check if code already exists for email
 		exists := true
@@ -101,8 +100,6 @@ func Send(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
 		// 	ctx.Status(http.StatusInternalServerError)
 		// 	return
 		// }
-
-		fmt.Printf("%+v\n", r)
 
 		ctx.Status(http.StatusOK)
 	}
