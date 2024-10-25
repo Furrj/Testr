@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -20,8 +21,11 @@ import (
 	"mathtestr.com/server/internal/routing/routes/users/passwords"
 	"mathtestr.com/server/internal/routing/routes/users/vertical"
 
+	ses "github.com/aws/aws-sdk-go-v2/service/sesv2"
+
 	"mathtestr.com/server/internal/dbHandler"
 
+	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/gin-contrib/cors"
 	"github.com/mandrigin/gin-spa/spa"
 
@@ -62,6 +66,21 @@ func main() {
 	}
 	defer db.Conn.Close()
 
+	// aws client
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		log.Fatalf("AWS_REGION env var not found")
+	}
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithRegion(region),
+	)
+	if err != nil {
+		log.Fatalf("error establishing aws client: %+v\n", err)
+	}
+
+	client := ses.NewFromConfig(cfg)
+
 	// init router
 	router := gin.Default()
 
@@ -92,6 +111,7 @@ func main() {
 	router.POST(consts.RouteUrlPasswordResetCodeCheck, passwords.CheckResetCode(db))
 	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, STRIPE_KEY))
 	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, STRIPE_KEY))
+	router.POST(consts.RouteUrlRegisterTeacherEmail, emailvalidation.SendEmail(db, client))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))
@@ -102,7 +122,6 @@ func main() {
 	router.GET(consts.RouteUrlPasswordResetCode, passwords.Get(db))
 	router.GET(consts.RouteUrlStudent, students.Get(db))
 	router.GET(consts.RouteUrlCheckoutSessionWithID, checkoutsessions.Get(db, STRIPE_KEY))
-	router.GET(consts.RouteUrlRegisterTeacher, emailvalidation.SendEmail(db))
 
 	router.PUT(consts.RouteUrlPassword, passwords.Update(db))
 	router.PUT(consts.RouteUrlStudent, students.Update(db))

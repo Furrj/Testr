@@ -132,7 +132,38 @@ func TestDBHandler(t *testing.T) {
 
 	t.Run("InsertTeacherRegistration", func(t *testing.T) {
 		if err := teacher.InsertTeacherRegistration(db, testTeacherRegistration); err != nil {
-			t.Errorf("error inserting teacher data: %+v\n", err)
+			t.Errorf("error in InsertTeacherRegistration: %+v\n", err)
+		}
+	})
+	t.Run("GetTeacherRegistrationByUserId", func(t *testing.T) {
+		r, err := teacher.GetTeacherRegistrationByUserId(db, testTeacherRegistration.UserID)
+		if err != nil {
+			t.Errorf("error in GetTeacherRegistrationByUserId: %+v\n", err)
+		}
+
+		if r.Email != testTeacherRegistration.Email {
+			t.Errorf("mismatch in GetTeacherRegistrationByUserId: got %s, wanted %s\n", r.Email, testTeacherRegistration.Email)
+		}
+		if r.Code.String() != testTeacherRegistration.Code.String() {
+			t.Errorf("mismatch in GetTeacherRegistrationByUserId: got %s, wanted %s\n", r.Code.String(), testTeacherRegistration.Code.String())
+		}
+	})
+	t.Run("GetTeacherRegistrationByEmail", func(t *testing.T) {
+		r, err := teacher.GetTeacherRegistrationByEmail(db, testTeacherRegistration.Email)
+		if err != nil {
+			t.Errorf("error in GetTeacherRegistrationByEmail: %+v\n", err)
+		}
+
+		if r.UserID != testTeacherRegistration.UserID {
+			t.Errorf("mismatch in GetTeacherRegistrationByEmail: got %d, wanted %d\n", r.UserID, testTeacherRegistration.UserID)
+		}
+		if r.Code.String() != testTeacherRegistration.Code.String() {
+			t.Errorf("mismatch in GetTeacherRegistrationByEmail: got %s, wanted %s\n", r.Code.String(), testTeacherRegistration.Code.String())
+		}
+	})
+	t.Run("UpdateTeacherRegistrationByEmail", func(t *testing.T) {
+		if err := teacher.UpdateTeacherRegistrationByEmail(db, testTeacherRegistration); err != nil {
+			t.Errorf("error in GetTeacherRegistrationByEmail: %+v\n", err)
 		}
 	})
 

@@ -3,27 +3,33 @@ package aws
 import (
 	"context"
 	"fmt"
+	"os"
 
-	"github.com/aws/aws-sdk-go-v2/config"
 	ses "github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
-	"github.com/google/uuid"
+	myTypes "mathtestr.com/server/internal/types"
 )
 
-func SendEmail(code uuid.UUID) error {
-	cfg, err := config.LoadDefaultConfig(
-		context.TODO(),
-		config.WithRegion(REGION),
-	)
+const (
+	FROM     string = "Registration@timestrainer.com"
+	REGION   string = "us-east-2"
+	SUBJECT  string = "Validate Email"
+	CHARSET  string = "UTF-8"
+	LINK_URL string = `https://timestrainer.com/register/teacher/validate`
+	FILEPATH string = "email.html"
+)
+
+func SendEmail(client *ses.Client, r myTypes.TeacherRegistration) error {
+	// Read the HTML file
+	buttonHtml, err := os.ReadFile(FILEPATH)
 	if err != nil {
 		return err
 	}
 
-	client := ses.NewFromConfig(cfg)
-
 	from := FROM
-	bodyHtml := fmt.Sprintf(`Please click on this link to validate your email address: <a href="%s/%s">VALIDATE</a>`, LINK_URL, code)
-	bodyText := fmt.Sprintf(`Please go to this link to validate your email address: %s/%s`, LINK_URL, code)
+	linkUrl := fmt.Sprintf("%s?code=%s&id=%d", LINK_URL, r.Code, r.UserID)
+	bodyHtml := fmt.Sprintf(string(buttonHtml), linkUrl)
+	bodyText := fmt.Sprintf(`Please go to this link to validate your email address: %s`, LINK_URL)
 	charset := CHARSET
 	subject := SUBJECT
 
@@ -46,9 +52,10 @@ func SendEmail(code uuid.UUID) error {
 				},
 			},
 		},
-		Destination:      &types.Destination{ToAddresses: []string{TO}},
+		Destination:      &types.Destination{ToAddresses: []string{r.Email}},
 		FromEmailAddress: &from,
 	}
+
 	_, err = client.SendEmail(context.TODO(), email)
 	if err != nil {
 		return err
@@ -56,14 +63,3 @@ func SendEmail(code uuid.UUID) error {
 
 	return nil
 }
-
-const (
-	TO        string = "jackson.a.furr@gmail.com"
-	FROM      string = "Registration@timestrainer.com"
-	REGION    string = "us-east-2"
-	SUBJECT   string = "Validate Email"
-	BODY_HTML string = `Please click on this link to validate your account: <a href="https://timestrainer.com">Validate</a>`
-	BODY_TEXT string = `Please go to this link to validate your account: https://timestrainer.com`
-	CHARSET   string = "UTF-8"
-	LINK_URL  string = `https://timestrainer.com/register/teacher/validate`
-)

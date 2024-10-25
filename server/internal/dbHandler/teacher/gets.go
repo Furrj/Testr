@@ -117,3 +117,57 @@ func GetTeacherClassPopulationByClassID(db *dbHandler.DBHandler, classID uint) (
 
 	return pop, nil
 }
+
+const qGetTeacherRegistrationByUserId = `
+	SELECT email, code, expiry
+	FROM teachers.registration
+	WHERE user_id=$1
+`
+
+func GetTeacherRegistrationByUserId(db *dbHandler.DBHandler, id types.UserID) (types.TeacherRegistration, error) {
+	r := types.TeacherRegistration{
+		UserID: id,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetTeacherRegistrationByUserId,
+		id,
+	).Scan(
+		&r.Email,
+		&r.Code,
+		&r.Expiry,
+	)
+	if err != nil {
+		return r, err
+	}
+
+	return r, nil
+}
+
+const qGetTeacherRegistrationByEmail = `
+	SELECT user_id, code, expiry
+	FROM teachers.registration
+	WHERE email=$1
+`
+
+func GetTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
+	r := types.TeacherRegistration{
+		Email: email,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetTeacherRegistrationByEmail,
+		email,
+	).Scan(
+		&r.UserID,
+		&r.Code,
+		&r.Expiry,
+	)
+	if err != nil {
+		return r, err
+	}
+
+	return r, nil
+}

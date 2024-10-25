@@ -11,6 +11,7 @@ const (
 	RouteUrlVertical                      string = RouteUrlBase + "/user/vertical"
 	RouteUrlClasses                       string = RouteUrlBase + "/classes"
 	RouteUrlRegisterTeacher               string = RouteUrlBase + "/register/teacher"
+	RouteUrlRegisterTeacherEmail          string = RouteUrlBase + "/register/teacher/email"
 	RouteUrlRegisterStudent               string = RouteUrlBase + "/register/student"
 	RouteUrlCheckUsername                 string = RouteUrlBase + "/register/checkUsername/:username"
 	RouteUrlGetTeacherInfoForRegisterPage string = RouteUrlBase + "/teacher/get/:id"
