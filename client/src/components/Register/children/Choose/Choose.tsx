@@ -13,7 +13,7 @@ const Choose: React.FC = () => {
 					</Link>
 					<Link
 						className={`link ${styles.link}`}
-						to={"/register/teacher/account"}
+						to={"/register/teacher/email"}
 					>
 						Teacher
 					</Link>
