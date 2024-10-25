@@ -1,5 +1,5 @@
-import type { T_FORM_REGISTER_STUDENT } from "../../../components/Register/Register";
 import { E_REGISTER_RESULT, type T_TOKENS } from "../../../types";
+import { T_FORM_REGISTER_STUDENT } from "../../../types/register";
 import route_prefix from "../../route_prefix";
 
 const url = route_prefix("/register/student");

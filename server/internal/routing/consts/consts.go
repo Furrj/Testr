@@ -12,7 +12,7 @@ const (
 	RouteUrlClasses                        string = RouteUrlBase + "/classes"
 	RouteUrlRegisterTeacher                string = RouteUrlBase + "/register/teacher"
 	RouteUrlRegisterTeacherEmail           string = RouteUrlBase + "/register/teacher/email"
-	RouteUrlRegisterTeacherEmailValidation string = RouteUrlBase + "/register/teacher/email/validate"
+	RouteUrlRegisterTeacherEmailValidation string = RouteUrlBase + "/register/teacher/validate"
 	RouteUrlRegisterStudent                string = RouteUrlBase + "/register/student"
 	RouteUrlCheckUsername                  string = RouteUrlBase + "/register/checkUsername/:username"
 	RouteUrlGetTeacherInfoForRegisterPage  string = RouteUrlBase + "/teacher/get/:id"

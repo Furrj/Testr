@@ -10,9 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"mathtestr.com/server/internal/aws"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
+	"mathtestr.com/server/internal/envvars"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -20,7 +22,7 @@ type reqSendEmail struct {
 	Email string `json:"email"`
 }
 
-func Send(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
+func Send(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// bind request body
 		var payload reqSendEmail
@@ -94,12 +96,12 @@ func Send(db *dbHandler.DBHandler, client *ses.Client) gin.HandlerFunc {
 			}
 		}
 
-		// // send email
-		// if err := aws.SendEmail(client, r); err != nil {
-		// 	fmt.Fprintf(os.Stderr, "error in SendEmail: %+v\n", err)
-		// 	ctx.Status(http.StatusInternalServerError)
-		// 	return
-		// }
+		// send email
+		if err := aws.SendEmail(client, env, r); err != nil {
+			fmt.Fprintf(os.Stderr, "error in SendEmail: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
 
 		ctx.Status(http.StatusOK)
 	}
