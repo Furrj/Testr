@@ -112,6 +112,7 @@ func main() {
 	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, STRIPE_KEY))
 	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, STRIPE_KEY))
 	router.POST(consts.RouteUrlRegisterTeacherEmail, emailvalidation.Send(db, client))
+	router.POST(consts.RouteUrlRegisterTeacherEmailValidation, emailvalidation.Verify(db))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))
