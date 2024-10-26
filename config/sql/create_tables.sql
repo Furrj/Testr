@@ -13,18 +13,18 @@ CREATE TABLE users.ids
 
 CREATE TABLE teachers.data
 (
-    user_id   INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    email     TEXT UNIQUE NOT NULL,
-    school    TEXT        NOT NULL DEFAULT '',
-    is_active BOOLEAN     NOT NULL DEFAULT false
+    user_id      INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
+    email        TEXT UNIQUE NOT NULL,
+    school       TEXT        NOT NULL DEFAULT '',
+    is_active    BOOLEAN     NOT NULL DEFAULT false,
+    is_validated boolean     NOT NULL DEFAULT false
 );
 
-CREATE TABLE teachers.registration
+CREATE TABLE teachers.validation_codes
 (
-    teacher_id   INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    is_validated boolean NOT NULL DEFAULT false,
-    code         UUID,
-    issued_at    BIGINT           DEFAULT EXTRACT(EPOCH FROM NOW())
+    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    code       UUID,
+    issued_at  BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 );
 
 CREATE TABLE teachers.classes
