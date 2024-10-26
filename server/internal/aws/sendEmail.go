@@ -19,7 +19,7 @@ const (
 	FILEPATH string = "email.html"
 )
 
-func SendEmail(client *ses.Client, env envvars.EnvVars, r myTypes.TeacherRegistration) error {
+func SendEmail(client *ses.Client, env envvars.EnvVars, r myTypes.TeacherRegistration, addr string) error {
 	// Read the HTML file
 	buttonHtml, err := os.ReadFile(FILEPATH)
 	if err != nil {
@@ -27,7 +27,7 @@ func SendEmail(client *ses.Client, env envvars.EnvVars, r myTypes.TeacherRegistr
 	}
 
 	from := FROM
-	linkUrl := fmt.Sprintf("%s?code=%s&email=%s", env.ValidationEmail.LinkBaseUrl, r.Code, r.Email)
+	linkUrl := fmt.Sprintf("%s?code=%s&id=%d", env.ValidationEmail.LinkBaseUrl, r.Code, r.TeacherID)
 	bodyHtml := fmt.Sprintf(string(buttonHtml), linkUrl)
 	bodyText := fmt.Sprintf(`Please go to this link to validate your email address: %s`, linkUrl)
 	charset := CHARSET
@@ -52,7 +52,7 @@ func SendEmail(client *ses.Client, env envvars.EnvVars, r myTypes.TeacherRegistr
 				},
 			},
 		},
-		Destination:      &types.Destination{ToAddresses: []string{r.Email}},
+		Destination:      &types.Destination{ToAddresses: []string{addr}},
 		FromEmailAddress: &from,
 	}
 

@@ -29,7 +29,6 @@ export const INIT_FORM_REGISTER_STUDENT: T_FORM_REGISTER_STUDENT = {
 
 export type T_FORM_REGISTER_TEACHER = T_FORM_REGISTER_USER & {
 	email: string;
-	school: string;
 };
 export const INIT_FORM_REGISTER_TEACHER: T_FORM_REGISTER_TEACHER = {
 	username: "",
@@ -38,5 +37,4 @@ export const INIT_FORM_REGISTER_TEACHER: T_FORM_REGISTER_TEACHER = {
 	first_name: "",
 	last_name: "",
 	email: "",
-	school: "",
 };

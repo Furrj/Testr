@@ -8,26 +8,54 @@ import (
 )
 
 const QGetTeacherDataByUserID = `
-	SELECT user_id, email, school
+	SELECT user_id, email, school, is_active, is_validated
 	FROM teachers.data
 	WHERE user_id=$1
 `
 
 func GetTeacherDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.TeacherData, error) {
-	var TeacherData types.TeacherData
+	var t types.TeacherData
 	err := db.Conn.QueryRow(
 		context.Background(),
 		QGetTeacherDataByUserID,
 		UserID,
 	).Scan(
-		&TeacherData.UserID,
-		&TeacherData.Email,
-		&TeacherData.School,
+		&t.UserID,
+		&t.Email,
+		&t.School,
+		&t.IsActive,
+		&t.IsValidated,
 	)
 	if err != nil {
-		return TeacherData, err
+		return t, err
 	}
-	return TeacherData, nil
+	return t, nil
+}
+
+const QGetTeacherDataByEmail = `
+	SELECT user_id, school, is_active, is_validated
+	FROM teachers.data
+	WHERE email=$1
+`
+
+func GetTeacherDataByEmail(db *dbHandler.DBHandler, email string) (types.TeacherData, error) {
+	t := types.TeacherData{
+		Email: email,
+	}
+	err := db.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherDataByEmail,
+		email,
+	).Scan(
+		&t.UserID,
+		&t.School,
+		&t.IsActive,
+		&t.IsValidated,
+	)
+	if err != nil {
+		return t, err
+	}
+	return t, nil
 }
 
 const QGetTeacherClassByClassID = `
@@ -118,100 +146,21 @@ func GetTeacherClassPopulationByClassID(db *dbHandler.DBHandler, classID uint) (
 	return pop, nil
 }
 
-const QGetTeacherDataByEmail = `
-	SELECT user_id, school
-	FROM teachers.data
-	WHERE email=$1
-`
-
-func GetTeacherDataByEmail(db *dbHandler.DBHandler, email string) (types.TeacherData, error) {
-	t := types.TeacherData{
-		Email: email,
-	}
-
-	err := db.Conn.QueryRow(
-		context.Background(),
-		QGetTeacherDataByEmail,
-		email,
-	).Scan(
-		&t.UserID,
-		&t.School,
-	)
-	if err != nil {
-		return t, err
-	}
-	return t, nil
-}
-
-const qGetUnvalidatedTeacherRegistrationByEmail = `
+const qGetTeacherRegistrationByTeacherId = `
 	SELECT code, issued_at
-	FROM teachers.registration
-	WHERE email=$1 and is_validated=false
+	FROM teachers.validation_codes
+	WHERE teacher_id=$1
 `
 
-func GetUnvalidatedTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
-	r := types.TeacherRegistration{
-		Email: email,
-	}
+func GetTeacherRegistrationByTeacherId(db *dbHandler.DBHandler, id types.UserID) (types.TeacherRegistration, error) {
+	var t types.TeacherRegistration
 
 	err := db.Conn.QueryRow(
 		context.Background(),
-		qGetUnvalidatedTeacherRegistrationByEmail,
-		email,
-	).Scan(
-		&r.Code,
-		&r.IssuedAt,
-	)
-	if err != nil {
-		return r, err
-	}
-
-	return r, nil
-}
-
-const qGetValidatedTeacherRegistrationByEmail = `
-	SELECT code, issued_at
-	FROM teachers.registration
-	WHERE email=$1 and is_validated=true
-`
-
-func GetValidatedTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
-	t := types.TeacherRegistration{
-		Email: email,
-	}
-
-	err := db.Conn.QueryRow(
-		context.Background(),
-		qGetValidatedTeacherRegistrationByEmail,
-		email,
+		qGetTeacherRegistrationByTeacherId,
+		id,
 	).Scan(
 		&t.Code,
-		&t.IssuedAt,
-	)
-	if err != nil {
-		return t, err
-	}
-	return t, nil
-}
-
-const qGetTeacherRegistrationByEmail = `
-	SELECT code, is_validated, issued_at
-	FROM teachers.registration
-	WHERE email=$1
-`
-
-func GetTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
-	t := types.TeacherRegistration{
-		Email: email,
-	}
-
-	err := db.Conn.QueryRow(
-		context.Background(),
-		qGetTeacherRegistrationByEmail,
-		email,
-	).Scan(
-		&t.Code,
-		&t.IsValidated,
 		&t.IssuedAt,
 	)
 	if err != nil {

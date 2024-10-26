@@ -3,23 +3,21 @@ import styles from "./ValidateEmail.module.scss";
 import Locals from "./Locals";
 import Loading from "../../../../../Loading/Loading";
 
-interface IProps {
-  setEmail: React.Dispatch<React.SetStateAction<string>>
-}
-
-const ValidateEmail: React.FC<IProps> = (props) => {
+const ValidateEmail: React.FC = () => {
   const [params] = useSearchParams();
   const code = params.get("code");
-  const email = params.get("email");
+  const idStr = params.get("id") || "0";
 
-  if (!code || code === "" || !email || email === "") {
+  const id = Number.parseInt(idStr);
+
+  if (!code || code === "" || !id || id === 0) {
     alert("error, please refresh");
     return;
   }
 
   const validateEmailQuery = Locals.useValidateEmailQuery({
     code,
-    email,
+    id,
   });
 
   if (validateEmailQuery.isFetching) {
@@ -29,7 +27,7 @@ const ValidateEmail: React.FC<IProps> = (props) => {
     validateEmailQuery.data !== undefined
   ) {
     if (validateEmailQuery.data.is_valid) {
-      props.setEmail(validateEmailQuery.data.data.email)
+      console.log(validateEmailQuery.data)
       return (
         <main className={styles.root}>
           <div className={styles.scroll}>

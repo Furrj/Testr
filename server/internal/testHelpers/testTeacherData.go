@@ -6,9 +6,11 @@ import (
 )
 
 var TestTeacherData = types.TeacherData{
-	UserID: 1,
-	Email:  "mfurr@bca.edu",
-	School: "BCA",
+	UserID:      1,
+	Email:       "mfurr@bca.edu",
+	School:      "BCA",
+	IsActive:    false,
+	IsValidated: false,
 }
 
 var TestTeacherClass = types.TeacherClass{
@@ -17,7 +19,6 @@ var TestTeacherClass = types.TeacherClass{
 }
 
 var TestTeacherRegistration = types.TeacherRegistration{
-	Email:       "jackson.a.furr@gmail.com",
-	IsValidated: false,
-	Code:        uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
+	TeacherID: 1,
+	Code:      uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
 }

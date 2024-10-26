@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/types"
@@ -18,13 +17,13 @@ import (
 const EXPIRY int = 3600
 
 type reqValidateEmail struct {
-	Email string    `json:"email"`
-	Code  uuid.UUID `json:"code"`
+	TeacherId types.UserID `json:"id"`
+	Code      uuid.UUID    `json:"code"`
 }
 
 type resValidateEmail struct {
-	Data    types.TeacherRegistration `json:"data"`
-	IsValid bool                      `json:"is_valid"`
+	TeacherId types.UserID `json:"teacher_id"`
+	IsValid   bool         `json:"is_valid"`
 }
 
 func Validate(db *dbHandler.DBHandler) gin.HandlerFunc {
@@ -42,25 +41,9 @@ func Validate(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 		fmt.Printf("%+v\n", payload)
 
-		// see if previously validated
-		if r, err := teacher.GetValidatedTeacherRegistrationByEmail(db, payload.Email); err == nil {
-			res.IsValid = true
-			res.Data = r
-			ctx.JSON(http.StatusOK, res)
-			return
-		} else if err != pgx.ErrNoRows {
-			fmt.Fprintf(os.Stderr, "error in GetValidatedTeacherRegistrationByUserId: %+v\n", err)
-			ctx.Status(http.StatusInternalServerError)
-			return
-		}
-
 		// get registration information
-		r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, payload.Email)
+		r, err := teacher.GetTeacherRegistrationByTeacherId(db, payload.TeacherId)
 		if err != nil {
-			if err == pgx.ErrNoRows {
-				ctx.JSON(http.StatusOK, res)
-				return
-			}
 			fmt.Fprintf(os.Stderr, "error in GetUnvalidatedTeacherRegistrationByUserId: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
@@ -79,15 +62,21 @@ func Validate(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// update db
-		r.IsValidated = true
-		if err := teacher.UpdateTeacherRegistrationByEmail(db, r); err != nil {
-			fmt.Fprintf(os.Stderr, "error in UpdateTeacherRegistrationByEmail: %+v\n", err)
+		if err := teacher.UpdateTeacherValidationStatusByTeacherId(db, payload.TeacherId, true); err != nil {
+			fmt.Fprintf(os.Stderr, "error in UpdateTeacherValidationStatusByTeacherId: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
+
+		// delete registration
+		if err := teacher.DeleteTeacherRegistrationByTeacherId(db, payload.TeacherId); err != nil {
+			fmt.Fprintf(os.Stderr, "error in DeleteTeacherRegistrationByTeacherId: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 
 		res.IsValid = true
-		res.Data = r
+		res.TeacherId = r.TeacherID
 		ctx.JSON(http.StatusOK, res)
 	}
 }

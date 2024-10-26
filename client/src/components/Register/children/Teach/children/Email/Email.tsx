@@ -21,14 +21,7 @@ const Email: React.FC = () => {
 	return (
 		<div className={styles.root}>
 			<div className={styles.scroll}>
-				<h1>Step 1: Register Your Email</h1>
-
-				<h2>
-					<i>
-						Submit a valid email address in the box below, and an email will be
-						sent to the entered address with a validation link.
-					</i>
-				</h2>
+				<h1>Step 1: Create Account</h1>
 
 				<form
 					onSubmit={(e) => {

@@ -50,7 +50,7 @@ func Submit(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gi
 		}
 
 		// check if code already exists for email
-		if r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, payload.Email); err == nil {
+		if r, err := teacher.GetUnvalidatedTeacherRegistrationByTeacherId(db, payload.Email); err == nil {
 			now := int(time.Now().Unix())
 
 			if now > r.IssuedAt+EXPIRY { // if expired
@@ -73,7 +73,7 @@ func Submit(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gi
 
 				// update db
 				r.IssuedAt = now
-				if err := teacher.UpdateTeacherRegistrationByEmail(db, r); err != nil {
+				if err := teacher.UpdateTeacherRegistrationByTeacherId(db, r); err != nil {
 					fmt.Fprintf(os.Stderr, "error in UpdateTeacherRegistrationByEmail: %+v\n", err)
 					ctx.Status(http.StatusInternalServerError)
 					return

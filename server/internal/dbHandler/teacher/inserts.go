@@ -47,16 +47,15 @@ func InsertTeacherClass(db *dbHandler.DBHandler, userID types.UserID, class type
 }
 
 const EInsertTeacherRegistration = `
-	INSERT INTO teachers.registration(is_validated, email, code)
-	VALUES ($1, $2, $3)
+	INSERT INTO teachers.validation_codes(teacher_id, code)
+	VALUES ($1, $2)
 `
 
 func InsertTeacherRegistration(db *dbHandler.DBHandler, t types.TeacherRegistration) error {
 	_, err := db.Conn.Exec(
 		context.Background(),
 		EInsertTeacherRegistration,
-		t.IsValidated,
-		t.Email,
+		t.TeacherID,
 		t.Code,
 	)
 	if err != nil {
