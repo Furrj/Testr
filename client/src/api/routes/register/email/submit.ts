@@ -6,7 +6,12 @@ export type T_PARAMS = {
 	email: string;
 };
 
-async function SEND_VALIDATION_EMAIL(params: T_PARAMS): Promise<Response> {
+export type T_RES = {
+	is_sent: boolean;
+	already_exists: boolean;
+};
+
+async function SUBMIT_TEACHER_EMAIL(params: T_PARAMS): Promise<T_RES> {
 	console.log(params);
 	const res = await fetch(url, {
 		method: "POST",
@@ -20,7 +25,8 @@ async function SEND_VALIDATION_EMAIL(params: T_PARAMS): Promise<Response> {
 		throw new Error(res.status.toString());
 	}
 
-	return res;
+	const data: T_RES = await res.json();
+	return data;
 }
 
-export default SEND_VALIDATION_EMAIL;
+export default SUBMIT_TEACHER_EMAIL;

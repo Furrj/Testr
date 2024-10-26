@@ -17,7 +17,7 @@ type TeacherClass struct {
 
 type TeacherRegistration struct {
 	Email  string    `json:"email"`
-	UserID UserID    `json:"user_id"`
-	Expiry int       `json:"expiry"`
+	IsValidated bool `json:"is_validated"`
+	IssuedAt int       `json:"issued_at"`
 	Code   uuid.UUID `json:"code"`
 }

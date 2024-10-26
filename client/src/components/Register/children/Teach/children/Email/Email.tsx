@@ -1,11 +1,22 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "./Email.module.scss";
 import Locals from "./Locals";
 
 const Email: React.FC = () => {
 	const ref = useRef<HTMLInputElement>(null);
+	const [errAlreadyExists, setErrAlreadyExists] = useState<boolean>(false);
 
 	const submitMutation = Locals.useSubmitMutation();
+	if (submitMutation.isSuccess) {
+		console.log(submitMutation.data);
+		if (submitMutation.data.already_exists) {
+			setErrAlreadyExists(true);
+			submitMutation.reset();
+			return;
+		}
+		return <div>You have been sent an email.</div>;
+	} else if (submitMutation.isError)
+		return <div>Error, please refresh and try again</div>;
 
 	return (
 		<div className={styles.root}>
@@ -36,7 +47,6 @@ const Email: React.FC = () => {
 						id="email"
 						name="email"
 						ref={ref}
-						pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/"
 						required
 					/>
 					<button type="submit">Submit</button>
@@ -47,4 +57,3 @@ const Email: React.FC = () => {
 };
 
 export default Email;
-

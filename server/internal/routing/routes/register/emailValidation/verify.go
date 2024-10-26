@@ -14,9 +14,12 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
+// TODO: put in envvar
+const EXPIRY int = 3600
+
 type reqVerifyEmail struct {
-	UserId types.UserID `json:"user_id"`
-	Code   uuid.UUID    `json:"code"`
+	Email string    `json:"email"`
+	Code  uuid.UUID `json:"code"`
 }
 
 type resVerifyEmail struct {
@@ -40,7 +43,7 @@ func Verify(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("%+v\n", payload)
 
 		// get registration information
-		r, err := teacher.GetTeacherRegistrationByUserId(db, payload.UserId)
+		r, err := teacher.GetTeacherRegistrationByEmail(db, payload.Email)
 		if err != nil {
 			if err == pgx.ErrNoRows {
 				ctx.JSON(http.StatusOK, res)
@@ -58,8 +61,16 @@ func Verify(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// check for expiry
-		if time.Now().Unix() > int64(r.Expiry) {
+		if time.Now().Unix() > int64(r.IssuedAt+EXPIRY) {
 			ctx.JSON(http.StatusOK, res)
+			return
+		}
+
+		// update db
+		r.IsValidated = true
+		if err := teacher.UpdateTeacherRegistrationByEmail(db, r); err != nil {
+			fmt.Fprintf(os.Stderr, "error in UpdateTeacherRegistrationByEmail: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
 			return
 		}
 

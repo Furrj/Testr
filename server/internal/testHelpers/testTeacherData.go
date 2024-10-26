@@ -17,7 +17,7 @@ var TestTeacherClass = types.TeacherClass{
 }
 
 var TestTeacherRegistration = types.TeacherRegistration{
-	Email:  "jackson.a.furr@gmail.com",
-	UserID: 1,
-	Code:   uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
+	Email:       "jackson.a.furr@gmail.com",
+	IsValidated: false,
+	Code:        uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
 }

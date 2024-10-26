@@ -9,7 +9,7 @@ import (
 
 const uUpdateTeacherRegistrationByEmail = `
 	UPDATE teachers.registration
-	SET code=$2, expiry=$3
+	SET code=$2, issued_at=$3, is_validated=$4
 	WHERE email=$1
 `
 
@@ -19,7 +19,8 @@ func UpdateTeacherRegistrationByEmail(db *dbHandler.DBHandler, r types.TeacherRe
 		uUpdateTeacherRegistrationByEmail,
 		r.Email,
 		r.Code,
-		r.Expiry,
+		r.IssuedAt,
+		r.IsValidated,
 	)
 	if err != nil {
 		return err

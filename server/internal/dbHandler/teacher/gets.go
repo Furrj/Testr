@@ -118,35 +118,8 @@ func GetTeacherClassPopulationByClassID(db *dbHandler.DBHandler, classID uint) (
 	return pop, nil
 }
 
-const qGetTeacherRegistrationByUserId = `
-	SELECT email, code, expiry
-	FROM teachers.registration
-	WHERE user_id=$1
-`
-
-func GetTeacherRegistrationByUserId(db *dbHandler.DBHandler, id types.UserID) (types.TeacherRegistration, error) {
-	r := types.TeacherRegistration{
-		UserID: id,
-	}
-
-	err := db.Conn.QueryRow(
-		context.Background(),
-		qGetTeacherRegistrationByUserId,
-		id,
-	).Scan(
-		&r.Email,
-		&r.Code,
-		&r.Expiry,
-	)
-	if err != nil {
-		return r, err
-	}
-
-	return r, nil
-}
-
 const qGetTeacherRegistrationByEmail = `
-	SELECT user_id, code, expiry
+	SELECT is_validated, code, issued_at
 	FROM teachers.registration
 	WHERE email=$1
 `
@@ -161,13 +134,38 @@ func GetTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types
 		qGetTeacherRegistrationByEmail,
 		email,
 	).Scan(
-		&r.UserID,
+		&r.IsValidated,
 		&r.Code,
-		&r.Expiry,
+		&r.IssuedAt,
 	)
 	if err != nil {
 		return r, err
 	}
 
 	return r, nil
+}
+
+const QGetTeacherDataByEmail = `
+	SELECT user_id, school
+	FROM teachers.data
+	WHERE email=$1
+`
+
+func GetTeacherDataByEmail(db *dbHandler.DBHandler, email string) (types.TeacherData, error) {
+	t := types.TeacherData{
+		Email: email,
+}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		QGetTeacherDataByEmail,
+		email,
+	).Scan(
+		&t.UserID,
+		&t.School,
+	)
+	if err != nil {
+		return t, err
+	}
+	return t, nil
 }

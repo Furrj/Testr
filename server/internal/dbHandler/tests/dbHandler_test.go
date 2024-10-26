@@ -135,28 +135,12 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in InsertTeacherRegistration: %+v\n", err)
 		}
 	})
-	t.Run("GetTeacherRegistrationByUserId", func(t *testing.T) {
-		r, err := teacher.GetTeacherRegistrationByUserId(db, testTeacherRegistration.UserID)
-		if err != nil {
-			t.Errorf("error in GetTeacherRegistrationByUserId: %+v\n", err)
-		}
-
-		if r.Email != testTeacherRegistration.Email {
-			t.Errorf("mismatch in GetTeacherRegistrationByUserId: got %s, wanted %s\n", r.Email, testTeacherRegistration.Email)
-		}
-		if r.Code.String() != testTeacherRegistration.Code.String() {
-			t.Errorf("mismatch in GetTeacherRegistrationByUserId: got %s, wanted %s\n", r.Code.String(), testTeacherRegistration.Code.String())
-		}
-	})
 	t.Run("GetTeacherRegistrationByEmail", func(t *testing.T) {
 		r, err := teacher.GetTeacherRegistrationByEmail(db, testTeacherRegistration.Email)
 		if err != nil {
 			t.Errorf("error in GetTeacherRegistrationByEmail: %+v\n", err)
 		}
 
-		if r.UserID != testTeacherRegistration.UserID {
-			t.Errorf("mismatch in GetTeacherRegistrationByEmail: got %d, wanted %d\n", r.UserID, testTeacherRegistration.UserID)
-		}
 		if r.Code.String() != testTeacherRegistration.Code.String() {
 			t.Errorf("mismatch in GetTeacherRegistrationByEmail: got %s, wanted %s\n", r.Code.String(), testTeacherRegistration.Code.String())
 		}
@@ -175,7 +159,16 @@ func TestDBHandler(t *testing.T) {
 	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
 		data, err := teacher.GetTeacherDataByUserID(db, testTeacherData.UserID)
 		if err != nil {
-			t.Errorf("error getting teacher data: %+v\n", err)
+			t.Errorf("error in GetTeacherDataByUserID: %+v\n", err)
+		}
+		if data != testTeacherData {
+			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
+		}
+	})
+	t.Run("GetTeacherDataByEmail", func(t *testing.T) {
+		data, err := teacher.GetTeacherDataByEmail(db, testTeacherData.Email)
+		if err != nil {
+			t.Errorf("error in GetTeacherDataByEmail: %+v\n", err)
 		}
 		if data != testTeacherData {
 			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)

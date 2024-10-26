@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import SEND_VALIDATION_EMAIL, {
+import SUBMIT_TEACHER_EMAIL, {
 	T_PARAMS,
-} from "../../../../../../api/routes/register/email/send";
+} from "../../../../../../api/routes/register/email/submit";
 
 const Locals = {
 	useSubmitMutation: () =>
 		useMutation({
-			mutationFn: (params: T_PARAMS) => SEND_VALIDATION_EMAIL(params),
+			mutationFn: (params: T_PARAMS) => SUBMIT_TEACHER_EMAIL(params),
 			onError: (err) => {
 				console.log(err);
 			},

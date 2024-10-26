@@ -6,16 +6,16 @@ import Loading from "../../../../../Loading/Loading";
 const ValidateEmail: React.FC = () => {
 	const [params] = useSearchParams();
 	const code = params.get("code");
-	const id = params.get("id");
+	const email = params.get("email");
 
-	if (!code || code === "" || !id || id === "") {
+	if (!code || code === "" || !email || email === "") {
 		alert("error, please refresh");
 		return;
 	}
 
 	const validateEmailQuery = Locals.useValidateEmailQuery({
 		code,
-		user_id: Number.parseInt(id),
+		email,
 	});
 
 	if (validateEmailQuery.isFetching) {

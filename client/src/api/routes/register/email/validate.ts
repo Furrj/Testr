@@ -4,7 +4,7 @@ const url = route_prefix("/register/teacher/validate");
 
 export type T_PARAMS = {
 	code: string;
-	user_id: number;
+	email: string;
 };
 
 export type T_RES = {
