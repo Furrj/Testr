@@ -9,6 +9,6 @@ CREATE TABLE teachers.registration
 );
 
 ALTER TABLE teachers.data
-    ADD column is_active boolean NOT NULL DEFAULT false;
+    ADD COLUMN is_active boolean NOT NULL DEFAULT false;
 
 COMMIT;

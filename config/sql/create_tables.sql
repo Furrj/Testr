@@ -14,9 +14,9 @@ CREATE TABLE users.ids
 CREATE TABLE teachers.data
 (
     user_id   INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    email     TEXT UNIQUE,
-    school    TEXT,
-    is_active BOOLEAN NOT NULL DEFAULT false
+    email     TEXT UNIQUE NOT NULL,
+    school    TEXT        NOT NULL DEFAULT '',
+    is_active BOOLEAN     NOT NULL DEFAULT false
 );
 
 CREATE TABLE teachers.registration
