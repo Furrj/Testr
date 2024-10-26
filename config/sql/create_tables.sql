@@ -21,10 +21,10 @@ CREATE TABLE teachers.data
 
 CREATE TABLE teachers.registration
 (
-    email     TEXT PRIMARY KEY,
-    validated boolean,
-    code      UUID,
-    issued_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
+    email        TEXT PRIMARY KEY,
+    is_validated boolean,
+    code         UUID,
+    issued_at    BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 );
 
 CREATE TABLE teachers.classes
