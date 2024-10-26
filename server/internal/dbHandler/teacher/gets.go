@@ -176,7 +176,9 @@ const qGetValidatedTeacherRegistrationByEmail = `
 `
 
 func GetValidatedTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
-	var t types.TeacherRegistration
+	t := types.TeacherRegistration{
+		Email: email,
+	}
 
 	err := db.Conn.QueryRow(
 		context.Background(),
@@ -184,6 +186,32 @@ func GetValidatedTeacherRegistrationByEmail(db *dbHandler.DBHandler, email strin
 		email,
 	).Scan(
 		&t.Code,
+		&t.IssuedAt,
+	)
+	if err != nil {
+		return t, err
+	}
+	return t, nil
+}
+
+const qGetTeacherRegistrationByEmail = `
+	SELECT code, is_validated, issued_at
+	FROM teachers.registration
+	WHERE email=$1
+`
+
+func GetTeacherRegistrationByEmail(db *dbHandler.DBHandler, email string) (types.TeacherRegistration, error) {
+	t := types.TeacherRegistration{
+		Email: email,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetTeacherRegistrationByEmail,
+		email,
+	).Scan(
+		&t.Code,
+		&t.IsValidated,
 		&t.IssuedAt,
 	)
 	if err != nil {

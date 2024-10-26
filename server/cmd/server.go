@@ -89,7 +89,7 @@ func main() {
 	router.POST(consts.RouteUrlPaymentIntents, paymentintents.Create(db, envVars.ApiKeys.Stripe))
 	router.POST(consts.RouteUrlCheckoutSession, checkoutsessions.Create(db, envVars.ApiKeys.Stripe))
 	router.POST(consts.RouteUrlRegisterTeacherEmail, emailvalidation.Submit(db, client, envVars))
-	router.POST(consts.RouteUrlRegisterTeacherEmailValidation, emailvalidation.Verify(db))
+	router.POST(consts.RouteUrlRegisterTeacherEmailValidation, emailvalidation.Validate(db))
 
 	router.GET(consts.RouteUrlUser, users.Get(db))
 	router.GET(consts.RouteUrlGetTeacherData, teachers.Get(db))

@@ -17,30 +17,42 @@ import (
 // TODO: put in envvar
 const EXPIRY int = 3600
 
-type reqVerifyEmail struct {
+type reqValidateEmail struct {
 	Email string    `json:"email"`
 	Code  uuid.UUID `json:"code"`
 }
 
-type resVerifyEmail struct {
+type resValidateEmail struct {
 	Data    types.TeacherRegistration `json:"data"`
 	IsValid bool                      `json:"is_valid"`
 }
 
-func Verify(db *dbHandler.DBHandler) gin.HandlerFunc {
+func Validate(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		res := resVerifyEmail{
+		res := resValidateEmail{
 			IsValid: false,
 		}
 
 		// bind request body
-		var payload reqVerifyEmail
+		var payload reqValidateEmail
 		if err := ctx.BindJSON(&payload); err != nil {
 			fmt.Fprintf(os.Stderr, "error binding json: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)
 			return
 		}
 		fmt.Printf("%+v\n", payload)
+
+		// see if previously validated
+		if r, err := teacher.GetValidatedTeacherRegistrationByEmail(db, payload.Email); err == nil {
+			res.IsValid = true
+			res.Data = r
+			ctx.JSON(http.StatusOK, res)
+			return
+		} else if err != pgx.ErrNoRows {
+			fmt.Fprintf(os.Stderr, "error in GetValidatedTeacherRegistrationByUserId: %+v\n", err)
+			ctx.Status(http.StatusInternalServerError)
+			return
+		}
 
 		// get registration information
 		r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, payload.Email)
@@ -49,7 +61,7 @@ func Verify(db *dbHandler.DBHandler) gin.HandlerFunc {
 				ctx.JSON(http.StatusOK, res)
 				return
 			}
-			fmt.Fprintf(os.Stderr, "error in GetTeacherRegistrationByUserId: %+v\n", err)
+			fmt.Fprintf(os.Stderr, "error in GetUnvalidatedTeacherRegistrationByUserId: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
