@@ -50,7 +50,7 @@ func Submit(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gi
 		}
 
 		// check if code already exists for email
-		if r, err := teacher.GetTeacherRegistrationByEmail(db, payload.Email); err == nil {
+		if r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, payload.Email); err == nil {
 			now := int(time.Now().Unix())
 
 			if now > r.IssuedAt+EXPIRY { // if expired

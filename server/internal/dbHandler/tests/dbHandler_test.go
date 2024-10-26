@@ -136,7 +136,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetTeacherRegistrationByEmail", func(t *testing.T) {
-		r, err := teacher.GetTeacherRegistrationByEmail(db, testTeacherRegistration.Email)
+		r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, testTeacherRegistration.Email)
 		if err != nil {
 			t.Errorf("error in GetTeacherRegistrationByEmail: %+v\n", err)
 		}

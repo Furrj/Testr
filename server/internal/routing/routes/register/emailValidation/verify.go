@@ -43,7 +43,7 @@ func Verify(db *dbHandler.DBHandler) gin.HandlerFunc {
 		fmt.Printf("%+v\n", payload)
 
 		// get registration information
-		r, err := teacher.GetTeacherRegistrationByEmail(db, payload.Email)
+		r, err := teacher.GetUnvalidatedTeacherRegistrationByEmail(db, payload.Email)
 		if err != nil {
 			if err == pgx.ErrNoRows {
 				ctx.JSON(http.StatusOK, res)
