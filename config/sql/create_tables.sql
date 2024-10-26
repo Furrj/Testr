@@ -16,15 +16,15 @@ CREATE TABLE teachers.data
     user_id   INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
     email     TEXT UNIQUE,
     school    TEXT,
-    is_active BOOLEAN
+    is_active BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE teachers.registration
 (
     teacher_id   INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    is_validated boolean,
+    is_validated boolean NOT NULL DEFAULT false,
     code         UUID,
-    issued_at    BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
+    issued_at    BIGINT           DEFAULT EXTRACT(EPOCH FROM NOW())
 );
 
 CREATE TABLE teachers.classes
