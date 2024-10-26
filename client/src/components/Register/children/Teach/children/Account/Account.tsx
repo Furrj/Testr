@@ -1,25 +1,29 @@
-import UserForm from "../../../UserForm/UserForm";
-import { T_FORM_REGISTER_USER } from "../../../../../../types/register";
-import { useState } from "react";
 import styles from "./Account.module.scss";
+import TeacherForm from "../TeacherForm/TeacherForm";
+import { Navigate } from "react-router-dom";
 
-const Account: React.FC = () => {
-	const [accountData, setAccountData] = useState<
-		T_FORM_REGISTER_USER | undefined
-	>(undefined);
+interface IProps {
+  email: string;
+}
 
-	return (
-		<main className={styles.root}>
-			<div className={styles.scroll}>
-				<div>
-					<h1>Step 1:</h1>
-					<h2>Create An Account</h2>
-				</div>
+const Account: React.FC<IProps> = (props) => {
+  if (props.email === "") {
+    return <Navigate to={"/"} replace />
+  } else {
+    return (
+      <main className={styles.root}>
+        <div className={styles.scroll}>
+          <div>
+            <h1>Create Account</h1>
+          </div>
 
-				<div className={styles.form_wrapper}></div>
-			</div>
-		</main>
-	);
+          <div className={styles.form_wrapper}>
+            <TeacherForm {...props} />
+          </div>
+        </div>
+      </main>
+    );
+  }
 };
 
 export default Account;

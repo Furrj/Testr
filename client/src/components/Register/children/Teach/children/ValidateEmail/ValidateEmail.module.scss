@@ -1,2 +1,15 @@
+@use "../../../../../../styles/mixins";
+@use "../../../../../../styles/vars";
+
 .root {
+	@include mixins.full-size-percent;
+
+	overflow: auto;
+
+	.scroll {
+		width: 100%;
+		min-height: 100%;
+
+		@include mixins.flex-center-col;
+	}
 }

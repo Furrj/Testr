@@ -4,7 +4,6 @@ export type T_FORM_REGISTER_USER = {
 	confirm_password: string;
 	first_name: string;
 	last_name: string;
-	email?: string;
 };
 export const INIT_FORM_REGISTER_USER: T_FORM_REGISTER_USER = {
 	username: "",
@@ -12,7 +11,6 @@ export const INIT_FORM_REGISTER_USER: T_FORM_REGISTER_USER = {
 	confirm_password: "",
 	first_name: "",
 	last_name: "",
-	email: "",
 };
 
 export type T_FORM_REGISTER_STUDENT = T_FORM_REGISTER_USER & {
@@ -29,11 +27,16 @@ export const INIT_FORM_REGISTER_STUDENT: T_FORM_REGISTER_STUDENT = {
 	class_id: "",
 };
 
-export type T_FORM_REGISTER_TEACHER = {
+export type T_FORM_REGISTER_TEACHER = T_FORM_REGISTER_USER & {
 	email: string;
 	school: string;
 };
 export const INIT_FORM_REGISTER_TEACHER: T_FORM_REGISTER_TEACHER = {
+	username: "",
+	password: "",
+	confirm_password: "",
+	first_name: "",
+	last_name: "",
 	email: "",
 	school: "",
 };
