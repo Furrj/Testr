@@ -43,7 +43,7 @@ CREATE TABLE users.contact_info
 (
     user_id INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
     email   TEXT NOT NULL,
-    phone   TEXT
+    phone   TEXT NOT NULL DEFAULT ""
 );
 CREATE UNIQUE INDEX unique_email_case_insensitive ON users.contact_info (LOWER(email));
 
