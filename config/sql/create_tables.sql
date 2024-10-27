@@ -4,7 +4,7 @@ CREATE SCHEMA students;
 CREATE SCHEMA game_sessions;
 CREATE SCHEMA assignments;
 
-CREATE TYPE users.role AS ENUM ('S', 'T', 'A');
+CREATE TYPE users.role AS ENUM ('S', 'T', 'A', 'N');
 
 CREATE TABLE users.ids
 (
