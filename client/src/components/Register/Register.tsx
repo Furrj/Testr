@@ -6,7 +6,7 @@ const Register: React.FC = () => {
     <main className={styles.root}>
       <div className={styles.scroll}>
         <div>
-          <h1>Step 1: Create Account</h1>
+          <h1>Create Account</h1>
         </div>
 
         <div className={styles.form_wrapper}>
