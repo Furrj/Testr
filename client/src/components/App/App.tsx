@@ -5,41 +5,33 @@ import ProtectedApp from "./children/ProtectedApp/ProtectedApp";
 import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";
 import UnprotectedApp from "./children/UnprotectedApp/UnprotectedApp";
-import { useAuthCtx } from "../../contexts/AuthProvider";
-import useUserDataQuery from "../../queries/userDataQuery";
-import { USER_ROLES } from "../../utils/consts";
-import useTeacherDataQuery from "../../queries/teacherDataQuery";
+import { useCtxUser } from "../../contexts/UserProvider";
 
 const App: React.FC = () => {
-	// get auth status
-	const authData = useAuthCtx();
-
-	// get user info
-	const userDataQuery = useUserDataQuery(authData);
+	// get user data
+	const ctxUser = useCtxUser();
 
 	// fetch teacher data if user role == teacher
-	const teacherDataQuery = useTeacherDataQuery(
-		authData.tokens.curr,
-		authData.valid &&
-			userDataQuery.isSuccess &&
-			userDataQuery.data.user_data.role === USER_ROLES.TEACHER,
-	);
+	// const teacherDataQuery = useTeacherDataQuery(
+	// 	authData.tokens.curr,
+	// 	authData.valid &&
+	// 		userDataQuery.isSuccess &&
+	// 		userDataQuery.data.user.role === USER_ROLES.TEACHER,
+	// );
 
 	return (
 		<div className={styles.root}>
 			<TopBar />
 
 			<ContentBox>
-				{userDataQuery.isFetching || teacherDataQuery.isFetching ? (
+				{ctxUser.isFetching || teacherDataQuery.isFetching ? (
 					<Loading />
 				) : (
 					<Routes>
 						{authData.valid && userDataQuery.isSuccess ? (
 							<Route
 								path="*"
-								element={
-									<ProtectedApp userData={userDataQuery.data.user_data} />
-								}
+								element={<ProtectedApp userData={userDataQuery.data.user} />}
 							/>
 						) : (
 							<Route path="*" element={<UnprotectedApp />} />

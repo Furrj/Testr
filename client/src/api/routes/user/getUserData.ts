@@ -1,21 +1,22 @@
 import route_prefix from "../../route_prefix";
 import generateAuthTokenStr from "../../generateAuthTokenStr";
-import { T_AUTH } from "../../../contexts/AuthProvider";
-import { T_USERDATA } from "../../../types/users";
+import { T_USER } from "../../../types/users";
+import { T_TOKENS } from "../../../types/auth";
 
 const url = route_prefix("/user");
 
-export type T_PARAMS = T_AUTH;
+export type T_PARAMS = T_TOKENS;
 
 export type T_RES = {
-	user_data: T_USERDATA;
+	user: T_USER;
 };
 
 async function GET_USER_DATA(params: T_PARAMS): Promise<T_RES> {
+	console.log("running get user data");
 	const res = await fetch(url, {
 		method: "GET",
 		headers: {
-			Authorization: generateAuthTokenStr(params.tokens.curr.access_token),
+			Authorization: generateAuthTokenStr(params.access_token),
 		},
 	});
 

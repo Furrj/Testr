@@ -1,4 +1,4 @@
-import { type T_TOKENS } from "../types";
+import { T_TOKENS } from "../types/auth";
 import { LOCAL_STORAGE_KEYS } from "./consts";
 
 export function deepCopyObject<T extends Object>(obj: T): T {
@@ -14,7 +14,7 @@ export function logoutUser(
 }
 
 // Storage
-export function areTokensInLocalStorage(): boolean {
+export function hasTokensInLocalStorage(): boolean {
 	return (
 		localStorage.getItem(LOCAL_STORAGE_KEYS.access_token) !== null &&
 		localStorage.getItem(LOCAL_STORAGE_KEYS.refresh_token) !== null &&
@@ -24,7 +24,7 @@ export function areTokensInLocalStorage(): boolean {
 }
 
 export function getUserSessionDataFromStorage(): T_TOKENS | undefined {
-	if (!areTokensInLocalStorage()) return undefined;
+	if (!hasTokensInLocalStorage()) return undefined;
 
 	const result = localStorage.getItem(LOCAL_STORAGE_KEYS.refresh_token);
 	if (!result) return undefined;

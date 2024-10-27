@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
 					</div>
 				</Link>
 
-				{isSuccess && data.user_data.role === USER_ROLES.TEACHER && (
+				{isSuccess && data.user.role === USER_ROLES.TEACHER && (
 					<Link to={"/teacher/classes"} className={styles.link}>
 						<div
 							className={
@@ -58,7 +58,7 @@ const NavBar: React.FC = () => {
 				<div className={styles.bottom}>
 					<div className={styles.link}>
 						<div id={styles.username}>
-							<span>{data.user_data.username}</span>
+							<span>{data.user.username}</span>
 							<Link to={"/settings"}>
 								<IoMdSettings />
 							</Link>

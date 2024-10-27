@@ -48,7 +48,7 @@ const NavBar: React.FC = () => {
 					</h3>
 				</Link>
 
-				{isSuccess && data.user_data.role === USER_ROLES.TEACHER && (
+				{isSuccess && data.user.role === USER_ROLES.TEACHER && (
 					<Link to={"/teacher/classes"} className={styles.link}>
 						<h3
 							className={

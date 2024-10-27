@@ -33,7 +33,7 @@ const Settings: React.FC = () => {
 										type="checkbox"
 										name="vertical"
 										id="vertical"
-										defaultChecked={userDataQuery.data.user_data.vertical}
+										defaultChecked={userDataQuery.data.user.vertical}
 										onChange={(e) =>
 											updateVerticalPrefMutation.mutate(e.target.checked)
 										}

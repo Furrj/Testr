@@ -81,8 +81,8 @@ const Active: React.FC<IProps> = (props) => {
 	// set vertical on page load
 	useEffect(() => {
 		if (userDataQuery.isSuccess) {
-			savedVerticalPref.current = userDataQuery.data.user_data.vertical;
-			setVertical(userDataQuery.data.user_data.vertical);
+			savedVerticalPref.current = userDataQuery.data.user.vertical;
+			setVertical(userDataQuery.data.user.vertical);
 		}
 	}, [userDataQuery.isSuccess]);
 
