@@ -165,7 +165,7 @@ func TestDBHandler(t *testing.T) {
 	})
 
 	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
-		data, err := teacher.GetTeacherDataByUserID(db, testTeacherData.UserID)
+		data, err := teacher.GetTeacherDataByTeacherID(db, testTeacherData.TeacherID)
 		if err != nil {
 			t.Errorf("error in GetTeacherDataByUserID: %+v\n", err)
 		}
@@ -174,12 +174,12 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("InsertTeacherClass", func(t *testing.T) {
-		if err := teacher.InsertTeacherClass(db, testTeacherData.UserID, testTeacherClass); err != nil {
+		if err := teacher.InsertTeacherClass(db, testTeacherData.TeacherID, testTeacherClass); err != nil {
 			t.Errorf("error in InsertTeacherClass: %+v\n", err)
 		}
 	})
 	t.Run("GetTeacherClassesByUserID", func(t *testing.T) {
-		_, err := teacher.GetTeacherClassesByUserID(db, testTeacherData.UserID)
+		_, err := teacher.GetTeacherClassesByTeacherID(db, testTeacherData.TeacherID)
 		if err != nil {
 			t.Errorf("error in GetTeacherClassesByUserID: %+v\n", err)
 		}
@@ -200,7 +200,7 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 	t.Run("GetAllStudentsDataByTeacherID", func(t *testing.T) {
-		if _, err := student.GetAllStudentsDataByTeacherID(db, testTeacherData.UserID); err != nil {
+		if _, err := student.GetAllStudentsDataByTeacherID(db, testTeacherData.TeacherID); err != nil {
 			t.Errorf("error in GetAllStudentsDataByTeacherID: %+v\n", err)
 		}
 	})

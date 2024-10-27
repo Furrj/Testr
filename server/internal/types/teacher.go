@@ -1,8 +1,8 @@
 package types
 
 type TeacherData struct {
-	School string `json:"school"`
-	UserID UserID `json:"user_id"`
+	School    string `json:"school"`
+	TeacherID UserID `json:"teacher_id"`
 }
 
 type TeacherClass struct {

@@ -7,22 +7,22 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-const QGetTeacherDataByUserID = `
-	SELECT user_id, school
+const qGetTeacherDataByTeacherID = `
+	SELECT teacher_id, school
 	FROM teachers.data
-	WHERE user_id=$1
+	WHERE teacher_id=$1
 `
 
-func GetTeacherDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.TeacherData, error) {
+func GetTeacherDataByTeacherID(db *dbHandler.DBHandler, UserID types.UserID) (types.TeacherData, error) {
 	t := types.TeacherData{
-		UserID: UserID,
+		TeacherID: UserID,
 	}
 	err := db.Conn.QueryRow(
 		context.Background(),
-		QGetTeacherDataByUserID,
+		qGetTeacherDataByTeacherID,
 		UserID,
 	).Scan(
-		&t.UserID,
+		&t.TeacherID,
 		&t.School,
 	)
 	if err != nil {
@@ -56,19 +56,19 @@ func GetTeacherClassByClassID(db *dbHandler.DBHandler, classID uint) (types.Teac
 	return class, nil
 }
 
-const QGetTeacherClassesByUserID = `
+const qGetTeacherClassesByTeacherID = `
 	SELECT class_id, name
 	FROM teachers.classes
 	WHERE teacher_id=$1
 	ORDER BY class_id
 `
 
-func GetTeacherClassesByUserID(db *dbHandler.DBHandler, id types.UserID) ([]types.TeacherClass, error) {
+func GetTeacherClassesByTeacherID(db *dbHandler.DBHandler, id types.UserID) ([]types.TeacherClass, error) {
 	classes := []types.TeacherClass{}
 
 	rows, err := db.Conn.Query(
 		context.Background(),
-		QGetTeacherClassesByUserID,
+		qGetTeacherClassesByTeacherID,
 		id,
 	)
 	if err != nil {

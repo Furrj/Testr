@@ -5,8 +5,8 @@ import (
 )
 
 var TestTeacherData = types.TeacherData{
-	UserID: 1,
-	School: "BCA",
+	TeacherID: 1,
+	School:    "BCA",
 }
 
 var TestTeacherClass = types.TeacherClass{
