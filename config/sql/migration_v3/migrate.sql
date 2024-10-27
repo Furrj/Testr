@@ -31,4 +31,7 @@ ALTER TABLE teachers.data
 
 ALTER TYPE users.role ADD VALUE 'N';
 
+INSERT INTO users.account_status (user_id, is_validated, is_active)
+VALUES (1, true, true);
+
 COMMIT;
