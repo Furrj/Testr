@@ -9,9 +9,9 @@ CREATE TABLE users.validation_codes
 
 CREATE TABLE users.account_status
 (
-    user_id      INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    is_validated boolean NOT NULL DEFAULT false,
-    is_active    boolean NOT NULL DEFAULT false
+    user_id         INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    is_active       BOOLEAN  NOT NULL DEFAULT false,
+    membership_type SMALLINT NOT NULL DEFAULT -1
 );
 
 CREATE TABLE users.contact_info
@@ -31,8 +31,8 @@ ALTER TABLE teachers.data
 
 ALTER TYPE users.role ADD VALUE 'N';
 
-INSERT INTO users.account_status (user_id, is_validated, is_active)
-VALUES (1, true, true);
+INSERT INTO users.account_status (user_id, membership_type, is_active)
+VALUES (1, 3, true);
 
 ALTER TABLE teachers.data
     RENAME COLUMN user_id to teacher_id;

@@ -91,7 +91,7 @@ func UpdateValidationCode(db *dbHandler.DBHandler, c types.ValidationCode) error
 
 const uUpdateAccountStatus = `
 	UPDATE users.account_status
-	SET is_validated=$2, is_active=$3
+	SET membership_type=$2, is_active=$3
 	WHERE user_id=$1
 `
 
@@ -100,7 +100,7 @@ func UpdateAccountStatus(db *dbHandler.DBHandler, s types.AccountStatus) error {
 		context.Background(),
 		uUpdateAccountStatus,
 		s.UserId,
-		s.IsValidated,
+		s.MembershipType,
 		s.IsActive,
 	)
 	if err != nil {

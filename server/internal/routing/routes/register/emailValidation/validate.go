@@ -62,9 +62,9 @@ func Validate(db *dbHandler.DBHandler) gin.HandlerFunc {
 
 		// update db
 		s := types.AccountStatus{
-			UserId:      payload.UserId,
-			IsActive:    false,
-			IsValidated: true,
+			UserId:         payload.UserId,
+			IsActive:       false,
+			MembershipType: 1,
 		}
 		if err := user.UpdateAccountStatus(db, s); err != nil {
 			fmt.Fprintf(os.Stderr, "error in UpdateValidationCode: %+v\n", err)

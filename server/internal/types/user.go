@@ -22,10 +22,17 @@ type PasswordResetCode struct {
 	UserID UserID `json:"user_id"`
 }
 
+const (
+	MembershipTypeUnvalidated = iota
+	MembershipTypeValidated
+	MembershipTypeBasic
+	MembershipTypePremium
+)
+
 type AccountStatus struct {
-	UserId      UserID `json:"user_id"`
-	IsActive    bool   `json:"is_active"`
-	IsValidated bool   `json:"is_validated"`
+	UserId         UserID `json:"user_id"`
+	IsActive       bool   `json:"is_active"`
+	MembershipType uint   `json:"membership_type"`
 }
 
 type ContactInfo struct {

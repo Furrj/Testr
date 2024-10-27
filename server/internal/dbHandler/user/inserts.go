@@ -103,7 +103,7 @@ func InsertValidationCode(db *dbHandler.DBHandler, c types.ValidationCode) error
 }
 
 const eInsertAccountStatus = `
-	INSERT INTO users.account_status(user_id, is_active, is_validated)
+	INSERT INTO users.account_status(user_id, is_active, membership_type)
 	VALUES ($1, $2, $3)
 `
 
@@ -113,7 +113,7 @@ func InsertAccountStatus(db *dbHandler.DBHandler, s types.AccountStatus) error {
 		eInsertAccountStatus,
 		s.UserId,
 		s.IsActive,
-		s.IsValidated,
+		s.MembershipType,
 	)
 	if err != nil {
 		return err

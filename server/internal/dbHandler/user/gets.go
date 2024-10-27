@@ -168,7 +168,7 @@ func GetValidationCodeByUserId(db *dbHandler.DBHandler, id types.UserID) (types.
 }
 
 const qGetAccountStatusByUserId = `
-	SELECT is_active, is_validated 
+	SELECT is_active, membership_type 
 	FROM users.account_status
 	WHERE user_id=$1
 `
@@ -184,7 +184,7 @@ func GetAccountStatusByUserId(db *dbHandler.DBHandler, id types.UserID) (types.A
 		id,
 	).Scan(
 		&s.IsActive,
-		&s.IsValidated,
+		&s.MembershipType,
 	)
 	if err != nil {
 		return s, err

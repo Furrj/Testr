@@ -61,9 +61,9 @@ var TestPasswordResetCode = types.PasswordResetCode{
 }
 
 var TestUserAccountStatus = types.AccountStatus{
-	UserId:      1,
-	IsActive:    false,
-	IsValidated: false,
+	UserId:         1,
+	IsActive:       false,
+	MembershipType: 3,
 }
 
 var TestUserValidationCode = types.ValidationCode{

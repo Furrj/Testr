@@ -149,9 +149,9 @@ func RegisterUser(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVa
 
 		// create and insert auth status
 		s := types.AccountStatus{
-			UserId:      userID,
-			IsActive:    false,
-			IsValidated: false,
+			UserId:         userID,
+			IsActive:       false,
+			MembershipType: 0,
 		}
 		if err := user.InsertAccountStatus(db, s); err != nil {
 			fmt.Printf("error in InsertAccountStatus: %+v\n", err)

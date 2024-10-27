@@ -34,9 +34,9 @@ CREATE TABLE users.validation_codes
 
 CREATE TABLE users.account_status
 (
-    user_id      INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    is_validated boolean NOT NULL DEFAULT false,
-    is_active    boolean NOT NULL DEFAULT false
+    user_id         INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    is_active       BOOLEAN  NOT NULL DEFAULT false,
+    membership_type SMALLINT NOT NULL DEFAULT -1
 );
 
 CREATE TABLE users.contact_info
