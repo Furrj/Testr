@@ -7,6 +7,7 @@ import (
 
 	ses "github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/envvars"
 	myTypes "mathtestr.com/server/internal/types"
 )
@@ -19,7 +20,7 @@ const (
 	FILEPATH string = "email.html"
 )
 
-func SendEmail(client *ses.Client, env envvars.EnvVars, id myTypes.UserID, code, addr string) error {
+func SendEmail(client *ses.Client, env envvars.EnvVars, id myTypes.UserID, code uuid.UUID, addr string) error {
 	// Read the HTML file
 	buttonHtml, err := os.ReadFile(FILEPATH)
 	if err != nil {

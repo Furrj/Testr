@@ -1,14 +1,13 @@
 import route_prefix from "../../../route_prefix";
 
-const url = route_prefix("/register/teacher/validate");
+const url = route_prefix("/register/validate");
 
 export type T_PARAMS = {
   code: string;
-  id: number;
+  user_id: number;
 };
 
 export type T_RES = {
-  teacher_id: number;
   is_valid: boolean;
 };
 

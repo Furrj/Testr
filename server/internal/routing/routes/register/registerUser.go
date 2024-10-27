@@ -14,7 +14,6 @@ import (
 	"mathtestr.com/server/internal/auth"
 	"mathtestr.com/server/internal/aws"
 	"mathtestr.com/server/internal/dbHandler"
-	"mathtestr.com/server/internal/dbHandler/teacher"
 	"mathtestr.com/server/internal/dbHandler/user"
 	"mathtestr.com/server/internal/envvars"
 	"mathtestr.com/server/internal/routing/utils"
@@ -28,7 +27,7 @@ const (
 	RESULT_VALID           int = 2
 )
 
-type reqRT struct {
+type reqRU struct {
 	Username  string `json:"username"`
 	Password  string `json:"password"`
 	FirstName string `json:"first_name"`
@@ -36,15 +35,15 @@ type reqRT struct {
 	Email     string `json:"email"`
 }
 
-type resRT struct {
+type resRU struct {
 	Tokens types.AllTokens `json:"tokens"`
 	Result int             `json:"result"`
 }
 
-func RegisterTeacher(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gin.HandlerFunc {
+func RegisterUser(db *dbHandler.DBHandler, client *ses.Client, env envvars.EnvVars) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var payload reqRT
-		res := resRT{
+		var payload reqRU
+		res := resRU{
 			Result: RESULT_NULL,
 		}
 
@@ -69,7 +68,7 @@ func RegisterTeacher(db *dbHandler.DBHandler, client *ses.Client, env envvars.En
 		}
 
 		// check if email exists
-		if _, err := teacher.GetTeacherDataByEmail(db, payload.Email); err == nil {
+		if _, err := user.GetContactInfoByEmail(db, payload.Email); err == nil {
 			fmt.Fprintf(os.Stderr, "email '%s' already exists", payload.Email)
 			res.Result = RESULT_EMAIL_EXISTS
 			ctx.JSON(http.StatusOK, res)
@@ -115,20 +114,20 @@ func RegisterTeacher(db *dbHandler.DBHandler, client *ses.Client, env envvars.En
 			Vertical:  false,
 		}
 
-		// create registration
+		// create validation code
 		code, err := uuid.NewRandom()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error creating uuid: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)
 			return
 		}
-		reg := types.TeacherRegistration{
-			TeacherID: userID,
-			Code:      code,
+		val := types.ValidationCode{
+			UserId: userID,
+			Code:   code,
 		}
 
 		// attempt send email
-		if err := aws.SendEmail(client, env, reg, payload.Email); err != nil {
+		if err := aws.SendEmail(client, env, val.UserId, val.Code, payload.Email); err != nil {
 			fmt.Fprintf(os.Stderr, "error sending email to %s: %+v\n", payload.Email, err)
 			ctx.Status(http.StatusInternalServerError)
 			return
@@ -141,20 +140,33 @@ func RegisterTeacher(db *dbHandler.DBHandler, client *ses.Client, env envvars.En
 			return
 		}
 
-		// insert TeacherData
-		teacherData := types.TeacherData{
-			Email:  payload.Email,
-			UserID: userID,
-		}
-		if err := teacher.InsertTeacherData(db, teacherData); err != nil {
-			fmt.Printf("error inserting teacher: %+v\n", err)
+		// insert validation code
+		if err := user.InsertValidationCode(db, val); err != nil {
+			fmt.Printf("error in InsertValidationCode: %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, res)
 			return
 		}
 
-		// insert registration
-		if err := teacher.InsertTeacherRegistration(db, reg); err != nil {
-			fmt.Printf("error inserting teacher registration: %+v\n", err)
+		// create and insert auth status
+		s := types.AccountStatus{
+			UserId:      userID,
+			IsActive:    false,
+			IsValidated: false,
+		}
+		if err := user.InsertAccountStatus(db, s); err != nil {
+			fmt.Printf("error in InsertAccountStatus: %+v\n", err)
+			ctx.JSON(http.StatusInternalServerError, res)
+			return
+		}
+
+		// create and insert contact info
+		ci := types.ContactInfo{
+			Email:  payload.Email,
+			Phone:  "",
+			UserId: userID,
+		}
+		if err := user.InsertContactInfo(db, ci); err != nil {
+			fmt.Printf("error in InsertContactInfo: %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, res)
 			return
 		}

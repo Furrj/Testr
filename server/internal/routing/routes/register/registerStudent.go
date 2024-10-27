@@ -28,7 +28,7 @@ type reqRS struct {
 func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var payload reqRS
-		response := resRT{
+		response := resRU{
 			Result: RESULT_NULL,
 		}
 

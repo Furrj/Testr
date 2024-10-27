@@ -118,6 +118,30 @@ func GetContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) (types.Con
 	return ci, nil
 }
 
+const qGetContactInfoByEmail = `
+	SELECT user_id, phone 
+	FROM users.contact_info
+	WHERE email=$1
+`
+
+func GetContactInfoByEmail(db *dbHandler.DBHandler, email string) (types.ContactInfo, error) {
+	ci := types.ContactInfo{
+		Email: email,
+	}
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetContactInfoByEmail,
+		email,
+	).Scan(
+		&ci.UserId,
+		&ci.Phone,
+	)
+	if err != nil {
+		return ci, err
+	}
+	return ci, nil
+}
+
 const qGetValidationCodeByUserId = `
 	SELECT code, issued_at
 	FROM users.validation_codes

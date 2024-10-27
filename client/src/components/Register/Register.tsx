@@ -1,16 +1,21 @@
-import { Routes, Route } from "react-router-dom";
-import Student from "./children/Student/Student";
-import Choose from "./children/Choose/Choose";
-import Teach from "./children/Teach/Teach";
+import UserForm from "./children/UserForm/UserForm";
+import styles from "./Register.module.scss"
 
 const Register: React.FC = () => {
-	return (
-		<Routes>
-			<Route path="/student" element={<Student />} />
-			<Route path="/teacher/*" element={<Teach />} />
-			<Route path="/" element={<Choose />} />
-		</Routes>
-	);
+  return (
+    <main className={styles.root}>
+      <div className={styles.scroll}>
+        <div>
+          <h1>Step 1: Create Account</h1>
+        </div>
+
+        <div className={styles.form_wrapper}>
+          <UserForm />
+        </div>
+      </div>
+    </main>
+  );
+
 };
 
 export default Register;

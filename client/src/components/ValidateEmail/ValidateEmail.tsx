@@ -1,13 +1,12 @@
-import { Link, useSearchParams } from "react-router-dom";
 import styles from "./ValidateEmail.module.scss";
 import Locals from "./Locals";
-import Loading from "../../../../../Loading/Loading";
+import { useSearchParams } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 const ValidateEmail: React.FC = () => {
   const [params] = useSearchParams();
   const code = params.get("code");
-  const idStr = params.get("id") || "0";
-
+  const idStr = params.get("id") || "0"
   const id = Number.parseInt(idStr);
 
   if (!code || code === "" || !id || id === 0) {
@@ -17,7 +16,7 @@ const ValidateEmail: React.FC = () => {
 
   const validateEmailQuery = Locals.useValidateEmailQuery({
     code,
-    id,
+    user_id: id,
   });
 
   if (validateEmailQuery.isFetching) {
@@ -26,22 +25,9 @@ const ValidateEmail: React.FC = () => {
     validateEmailQuery.isSuccess &&
     validateEmailQuery.data !== undefined
   ) {
+    console.log(validateEmailQuery.data);
     if (validateEmailQuery.data.is_valid) {
-      console.log(validateEmailQuery.data)
-      return (
-        <main className={styles.root}>
-          <div className={styles.scroll}>
-            <h1>
-              Thank you for validating your email address! Click on the button
-              below to create your account and start your free trial.
-            </h1>
-
-            <Link to={"/register/teacher/account"} className="link">
-              <button>Create Account</button>
-            </Link>
-          </div>
-        </main>
-      );
+      return <div>Valid!</div>;
     } else {
       return <div>This link is expired, please request a new one</div>;
     }

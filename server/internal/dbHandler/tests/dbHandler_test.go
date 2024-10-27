@@ -307,6 +307,13 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in GetContactInfoByUserId: %+v\n", err)
 		}
 	})
+	t.Run("GetContactInfoByEmail", func(t *testing.T) {
+		_, err := user.GetContactInfoByEmail(db, testUserContactInfo.Email)
+		if err != nil {
+			t.Errorf("error in GetContactInfoByEmail: %+v\n", err)
+		}
+	})
+
 	t.Run("DeleteContactInfoByUserId", func(t *testing.T) {
 		if err := user.DeleteContactInfoByUserId(db, testUserContactInfo.UserId); err != nil {
 			t.Errorf("error in DeleteContactInfoByUserId: %+v\n", err)
