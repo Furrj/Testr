@@ -25,7 +25,6 @@ const ValidateEmail: React.FC = () => {
     validateEmailQuery.isSuccess &&
     validateEmailQuery.data !== undefined
   ) {
-    console.log(validateEmailQuery.data);
     if (validateEmailQuery.data.is_valid) {
       return <div>Valid!</div>;
     } else {
