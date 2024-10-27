@@ -10,8 +10,8 @@ import (
 // Inserts
 
 const EInsertTeacherData = `
-	INSERT INTO teachers.data(user_id, email, school)
-	VALUES ($1, $2, $3)
+	INSERT INTO teachers.data(user_id, school)
+	VALUES ($1, $2)
 `
 
 func InsertTeacherData(db *dbHandler.DBHandler, teacherData types.TeacherData) error {
@@ -19,7 +19,6 @@ func InsertTeacherData(db *dbHandler.DBHandler, teacherData types.TeacherData) e
 		context.Background(),
 		EInsertTeacherData,
 		teacherData.UserID,
-		teacherData.Email,
 		teacherData.School,
 	)
 	if err != nil {
@@ -39,24 +38,6 @@ func InsertTeacherClass(db *dbHandler.DBHandler, userID types.UserID, class type
 		EInsertTeacherClass,
 		userID,
 		class.Name,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-const EInsertTeacherRegistration = `
-	INSERT INTO teachers.validation_codes(teacher_id, code)
-	VALUES ($1, $2)
-`
-
-func InsertTeacherRegistration(db *dbHandler.DBHandler, t types.TeacherRegistration) error {
-	_, err := db.Conn.Exec(
-		context.Background(),
-		EInsertTeacherRegistration,
-		t.TeacherID,
-		t.Code,
 	)
 	if err != nil {
 		return err

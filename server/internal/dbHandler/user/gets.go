@@ -92,3 +92,78 @@ func GetPasswordResetCodeByUserID(db *dbHandler.DBHandler, id types.UserID) (str
 	}
 	return code, nil
 }
+
+const qGetContactInfoByUserId = `
+	SELECT email, password
+	FROM users.contact_info
+	WHERE user_id=$1
+`
+
+func GetContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) (types.ContactInfo, error) {
+	ci := types.ContactInfo{
+		UserId: id,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		QGetPasswordResetCodeByUserID,
+		id,
+	).Scan(
+		&ci.Email,
+		&ci.Phone,
+	)
+	if err != nil {
+		return ci, err
+	}
+	return ci, nil
+}
+
+const qGetValidationCodeByUserId = `
+	SELECT code, issued_at
+	FROM users.validation_codes
+	WHERE user=$1
+`
+
+func GetValidationCodeByUserId(db *dbHandler.DBHandler, id types.UserID) (types.ValidationCode, error) {
+	u := types.ValidationCode{
+		UserId: id,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetValidationCodeByUserId,
+		id,
+	).Scan(
+		&u.Code,
+		&u.IssuedAt,
+	)
+	if err != nil {
+		return u, err
+	}
+	return u, nil
+}
+
+const qGetAccountStatusByUserId = `
+	SELECT is_active, is_validated 
+	FROM users.account_status
+	WHERE user_id=$1
+`
+
+func GetAccountStatusByUserId(db *dbHandler.DBHandler, id types.UserID) (types.AccountStatus, error) {
+	s := types.AccountStatus{
+		UserId: id,
+	}
+
+	err := db.Conn.QueryRow(
+		context.Background(),
+		qGetAccountStatusByUserId,
+		id,
+	).Scan(
+		&s.IsActive,
+		&s.IsValidated,
+	)
+	if err != nil {
+		return s, err
+	}
+	return s, nil
+}

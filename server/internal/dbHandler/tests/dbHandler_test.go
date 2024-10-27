@@ -35,12 +35,14 @@ func TestDBHandler(t *testing.T) {
 	testUserDataMichele := testHelpers.TestUserDataMichele
 	testStudentData := testHelpers.TestStudentData
 	testTeacherData := testHelpers.TestTeacherData
-	testTeacherRegistration := testHelpers.TestTeacherRegistration
 	testGameSession := testHelpers.TestGameSession
 	testTeacherClass := testHelpers.TestTeacherClass
 	testAssignment := testHelpers.TestAssignment
 	testAssignmentClass := testHelpers.TestAssignmentClass
 	testPasswordResetCode := testHelpers.TestPasswordResetCode
+	testUserAccountStatus := testHelpers.TestUserAccountStatus
+	// testUserValidationCode := testHelpers.TestUserValidationCode
+	// testUserContactInfo := testHelpers.TestUserContactInfo
 
 	t.Run("Ping connection", func(t *testing.T) {
 		if err := db.Conn.Ping(context.Background()); err != nil {
@@ -60,7 +62,7 @@ func TestDBHandler(t *testing.T) {
 
 	t.Run("InsertUserIds", func(t *testing.T) {
 		for range 2 {
-			_, err := user.InsertUser(db)
+			_, err := user.CreateUser(db)
 			if err != nil {
 				t.Errorf("Error in InsertUser: %+v\n", err)
 			}
@@ -107,6 +109,32 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
+	t.Run("InsertAccountStatus", func(t *testing.T) {
+		if err := user.InsertAccountStatus(db, testUserAccountStatus); err != nil {
+			t.Errorf("error in InsertAccountStatus: %+v\n", err)
+		}
+	})
+	t.Run("GetAccountStatusByUserId", func(t *testing.T) {
+		s, err := user.GetAccountStatusByUserId(db, testUserAccountStatus.UserId)
+		if err != nil {
+			t.Errorf("error in GetAccountStatusByUserId: %+v\n", err)
+		}
+
+		if s != testUserAccountStatus {
+			t.Errorf("mismtach in GetAccountStatusByUserId: got %+v, want %+v\n", s, testUserAccountStatus)
+		}
+	})
+	t.Run("UpdateAccountStatus", func(t *testing.T) {
+		if err := user.UpdateAccountStatus(db, testUserAccountStatus); err != nil {
+			t.Errorf("error in UpdateAccountStatus: %+v\n", err)
+		}
+	})
+	t.Run("DeleteAccountStatus", func(t *testing.T) {
+		if err := user.DeleteAccountStatusByUserId(db, testUserAccountStatus.UserId); err != nil {
+			t.Errorf("error in DeleteAccountStatus: %+v\n", err)
+		}
+	})
+
 	t.Run("InsertGameSession", func(t *testing.T) {
 		if err := gamesession.InsertGameSession(db, testGameSession); err != nil {
 			t.Errorf("Error inserting game session: %+v", err)
@@ -136,35 +164,10 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("InsertTeacherRegistration", func(t *testing.T) {
-		if err := teacher.InsertTeacherRegistration(db, testTeacherRegistration); err != nil {
-			t.Errorf("error in InsertTeacherRegistration: %+v\n", err)
-		}
-	})
-	t.Run("UpdateTeacherRegistrationByTeacherId", func(t *testing.T) {
-		if err := teacher.UpdateTeacherRegistrationByTeacherId(db, testTeacherRegistration); err != nil {
-			t.Errorf("error in UpdateTeacherRegistrationByTeacherId: %+v\n", err)
-		}
-	})
-	t.Run("UpdateTeacherValidationStatusByTeacherId", func(t *testing.T) {
-		if err := teacher.UpdateTeacherValidationStatusByTeacherId(db, testTeacherRegistration.TeacherID, false); err != nil {
-			t.Errorf("error in UpdateTeacherValidationStatusByTeacherId: %+v\n", err)
-		}
-	})
-
 	t.Run("GetTeacherDataByUserID", func(t *testing.T) {
 		data, err := teacher.GetTeacherDataByUserID(db, testTeacherData.UserID)
 		if err != nil {
 			t.Errorf("error in GetTeacherDataByUserID: %+v\n", err)
-		}
-		if data != testTeacherData {
-			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
-		}
-	})
-	t.Run("GetTeacherDataByEmail", func(t *testing.T) {
-		data, err := teacher.GetTeacherDataByEmail(db, testTeacherData.Email)
-		if err != nil {
-			t.Errorf("error in GetTeacherDataByEmail: %+v\n", err)
 		}
 		if data != testTeacherData {
 			t.Errorf("mismatch in GetTeacherDataByUserID: got %+v, want %+v", data, testTeacherData)
@@ -259,8 +262,8 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in DeleteUserByUserID: %+v\n", err)
 		}
 	})
-	t.Run("DeleteTeacherRegistrationByUserID", func(t *testing.T) {
-		if err := teacher.DeleteTeacherRegistrationByTeacherId(db, testTeacherData.UserID); err != nil {
+	t.Run("DeleteValidationCodeByUserID", func(t *testing.T) {
+		if err := user.DeleteValidationCodeByUserId(db, testTeacherData.UserID); err != nil {
 			t.Errorf("error in DeleteTeacherRegistrationByTeacherId: %+v\n", err)
 		}
 	})

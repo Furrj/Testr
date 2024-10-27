@@ -3,6 +3,7 @@
 package testHelpers
 
 import (
+	"github.com/google/uuid"
 	"mathtestr.com/server/internal/types"
 )
 
@@ -57,4 +58,22 @@ var TestUserLoginPayloadInvalidUsername = types.ReqLogin{
 var TestPasswordResetCode = types.PasswordResetCode{
 	UserID: TestUserDataJackson.UserID,
 	Code:   "1234",
+}
+
+var TestUserAccountStatus = types.AccountStatus{
+	UserId:      1,
+	IsActive:    false,
+	IsValidated: false,
+}
+
+var TestUserValidationCode = types.ValidationCode{
+	UserId:   1,
+	Code:     uuid.MustParse("8ff6b354-1063-40f6-b196-fa422723b971"),
+	IssuedAt: 1,
+}
+
+var TestUserContactInfo = types.ContactInfo{
+	UserId: 1,
+	Email:  "a@a.com",
+	Phone:  "678-186-7628",
 }

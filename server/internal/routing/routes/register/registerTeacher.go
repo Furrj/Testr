@@ -81,7 +81,7 @@ func RegisterTeacher(db *dbHandler.DBHandler, client *ses.Client, env envvars.En
 		}
 
 		// create User
-		userID, err := user.InsertUser(db)
+		userID, err := user.CreateUser(db)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error inserting user: %+v\n", err)
 			ctx.JSON(http.StatusInternalServerError, res)

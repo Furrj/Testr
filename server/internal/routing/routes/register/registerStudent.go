@@ -56,7 +56,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// insert User
-		userID, err := user.InsertUser(db)
+		userID, err := user.CreateUser(db)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("Error inserting user: %+v\n", err)

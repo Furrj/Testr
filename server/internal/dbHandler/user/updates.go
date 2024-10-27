@@ -68,3 +68,43 @@ func UpdateUserData(db *dbHandler.DBHandler, data types.UserData) error {
 	}
 	return nil
 }
+
+const uUpdateValidationCode = `
+	UPDATE users.validation_codes
+	SET code=$2, issued_at=$3
+	WHERE user=$1
+`
+
+func UpdateValidationCode(db *dbHandler.DBHandler, c types.ValidationCode) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		uUpdateValidationCode,
+		c.UserId,
+		c.Code,
+		c.IssuedAt,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+const uUpdateAccountStatus = `
+	UPDATE users.account_status
+	SET is_validated=$2, is_active=$3
+	WHERE user_id=$1
+`
+
+func UpdateAccountStatus(db *dbHandler.DBHandler, s types.AccountStatus) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		uUpdateAccountStatus,
+		s.UserId,
+		s.IsValidated,
+		s.IsActive,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
