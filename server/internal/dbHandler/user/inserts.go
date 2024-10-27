@@ -66,7 +66,7 @@ func InsertPasswordResetCode(db *dbHandler.DBHandler, c types.PasswordResetCode)
 }
 
 const eInsertContactInfo = `
-	INSERT INTO users.contact_info (user_id, email, password)
+	INSERT INTO users.contact_info (user_id, email, phone)
 	VALUES ($1, $2, $3)
 `
 

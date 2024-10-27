@@ -42,7 +42,7 @@ func TestDBHandler(t *testing.T) {
 	testPasswordResetCode := testHelpers.TestPasswordResetCode
 	testUserAccountStatus := testHelpers.TestUserAccountStatus
 	testUserValidationCode := testHelpers.TestUserValidationCode
-	// testUserContactInfo := testHelpers.TestUserContactInfo
+	testUserContactInfo := testHelpers.TestUserContactInfo
 
 	t.Run("Ping connection", func(t *testing.T) {
 		if err := db.Conn.Ping(context.Background()); err != nil {
@@ -290,9 +290,32 @@ func TestDBHandler(t *testing.T) {
 		}
 	})
 
+	t.Run("InsertContactInfo", func(t *testing.T) {
+		if err := user.InsertContactInfo(db, testUserContactInfo); err != nil {
+			t.Errorf("error in InsertContactInfo: %+v\n", err)
+		}
+	})
+	t.Run("UpdateContactInfo", func(t *testing.T) {
+		testUserContactInfo.Phone = "678-852-1980"
+		if err := user.UpdateContactInfo(db, testUserContactInfo); err != nil {
+			t.Errorf("error in UpdateContactInfo: %+v\n", err)
+		}
+	})
+	t.Run("GetContactInfoByUserId", func(t *testing.T) {
+		_, err := user.GetContactInfoByUserId(db, testUserContactInfo.UserId)
+		if err != nil {
+			t.Errorf("error in GetContactInfoByUserId: %+v\n", err)
+		}
+	})
+	t.Run("DeleteContactInfoByUserId", func(t *testing.T) {
+		if err := user.DeleteContactInfoByUserId(db, testUserContactInfo.UserId); err != nil {
+			t.Errorf("error in DeleteContactInfoByUserId: %+v\n", err)
+		}
+	})
+
 	t.Run("DropTablesEnd", func(t *testing.T) {
 		if err := db.ExecuteSqlScript(os.Getenv("SQL_DROP_TABLES")); err != nil {
-			t.Errorf("Error dropping tables: %+v\n", err)
+			t.Errorf("error dropping tables: %+v\n", err)
 		}
 	})
 }

@@ -76,3 +76,20 @@ func DeleteAccountStatusByUserId(db *dbHandler.DBHandler, id types.UserID) error
 	}
 	return nil
 }
+
+const dDeleteContactInfoByUserId = `
+	DELETE FROM users.contact_info
+	WHERE user_id=$1
+`
+
+func DeleteContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		dDeleteContactInfoByUserId,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}

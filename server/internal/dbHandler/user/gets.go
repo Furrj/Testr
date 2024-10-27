@@ -8,20 +8,20 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-const QGetUserIDByUsername = `
+const qGetUserIDByUsername = `
 	SELECT user_id FROM users.data WHERE LOWER(username)=LOWER($1)
 `
 
 func GetUserIDByUsername(db *dbHandler.DBHandler, username string) (types.UserID, error) {
 	var id types.UserID
-	err := db.Conn.QueryRow(context.Background(), QGetUserIDByUsername, username).Scan(&id)
+	err := db.Conn.QueryRow(context.Background(), qGetUserIDByUsername, username).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
 	return id, nil
 }
 
-const QGetUserDataByUserID = `
+const qGetUserDataByUserID = `
 	SELECT user_id, username, password, salt, first_name, last_name, role, vertical
 	FROM users.data
 	WHERE user_id=$1
@@ -29,7 +29,7 @@ const QGetUserDataByUserID = `
 
 func GetUserDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.UserData, error) {
 	var UserData types.UserData
-	err := db.Conn.QueryRow(context.Background(), QGetUserDataByUserID, UserID).Scan(
+	err := db.Conn.QueryRow(context.Background(), qGetUserDataByUserID, UserID).Scan(
 		&UserData.UserID,
 		&UserData.Username,
 		&UserData.Password,
@@ -45,7 +45,7 @@ func GetUserDataByUserID(db *dbHandler.DBHandler, UserID types.UserID) (types.Us
 	return UserData, nil
 }
 
-const QGetPasswordResetCodeByCode = `
+const qGetPasswordResetCodeByCode = `
 	SELECT user_id, code
 	FROM users.password_reset_codes
 	WHERE code=$1
@@ -56,7 +56,7 @@ func GetPasswordResetCodeByCode(db *dbHandler.DBHandler, code string) (types.Pas
 
 	err := db.Conn.QueryRow(
 		context.Background(),
-		QGetPasswordResetCodeByCode,
+		qGetPasswordResetCodeByCode,
 		code,
 	).Scan(
 		&rc.UserID,
@@ -68,7 +68,7 @@ func GetPasswordResetCodeByCode(db *dbHandler.DBHandler, code string) (types.Pas
 	return rc, nil
 }
 
-const QGetPasswordResetCodeByUserID = `
+const qGetPasswordResetCodeByUserID = `
 	SELECT code
 	FROM users.password_reset_codes
 	WHERE user_id=$1
@@ -79,7 +79,7 @@ func GetPasswordResetCodeByUserID(db *dbHandler.DBHandler, id types.UserID) (str
 
 	err := db.Conn.QueryRow(
 		context.Background(),
-		QGetPasswordResetCodeByUserID,
+		qGetPasswordResetCodeByUserID,
 		id,
 	).Scan(
 		&code,
@@ -94,7 +94,7 @@ func GetPasswordResetCodeByUserID(db *dbHandler.DBHandler, id types.UserID) (str
 }
 
 const qGetContactInfoByUserId = `
-	SELECT email, password
+	SELECT email, phone
 	FROM users.contact_info
 	WHERE user_id=$1
 `
@@ -106,7 +106,7 @@ func GetContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) (types.Con
 
 	err := db.Conn.QueryRow(
 		context.Background(),
-		QGetPasswordResetCodeByUserID,
+		qGetContactInfoByUserId,
 		id,
 	).Scan(
 		&ci.Email,

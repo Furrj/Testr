@@ -108,3 +108,23 @@ func UpdateAccountStatus(db *dbHandler.DBHandler, s types.AccountStatus) error {
 	}
 	return nil
 }
+
+const uUpdateContactInfo = `
+	UPDATE users.contact_info
+	SET email=$2, phone=$3
+	WHERE user_id=$1
+`
+
+func UpdateContactInfo(db *dbHandler.DBHandler, i types.ContactInfo) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		uUpdateContactInfo,
+		i.UserId,
+		i.Email,
+		i.Phone,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
