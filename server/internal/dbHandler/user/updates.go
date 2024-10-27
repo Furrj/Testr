@@ -72,7 +72,7 @@ func UpdateUserData(db *dbHandler.DBHandler, data types.UserData) error {
 const uUpdateValidationCode = `
 	UPDATE users.validation_codes
 	SET code=$2, issued_at=$3
-	WHERE user=$1
+	WHERE user_id=$1
 `
 
 func UpdateValidationCode(db *dbHandler.DBHandler, c types.ValidationCode) error {

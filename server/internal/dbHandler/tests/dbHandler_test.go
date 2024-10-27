@@ -41,7 +41,7 @@ func TestDBHandler(t *testing.T) {
 	testAssignmentClass := testHelpers.TestAssignmentClass
 	testPasswordResetCode := testHelpers.TestPasswordResetCode
 	testUserAccountStatus := testHelpers.TestUserAccountStatus
-	// testUserValidationCode := testHelpers.TestUserValidationCode
+	testUserValidationCode := testHelpers.TestUserValidationCode
 	// testUserContactInfo := testHelpers.TestUserContactInfo
 
 	t.Run("Ping connection", func(t *testing.T) {
@@ -262,9 +262,31 @@ func TestDBHandler(t *testing.T) {
 			t.Errorf("error in DeleteUserByUserID: %+v\n", err)
 		}
 	})
+
+	t.Run("InsertValidationCode", func(t *testing.T) {
+		if err := user.InsertValidationCode(db, testUserValidationCode); err != nil {
+			t.Errorf("error in InsertValidationCode: %+v\n", err)
+		}
+	})
+	t.Run("UpdateValidationCode", func(t *testing.T) {
+		testUserValidationCode.IssuedAt = 1
+		if err := user.UpdateValidationCode(db, testUserValidationCode); err != nil {
+			t.Errorf("error in UpdateValidationCode: %+v\n", err)
+		}
+	})
+	t.Run("GetValidationCodeByUserId", func(t *testing.T) {
+		c, err := user.GetValidationCodeByUserId(db, testUserValidationCode.UserId)
+		if err != nil {
+			t.Errorf("error in GetValidationCodeByUserId: %+v\n", err)
+		}
+
+		if c != testUserValidationCode {
+			t.Errorf("mismatch in GetValidationCodeByUserId: got %+v, want %+v\n\n", c, testUserValidationCode)
+		}
+	})
 	t.Run("DeleteValidationCodeByUserID", func(t *testing.T) {
-		if err := user.DeleteValidationCodeByUserId(db, testTeacherData.UserID); err != nil {
-			t.Errorf("error in DeleteTeacherRegistrationByTeacherId: %+v\n", err)
+		if err := user.DeleteValidationCodeByUserId(db, testUserValidationCode.UserId); err != nil {
+			t.Errorf("error in DeleteValidationCodeByUserID: %+v\n", err)
 		}
 	})
 

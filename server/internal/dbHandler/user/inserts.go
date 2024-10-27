@@ -85,7 +85,7 @@ func InsertContactInfo(db *dbHandler.DBHandler, ci types.ContactInfo) error {
 }
 
 const eInsertValidationCode = `
-	INSERT INTO users.validation_codes(user, code)
+	INSERT INTO users.validation_codes(user_id, code)
 	VALUES ($1, $2)
 `
 

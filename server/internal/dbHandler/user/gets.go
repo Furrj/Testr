@@ -121,11 +121,11 @@ func GetContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) (types.Con
 const qGetValidationCodeByUserId = `
 	SELECT code, issued_at
 	FROM users.validation_codes
-	WHERE user=$1
+	WHERE user_id=$1
 `
 
 func GetValidationCodeByUserId(db *dbHandler.DBHandler, id types.UserID) (types.ValidationCode, error) {
-	u := types.ValidationCode{
+	c := types.ValidationCode{
 		UserId: id,
 	}
 
@@ -134,13 +134,13 @@ func GetValidationCodeByUserId(db *dbHandler.DBHandler, id types.UserID) (types.
 		qGetValidationCodeByUserId,
 		id,
 	).Scan(
-		&u.Code,
-		&u.IssuedAt,
+		&c.Code,
+		&c.IssuedAt,
 	)
 	if err != nil {
-		return u, err
+		return c, err
 	}
-	return u, nil
+	return c, nil
 }
 
 const qGetAccountStatusByUserId = `
