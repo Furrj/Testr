@@ -34,4 +34,7 @@ ALTER TYPE users.role ADD VALUE 'N';
 INSERT INTO users.account_status (user_id, is_validated, is_active)
 VALUES (1, true, true);
 
+ALTER TABLE teachers.data
+    RENAME COLUMN user_id to teacher_id;
+
 COMMIT;

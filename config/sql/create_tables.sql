@@ -49,21 +49,21 @@ CREATE UNIQUE INDEX unique_email_case_insensitive ON users.contact_info (LOWER(e
 
 CREATE TABLE teachers.data
 (
-    user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    school  TEXT
+    teacher_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
+    school     TEXT
 );
 
 CREATE TABLE teachers.classes
 (
     class_id   SERIAL PRIMARY KEY,
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
     name       TEXT
 );
 
 CREATE TABLE students.data
 (
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
     class_id   INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE game_sessions.data
 CREATE TABLE assignments.data
 (
     assignment_id UUID PRIMARY KEY,
-    teacher_id    INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    teacher_id    INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
     settings_id   UUID REFERENCES game_sessions.settings (settings_id) ON DELETE CASCADE,
     name          TEXT,
     due           BIGINT,
