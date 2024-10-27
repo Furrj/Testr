@@ -11,20 +11,46 @@ CREATE TABLE users.ids
     user_id SERIAL PRIMARY KEY
 );
 
-CREATE TABLE teachers.data
+CREATE TABLE users.data
 (
-    user_id      INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    email        TEXT UNIQUE NOT NULL,
-    school       TEXT        NOT NULL DEFAULT '',
-    is_active    BOOLEAN     NOT NULL DEFAULT false,
-    is_validated boolean     NOT NULL DEFAULT false
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    username   VARCHAR(32) UNIQUE,
+    password   TEXT,
+    salt       TEXT,
+    first_name VARCHAR(32),
+    last_name  VARCHAR(32),
+    role       users.role DEFAULT 'S',
+    vertical   BOOLEAN,
+    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
+    updated_at BIGINT
 );
 
-CREATE TABLE teachers.validation_codes
+CREATE TABLE users.validation_codes
 (
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    code       UUID,
-    issued_at  BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
+    user_id   INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    code      UUID,
+    issued_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
+);
+
+CREATE TABLE users.account_status
+(
+    user_id      INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    is_validated boolean NOT NULL DEFAULT false,
+    is_active    boolean NOT NULL DEFAULT false
+);
+
+CREATE TABLE users.contact_info
+(
+    user_id INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    email   TEXT NOT NULL,
+    phone   TEXT
+);
+CREATE UNIQUE INDEX unique_email_case_insensitive ON users.contact_info (LOWER(email));
+
+CREATE TABLE teachers.data
+(
+    user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
+    school  TEXT
 );
 
 CREATE TABLE teachers.classes
@@ -39,20 +65,6 @@ CREATE TABLE students.data
     user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
     teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
     class_id   INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE
-);
-
-CREATE TABLE users.data
-(
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    username   VARCHAR(32) UNIQUE,
-    password   TEXT,
-    salt       TEXT,
-    first_name VARCHAR(32),
-    last_name  VARCHAR(32),
-    role       users.role DEFAULT 'S',
-    vertical   BOOLEAN,
-    created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
-    updated_at BIGINT
 );
 
 CREATE TABLE game_sessions.settings
