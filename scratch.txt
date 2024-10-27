@@ -1,7 +1,18 @@
-# FLOW
-Register->Home
-+++++++++++@
+# TODO
+Change client T_USERDATA
+Change auth flow on client login
+Allow play game as guest
 
+
+# FLOW
+Enter Site
+Taken to Play page
+Opening prompt "are you a teacher or a student?"
+Certain features disabled but buttons are visible
+	- Leaderboard
+	- Versus
+	
+# Misc
 I. Register
 	A. UserData + Email
 		1. create new user
@@ -12,9 +23,3 @@ II. Home
 	B. provide way to sign up as student
 	C. prompt for validation or add classes if teacher
 	
-# TODO
-	+ add users.account_status.membership_type
-	+ dbHandlers
-	- routes
-	- redirect to home on registration
-
