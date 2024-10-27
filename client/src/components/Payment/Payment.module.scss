@@ -1,0 +1,20 @@
+@use "../../styles/mixins";
+@use "../../styles/vars";
+
+.root {
+	@include mixins.full-size-percent;
+	overflow: auto;
+
+	background: #292727;
+
+	.scroll {
+		width: 100%;
+		min-height: 100%;
+
+		padding: 20px;
+
+		#form {
+			height: 100%;
+		}
+	}
+}

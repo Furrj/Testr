@@ -1,11 +1,12 @@
 package testHelpers
 
-import "mathtestr.com/server/internal/types"
+import (
+	"mathtestr.com/server/internal/types"
+)
 
 var TestTeacherData = types.TeacherData{
-	UserID: 1,
-	Email:  "mfurr@bca.edu",
-	School: "BCA",
+	TeacherID: 1,
+	School:    "BCA",
 }
 
 var TestTeacherClass = types.TeacherClass{

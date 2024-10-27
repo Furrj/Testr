@@ -38,7 +38,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		classes, err := teacher.GetTeacherClassesByUserID(db, userID)
+		classes, err := teacher.GetTeacherClassesByTeacherID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
 			ctx.Status(http.StatusInternalServerError)

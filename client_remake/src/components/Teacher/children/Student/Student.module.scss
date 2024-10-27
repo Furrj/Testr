@@ -1,9 +1,0 @@
-@use "../../../../styles/mixins";
-
-.root {
-	@include mixins.full-size-percent;
-	display: flex;
-	flex-direction: column;
-
-	overflow: hidden;
-}

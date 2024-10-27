@@ -42,3 +42,54 @@ func DeletePasswordResetCodeByUserID(db *dbHandler.DBHandler, id types.UserID) e
 	}
 	return nil
 }
+
+const dDeleteValidationCodeByUserId = `
+	DELETE FROM users.validation_codes
+	WHERE user_id=$1
+`
+
+func DeleteValidationCodeByUserId(db *dbHandler.DBHandler, id types.UserID) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		dDeleteValidationCodeByUserId,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+const dDeleteAccountStatusByUserId = `
+	DELETE FROM users.account_status
+	WHERE user_id=$1
+`
+
+func DeleteAccountStatusByUserId(db *dbHandler.DBHandler, id types.UserID) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		dDeleteValidationCodeByUserId,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+const dDeleteContactInfoByUserId = `
+	DELETE FROM users.contact_info
+	WHERE user_id=$1
+`
+
+func DeleteContactInfoByUserId(db *dbHandler.DBHandler, id types.UserID) error {
+	_, err := db.Conn.Exec(
+		context.Background(),
+		dDeleteContactInfoByUserId,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}

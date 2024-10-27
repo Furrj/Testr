@@ -1,6 +1,0 @@
-@use "../../styles/mixins";
-
-.root {
-	@include mixins.full-size-percent;
-	@include mixins.flex-center;
-}

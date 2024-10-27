@@ -4,32 +4,11 @@ CREATE SCHEMA students;
 CREATE SCHEMA game_sessions;
 CREATE SCHEMA assignments;
 
-CREATE TYPE users.role AS ENUM ('S', 'T', 'A');
+CREATE TYPE users.role AS ENUM ('S', 'T', 'A', 'N');
 
 CREATE TABLE users.ids
 (
     user_id SERIAL PRIMARY KEY
-);
-
-CREATE TABLE teachers.data
-(
-    user_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
-    email   TEXT UNIQUE,
-    school  TEXT
-);
-
-CREATE TABLE teachers.classes
-(
-    class_id   SERIAL PRIMARY KEY,
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    name       TEXT
-);
-
-CREATE TABLE students.data
-(
-    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
-    teacher_id INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
-    class_id   INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE
 );
 
 CREATE TABLE users.data
@@ -44,6 +23,48 @@ CREATE TABLE users.data
     vertical   BOOLEAN,
     created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
     updated_at BIGINT
+);
+
+CREATE TABLE users.validation_codes
+(
+    user_id   INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    code      UUID,
+    issued_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
+);
+
+CREATE TABLE users.account_status
+(
+    user_id      INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    is_validated boolean NOT NULL DEFAULT false,
+    is_active    boolean NOT NULL DEFAULT false
+);
+
+CREATE TABLE users.contact_info
+(
+    user_id INTEGER REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    email   TEXT NOT NULL,
+    phone   TEXT NOT NULL DEFAULT ''
+);
+CREATE UNIQUE INDEX unique_email_case_insensitive ON users.contact_info (LOWER(email));
+
+CREATE TABLE teachers.data
+(
+    teacher_id INTEGER PRIMARY KEY references users.ids (user_id) ON DELETE CASCADE,
+    school     TEXT
+);
+
+CREATE TABLE teachers.classes
+(
+    class_id   SERIAL PRIMARY KEY,
+    teacher_id INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
+    name       TEXT
+);
+
+CREATE TABLE students.data
+(
+    user_id    INTEGER PRIMARY KEY REFERENCES users.ids (user_id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
+    class_id   INTEGER REFERENCES teachers.classes (class_id) ON DELETE CASCADE
 );
 
 CREATE TABLE game_sessions.settings
@@ -78,7 +99,7 @@ CREATE TABLE game_sessions.data
 CREATE TABLE assignments.data
 (
     assignment_id UUID PRIMARY KEY,
-    teacher_id    INTEGER REFERENCES teachers.data (user_id) ON DELETE CASCADE,
+    teacher_id    INTEGER REFERENCES teachers.data (teacher_id) ON DELETE CASCADE,
     settings_id   UUID REFERENCES game_sessions.settings (settings_id) ON DELETE CASCADE,
     name          TEXT,
     due           BIGINT,

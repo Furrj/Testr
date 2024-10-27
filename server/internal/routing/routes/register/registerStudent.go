@@ -16,7 +16,7 @@ import (
 	"mathtestr.com/server/internal/types"
 )
 
-type ReqRS struct {
+type reqRS struct {
 	Username  string       `json:"username"`
 	Password  string       `json:"password"`
 	FirstName string       `json:"first_name"`
@@ -27,8 +27,8 @@ type ReqRS struct {
 
 func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var payload ReqRS
-		response := responseRegister{
+		var payload reqRS
+		response := resRU{
 			Result: RESULT_NULL,
 		}
 
@@ -56,7 +56,7 @@ func RegisterStudent(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// insert User
-		userID, err := user.InsertUser(db)
+		userID, err := user.CreateUser(db)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response)
 			fmt.Printf("Error inserting user: %+v\n", err)

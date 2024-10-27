@@ -51,7 +51,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get teacher data
-		teacherData, err := teacher.GetTeacherDataByUserID(db, userID)
+		teacherData, err := teacher.GetTeacherDataByTeacherID(db, userID)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
@@ -59,7 +59,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		teacherClasses, err := teacher.GetTeacherClassesByUserID(db, userID)
+		teacherClasses, err := teacher.GetTeacherClassesByTeacherID(db, userID)
 		if err != nil {
 			ctx.Status(http.StatusInternalServerError)
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)

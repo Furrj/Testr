@@ -55,7 +55,7 @@ func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get teacher data
-		teacherData, err := teacher.GetTeacherDataByUserID(db, userID)
+		teacherData, err := teacher.GetTeacherDataByTeacherID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherDataByUserID: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)
@@ -63,7 +63,7 @@ func GetTeacherInfoForRegisterPage(db *dbHandler.DBHandler) gin.HandlerFunc {
 		}
 
 		// get classes
-		classes, err := teacher.GetTeacherClassesByUserID(db, userID)
+		classes, err := teacher.GetTeacherClassesByTeacherID(db, userID)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error in GetTeacherClassesByUserID: %+v\n", err)
 			ctx.Status(http.StatusBadRequest)
