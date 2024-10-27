@@ -1,7 +1,7 @@
 import route_prefix from "../../route_prefix";
-import { T_USERDATA } from "../../../types";
 import generateAuthTokenStr from "../../generateAuthTokenStr";
 import { T_AUTH } from "../../../contexts/AuthProvider";
+import { T_USERDATA } from "../../../types/users";
 
 const url = route_prefix("/user");
 

@@ -1,32 +1,6 @@
+import { T_TOKENS, INIT_TOKENS } from "./types/auth";
+import { T_USERDATA } from "./types/users";
 import { deepCopyObject } from "./utils/methods";
-
-// USERDATA
-export enum E_USER_ROLES {
-  UNINITIALIZED = -1,
-  STUDENT,
-  TEACHER,
-  ADMIN,
-  Non
-}
-
-export type T_TOKENS = {
-  access_token: string;
-  refresh_token: string;
-};
-
-export const INIT_TOKENS: T_TOKENS = {
-  access_token: "",
-  refresh_token: "",
-};
-
-export type T_USERDATA = {
-  user_id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  vertical: boolean;
-};
 
 // REGISTER
 export type T_USERINPUT_REGISTER = {
