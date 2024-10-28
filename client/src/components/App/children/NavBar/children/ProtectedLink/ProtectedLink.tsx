@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useCtxUser } from "../../../../../../contexts/UserProvider";
 import styles from "./ProtectedLink.module.scss";
 import { FaLock } from "react-icons/fa";
-import { E_MEMBERSHIP_TYPES } from "../../../../../../types/users";
 
 interface IProps {
 	text: string;
@@ -26,10 +25,12 @@ export const ProtectedLink: React.FC<IProps> = (props) => {
 
 	return (
 		<Link to={props.url} className={styles.root}>
-			<div
-				className={`${location.pathname === props.url ? styles.current : ""} ${allowed ? "" : styles.locked}`}
-			>
+			<div className={location.pathname === props.url ? styles.current : ""}>
 				{props.text}
+
+				<div className={allowed ? styles.allowed : styles.locked}>
+					<FaLock className={styles.lock} />
+				</div>
 			</div>
 		</Link>
 	);
