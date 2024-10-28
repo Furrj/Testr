@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
 				</Link>
 
 				{user.status.curr.is_logged_in &&
-					userData.account.role === USER_ROLES.TEACHER && (
+					userData.role === USER_ROLES.TEACHER && (
 						<Link to={"/teacher/classes"} className={styles.link}>
 							<h3
 								className={
@@ -62,18 +62,7 @@ const NavBar: React.FC = () => {
 				</Link>
 
 				<div className={styles.link}>
-					<h3
-						onClick={() => {
-							user.status.set((c) => {
-								return {
-									...c,
-									is_logged_in: false,
-								};
-							});
-						}}
-					>
-						Logout
-					</h3>
+					<h3 onClick={user.status.logout}>Logout</h3>
 				</div>
 			</div>
 		</nav>

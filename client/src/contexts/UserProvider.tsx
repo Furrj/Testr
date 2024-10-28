@@ -11,7 +11,6 @@ import {
 	T_USER_STATUS,
 } from "../types/users";
 import useUserDataQuery from "../queries/userDataQuery";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { T_TOKENS } from "../types/auth";
 
 export type T_CTX_USER = {
@@ -22,12 +21,7 @@ export type T_CTX_USER = {
 	status: {
 		curr: T_USER_STATUS;
 		set: React.Dispatch<React.SetStateAction<T_USER_STATUS>>;
-		logout: (
-			setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
-			setUserData: React.Dispatch<React.SetStateAction<T_USER>>,
-			setStatus: React.Dispatch<React.SetStateAction<T_USER_STATUS>>,
-			queryClient: QueryClient,
-		) => void;
+		logout: () => void;
 	};
 	tokens: {
 		curr: T_TOKENS | undefined;
@@ -44,8 +38,8 @@ function logoutUser(
 	setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
 	setUserData: React.Dispatch<React.SetStateAction<T_USER>>,
 	setStatus: React.Dispatch<React.SetStateAction<T_USER_STATUS>>,
-	queryClient: QueryClient,
 ) {
+	console.log("running logout user");
 	clearTokensFromLocalStorage();
 	setTokens(undefined);
 	setStatus((c) => {
@@ -55,7 +49,6 @@ function logoutUser(
 		};
 	});
 	setUserData(deepCopyObject(INIT_USER));
-	queryClient.resetQueries();
 }
 
 export const UserProvider: React.FC<IProps> = (props) => {
@@ -79,7 +72,6 @@ export const UserProvider: React.FC<IProps> = (props) => {
 	}, [isFetched, isSuccess]);
 
 	// set to default User data and clear tokens when logged out
-	const queryClient = useQueryClient();
 	useEffect(() => {
 		if (status.is_logged_in && tokens === undefined) {
 			clearTokensFromLocalStorage();
@@ -97,8 +89,7 @@ export const UserProvider: React.FC<IProps> = (props) => {
 						is_fetching: isFetching,
 					},
 					set: setStatus,
-					logout: () =>
-						logoutUser(setTokens, setUserData, setStatus, queryClient),
+					logout: () => logoutUser(setTokens, setUserData, setStatus),
 				},
 				tokens: { curr: tokens, set: setTokens },
 			}}

@@ -24,14 +24,7 @@ const TopBar: React.FC = () => {
 					{user.status.curr.is_logged_in ? (
 						<div className={styles.logged_in}>
 							<IoMdExit
-								onClick={() => {
-									user.status.set((c) => {
-										return {
-											...c,
-											is_logged_in: false,
-										};
-									});
-								}}
+								onClick={user.status.logout}
 								className={styles.logout}
 							/>
 							<GiHamburgerMenu

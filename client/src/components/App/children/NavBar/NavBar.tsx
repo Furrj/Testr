@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
 				</Link>
 
 				{user.status.curr.is_logged_in &&
-					userData.account.role === USER_ROLES.TEACHER && (
+					userData.role === USER_ROLES.TEACHER && (
 						<Link to={"/teacher/classes"} className={styles.link}>
 							<div
 								className={
@@ -53,18 +53,20 @@ const NavBar: React.FC = () => {
 					)}
 			</div>
 
-			{user.status.curr.is_logged_in && (
-				<div className={styles.bottom}>
-					<div className={styles.link}>
-						<div id={styles.username}>
+			<div className={styles.bottom}>
+				<div className={styles.link}>
+					<div id={styles.username}>
+						{user.status.curr.is_logged_in ? (
 							<span>{userData.username}</span>
-							<Link to={"/settings"}>
-								<IoMdSettings />
-							</Link>
-						</div>
+						) : (
+							<span>Guest</span>
+						)}
+						<Link to={"/settings"}>
+							<IoMdSettings />
+						</Link>
 					</div>
 				</div>
-			)}
+			</div>
 		</nav>
 	);
 };

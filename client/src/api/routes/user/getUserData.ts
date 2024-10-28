@@ -14,6 +14,7 @@ export type T_RES = {
 
 async function GET_USER_DATA(params: T_PARAMS): Promise<T_RES> {
 	console.log("running get user data");
+	console.log(params);
 	const res = await fetch(url, {
 		method: "GET",
 		headers: {
