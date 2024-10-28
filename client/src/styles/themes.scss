@@ -1,0 +1,11 @@
+@use "./vars";
+
+:root {
+	--color-base-bg: #fff;
+	--color-topbar-bg: #808080;
+}
+
+.theme-dark {
+	--color-base-bg: linear-gradient(225deg, #151515, #292727);
+	--color-topbar-bg: #000;
+}

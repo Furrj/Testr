@@ -3,6 +3,7 @@ type T_LOCAL_STORAGE_KEYS = {
 	refresh_token: string;
 	correct_spell_info: string;
 	show_info_popup: string;
+	display_theme: string;
 };
 
 export const LOCAL_STORAGE_KEYS: T_LOCAL_STORAGE_KEYS = {
@@ -10,6 +11,7 @@ export const LOCAL_STORAGE_KEYS: T_LOCAL_STORAGE_KEYS = {
 	refresh_token: "REFRESH_TOKEN",
 	correct_spell_info: "CORRECT_SPELL_INFO",
 	show_info_popup: "SHOW_INFO_POPUP",
+	display_theme: "DISPLAY_THEME",
 };
 
 // React-Query

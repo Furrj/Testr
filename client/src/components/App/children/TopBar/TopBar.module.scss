@@ -15,94 +15,97 @@
 	}
 }
 
-.root {
+.main {
+	@include mixins.full-size-percent;
+
+	background: var(--color-topbar-bg);
+
+	@include mixins.flex-center-row;
+
 	user-select: none;
 	position: relative;
 
-	.main {
-		@include mixins.full-size-percent;
+	.icon {
+		width: 50px;
+		height: 50px;
 
-		background: vars.$topbar-bg;
+		position: absolute;
+		left: 0;
+
+		color: vars.$logo-accent;
+	}
+
+	.title {
+		@include mixins.flex-center-row;
+		height: 100%;
+		width: fit-content;
+		padding-left: 5px;
+	}
+
+	.right {
+		height: vars.$topbar-height;
 
 		@include mixins.flex-center-row;
+		gap: 10px;
 
-		.icon {
-			width: 50px;
-			height: 50px;
+		position: absolute;
+		right: 0;
 
-			position: absolute;
-			left: 0;
-
-			color: vars.$logo-accent;
+		#theme {
+			cursor: pointer;
+			font-size: 2rem;
 		}
 
-		.title {
+		.logged_in {
 			@include mixins.flex-center-row;
-			height: 100%;
-			width: fit-content;
-			padding-left: 5px;
-		}
 
-		.right {
-			height: vars.$topbar-height;
+			font-size: 2.5rem;
 
-			@include mixins.flex-center-row;
-			gap: 10px;
-
-			position: absolute;
-			right: 0;
-
-			.logged_in {
-				@include mixins.flex-center-row;
-
-				font-size: 2.5rem;
-
-				.logout {
-					&:hover {
-						cursor: pointer;
-
-						color: green;
-					}
-				}
-
-				.hamburger {
-					display: none;
-				}
-			}
-
-			.buttons {
-				@include mixins.flex-center-row;
-				height: 100%;
-				gap: 10px;
-
-				margin-right: 10px;
-
-				button {
-					@include topbar_btn;
-
-					margin-top: 0;
-				}
-			}
-
-			.theme {
-				font-size: 2rem;
-
+			.logout {
 				&:hover {
 					cursor: pointer;
 
-					color: grey;
+					color: green;
 				}
+			}
+
+			.hamburger {
+				display: none;
+			}
+		}
+
+		.buttons {
+			@include mixins.flex-center-row;
+			height: 100%;
+			gap: 10px;
+
+			margin-right: 10px;
+
+			button {
+				@include topbar_btn;
+
+				margin-top: 0;
+			}
+		}
+
+		.theme {
+			font-size: 2rem;
+
+			&:hover {
+				cursor: pointer;
+
+				color: grey;
 			}
 		}
 	}
+}
 
-	.navbar {
-		height: 100px;
-	}
+.navbar {
+	height: 100px;
 }
 
 @media only screen and (max-width: vars.$mobile-width) {
-	.root .main .right .logged_in {
+	.root .right .logged_in {
 		.logout {
 			display: none;
 		}
@@ -126,7 +129,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-	.root .main {
+	.root {
 		.title {
 			font-size: 1.5rem;
 		}

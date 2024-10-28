@@ -10,19 +10,8 @@ import NavBar from "./children/SideNavBar/SideNavBar";
 const App: React.FC = () => {
 	const user = useCtxUser();
 
-	console.log("user:" + JSON.stringify(user.user.curr));
-	console.log("status:" + JSON.stringify(user.status.curr));
-
-	// fetch teacher data if user role == teacher
-	// const teacherDataQuery = useTeacherDataQuery(
-	// 	authData.tokens.curr,
-	// 	authData.valid &&
-	// 		userDataQuery.isSuccess &&
-	// 		userDataQuery.data.user.role === USER_ROLES.TEACHER,
-	// );
-
 	return (
-		<div className={styles.root}>
+		<div id="app_root" className={styles.root}>
 			<TopBar />
 
 			<div className={styles.main}>

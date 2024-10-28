@@ -6,8 +6,9 @@ import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { useLocation } from "react-router-dom";
 import { useCtxUser } from "../../../../contexts/UserProvider";
-import { useCtxUI } from "../../../../contexts/UIProvider";
+import { E_DISPLAY_THEMES, useCtxUI } from "../../../../contexts/UIProvider";
 import Login from "../../../Login/Login";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 const TopBar: React.FC = () => {
 	const user = useCtxUser();
@@ -18,12 +19,24 @@ const TopBar: React.FC = () => {
 	const location = useLocation();
 
 	return (
-		<div className={styles.root}>
+		<>
 			<div className={styles.main}>
 				<PiMathOperationsBold className={styles.icon} />
 				<h1 className={styles.title}>TimesTrainer</h1>
 
 				<div className={styles.right}>
+					{uiCtx.theme.curr === E_DISPLAY_THEMES.LIGHT ? (
+						<MdDarkMode
+							id={styles.theme}
+							onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
+						/>
+					) : (
+						<MdLightMode
+							id={styles.theme}
+							onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
+						/>
+					)}
+
 					{user.status.curr.is_logged_in ? (
 						<div className={styles.logged_in}>
 							<IoMdExit
@@ -61,7 +74,7 @@ const TopBar: React.FC = () => {
 			</div>
 
 			{isNavbarShowing && <NavBar />}
-		</div>
+		</>
 	);
 };
 
