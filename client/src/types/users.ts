@@ -1,3 +1,5 @@
+import { USER_ROLES } from "../utils/consts";
+
 export enum E_USER_ROLES {
 	UNINITIALIZED = -1,
 	STUDENT,
@@ -6,8 +8,7 @@ export enum E_USER_ROLES {
 	NON,
 }
 export enum E_MEMBERSHIP_TYPES {
-	NULL = -1,
-	UNVALIDATED,
+	UNVALIDATED = 0,
 	VALIDATED,
 	BASIC,
 	PREMIUM,
@@ -17,7 +18,7 @@ export type T_ACCOUNT = {
 	is_active: boolean;
 };
 export const INIT_ACCOUNT: T_ACCOUNT = {
-	membership_type: E_MEMBERSHIP_TYPES.NULL,
+	membership_type: E_MEMBERSHIP_TYPES.UNVALIDATED,
 	is_active: false,
 };
 
@@ -46,7 +47,7 @@ export const INIT_USER: T_USER = {
 	last_name: "",
 	vertical: false,
 	account: { ...INIT_ACCOUNT },
-	role: "",
+	role: USER_ROLES.BASE,
 };
 
 export type T_STUDENT_DATA = {

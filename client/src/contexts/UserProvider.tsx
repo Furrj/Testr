@@ -38,7 +38,7 @@ function logoutUser(
 	setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
 	setUserData: React.Dispatch<React.SetStateAction<T_USER>>,
 	setStatus: React.Dispatch<React.SetStateAction<T_USER_STATUS>>,
-) {
+): void {
 	console.log("running logout user");
 	clearTokensFromLocalStorage();
 	setTokens(undefined);
@@ -58,7 +58,11 @@ export const UserProvider: React.FC<IProps> = (props) => {
 		getUserSessionDataFromStorage(),
 	);
 
-	const { data, isFetched, isSuccess, isFetching } = useUserDataQuery(tokens);
+	const { data, isFetched, isSuccess, isFetching, isError } =
+		useUserDataQuery(tokens);
+	if (isError) {
+		alert("Error, please refresh");
+	}
 
 	// if successful validation, set user and logged in
 	useEffect(() => {

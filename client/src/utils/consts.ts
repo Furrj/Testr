@@ -28,6 +28,7 @@ export const USER_ROLES = {
 	STUDENT: "S",
 	TEACHER: "T",
 	ADMIN: "A",
+	BASE: "B",
 };
 
 export const APP_VERSION: string = "0.7b";

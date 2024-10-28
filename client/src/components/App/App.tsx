@@ -1,5 +1,5 @@
 import styles from "./App.module.scss";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ContentBox from "../ContentBox/ContentBox";
 import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";
@@ -31,8 +31,9 @@ const App: React.FC = () => {
 					<Loading />
 				) : (
 					<Routes>
-						<Route path="/" element={<Game />} />
+						<Route path="/game" element={<Game />} />
 						<Route path="/login" element={<Login />} />
+						<Route path={"*"} element={<Navigate to={"/game"} replace />} />
 						{/* {authData.valid && userDataQuery.isSuccess ? ( */}
 						{/*   <Route */}
 						{/*     path="*" */}

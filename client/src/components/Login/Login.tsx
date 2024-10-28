@@ -5,6 +5,7 @@ import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 import Locals from "./Locals.ts";
 import { Link } from "react-router-dom";
 import { useCtxUser } from "../../contexts/UserProvider.tsx";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -13,9 +14,11 @@ const Login: React.FC = () => {
 	const [incorrectInfo, setIncorrectInfo] = useState<boolean>(false);
 
 	const userCtx = useCtxUser();
+	const queryClient = useQueryClient();
 	const loginMutation = Locals.useLoginMutation(
 		userCtx.tokens.set,
 		setIncorrectInfo,
+		queryClient,
 	);
 
 	// INPUT HANDLER

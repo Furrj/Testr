@@ -3,6 +3,8 @@ import styles from "./NavBar.module.scss";
 import { USER_ROLES } from "../../../../utils/consts";
 import { IoMdSettings } from "react-icons/io";
 import { useCtxUser } from "../../../../contexts/UserProvider";
+import { ProtectedLink } from "./children/ProtectedLink/ProtectedLink";
+import { E_MEMBERSHIP_TYPES } from "../../../../types/users";
 
 const NavBar: React.FC = () => {
 	const user = useCtxUser();
@@ -11,46 +13,84 @@ const NavBar: React.FC = () => {
 	return (
 		<nav className={styles.root}>
 			<div className={styles.top}>
-				<Link to={"/"} className={styles.link}>
-					<div className={location.pathname === "/" ? styles.current : ""}>
-						Home
-					</div>
-				</Link>
+				<ProtectedLink
+					text="Home"
+					url="/"
+					allowedMemberShipTypes={[
+						E_MEMBERSHIP_TYPES.BASIC,
+						E_MEMBERSHIP_TYPES.PREMIUM,
+					]}
+					allowedRoles={[
+						USER_ROLES.BASE,
+						USER_ROLES.ADMIN,
+						USER_ROLES.TEACHER,
+						USER_ROLES.STUDENT,
+					]}
+					requiredLogin={true}
+					requiredActive={true}
+				/>
 
-				<Link to={"/game"} className={styles.link}>
-					<div className={location.pathname === "/game" ? styles.current : ""}>
-						Play
-					</div>
-				</Link>
+				<ProtectedLink
+					text="Play"
+					url="/game"
+					allowedMemberShipTypes={[
+						E_MEMBERSHIP_TYPES.UNVALIDATED,
+						E_MEMBERSHIP_TYPES.VALIDATED,
+						E_MEMBERSHIP_TYPES.BASIC,
+						E_MEMBERSHIP_TYPES.PREMIUM,
+					]}
+					allowedRoles={[
+						USER_ROLES.BASE,
+						USER_ROLES.ADMIN,
+						USER_ROLES.TEACHER,
+						USER_ROLES.STUDENT,
+					]}
+					requiredLogin={false}
+					requiredActive={false}
+				/>
 
-				<Link to={"/assignments"} className={styles.link}>
-					<div
-						className={
-							location.pathname === "/assignments" ? styles.current : ""
-						}
-					>
-						Assignments
-					</div>
-				</Link>
+				<ProtectedLink
+					text="Assignments"
+					url="/assignments"
+					allowedMemberShipTypes={[
+						E_MEMBERSHIP_TYPES.VALIDATED,
+						E_MEMBERSHIP_TYPES.BASIC,
+						E_MEMBERSHIP_TYPES.PREMIUM,
+					]}
+					allowedRoles={[
+						USER_ROLES.ADMIN,
+						USER_ROLES.TEACHER,
+						USER_ROLES.STUDENT,
+					]}
+					requiredLogin={true}
+					requiredActive={true}
+				/>
 
-				<Link to={"/stats"} className={styles.link}>
-					<div className={location.pathname === "/stats" ? styles.current : ""}>
-						Stats
-					</div>
-				</Link>
+				<ProtectedLink
+					text="Stats"
+					url="/stats"
+					allowedMemberShipTypes={[
+						E_MEMBERSHIP_TYPES.BASIC,
+						E_MEMBERSHIP_TYPES.PREMIUM,
+					]}
+					allowedRoles={[
+						USER_ROLES.BASE,
+						USER_ROLES.ADMIN,
+						USER_ROLES.TEACHER,
+						USER_ROLES.STUDENT,
+					]}
+					requiredLogin={true}
+					requiredActive={true}
+				/>
 
-				{user.status.curr.is_logged_in &&
-					userData.role === USER_ROLES.TEACHER && (
-						<Link to={"/teacher/classes"} className={styles.link}>
-							<div
-								className={
-									location.pathname === "/teacher/classes" ? styles.current : ""
-								}
-							>
-								Classes
-							</div>
-						</Link>
-					)}
+				<ProtectedLink
+					text="Classes"
+					url="/teacher/clases"
+					allowedMemberShipTypes={[E_MEMBERSHIP_TYPES.PREMIUM]}
+					allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.TEACHER]}
+					requiredLogin={true}
+					requiredActive={true}
+				/>
 			</div>
 
 			<div className={styles.bottom}>
