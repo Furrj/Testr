@@ -10,7 +10,7 @@ import {
 import UIHandlers from "../../../../utils/uiHandlers";
 import { FaRedoAlt, FaPlus } from "react-icons/fa";
 import Locals from "./Locals";
-import { useAuthCtx } from "../../../../contexts/AuthProvider";
+import { useCtxUser } from "../../../../contexts/UserProvider";
 
 interface IProps {
 	results: T_QUESTION_RESULT[];
@@ -44,7 +44,8 @@ const Post: React.FC<IProps> = (props) => {
 			? props.gameSettings.curr.limit_amount
 			: props.time;
 
-	const auth = useAuthCtx();
+	const user = useCtxUser();
+	const userData = user.user.curr;
 	const queryClient = useQueryClient();
 	const submitGamesessionMutation = Locals.useSubmitGamesessionMutation(
 		queryClient,
@@ -55,7 +56,7 @@ const Post: React.FC<IProps> = (props) => {
 	useEffect(() => {
 		!sent &&
 			submitGamesessionMutation.mutate({
-				tokens: auth.tokens.curr,
+				tokens: userData.tokens,
 				session: {
 					questions_count: questionsCount,
 					correct_count: correctCount,

@@ -17,11 +17,7 @@ import Locals from "./Locals";
 
 const QUESTION_CHUNK_SIZE: number = 10;
 
-interface IProps {
-	vertical: boolean;
-}
-
-const Game: React.FC<IProps> = (props) => {
+const Game: React.FC = () => {
 	const [gameStatus, setGameStatus] = useState<E_GAME_STATUS>(
 		E_GAME_STATUS.PRE,
 	);
@@ -127,7 +123,6 @@ const Game: React.FC<IProps> = (props) => {
 					questions={questions}
 					userGuesses={userGuesses}
 					gameSettings={{ curr: gameSettings }}
-					vertical={props.vertical}
 					gameStatus={{ set: setGameStatus }}
 					currentQuestionIndex={{
 						curr: currentQuestionIndex,

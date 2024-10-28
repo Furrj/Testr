@@ -1,11 +1,10 @@
 import styles from "./Login.module.scss";
 import React, { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { FaPerson, FaLock } from "react-icons/fa6";
 import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
-import { useAuthCtx } from "../../contexts/AuthProvider.tsx";
 import Locals from "./Locals.ts";
 import { Link } from "react-router-dom";
+import { useCtxUser } from "../../contexts/UserProvider.tsx";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =
@@ -13,11 +12,9 @@ const Login: React.FC = () => {
 	const [error, setError] = useState<boolean>(false);
 	const [incorrectInfo, setIncorrectInfo] = useState<boolean>(false);
 
-	const auth = useAuthCtx();
-	const queryClient = useQueryClient();
+	const userCtx = useCtxUser();
 	const loginMutation = Locals.useLoginMutation(
-		auth,
-		queryClient,
+		userCtx.tokens.set,
 		setIncorrectInfo,
 	);
 

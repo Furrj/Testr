@@ -7,14 +7,12 @@ import {
 	E_GAME_STATUS,
 	type T_GAME_SETTINGS,
 } from "../../../../types/game";
-import { useAuthCtx } from "../../../../contexts/AuthProvider";
-import useUserDataQuery from "../../../../queries/userDataQuery";
+import { useCtxUser } from "../../../../contexts/UserProvider";
 
 interface IProps {
 	questions: T_QUESTION[];
 	userGuesses: React.MutableRefObject<number[]>;
 	gameSettings: { curr: T_GAME_SETTINGS };
-	vertical: boolean;
 	gameStatus: {
 		set: React.Dispatch<React.SetStateAction<E_GAME_STATUS>>;
 	};
@@ -29,18 +27,18 @@ interface IProps {
 }
 
 const Active: React.FC<IProps> = (props) => {
+	const user = useCtxUser();
+	const userData = user.user.curr;
+	const savedVerticalPref = useRef<boolean>(userData.vertical);
+
 	const [inputErr, setInputErr] = useState<boolean>(false);
-	const [vertical, setVertical] = useState<boolean>(false);
+	const [vertical, setVertical] = useState<boolean>(savedVerticalPref.current);
 
 	const currQuestion = props.questions[props.currentQuestionIndex.curr - 1];
 	const inputRef = useRef<HTMLInputElement>(null);
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const limitType = props.gameSettings.curr.limit_type;
-
-	const authCtx = useAuthCtx();
-	const userDataQuery = useUserDataQuery(authCtx);
-	const savedVerticalPref = useRef<boolean>(false);
 
 	// focus on input box on page load
 	useEffect(() => {
@@ -77,14 +75,6 @@ const Active: React.FC<IProps> = (props) => {
 			props.gameStatus.set(E_GAME_STATUS.POST);
 		}
 	}, [props.timeInSeconds]);
-
-	// set vertical on page load
-	useEffect(() => {
-		if (userDataQuery.isSuccess) {
-			savedVerticalPref.current = userDataQuery.data.user.vertical;
-			setVertical(userDataQuery.data.user.vertical);
-		}
-	}, [userDataQuery.isSuccess]);
 
 	// set up window resize listener for disabling vertical mode
 	useEffect(() => {

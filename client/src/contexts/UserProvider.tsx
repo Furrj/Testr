@@ -11,7 +11,8 @@ import {
 	T_USER_STATUS,
 } from "../types/users";
 import useUserDataQuery from "../queries/userDataQuery";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { T_TOKENS } from "../types/auth";
 
 export type T_CTX_USER = {
 	user: {
@@ -21,6 +22,16 @@ export type T_CTX_USER = {
 	status: {
 		curr: T_USER_STATUS;
 		set: React.Dispatch<React.SetStateAction<T_USER_STATUS>>;
+		logout: (
+			setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
+			setUserData: React.Dispatch<React.SetStateAction<T_USER>>,
+			setStatus: React.Dispatch<React.SetStateAction<T_USER_STATUS>>,
+			queryClient: QueryClient,
+		) => void;
+	};
+	tokens: {
+		curr: T_TOKENS | undefined;
+		set: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>;
 	};
 };
 const ctxUser = createContext<T_CTX_USER | undefined>(undefined);
@@ -29,25 +40,37 @@ interface IProps {
 	children: React.ReactNode;
 }
 
+function logoutUser(
+	setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
+	setUserData: React.Dispatch<React.SetStateAction<T_USER>>,
+	setStatus: React.Dispatch<React.SetStateAction<T_USER_STATUS>>,
+	queryClient: QueryClient,
+) {
+	clearTokensFromLocalStorage();
+	setTokens(undefined);
+	setStatus((c) => {
+		return {
+			...c,
+			is_logged_in: false,
+		};
+	});
+	setUserData(deepCopyObject(INIT_USER));
+	queryClient.resetQueries();
+}
+
 export const UserProvider: React.FC<IProps> = (props) => {
 	const [userData, setUserData] = useState<T_USER>(deepCopyObject(INIT_USER));
 	const [status, setStatus] = useState<T_USER_STATUS>({ ...INIT_USER_STATUS });
-
-	const { data, isFetched, isSuccess, isFetching } = useUserDataQuery(
+	const [tokens, setTokens] = useState<T_TOKENS | undefined>(
 		getUserSessionDataFromStorage(),
 	);
 
-	// sync isFetching with status
-	useEffect(() => {
-		if (isFetching !== status.is_fetching)
-			setStatus((c) => {
-				return { ...c, is_fetching: isFetching };
-			});
-	}, [isFetching]);
+	const { data, isFetched, isSuccess, isFetching } = useUserDataQuery(tokens);
 
 	// if successful validation, set user and logged in
 	useEffect(() => {
-		if (isFetched && isSuccess && data !== undefined) {
+		if (isSuccess && data !== undefined) {
+			console.log(data);
 			setStatus((c) => {
 				return { ...c, is_logged_in: true };
 			});
@@ -58,18 +81,26 @@ export const UserProvider: React.FC<IProps> = (props) => {
 	// set to default User data and clear tokens when logged out
 	const queryClient = useQueryClient();
 	useEffect(() => {
-		if (isSuccess && !status.is_logged_in) {
+		if (status.is_logged_in && tokens === undefined) {
 			clearTokensFromLocalStorage();
-			setUserData(deepCopyObject(INIT_USER));
-			queryClient.resetQueries();
+			setTokens(undefined);
 		}
-	}, [status.is_logged_in, isSuccess]);
+	}, [tokens]);
 
 	return (
 		<ctxUser.Provider
 			value={{
 				user: { curr: userData, set: setUserData },
-				status: { curr: status, set: setStatus },
+				status: {
+					curr: {
+						is_logged_in: status.is_logged_in,
+						is_fetching: isFetching,
+					},
+					set: setStatus,
+					logout: () =>
+						logoutUser(setTokens, setUserData, setStatus, queryClient),
+				},
+				tokens: { curr: tokens, set: setTokens },
 			}}
 		>
 			{props.children}

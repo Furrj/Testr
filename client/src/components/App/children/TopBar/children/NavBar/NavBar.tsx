@@ -1,30 +1,22 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS, USER_ROLES } from "../../../../../../utils/consts";
-import { clearTokensFromLocalStorage } from "../../../../../../utils/methods";
-import { useAuthCtx } from "../../../../../../contexts/AuthProvider";
-import useUserDataQuery from "../../../../../../queries/userDataQuery";
+import { USER_ROLES } from "../../../../../../utils/consts";
+import { useCtxUser } from "../../../../../../contexts/UserProvider";
 
 const NavBar: React.FC = () => {
-	const authData = useAuthCtx();
-	const { isSuccess, data } = useUserDataQuery(authData);
-
-	const queryClient = useQueryClient();
+	const user = useCtxUser();
+	const userData = user.user.curr;
 
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	return (
 		<nav className={styles.root}>
 			<div className={styles.scroll}>
-				{isSuccess && data && (
-					<Link to={"/"} className={`${styles.link} ${styles.name}`}>
-						<h3 className={location.pathname === "/" ? styles.current : ""}>
-							Home
-						</h3>
-					</Link>
-				)}
+				<Link to={"/"} className={`${styles.link} ${styles.name}`}>
+					<h3 className={location.pathname === "/" ? styles.current : ""}>
+						Home
+					</h3>
+				</Link>
 
 				<Link to={"/game"} className={styles.link}>
 					<h3 className={location.pathname === "/game" ? styles.current : ""}>
@@ -48,17 +40,18 @@ const NavBar: React.FC = () => {
 					</h3>
 				</Link>
 
-				{isSuccess && data.user.role === USER_ROLES.TEACHER && (
-					<Link to={"/teacher/classes"} className={styles.link}>
-						<h3
-							className={
-								location.pathname === "/teacher/classes" ? styles.current : ""
-							}
-						>
-							Classes
-						</h3>
-					</Link>
-				)}
+				{user.status.curr.is_logged_in &&
+					userData.account.role === USER_ROLES.TEACHER && (
+						<Link to={"/teacher/classes"} className={styles.link}>
+							<h3
+								className={
+									location.pathname === "/teacher/classes" ? styles.current : ""
+								}
+							>
+								Classes
+							</h3>
+						</Link>
+					)}
 
 				<Link to={"/settings"} className={styles.link}>
 					<h3
@@ -71,12 +64,12 @@ const NavBar: React.FC = () => {
 				<div className={styles.link}>
 					<h3
 						onClick={() => {
-							clearTokensFromLocalStorage();
-							authData.tokens.set(undefined);
-							queryClient.invalidateQueries({
-								queryKey: [QUERY_KEYS.USER_DATA],
+							user.status.set((c) => {
+								return {
+									...c,
+									is_logged_in: false,
+								};
 							});
-							navigate("/login");
 						}}
 					>
 						Logout

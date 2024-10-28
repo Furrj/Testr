@@ -1,14 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./NavBar.module.scss";
-import useUserDataQuery from "../../../../queries/userDataQuery";
-import { useAuthCtx } from "../../../../contexts/AuthProvider";
 import { USER_ROLES } from "../../../../utils/consts";
 import { IoMdSettings } from "react-icons/io";
+import { useCtxUser } from "../../../../contexts/UserProvider";
 
 const NavBar: React.FC = () => {
-	const authData = useAuthCtx();
-	const { isSuccess, data } = useUserDataQuery(authData);
-	const location = useLocation();
+	const user = useCtxUser();
+	const userData = user.user.curr;
 
 	return (
 		<nav className={styles.root}>
@@ -41,24 +39,25 @@ const NavBar: React.FC = () => {
 					</div>
 				</Link>
 
-				{isSuccess && data.user.role === USER_ROLES.TEACHER && (
-					<Link to={"/teacher/classes"} className={styles.link}>
-						<div
-							className={
-								location.pathname === "/teacher/classes" ? styles.current : ""
-							}
-						>
-							Classes
-						</div>
-					</Link>
-				)}
+				{user.status.curr.is_logged_in &&
+					userData.account.role === USER_ROLES.TEACHER && (
+						<Link to={"/teacher/classes"} className={styles.link}>
+							<div
+								className={
+									location.pathname === "/teacher/classes" ? styles.current : ""
+								}
+							>
+								Classes
+							</div>
+						</Link>
+					)}
 			</div>
 
-			{isSuccess && data && (
+			{user.status.curr.is_logged_in && (
 				<div className={styles.bottom}>
 					<div className={styles.link}>
 						<div id={styles.username}>
-							<span>{data.user.username}</span>
+							<span>{userData.username}</span>
 							<Link to={"/settings"}>
 								<IoMdSettings />
 							</Link>

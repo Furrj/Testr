@@ -1,12 +1,11 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import LOGIN, { T_PARAMS, T_RES } from "../../api/routes/login/login";
 import { sendTokensToLocalStorage } from "../../utils/methods";
-import { T_AUTH } from "../../contexts/AuthProvider";
+import { T_TOKENS } from "../../types/auth";
 
 const Locals = {
 	useLoginMutation: (
-		auth: T_AUTH,
-		queryClient: QueryClient,
+		setTokens: React.Dispatch<React.SetStateAction<T_TOKENS | undefined>>,
 		setIncorrectInfo: React.Dispatch<React.SetStateAction<boolean>>,
 	) =>
 		useMutation({
@@ -18,8 +17,7 @@ const Locals = {
 			onSuccess(data) {
 				if (data.valid) {
 					sendTokensToLocalStorage(data.tokens);
-					auth.tokens.set(data.tokens);
-					queryClient.resetQueries();
+					setTokens(data.tokens);
 				} else {
 					setIncorrectInfo(true);
 				}
