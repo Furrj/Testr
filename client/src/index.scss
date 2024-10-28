@@ -12,20 +12,20 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-body,
-html,
-#root {
-	height: 100dvh;
-	width: 100dvw;
-
-	overflow: hidden;
-}
-
 * {
 	box-sizing: border-box;
 
 	margin: 0px;
 	padding: 0px;
+}
+
+body,
+html,
+#root {
+	height: 100%;
+	width: 100%;
+
+	overflow: hidden;
 }
 
 button {

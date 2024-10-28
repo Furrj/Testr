@@ -1,4 +1,5 @@
-import NavBar from "../App/children/NavBar/NavBar";
+import { useCtxUI } from "../../contexts/UIProvider";
+import Overlay from "../Overlay/Overlay";
 import styles from "./ContentBox.module.scss";
 
 interface IProps {
@@ -6,12 +7,9 @@ interface IProps {
 }
 
 const ContentBox: React.FC<IProps> = (props) => {
-	return (
-		<div className={styles.root}>
-			<NavBar />
-			<div className={styles.content}>{props.children}</div>
-		</div>
-	);
+	const uiCtx = useCtxUI();
+
+	return <div className={styles.root}>{props.children}</div>;
 };
 
 export default ContentBox;

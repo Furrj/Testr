@@ -1,16 +1,16 @@
 import { useState } from "react";
 import styles from "./TopBar.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
-import NavBar from "./children/NavBar/NavBar";
+import NavBar from "./children/TopNavBar/TopNavBar";
 import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useCtxUser } from "../../../../contexts/UserProvider";
 
 const TopBar: React.FC = () => {
 	const user = useCtxUser();
 
-	const [navbarIsExpanded, setNavbarIsExpanded] = useState<boolean>(false);
+	const [isNavbarShowing, setIsNavbarShowing] = useState<boolean>(false);
 
 	const location = useLocation();
 
@@ -28,9 +28,9 @@ const TopBar: React.FC = () => {
 								className={styles.logout}
 							/>
 							<GiHamburgerMenu
-								onClick={() => setNavbarIsExpanded((curr) => !curr)}
+								onClick={() => setIsNavbarShowing((curr) => !curr)}
 								className={`${styles.hamburger} ${
-									navbarIsExpanded ? styles.open : ""
+									isNavbarShowing ? styles.open : ""
 								}`}
 							/>
 						</div>
@@ -38,9 +38,7 @@ const TopBar: React.FC = () => {
 						<>
 							{location.pathname !== "/login" && (
 								<div className={styles.buttons}>
-									<Link to={"/login"} className={"link"}>
-										<button>Login</button>
-									</Link>
+									<button>Login</button>
 								</div>
 							)}
 						</>
@@ -48,7 +46,7 @@ const TopBar: React.FC = () => {
 				</div>
 			</div>
 
-			{navbarIsExpanded && <NavBar />}
+			{isNavbarShowing && <NavBar />}
 		</div>
 	);
 };

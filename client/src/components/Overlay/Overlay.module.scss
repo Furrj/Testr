@@ -1,0 +1,25 @@
+@use "../../styles/mixins";
+@use "../../styles/vars";
+
+.root {
+	@include mixins.full-size-percent;
+	overflow: auto;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	background: white;
+
+	.scroll {
+		width: 100%;
+		min-height: 100%;
+
+		@include mixins.flex-center-col;
+
+		.content {
+			background: white;
+			border-radius: vars.$border-radius;
+		}
+	}
+}

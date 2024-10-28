@@ -2,16 +2,12 @@
 @use "../../styles/_mixins.scss";
 
 .root {
-	height: calc(100dvh - vars.$topbar-height - 1px);
+	height: 100%;
 	width: 100%;
-	display: flex;
 
-	overflow: hidden;
+	overflow: auto;
+
+	position: relative;
+
 	background: vars.$main-bg;
-
-	.content {
-		@include mixins.full-size-percent;
-
-		background: vars.$main-bg;
-	}
 }

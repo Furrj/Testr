@@ -6,9 +6,9 @@ import TopBar from "./children/TopBar/TopBar";
 import { useCtxUser } from "../../contexts/UserProvider";
 import Game from "../Game/Game";
 import Login from "../Login/Login";
+import NavBar from "./children/SideNavBar/SideNavBar";
 
 const App: React.FC = () => {
-	// get user data
 	const user = useCtxUser();
 
 	console.log("user:" + JSON.stringify(user.user.curr));
@@ -26,25 +26,23 @@ const App: React.FC = () => {
 		<div className={styles.root}>
 			<TopBar />
 
-			<ContentBox>
+			<div className={styles.main}>
 				{user.status.curr.is_fetching ? (
 					<Loading />
 				) : (
-					<Routes>
-						<Route path="/game" element={<Game />} />
-						<Route path="/login" element={<Login />} />
-						<Route path={"*"} element={<Navigate to={"/game"} replace />} />
-						{/* {authData.valid && userDataQuery.isSuccess ? ( */}
-						{/*   <Route */}
-						{/*     path="*" */}
-						{/*     element={<ProtectedApp />} */}
-						{/*   /> */}
-						{/* ) : ( */}
-						{/*   <Route path="*" element={<UnprotectedApp />} /> */}
-						{/* )} */}
-					</Routes>
+					<>
+						<NavBar />
+
+						<ContentBox>
+							<Routes>
+								<Route path="/game" element={<Game />} />
+								<Route path="/login" element={<Login />} />
+								<Route path={"*"} element={<Navigate to={"/game"} replace />} />
+							</Routes>
+						</ContentBox>
+					</>
 				)}
-			</ContentBox>
+			</div>
 		</div>
 	);
 };

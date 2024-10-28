@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import styles from "./NavBar.module.scss";
+import styles from "./TopNavBar.module.scss";
 import { USER_ROLES } from "../../../../../../utils/consts";
 import { useCtxUser } from "../../../../../../contexts/UserProvider";
 

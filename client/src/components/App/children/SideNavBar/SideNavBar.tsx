@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from "./NavBar.module.scss";
+import styles from "./SideNavBar.module.scss";
 import { USER_ROLES } from "../../../../utils/consts";
 import { IoMdSettings } from "react-icons/io";
 import { useCtxUser } from "../../../../contexts/UserProvider";
