@@ -8,7 +8,8 @@ const url = route_prefix("/user");
 export type T_PARAMS = T_TOKENS;
 
 export type T_RES = {
-	user: T_USER;
+	user_data: T_USER;
+	valid: boolean;
 };
 
 async function GET_USER_DATA(params: T_PARAMS): Promise<T_RES> {

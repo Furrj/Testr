@@ -1,4 +1,4 @@
-import type { T_TOKENS } from "../../../types";
+import { T_TOKENS } from "../../../types/auth";
 import route_prefix from "../../route_prefix";
 
 const url = route_prefix("/login");

@@ -69,12 +69,12 @@ export const UserProvider: React.FC<IProps> = (props) => {
 
 	// if successful validation, set user and logged in
 	useEffect(() => {
-		if (isSuccess && data !== undefined) {
+		if (isSuccess && data !== undefined && data.valid) {
 			console.log(data);
 			setStatus((c) => {
 				return { ...c, is_logged_in: true };
 			});
-			setUserData(data.user);
+			setUserData(data.user_data);
 		}
 	}, [isFetched, isSuccess]);
 

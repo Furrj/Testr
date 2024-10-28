@@ -1,12 +1,13 @@
 package types
 
 type ResponseUserData struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Username  string `json:"username"`
-	Role      string `json:"role"`
-	UserID    UserID `json:"user_id"`
-	Vertical  bool   `json:"vertical"`
+	FirstName string        `json:"first_name"`
+	LastName  string        `json:"last_name"`
+	Username  string        `json:"username"`
+	Role      string        `json:"role"`
+	UserID    UserID        `json:"user_id"`
+	Vertical  bool          `json:"vertical"`
+	Account   AccountStatus `json:"account"`
 }
 
 type ResponseRegisterLogin struct {
@@ -31,6 +32,6 @@ type ResponseGetUserData struct {
 
 type ResponseGetStudentInfo struct {
 	Sessions []GameSession    `json:"sessions"`
-	UserData ResponseUserData `json:"user_data"`
 	Class    TeacherClass     `json:"class"`
+	UserData ResponseUserData `json:"user_data"`
 }

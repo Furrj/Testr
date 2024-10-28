@@ -3,6 +3,7 @@ package users
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"mathtestr.com/server/internal/dbHandler"
 	"mathtestr.com/server/internal/dbHandler/user"
@@ -29,7 +30,15 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 		userData, err := user.GetUserDataByUserID(db, userID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, validationResponse)
-			fmt.Printf("Error getting UserData during POST->login: %+v\n", err)
+			fmt.Fprintf(os.Stderr, "Error getting UserData during POST->login: %+v\n", err)
+			return
+		}
+
+		// get account status
+		status, err := user.GetAccountStatusByUserId(db, userID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, validationResponse)
+			fmt.Fprintf(os.Stderr, "Error getting UserData during POST->login: %+v\n", err)
 			return
 		}
 
@@ -41,6 +50,7 @@ func Get(db *dbHandler.DBHandler) gin.HandlerFunc {
 			UserID:    userID,
 			Role:      userData.Role,
 			Vertical:  userData.Vertical,
+			Account:   status,
 		}
 		ctx.JSON(http.StatusOK, validationResponse)
 	}

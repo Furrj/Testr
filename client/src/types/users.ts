@@ -1,5 +1,3 @@
-import { INIT_TOKENS, T_TOKENS } from "./auth";
-
 export enum E_USER_ROLES {
 	UNINITIALIZED = -1,
 	STUDENT,
@@ -17,12 +15,10 @@ export enum E_MEMBERSHIP_TYPES {
 export type T_ACCOUNT = {
 	membership_type: E_MEMBERSHIP_TYPES;
 	is_active: boolean;
-	role: string;
 };
 export const INIT_ACCOUNT: T_ACCOUNT = {
 	membership_type: E_MEMBERSHIP_TYPES.NULL,
 	is_active: false,
-	role: "",
 };
 
 export type T_USER_STATUS = {
@@ -41,6 +37,7 @@ export type T_USER = {
 	last_name: string;
 	vertical: boolean;
 	account: T_ACCOUNT;
+	role: string;
 };
 export const INIT_USER: T_USER = {
 	user_id: -1,
@@ -49,6 +46,7 @@ export const INIT_USER: T_USER = {
 	last_name: "",
 	vertical: false,
 	account: { ...INIT_ACCOUNT },
+	role: "",
 };
 
 export type T_STUDENT_DATA = {
