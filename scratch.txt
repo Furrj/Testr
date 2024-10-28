@@ -1,16 +1,15 @@
 # TODO
-Change client T_USERDATA
-Change auth flow on client login
-Allow play game as guest
-
 
 # FLOW
 Enter Site
 Taken to Play page
-Opening prompt "are you a teacher or a student?"
 Certain features disabled but buttons are visible
+	- Create Restricted component wrapper
 	- Leaderboard
 	- Versus
+UI Provider
+Overlay login instead of page
+Opening prompt "are you a teacher or a student?"
 	
 # Misc
 I. Register
