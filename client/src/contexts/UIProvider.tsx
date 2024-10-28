@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 export type T_CTX_OVERLAY = {
 	is_showing: boolean;
-	content: JSX.Element;
+	element: JSX.Element;
 };
 export type T_CTX_UI = {
 	overlay: {
@@ -19,7 +19,7 @@ interface IProps {
 export const UIProvider: React.FC<IProps> = (props) => {
 	const [ctxOverlay, setCtxOverlay] = useState<T_CTX_OVERLAY>({
 		is_showing: false,
-		content: <></>,
+		element: <></>,
 	});
 
 	return (

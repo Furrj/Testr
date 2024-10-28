@@ -32,77 +32,66 @@ const Login: React.FC = () => {
 	};
 
 	return (
-		<div className={styles.root}>
-			<div className={styles.scroll}>
-				<div className={styles.main}>
-					<div className={styles.logo}>
-						<img src="/favicon.svg" alt="logo" />
+		<form
+			id={styles.login_root}
+			onSubmit={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+				loginMutation.mutate(userInput);
+			}}
+		>
+			<div className={styles.inputs}>
+				<div className={styles.input}>
+					<div>
+						<FaPerson />
 					</div>
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
+					<input
+						type="text"
+						name="username"
+						value={userInput.username}
+						onChange={inputHandler}
+						placeholder="Username"
+						autoComplete="on"
+						required={true}
+					/>
+				</div>
+				<br />
 
-							loginMutation.mutate(userInput);
-						}}
-					>
-						<div className={styles.title}>
-							<h2>Welcome!</h2>
-						</div>
-						<div className={styles.input}>
-							<div>
-								<FaPerson />
-							</div>
-							<input
-								type="text"
-								name="username"
-								value={userInput.username}
-								onChange={inputHandler}
-								placeholder="Username"
-								autoComplete="on"
-								required={true}
-							/>
-						</div>
-						<br />
-
-						<div className={styles.input}>
-							<div>
-								<FaLock />
-							</div>
-							<input
-								type="password"
-								name="password"
-								id="passwordBox"
-								value={userInput.password}
-								onChange={inputHandler}
-								placeholder="Password"
-								autoComplete="on"
-								required={true}
-							/>
-						</div>
-
-						<Link to={"/password/reset"} className={styles.link}>
-							<div className={styles.forgot_password}>Forgot Password?</div>
-						</Link>
-
-						{incorrectInfo && (
-							<div style={{ color: "red", marginTop: "10px" }}>
-								Information was incorrect
-							</div>
-						)}
-
-						{error && (
-							<div>
-								<div>Error, Please Try Again</div>
-								<br />
-							</div>
-						)}
-
-						<button type="submit">Login</button>
-					</form>
+				<div className={styles.input}>
+					<div>
+						<FaLock />
+					</div>
+					<input
+						type="password"
+						name="password"
+						id="passwordBox"
+						value={userInput.password}
+						onChange={inputHandler}
+						placeholder="Password"
+						autoComplete="on"
+						required={true}
+					/>
 				</div>
 			</div>
-		</div>
+
+			<div className={styles.forgot_password}>Forgot Password?</div>
+
+			{incorrectInfo && (
+				<div style={{ color: "red", marginTop: "10px" }}>
+					Information was incorrect
+				</div>
+			)}
+
+			{error && (
+				<div>
+					<div>Error, Please Try Again</div>
+					<br />
+				</div>
+			)}
+
+			<button type="submit">Login</button>
+		</form>
 	);
 };
 

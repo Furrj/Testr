@@ -5,7 +5,6 @@ import Loading from "../Loading/Loading";
 import TopBar from "./children/TopBar/TopBar";
 import { useCtxUser } from "../../contexts/UserProvider";
 import Game from "../Game/Game";
-import Login from "../Login/Login";
 import NavBar from "./children/SideNavBar/SideNavBar";
 
 const App: React.FC = () => {
@@ -36,7 +35,6 @@ const App: React.FC = () => {
 						<ContentBox>
 							<Routes>
 								<Route path="/game" element={<Game />} />
-								<Route path="/login" element={<Login />} />
 								<Route path={"*"} element={<Navigate to={"/game"} replace />} />
 							</Routes>
 						</ContentBox>

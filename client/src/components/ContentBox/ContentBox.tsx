@@ -9,7 +9,12 @@ interface IProps {
 const ContentBox: React.FC<IProps> = (props) => {
 	const uiCtx = useCtxUI();
 
-	return <div className={styles.root}>{props.children}</div>;
+	return (
+		<div className={styles.root}>
+			{props.children}
+			{uiCtx.overlay.curr.is_showing && <Overlay />}
+		</div>
+	);
 };
 
 export default ContentBox;

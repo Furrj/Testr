@@ -6,9 +6,12 @@ import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { useLocation } from "react-router-dom";
 import { useCtxUser } from "../../../../contexts/UserProvider";
+import { useCtxUI } from "../../../../contexts/UIProvider";
+import Login from "../../../Login/Login";
 
 const TopBar: React.FC = () => {
 	const user = useCtxUser();
+	const uiCtx = useCtxUI();
 
 	const [isNavbarShowing, setIsNavbarShowing] = useState<boolean>(false);
 
@@ -38,7 +41,18 @@ const TopBar: React.FC = () => {
 						<>
 							{location.pathname !== "/login" && (
 								<div className={styles.buttons}>
-									<button>Login</button>
+									<button
+										onClick={() =>
+											uiCtx.overlay.set((c) => {
+												return {
+													element: <Login />,
+													is_showing: !c.is_showing,
+												};
+											})
+										}
+									>
+										Login
+									</button>
 								</div>
 							)}
 						</>
