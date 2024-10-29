@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
-import { useCtxUser } from "../../../../../../contexts/UserProvider";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./ProtectedLink.module.scss";
 import { FaLock } from "react-icons/fa";
+import { useCtxUser } from "../../../../../../../../contexts/UserProvider";
 
 interface IProps {
 	text: string;
@@ -12,6 +12,7 @@ interface IProps {
 	requiredActive: boolean;
 }
 export const ProtectedLink: React.FC<IProps> = (props) => {
+	const location = useLocation();
 	const userCtx = useCtxUser();
 
 	const allowed =
@@ -23,16 +24,14 @@ export const ProtectedLink: React.FC<IProps> = (props) => {
 		(!props.requiredActive || userCtx.user.curr.account.is_active);
 
 	return (
-		<NavLink to={props.url} className={styles.root}>
-			{({ isActive }) => (
-				<div className={isActive ? styles.active : ""}>
-					{props.text}
+		<Link to={props.url} className={styles.root}>
+			<div className={location.pathname === props.url ? styles.current : ""}>
+				{props.text}
 
-					<div className={allowed ? styles.allowed : styles.locked}>
-						<FaLock className={styles.lock} />
-					</div>
+				<div className={allowed ? styles.allowed : styles.locked}>
+					<FaLock className={styles.lock} />
 				</div>
-			)}
-		</NavLink>
+			</div>
+		</Link>
 	);
 };

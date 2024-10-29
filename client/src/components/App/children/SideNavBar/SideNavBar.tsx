@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./SideNavBar.module.scss";
-import { USER_ROLES } from "../../../../utils/consts";
 import { IoMdSettings } from "react-icons/io";
 import { useCtxUser } from "../../../../contexts/UserProvider";
-import { ProtectedLink } from "./children/ProtectedLink/ProtectedLink";
-import { E_MEMBERSHIP_TYPES } from "../../../../types/users";
+import NavLinks from "../../../NavLinks/NavLinks";
 
 const NavBar: React.FC = () => {
 	const user = useCtxUser();
@@ -13,84 +11,7 @@ const NavBar: React.FC = () => {
 	return (
 		<nav className={styles.root}>
 			<div className={styles.top}>
-				<ProtectedLink
-					text="Home"
-					url="/"
-					allowedMemberShipTypes={[
-						E_MEMBERSHIP_TYPES.BASIC,
-						E_MEMBERSHIP_TYPES.PREMIUM,
-					]}
-					allowedRoles={[
-						USER_ROLES.BASE,
-						USER_ROLES.ADMIN,
-						USER_ROLES.TEACHER,
-						USER_ROLES.STUDENT,
-					]}
-					requiredLogin={true}
-					requiredActive={true}
-				/>
-
-				<ProtectedLink
-					text="Play"
-					url="/game"
-					allowedMemberShipTypes={[
-						E_MEMBERSHIP_TYPES.UNVALIDATED,
-						E_MEMBERSHIP_TYPES.VALIDATED,
-						E_MEMBERSHIP_TYPES.BASIC,
-						E_MEMBERSHIP_TYPES.PREMIUM,
-					]}
-					allowedRoles={[
-						USER_ROLES.BASE,
-						USER_ROLES.ADMIN,
-						USER_ROLES.TEACHER,
-						USER_ROLES.STUDENT,
-					]}
-					requiredLogin={false}
-					requiredActive={false}
-				/>
-
-				<ProtectedLink
-					text="Assignments"
-					url="/assignments"
-					allowedMemberShipTypes={[
-						E_MEMBERSHIP_TYPES.VALIDATED,
-						E_MEMBERSHIP_TYPES.BASIC,
-						E_MEMBERSHIP_TYPES.PREMIUM,
-					]}
-					allowedRoles={[
-						USER_ROLES.ADMIN,
-						USER_ROLES.TEACHER,
-						USER_ROLES.STUDENT,
-					]}
-					requiredLogin={true}
-					requiredActive={true}
-				/>
-
-				<ProtectedLink
-					text="Stats"
-					url="/stats"
-					allowedMemberShipTypes={[
-						E_MEMBERSHIP_TYPES.BASIC,
-						E_MEMBERSHIP_TYPES.PREMIUM,
-					]}
-					allowedRoles={[
-						USER_ROLES.BASE,
-						USER_ROLES.ADMIN,
-						USER_ROLES.TEACHER,
-						USER_ROLES.STUDENT,
-					]}
-					requiredLogin={true}
-					requiredActive={true}
-				/>
-
-				<ProtectedLink
-					text="Classes"
-					url="/teacher/clases"
-					allowedMemberShipTypes={[E_MEMBERSHIP_TYPES.PREMIUM]}
-					allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.TEACHER]}
-					requiredLogin={true}
-					requiredActive={true}
-				/>
+				<NavLinks />
 			</div>
 
 			<div className={styles.bottom}>

@@ -4,7 +4,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import TopNavBar from "./children/TopNavBar/TopNavBar";
 import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
-import { useLocation } from "react-router-dom";
 import { useCtxUser } from "../../../../contexts/UserProvider";
 import { E_DISPLAY_THEMES, useCtxUI } from "../../../../contexts/UIProvider";
 import Login from "../../../Login/Login";
@@ -15,8 +14,6 @@ const TopBar: React.FC = () => {
 	const uiCtx = useCtxUI();
 
 	const [isNavbarShowing, setIsNavbarShowing] = useState<boolean>(false);
-
-	const location = useLocation();
 
 	return (
 		<div className={styles.root}>

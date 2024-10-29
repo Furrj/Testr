@@ -1,5 +1,5 @@
-@use "../../../../../../styles/mixins";
-@use "../../../../../../styles/vars";
+@use "../../../../../../../../styles/mixins";
+@use "../../../../../../../../styles/vars";
 
 $link-height: 2rem;
 $navbar-link-border: 1px solid black;
@@ -27,7 +27,7 @@ $navbar-link-border: 1px solid black;
 			background: #747575;
 		}
 
-		&.active {
+		&.current {
 			background: blue;
 		}
 
