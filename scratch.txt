@@ -1,6 +1,5 @@
 # TODO
-Light and Dark themes
-Button to switch themes
+Better login/logout buttons
 
 # FLOW
 Enter Site
