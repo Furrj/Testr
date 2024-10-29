@@ -19,66 +19,56 @@ const TopBar: React.FC = () => {
 	const location = useLocation();
 
 	return (
-		<>
-			<div className={styles.root}>
-				<PiMathOperationsBold className={styles.icon} />
+		<div className={styles.root}>
+			<PiMathOperationsBold className={styles.icon} />
 
-				<h1 className={styles.title}>TimesTrainer</h1>
+			<h1 className={styles.title}>TimesTrainer</h1>
 
-				<div className={styles.right}>
-					<GiHamburgerMenu
-						onClick={() => setIsNavbarShowing((curr) => !curr)}
-						id={styles.hamburger}
-						className={isNavbarShowing ? styles.open : ""}
-					/>
-				</div>
-
-				{isNavbarShowing && <TopNavBar />}
-				{/* <div className={styles.right}> */}
-				{/* 	{uiCtx.theme.curr === E_DISPLAY_THEMES.LIGHT ? ( */}
-				{/* 		<MdDarkMode */}
-				{/* 			id={styles.theme} */}
-				{/* 			onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)} */}
-				{/* 		/> */}
-				{/* 	) : ( */}
-				{/* 		<MdLightMode */}
-				{/* 			id={styles.theme} */}
-				{/* 			onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)} */}
-				{/* 		/> */}
-				{/* 	)} */}
-				{/**/}
-				{/* 	{user.status.curr.is_logged_in ? ( */}
-				{/* 		<div className={styles.logged_in}> */}
-				{/* 			<IoMdExit */}
-				{/* 				onClick={user.status.logout} */}
-				{/* 				className={styles.logout} */}
-				{/* 			/> */}
-				{/* 			<GiHamburgerMenu */}
-				{/* 				onClick={() => setIsNavbarShowing((curr) => !curr)} */}
-				{/* 				className={`${styles.hamburger} ${ */}
-				{/* 					isNavbarShowing ? styles.open : "" */}
-				{/* 				}`} */}
-				{/* 			/> */}
-				{/* 		</div> */}
-				{/* 	) : ( */}
-				{/* 		<div className={styles.buttons}> */}
-				{/* 			<button */}
-				{/* 				onClick={() => */}
-				{/* 					uiCtx.overlay.set((c) => { */}
-				{/* 						return { */}
-				{/* 							element: <Login />, */}
-				{/* 							is_showing: !c.is_showing, */}
-				{/* 						}; */}
-				{/* 					}) */}
-				{/* 				} */}
-				{/* 			> */}
-				{/* 				Login */}
-				{/* 			</button> */}
-				{/* 		</div> */}
-				{/* 	)} */}
-				{/* </div> */}
+			<div className={`${styles.right} ${styles.mobile}`}>
+				<GiHamburgerMenu
+					onClick={() => setIsNavbarShowing((curr) => !curr)}
+					id={styles.hamburger}
+					className={isNavbarShowing ? styles.open : ""}
+				/>
 			</div>
-		</>
+
+			<div className={`${styles.right} ${styles.fullsize}`}>
+				{uiCtx.theme.curr === E_DISPLAY_THEMES.LIGHT ? (
+					<MdDarkMode
+						id={styles.theme}
+						onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
+					/>
+				) : (
+					<MdLightMode
+						id={styles.theme}
+						onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
+					/>
+				)}
+
+				{user.status.curr.is_logged_in ? (
+					<div className={styles.logged_in}>
+						<IoMdExit onClick={user.status.logout} className={styles.logout} />
+					</div>
+				) : (
+					<div className={styles.buttons}>
+						<button
+							onClick={() =>
+								uiCtx.overlay.set((c) => {
+									return {
+										element: <Login />,
+										is_showing: !c.is_showing,
+									};
+								})
+							}
+						>
+							Login
+						</button>
+					</div>
+				)}
+			</div>
+
+			{isNavbarShowing && <TopNavBar />}
+		</div>
 	);
 };
 
