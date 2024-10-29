@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./TopBar.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
-import NavBar from "./children/TopNavBar/TopNavBar";
+import TopNavBar from "./children/TopNavBar/TopNavBar";
 import { IoMdExit } from "react-icons/io";
 import { PiMathOperationsBold } from "react-icons/pi";
 import { useLocation } from "react-router-dom";
@@ -20,60 +20,64 @@ const TopBar: React.FC = () => {
 
 	return (
 		<>
-			<div className={styles.main}>
+			<div className={styles.root}>
 				<PiMathOperationsBold className={styles.icon} />
+
 				<h1 className={styles.title}>TimesTrainer</h1>
 
 				<div className={styles.right}>
-					{uiCtx.theme.curr === E_DISPLAY_THEMES.LIGHT ? (
-						<MdDarkMode
-							id={styles.theme}
-							onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
-						/>
-					) : (
-						<MdLightMode
-							id={styles.theme}
-							onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)}
-						/>
-					)}
-
-					{user.status.curr.is_logged_in ? (
-						<div className={styles.logged_in}>
-							<IoMdExit
-								onClick={user.status.logout}
-								className={styles.logout}
-							/>
-							<GiHamburgerMenu
-								onClick={() => setIsNavbarShowing((curr) => !curr)}
-								className={`${styles.hamburger} ${
-									isNavbarShowing ? styles.open : ""
-								}`}
-							/>
-						</div>
-					) : (
-						<>
-							{location.pathname !== "/login" && (
-								<div className={styles.buttons}>
-									<button
-										onClick={() =>
-											uiCtx.overlay.set((c) => {
-												return {
-													element: <Login />,
-													is_showing: !c.is_showing,
-												};
-											})
-										}
-									>
-										Login
-									</button>
-								</div>
-							)}
-						</>
-					)}
+					<GiHamburgerMenu
+						onClick={() => setIsNavbarShowing((curr) => !curr)}
+						id={styles.hamburger}
+						className={isNavbarShowing ? styles.open : ""}
+					/>
 				</div>
-			</div>
 
-			{isNavbarShowing && <NavBar />}
+				{isNavbarShowing && <TopNavBar />}
+				{/* <div className={styles.right}> */}
+				{/* 	{uiCtx.theme.curr === E_DISPLAY_THEMES.LIGHT ? ( */}
+				{/* 		<MdDarkMode */}
+				{/* 			id={styles.theme} */}
+				{/* 			onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)} */}
+				{/* 		/> */}
+				{/* 	) : ( */}
+				{/* 		<MdLightMode */}
+				{/* 			id={styles.theme} */}
+				{/* 			onClick={() => uiCtx.theme.set((c) => (c + 1) % 2)} */}
+				{/* 		/> */}
+				{/* 	)} */}
+				{/**/}
+				{/* 	{user.status.curr.is_logged_in ? ( */}
+				{/* 		<div className={styles.logged_in}> */}
+				{/* 			<IoMdExit */}
+				{/* 				onClick={user.status.logout} */}
+				{/* 				className={styles.logout} */}
+				{/* 			/> */}
+				{/* 			<GiHamburgerMenu */}
+				{/* 				onClick={() => setIsNavbarShowing((curr) => !curr)} */}
+				{/* 				className={`${styles.hamburger} ${ */}
+				{/* 					isNavbarShowing ? styles.open : "" */}
+				{/* 				}`} */}
+				{/* 			/> */}
+				{/* 		</div> */}
+				{/* 	) : ( */}
+				{/* 		<div className={styles.buttons}> */}
+				{/* 			<button */}
+				{/* 				onClick={() => */}
+				{/* 					uiCtx.overlay.set((c) => { */}
+				{/* 						return { */}
+				{/* 							element: <Login />, */}
+				{/* 							is_showing: !c.is_showing, */}
+				{/* 						}; */}
+				{/* 					}) */}
+				{/* 				} */}
+				{/* 			> */}
+				{/* 				Login */}
+				{/* 			</button> */}
+				{/* 		</div> */}
+				{/* 	)} */}
+				{/* </div> */}
+			</div>
 		</>
 	);
 };

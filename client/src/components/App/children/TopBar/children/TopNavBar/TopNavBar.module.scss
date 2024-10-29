@@ -12,11 +12,14 @@ $current-bg: #00f;
 
 	background: vars.$navbar-bg;
 
+	border: 1px solid grey;
+
 	overflow: auto;
 
 	position: absolute;
+	top: vars.$topbar-height;
 
-	z-index: 20;
+	z-index: 30;
 
 	&:hover {
 		cursor: pointer;
@@ -43,7 +46,7 @@ $current-bg: #00f;
 	}
 }
 
-@media only screen and (min-width: vars.$mobile-width) {
+@media only screen and (min-width: vars.$width-tablet) {
 	.root {
 		display: none;
 	}

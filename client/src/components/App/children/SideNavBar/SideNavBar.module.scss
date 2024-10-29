@@ -58,7 +58,7 @@ $navbar-width: 135px;
 	}
 }
 
-@media only screen and (max-width: vars.$mobile-width) {
+@media only screen and (max-width: vars.$width-tablet) {
 	.root {
 		display: none;
 	}

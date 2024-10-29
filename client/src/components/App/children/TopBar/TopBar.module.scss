@@ -15,7 +15,7 @@
 	}
 }
 
-.main {
+.root {
 	@include mixins.full-size-percent;
 
 	background: var(--color-topbar-bg);
@@ -51,66 +51,7 @@
 		position: absolute;
 		right: 0;
 
-		#theme {
-			cursor: pointer;
-			font-size: 2rem;
-		}
-
-		.logged_in {
-			@include mixins.flex-center-row;
-
-			font-size: 2.5rem;
-
-			.logout {
-				&:hover {
-					cursor: pointer;
-
-					color: green;
-				}
-			}
-
-			.hamburger {
-				display: none;
-			}
-		}
-
-		.buttons {
-			@include mixins.flex-center-row;
-			height: 100%;
-			gap: 10px;
-
-			margin-right: 10px;
-
-			button {
-				@include topbar_btn;
-
-				margin-top: 0;
-			}
-		}
-
-		.theme {
-			font-size: 2rem;
-
-			&:hover {
-				cursor: pointer;
-
-				color: grey;
-			}
-		}
-	}
-}
-
-.navbar {
-	height: 100px;
-}
-
-@media only screen and (max-width: vars.$mobile-width) {
-	.root .right .logged_in {
-		.logout {
-			display: none;
-		}
-
-		.hamburger {
+		#hamburger {
 			display: block;
 			font-size: 2.5rem;
 
@@ -118,13 +59,65 @@
 			border-radius: 10px;
 
 			user-select: none;
-
 			cursor: pointer;
 
 			&.open {
 				background: #3b3a3a;
 			}
 		}
+
+		// #theme {
+		// 	cursor: pointer;
+		// 	font-size: 2rem;
+		// }
+		//
+		// .logged_in {
+		// 	@include mixins.flex-center-row;
+		//
+		// 	font-size: 2.5rem;
+		//
+		// 	.logout {
+		// 		&:hover {
+		// 			cursor: pointer;
+		//
+		// 			color: green;
+		// 		}
+		// 	}
+		//
+		// 	.hamburger {
+		// 		display: none;
+		// 	}
+		// }
+		//
+		// .buttons {
+		// 	@include mixins.flex-center-row;
+		// 	height: 100%;
+		// 	gap: 10px;
+		//
+		// 	margin-right: 10px;
+		//
+		// 	button {
+		// 		@include topbar_btn;
+		//
+		// 		margin-top: 0;
+		// 	}
+		// }
+		//
+		// .theme {
+		// 	font-size: 2rem;
+		//
+		// 	&:hover {
+		// 		cursor: pointer;
+		//
+		// 		color: grey;
+		// 	}
+		// }
+	}
+}
+
+@media only screen and (min-width: vars.$width-tablet) {
+	.root .right #hamburger {
+		display: none;
 	}
 }
 

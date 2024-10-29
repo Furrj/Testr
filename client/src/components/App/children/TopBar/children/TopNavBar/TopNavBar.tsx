@@ -3,7 +3,7 @@ import styles from "./TopNavBar.module.scss";
 import { USER_ROLES } from "../../../../../../utils/consts";
 import { useCtxUser } from "../../../../../../contexts/UserProvider";
 
-const NavBar: React.FC = () => {
+const TopNavBar: React.FC = () => {
 	const user = useCtxUser();
 	const userData = user.user.curr;
 
@@ -69,4 +69,4 @@ const NavBar: React.FC = () => {
 	);
 };
 
-export default NavBar;
+export default TopNavBar;
