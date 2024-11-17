@@ -21,3 +21,13 @@
 		@include mixins.flex-center-col;
 	}
 }
+
+#cancel {
+	font-size: 10rem;
+	color: red;
+
+	cursor: pointer;
+
+	position: absolute;
+	bottom: 10%;
+}

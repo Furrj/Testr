@@ -12,7 +12,8 @@ $current-bg: #00f;
 
 	background: vars.$navbar-bg;
 
-	border: 1px solid grey;
+	border: $navbar-link-border;
+	border-top: none;
 
 	overflow: auto;
 
@@ -26,23 +27,14 @@ $current-bg: #00f;
 	}
 
 	.link {
-		text-decoration: none;
-		color: white;
+		width: 100%;
+		height: $link-height;
+		@include mixins.flex-center-row;
 
-		h3 {
-			height: $link-height;
-			@include mixins.flex-center-row;
+		padding-left: 10px;
+		padding-right: 10px;
 
-			border-bottom: $navbar-link-border;
-
-			&.current {
-				background: $current-bg;
-			}
-		}
-
-		&.name {
-			color: $name-color;
-		}
+		position: relative;
 	}
 }
 

@@ -45,7 +45,6 @@ const Post: React.FC<IProps> = (props) => {
 			: props.time;
 
 	const user = useCtxUser();
-	const userData = user.user.curr;
 	const queryClient = useQueryClient();
 	const submitGamesessionMutation = Locals.useSubmitGamesessionMutation(
 		queryClient,
@@ -56,7 +55,7 @@ const Post: React.FC<IProps> = (props) => {
 	useEffect(() => {
 		!sent &&
 			submitGamesessionMutation.mutate({
-				tokens: userData.tokens,
+				tokens: user.tokens.curr,
 				session: {
 					questions_count: questionsCount,
 					correct_count: correctCount,

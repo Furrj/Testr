@@ -17,6 +17,8 @@ $br: 20px;
 	-moz-box-shadow: -2px 0px 40px 10px rgba(0, 0, 0, 0.75);
 	box-shadow: -2px 0px 40px 10px rgba(0, 0, 0, 0.75);
 
+	user-select: none;
+
 	.inputs {
 		padding: 10px;
 		.input {
