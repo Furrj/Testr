@@ -6,6 +6,8 @@ import { type T_USERINPUT_LOGIN, INIT_USERINPUT_LOGIN } from "../../types.ts";
 import { useAuthCtx } from "../../contexts/AuthProvider.tsx";
 import Locals from "./Locals.ts";
 import { Link } from "react-router-dom";
+import createClient from "openapi-fetch";
+import type { paths } from "../../types/v1";
 
 const Login: React.FC = () => {
 	const [userInput, setUserInuput] =

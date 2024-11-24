@@ -1,0 +1,166 @@
+openapi: "3.0.3"
+info:
+  title: TimesTrainer User API
+  version: "0.0.1"
+
+servers:
+  - url: https://localhost:5000
+    description: Development server
+
+paths:
+  /api/login:
+    post:
+      operationId: userLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: bad request
+        "500":
+          description: server error
+
+  /api/register:
+    post:
+      operationId: userRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+        "400":
+          description: bad request
+        "500":
+          description: server error
+
+  /api/user:
+    get:
+      operationId: getUserInfoForClient
+      tags:
+        - access_token
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfoForClient"
+        "401":
+          description: unauthorized
+        "500":
+          description: server error
+
+components:
+  schemas:
+    Jwt:
+      type: string
+      minLength: 1
+
+    UserId:
+      type: integer
+      minimum: 0
+
+    UserRole:
+      type: string
+      enum:
+        - A
+        - S
+        - T
+
+    Username:
+      type: string
+      minLength: 1
+      maxLength: 12
+
+    Password:
+      type: string
+      minLength: 1
+      maxLength: 16
+
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          $ref: "#/components/schemas/Username"
+        password:
+          $ref: "#/components/schemas/Password"
+      required:
+        - username
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+      required:
+        - valid
+
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          $ref: "#/components/schemas/Username"
+        password:
+          $ref: "#/components/schemas/Password"
+        first_name:
+          type: string
+          minLength: 1
+        last_name:
+          type: string
+          minLength: 1
+        user_role:
+          $ref: "#/components/schemas/UserRole"
+      required:
+        - username
+        - password
+        - first_name
+        - last_name
+        - user_role
+
+    RegisterResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+      required:
+        - valid
+
+    UserInfoForClient:
+      description: user info used on client
+      type: object
+      properties:
+        user_id:
+          $ref: "#/components/schemas/UserId"
+        username:
+          type: string
+          minLength: 1
+        first_name:
+          type: string
+          minLength: 1
+        last_name:
+          type: string
+          minLength: 1
+        user_role:
+          $ref: "#/components/schemas/UserRole"
+      required:
+        - user_id
+        - username
+        - first_name
+        - last_name
+        - user_role

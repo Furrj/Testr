@@ -1,7 +1,9 @@
-config.env
+*.env
 .idea
 .vscode
 .DS_Store
 data/
 deployment/
 init_db.sh
+.air.toml
+tmp/

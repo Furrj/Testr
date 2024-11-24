@@ -1,0 +1,6 @@
+.air.toml
+tmp/
+dist/
+.env
+.idea/
+logs.txt

@@ -7,7 +7,9 @@
 		"dev": "vite",
 		"build": "tsc && vite build && rm -rf ../server/client && cp -r dist ../server/client",
 		"lint": "eslint .",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test:ts": "tsc --noEmit",
+		"generate": "npx openapi-typescript ../config/openapi.yaml -o ./src/types/v1.d.ts"
 	},
 	"dependencies": {
 		"@stripe/react-stripe-js": "^2.8.1",
@@ -16,12 +18,12 @@
 		"@tanstack/react-query": "^5.40.0",
 		"@tanstack/react-query-devtools": "^5.40.0",
 		"axios": "^1.7.2",
+		"openapi-fetch": "^0.13.0",
 		"react": "^18.2.0",
 		"react-datepicker": "^7.4.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^5.3.0",
-		"react-loader-spinner": "^6.1.6",
-		"react-router-dom": "^6.23.1"
+		"react-loader-spinner": "^6.1.6"
 	},
 	"devDependencies": {
 		"@tanstack/eslint-plugin-query": "^5.35.6",
@@ -35,6 +37,8 @@
 		"eslint": "^8.57.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.6",
+		"openapi-typescript": "^7.4.3",
+		"react-router-dom": "^7.0.1",
 		"sass": "^1.75.0",
 		"typescript": "^5.2.2",
 		"vite": "^5.2.0"
