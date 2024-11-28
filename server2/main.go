@@ -65,7 +65,7 @@ func main() {
 	if envvars.Prod {
 		allowed = "/"
 	} else {
-		allowed = "http://localhost:5173"
+		allowed = "https://localhost:5173"
 	}
 	r.Handle("OPTIONS /api/", logMw(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", allowed)

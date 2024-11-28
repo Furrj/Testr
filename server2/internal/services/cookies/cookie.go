@@ -26,12 +26,7 @@ func CreateHTTPCookie(key CookieKey, id api.UserId, j jwt.Jwts, secure bool) (ht
 		MaxAge:   int(expiry.Seconds()),
 		Secure:   true,
 		HttpOnly: true,
-		SameSite: http.SameSiteNoneMode,
-	}
-
-	if secure {
-		cookie.Secure = true
-		cookie.SameSite = http.SameSiteStrictMode
+		SameSite: http.SameSiteStrictMode,
 	}
 
 	return cookie, nil
