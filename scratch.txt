@@ -1,20 +1,4 @@
-# FLOW
-Register->Home
-+++++++++++@
-
-I. Register
-	A. UserData + Email
-		1. create new user
-		2. add email to teachers.data
-		
-II. Home
-	A. provide way to sign up as teacher
-	B. provide way to sign up as student
-	C. prompt for validation or add classes if teacher
-	
 # TODO
-	+ add users.account_status.membership_type
-	+ dbHandlers
-	- routes
-	- redirect to home on registration
-
+- create auth service
+- create db table to refresh token id
+- store refresh token id in db
