@@ -133,7 +133,7 @@ type UsersDatum struct {
 	Salt      pgtype.Text
 	FirstName pgtype.Text
 	LastName  pgtype.Text
-	Role      NullUsersRole
+	Role      UsersRole
 	Vertical  pgtype.Bool
 	CreatedAt pgtype.Int8
 	UpdatedAt pgtype.Int8

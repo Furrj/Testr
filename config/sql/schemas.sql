@@ -19,7 +19,7 @@ CREATE TABLE users.data
     salt       TEXT,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
-    role       users.role DEFAULT 'S',
+    role       users.role NOT NULL DEFAULT 'S',
     vertical   BOOLEAN,
     created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
     updated_at BIGINT

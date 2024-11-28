@@ -38,6 +38,7 @@ func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Se
 		LastName:  user.LastName.String,
 		UserId:    int(user.UserID),
 		Username:  user.Username.String,
+		UserRole:  api.UserRole(user.Role),
 	}
 	b, err := json.Marshal(res)
 	if err != nil {
