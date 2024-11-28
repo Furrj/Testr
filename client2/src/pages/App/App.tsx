@@ -2,7 +2,7 @@ import { useCtxUser } from "../../services/ctx/UserProvider";
 import Login from "../Login/Login";
 
 const App: React.FC = () => {
-	const user = useCtxUser();
+	//const user = useCtxUser();
 
 	return (
 		<main>

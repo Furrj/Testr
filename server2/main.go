@@ -59,7 +59,8 @@ func main() {
 
 	// muxer
 	r := http.NewServeMux()
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// handle preflight
+	r.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodOptions {
 			fmt.Println("OPTIONS")
 			w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
@@ -70,6 +71,9 @@ func main() {
 			return
 		}
 	})
+	// serve spa
+	fs := http.FileServer(http.Dir("client"))
+	r.Handle("/", fs)
 
 	// si
 	si := handlers.NewRouteHandler(services)

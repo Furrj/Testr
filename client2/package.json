@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -b && vite build",
+		"build": "tsc -b && vite build && rm -rf ../server2/client && cp -r dist ../server2/client",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"generate": "npx openapi-typescript ../config/openapi.yaml -o ./src/types/schema.d.ts",
