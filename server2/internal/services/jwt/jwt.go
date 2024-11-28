@@ -50,6 +50,6 @@ func (jm Jwts) Parse(j Jwt) (*jwt.Token, error) {
 	return token, nil
 }
 
-func newJwtManager(secret []byte) JwtManager[*jwt.Token] {
+func NewJwtManager(secret []byte) JwtManager[*jwt.Token] {
 	return Jwts{Secret: secret}
 }
