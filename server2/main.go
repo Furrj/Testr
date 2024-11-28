@@ -26,6 +26,7 @@ const (
 func main() {
 	// logger
 	log := logrus.New()
+	logMw := logMw.Log(log)
 
 	// env vars
 	envvars := env.FetchEnvVars(envFilePath, log)
@@ -60,29 +61,36 @@ func main() {
 	// muxer
 	r := http.NewServeMux()
 	// handle preflight
-	r.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodOptions {
-			fmt.Println("OPTIONS")
-			w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-	})
-	// serve spa
-	fs := http.FileServer(http.Dir("client"))
-	r.Handle("/", fs)
+	var allowed string
+	if envvars.Prod {
+		allowed = "/"
+	} else {
+		allowed = "http://localhost:5173"
+	}
+	r.Handle("OPTIONS /api/", logMw(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", allowed)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.WriteHeader(http.StatusNoContent)
+	})))
+
+	// serve client
+	r.Handle("GET /assets/", logMw(http.StripPrefix("/assets/", http.FileServer(http.Dir("./client/assets")))))
+
+	r.Handle("GET /", logMw(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./client/index.html")
+	})))
 
 	// si
 	si := handlers.NewRouteHandler(services)
 	// middleware
 	m := []api.MiddlewareFunc{
 		classify.Classify,
-		logMw.Log(log),
+		logMw,
 	}
 	if !envvars.Prod {
+		log.Info("*****ENABLING DEV CORS*****")
 		m = append(m, cors.HandleCors)
 	}
 	// options
@@ -106,5 +114,6 @@ func main() {
 	}
 
 	// serve
+	log.Info("listening on port ", envvars.Port)
 	log.Fatal(s.ListenAndServe())
 }
