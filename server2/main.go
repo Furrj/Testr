@@ -78,6 +78,10 @@ func main() {
 	// serve client
 	r.Handle("GET /assets/", logMw(http.StripPrefix("/assets/", http.FileServer(http.Dir("./client/assets")))))
 
+	r.Handle("GET /favicon.svg", logMw(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./client/favicon.svg")
+	})))
+
 	r.Handle("GET /", logMw(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./client/index.html")
 	})))
