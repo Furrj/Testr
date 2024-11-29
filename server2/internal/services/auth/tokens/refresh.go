@@ -10,8 +10,9 @@ import (
 )
 
 type RefreshToken struct {
-	Expiry uint64
-	UserId api.UserId
+	UserId   api.UserId
+	Expiry   int64
+	IssuedAt int64
 }
 
 type RefreshTokenManager struct {
@@ -25,6 +26,7 @@ func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
 		Issuer:    rm.Issuer,
 		Subject:   strconv.Itoa(tok.UserId),
 		ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
+		IssuedAt:  &jwt.NumericDate{Time: time.Now()},
 	})
 
 	jwt, err := jwts.CreateFromClaims(t, rm.Secret)
@@ -55,9 +57,15 @@ func (rm RefreshTokenManager) Unmarshall(j jwts.Jwt) (RefreshToken, error) {
 		return RefreshToken{}, err
 	}
 
+	iat, err := t.Claims.GetIssuedAt()
+	if err != nil {
+		return RefreshToken{}, err
+	}
+
 	return RefreshToken{
-		UserId: idCast,
-		Expiry: uint64(exp.Unix()),
+		UserId:   idCast,
+		Expiry:   exp.Unix(),
+		IssuedAt: iat.Unix(),
 	}, nil
 }
 
