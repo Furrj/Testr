@@ -9,6 +9,7 @@ import (
 	"github.com/Furrj/timestrainer/server/internal/api/middleware/ctx"
 	"github.com/Furrj/timestrainer/server/internal/api/serialization"
 	"github.com/Furrj/timestrainer/server/internal/services"
+	"github.com/Furrj/timestrainer/server/internal/services/auth/tokens"
 	"github.com/Furrj/timestrainer/server/internal/services/cookies"
 	"github.com/jackc/pgx/v5/pgtype"
 	"golang.org/x/crypto/bcrypt"
@@ -56,8 +57,19 @@ func UserLogin(w http.ResponseWriter, r *http.Request, s *services.Services) {
 
 	res.Valid = true
 
-	cookie, err := cookies.CreateHTTPCookie(cookies.ACCESS_TOKEN_COOKIE_KEY, int(user.UserID), s.Jwts, s.Env.Prod)
-	http.SetCookie(w, &cookie)
+	// create and set access token
+	at, err := s.Auth.Tokens.Access.Create(tokens.AccessToken{
+		UserId: int(user.UserID),
+	})
+	ac, err := cookies.CreateHTTPCookie(cookies.ACCESS_TOKEN_COOKIE_KEY, at, s.Auth.Tokens.Access.GetValidDuration())
+	http.SetCookie(w, &ac)
+
+	// create reset token
+	rt, err := s.Auth.Tokens.Refresh.Create(tokens.RefreshToken{
+		UserId: int(user.UserID),
+	})
+	rc, err := cookies.CreateHTTPCookie(cookies.REFRESH_TOKEN_COOKIE_KEY, rt, s.Auth.Tokens.Refresh.GetValidDuration())
+	http.SetCookie(w, &rc)
 
 	bound, err = json.Marshal(res)
 	if err != nil {

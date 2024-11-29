@@ -7,21 +7,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type JwtManager[T any] interface {
-	Create(T) (Jwt, error)
-	Parse(Jwt) (T, error)
-}
-
-type (
-	Jwts struct {
-		Secret []byte
-	}
-	Jwt       = string
-	timestamp = int64
-)
-
-func (jm Jwts) Create(t *jwt.Token) (Jwt, error) {
-	s, err := t.SignedString(jm.Secret)
+func CreateFromClaims(t *jwt.Token, sec []byte) (Jwt, error) {
+	s, err := t.SignedString(sec)
 	if err != nil {
 		return "", errors.New("error creating signed string")
 	}
@@ -29,14 +16,14 @@ func (jm Jwts) Create(t *jwt.Token) (Jwt, error) {
 	return s, nil
 }
 
-func (jm Jwts) Parse(j Jwt) (*jwt.Token, error) {
+func ParseToClaims(j Jwt, sec []byte) (*jwt.Token, error) {
 	// Parse the token
 	token, err := jwt.Parse(j, func(token *jwt.Token) (interface{}, error) {
 		// Make sure that the token's algorithm matches the expected algorithm
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(jm.Secret), nil
+		return []byte(sec), nil
 	})
 	if err != nil {
 		return nil, err
@@ -48,8 +35,4 @@ func (jm Jwts) Parse(j Jwt) (*jwt.Token, error) {
 	}
 
 	return token, nil
-}
-
-func NewJwtManager(secret []byte) JwtManager[*jwt.Token] {
-	return Jwts{Secret: secret}
 }

@@ -11,14 +11,14 @@ import (
 )
 
 func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Services) {
-	at, err := r.Cookie(cookies.ACCESS_TOKEN_COOKIE_KEY)
+	cookie, err := r.Cookie(cookies.ACCESS_TOKEN_COOKIE_KEY)
 	if err != nil {
 		s.Log.Error(err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	j, err := s.Jwts.User.Parse(at.Value)
+	at, err := s.Auth.Tokens.Access.Unmarshall(cookie.Value)
 	if err != nil {
 		s.Log.Error(err)
 		w.WriteHeader(http.StatusUnauthorized)
@@ -26,7 +26,7 @@ func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Se
 	}
 
 	// get user data
-	user, err := s.Query.GetUserDataByUserId(context.Background(), int32(j.Id))
+	user, err := s.Query.GetUserDataByUserId(context.Background(), int32(at.UserId))
 	if err != nil {
 		s.Log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)

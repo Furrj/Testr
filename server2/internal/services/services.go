@@ -2,26 +2,23 @@ package services
 
 import (
 	"github.com/Furrj/timestrainer/server/internal/db"
+	"github.com/Furrj/timestrainer/server/internal/services/auth"
 	"github.com/Furrj/timestrainer/server/internal/services/env"
-	jwts "github.com/Furrj/timestrainer/server/internal/services/jwt"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 )
 
 type Services struct {
 	Log   *logrus.Logger
 	Query *db.Queries
-	Jwts  jwts.JwtManager[*jwt.Token]
+	Auth  auth.Auth
 	Env   env.EnvVars
 }
 
-func NewServices(log *logrus.Logger, q *db.Queries, e env.EnvVars) *Services {
-	j := jwts.NewJwtManager([]byte(e.JwtSecret))
-
+func NewServices(log *logrus.Logger, q *db.Queries, e env.EnvVars, au auth.Auth) *Services {
 	return &Services{
 		Log:   log,
 		Query: q,
-		Jwts:  j,
 		Env:   e,
+		Auth:  au,
 	}
 }

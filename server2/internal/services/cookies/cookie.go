@@ -3,27 +3,15 @@ package cookies
 import (
 	"net/http"
 	"time"
-
-	"github.com/Furrj/timestrainer/server/internal/api"
-	"github.com/Furrj/timestrainer/server/internal/services/jwt"
 )
 
-func CreateHTTPCookie(key CookieKey, id api.UserId, j jwt.Jwts, secure bool) (http.Cookie, error) {
-	token, err := j.User.Create(jwt.JwtFieldsUser{
-		Id: id,
-	})
-	if err != nil {
-		return http.Cookie{}, err
-	}
-
-	expiry := time.Hour * 24 * 7
-
+func CreateHTTPCookie(key CookieKey, content string, duration time.Duration) (http.Cookie, error) {
 	cookie := http.Cookie{
 		Name:     key,
-		Value:    token,
+		Value:    content,
 		Path:     "/",
-		Expires:  time.Now().Add(expiry),
-		MaxAge:   int(expiry.Seconds()),
+		Expires:  time.Now().Add(duration),
+		MaxAge:   int(duration.Seconds()),
 		Secure:   true,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
