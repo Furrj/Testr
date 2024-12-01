@@ -10,6 +10,7 @@ import (
 
 	"github.com/Furrj/timestrainer/server/internal/api"
 	"github.com/Furrj/timestrainer/server/internal/api/handlers"
+	"github.com/Furrj/timestrainer/server/internal/api/middleware/authentication"
 	"github.com/Furrj/timestrainer/server/internal/api/middleware/classify"
 	"github.com/Furrj/timestrainer/server/internal/api/middleware/cors"
 	logMw "github.com/Furrj/timestrainer/server/internal/api/middleware/log"
@@ -115,6 +116,7 @@ func main() {
 	si := handlers.NewRouteHandler(services)
 	// middleware
 	m := []api.MiddlewareFunc{
+		authentication.HandleAccessToken(log, auth),
 		classify.Classify,
 		logMw,
 	}

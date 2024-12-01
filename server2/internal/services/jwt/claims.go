@@ -23,7 +23,7 @@ func ParseToToken(j Jwt, cl jwt.Claims, sec []byte) (*jwt.Token, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(sec), nil
+		return sec, nil
 	})
 	if err != nil {
 		return nil, err

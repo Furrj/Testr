@@ -25,20 +25,16 @@ type RefreshTokenManager struct {
 	ValidDuration time.Duration
 }
 
-type RefreshTokenClaims struct {
-	jwt.RegisteredClaims
-	Jti TokenId
-}
-
 // tok only needs UserId
 func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, RefreshTokenClaims{
-		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    rm.Issuer,
-			Subject:   strconv.Itoa(tok.UserId),
-			ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
-		},
-		Jti: uuid.New(),
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
+		Issuer:    rm.Issuer,
+		Subject:   strconv.Itoa(tok.UserId),
+		Audience:  []string{"core"},
+		ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
+		NotBefore: &jwt.NumericDate{Time: time.Now()},
+		IssuedAt:  &jwt.NumericDate{Time: time.Now()},
+		ID:        uuid.NewString(),
 	})
 
 	jwt, err := jwts.CreateFromClaims(t, rm.Secret)
@@ -50,25 +46,31 @@ func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
 }
 
 func (rm RefreshTokenManager) Unmarshall(j jwts.Jwt) (RefreshToken, error) {
-	t, err := jwts.ParseToToken(j, RefreshTokenClaims{}, rm.Secret)
+	t, err := jwts.ParseToToken(j, &jwt.RegisteredClaims{}, rm.Secret)
 	if err != nil {
 		return RefreshToken{}, err
 	}
 
-	claims, ok := t.Claims.(*RefreshTokenClaims)
+	claims, ok := t.Claims.(*jwt.RegisteredClaims)
 	if !ok {
-		return RefreshToken{}, errors.New("token missing claims")
+		return RefreshToken{}, errors.New("invalid decoded claims")
 	}
 
-	idCast, err := strconv.Atoi(claims.Subject)
+	userId, err := strconv.Atoi(claims.Subject)
+	if err != nil {
+		return RefreshToken{}, err
+	}
+
+	tokenIdS := claims.ID
+	tokenIdU, err := uuid.Parse(tokenIdS)
 	if err != nil {
 		return RefreshToken{}, err
 	}
 
 	return RefreshToken{
-		UserId:  idCast,
+		UserId:  userId,
 		Expiry:  claims.ExpiresAt.Unix(),
-		TokenId: claims.Jti,
+		TokenId: tokenIdU,
 	}, nil
 }
 

@@ -32,4 +32,7 @@ var ctxMap = map[string]ctx.ProcessingCtx{
 		Auth: middleware.AUTH_TYPE_NONE,
 		Type: middleware.ROUTE_TYPE_REGISTER,
 	},
+	middleware.ROUTER_URL_USER: {
+		Auth: middleware.AUTH_TYPE_ACCESS_TOKEN,
+	},
 }

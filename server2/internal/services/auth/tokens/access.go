@@ -1,6 +1,7 @@
 package tokens
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
@@ -20,11 +21,16 @@ type AccessTokenManager struct {
 	ValidDuration time.Duration
 }
 
+// tok only needs UserId
 func (am AccessTokenManager) Create(tok AccessToken) (jwts.Jwt, error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		Issuer:    am.Issuer,
 		Subject:   strconv.Itoa(tok.UserId),
+		Audience:  []string{"core"},
 		ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(am.ValidDuration)},
+		NotBefore: &jwt.NumericDate{Time: time.Now()},
+		IssuedAt:  &jwt.NumericDate{Time: time.Now()},
+		ID:        "test",
 	})
 
 	jwt, err := jwts.CreateFromClaims(t, am.Secret)
@@ -36,28 +42,25 @@ func (am AccessTokenManager) Create(tok AccessToken) (jwts.Jwt, error) {
 }
 
 func (am AccessTokenManager) Unmarshall(j jwts.Jwt) (AccessToken, error) {
-	t, err := jwts.ParseToToken(j, jwt.RegisteredClaims{}, am.Secret)
+	t, err := jwts.ParseToToken(j, &jwt.RegisteredClaims{}, am.Secret)
 	if err != nil {
 		return AccessToken{}, err
 	}
 
-	idStr, err := t.Claims.GetSubject()
-	if err != nil {
-		return AccessToken{}, err
+	claims, ok := t.Claims.(*jwt.RegisteredClaims)
+	if !ok {
+		return AccessToken{}, errors.New("invalid decoded claims")
 	}
+
+	idStr := claims.Subject
 	idUint, err := strconv.Atoi(idStr)
-	if err != nil {
-		return AccessToken{}, err
-	}
-
-	exp, err := t.Claims.GetExpirationTime()
 	if err != nil {
 		return AccessToken{}, err
 	}
 
 	return AccessToken{
 		UserId: idUint,
-		Expiry: uint64(exp.Unix()),
+		Expiry: uint64(claims.ExpiresAt.Unix()),
 	}, nil
 }
 

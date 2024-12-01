@@ -6,27 +6,20 @@ import (
 	"net/http"
 
 	"github.com/Furrj/timestrainer/server/internal/api"
+	"github.com/Furrj/timestrainer/server/internal/api/middleware/ctx"
 	"github.com/Furrj/timestrainer/server/internal/services"
-	"github.com/Furrj/timestrainer/server/internal/services/cookies"
 )
 
 func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Services) {
-	cookie, err := r.Cookie(cookies.ACCESS_TOKEN_COOKIE_KEY)
+	ctx, err := ctx.GetProcessingCtx(r)
 	if err != nil {
 		s.Log.Error(err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	at, err := s.Auth.Tokens.Access.Unmarshall(cookie.Value)
-	if err != nil {
-		s.Log.Error(err)
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-
 	// get user data
-	user, err := s.Query.GetUserDataByUserId(context.Background(), int32(at.UserId))
+	user, err := s.Query.GetUserDataByUserId(context.Background(), int32(ctx.UserId))
 	if err != nil {
 		s.Log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
