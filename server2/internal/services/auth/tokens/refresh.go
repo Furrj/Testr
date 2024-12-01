@@ -30,6 +30,7 @@ type RefreshTokenClaims struct {
 	Jti TokenId
 }
 
+// tok only needs UserId
 func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, RefreshTokenClaims{
 		RegisteredClaims: jwt.RegisteredClaims{

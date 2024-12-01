@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/Furrj/timestrainer/server/internal/api"
@@ -16,6 +17,7 @@ import (
 	"github.com/Furrj/timestrainer/server/internal/services"
 	"github.com/Furrj/timestrainer/server/internal/services/auth"
 	"github.com/Furrj/timestrainer/server/internal/services/auth/tokens"
+	"github.com/Furrj/timestrainer/server/internal/services/cache"
 	"github.com/Furrj/timestrainer/server/internal/services/env"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
@@ -59,18 +61,25 @@ func main() {
 	}
 	qry := db.New(conn)
 
-	auth := auth.Auth{Tokens: tokens.NewTokensService(
-		tokens.AccessTokenManager{
-			Issuer:        "timestrainer.com",
-			Secret:        []byte(envvars.JwtSecret),
-			ValidDuration: time.Minute * 5,
-		},
-		tokens.RefreshTokenManager{
-			Issuer:        "timestrainer.com",
-			Secret:        []byte(envvars.JwtSecret),
-			ValidDuration: time.Hour * 24 * 7,
-		},
-	)}
+	// auth
+	auth := auth.Auth{
+		Tokens: tokens.NewTokensService(
+			tokens.AccessTokenManager{
+				Issuer:        "timestrainer.com",
+				Secret:        []byte(envvars.JwtSecret),
+				ValidDuration: time.Minute * 5,
+			},
+			tokens.RefreshTokenManager{
+				Issuer:        "timestrainer.com",
+				Secret:        []byte(envvars.JwtSecret),
+				ValidDuration: time.Hour * 24 * 7,
+			},
+		),
+		InvalidRefreshTokenCache: cache.NewInvalidRefreshTokenCache(
+			make(map[tokens.TokenId]any),
+			&sync.Mutex{},
+		),
+	}
 
 	services := services.NewServices(log, qry, envvars, auth)
 

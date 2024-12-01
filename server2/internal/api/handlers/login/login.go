@@ -64,13 +64,14 @@ func UserLogin(w http.ResponseWriter, r *http.Request, s *services.Services) {
 	ac, err := cookies.CreateHTTPCookie(cookies.ACCESS_TOKEN_COOKIE_KEY, at, s.Auth.Tokens.Access.GetValidDuration())
 	http.SetCookie(w, &ac)
 
-	// create reset token
+	// create and set refresh token
 	rt, err := s.Auth.Tokens.Refresh.Create(tokens.RefreshToken{
 		UserId: int(user.UserID),
 	})
 	rc, err := cookies.CreateHTTPCookie(cookies.REFRESH_TOKEN_COOKIE_KEY, rt, s.Auth.Tokens.Refresh.GetValidDuration())
 	http.SetCookie(w, &rc)
 
+	// marshal res
 	bound, err = json.Marshal(res)
 	if err != nil {
 		s.Log.Error(err)

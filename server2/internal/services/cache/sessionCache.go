@@ -2,42 +2,48 @@ package cache
 
 import (
 	"sync"
+
+	"github.com/Furrj/timestrainer/server/internal/services/auth/tokens"
 )
 
-type SessionCache[K comparable, V any] struct {
-	Sessions map[K]V
-	Mtx      *sync.Mutex
+type InvalidRefreshTokenMap = map[tokens.TokenId]any
+
+type InvalidRefreshTokenCache struct {
+	Tokens InvalidRefreshTokenMap
+	Mtx    *sync.Mutex
 }
 
-func NewSessionCache[K comparable, V any]() *SessionCache[K, V] {
-	return &SessionCache[K, V]{
-		Sessions: make(map[K]V),
-		Mtx:      &sync.Mutex{},
+func NewInvalidRefreshTokenCache(m InvalidRefreshTokenMap, mtx *sync.Mutex) *InvalidRefreshTokenCache {
+	return &InvalidRefreshTokenCache{
+		Tokens: m,
+		Mtx:    mtx,
 	}
 }
 
-func (sc *SessionCache[K, V]) Add(key K, value V) error {
+func (sc *InvalidRefreshTokenCache) Add(key tokens.TokenId, value any) error {
 	sc.Mtx.Lock()
 	defer sc.Mtx.Unlock()
-	sc.Sessions[key] = value
+	sc.Tokens[key] = value
 	return nil
 }
 
-func (sc *SessionCache[K, V]) Fetch(key K) (bool, V) {
+func (sc *InvalidRefreshTokenCache) Fetch(key tokens.TokenId) (bool, any) {
 	sc.Mtx.Lock()
 	defer sc.Mtx.Unlock()
-	val, exists := sc.Sessions[key]
+	val, exists := sc.Tokens[key]
 	if !exists {
-		var zero V
+		var zero any
 		return false, zero
 	}
 	return true, val
 }
 
-func (sc *SessionCache[K, V]) Remove(key K) {
-	delete(sc.Sessions, key)
+func (sc *InvalidRefreshTokenCache) Remove(key tokens.TokenId) {
+	sc.Mtx.Lock()
+	defer sc.Mtx.Unlock()
+	delete(sc.Tokens, key)
 }
 
-func (sc *SessionCache[K, V]) Size() uint {
-	return uint(len(sc.Sessions))
+func (sc *InvalidRefreshTokenCache) Size() uint {
+	return uint(len(sc.Tokens))
 }
