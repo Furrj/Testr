@@ -1,18 +1,22 @@
 package tokens
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
 	"github.com/Furrj/timestrainer/server/internal/api"
 	jwts "github.com/Furrj/timestrainer/server/internal/services/jwt"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
+type TokenId = uuid.UUID
+
 type RefreshToken struct {
-	UserId   api.UserId
-	Expiry   int64
-	IssuedAt int64
+	TokenId TokenId
+	UserId  api.UserId
+	Expiry  int64
 }
 
 type RefreshTokenManager struct {
@@ -21,12 +25,19 @@ type RefreshTokenManager struct {
 	ValidDuration time.Duration
 }
 
+type RefreshTokenClaims struct {
+	jwt.RegisteredClaims
+	TokenId TokenId
+}
+
 func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
-		Issuer:    rm.Issuer,
-		Subject:   strconv.Itoa(tok.UserId),
-		ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
-		IssuedAt:  &jwt.NumericDate{Time: time.Now()},
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, RefreshTokenClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    rm.Issuer,
+			Subject:   strconv.Itoa(tok.UserId),
+			ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
+		},
+		TokenId: "TEST_ID",
 	})
 
 	jwt, err := jwts.CreateFromClaims(t, rm.Secret)
@@ -38,34 +49,25 @@ func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
 }
 
 func (rm RefreshTokenManager) Unmarshall(j jwts.Jwt) (RefreshToken, error) {
-	t, err := jwts.ParseToClaims(j, rm.Secret)
+	t, err := jwts.ParseToToken(j, RefreshTokenClaims{}, rm.Secret)
 	if err != nil {
 		return RefreshToken{}, err
 	}
 
-	idStr, err := t.Claims.GetSubject()
-	if err != nil {
-		return RefreshToken{}, err
-	}
-	idCast, err := strconv.Atoi(idStr)
-	if err != nil {
-		return RefreshToken{}, err
+	claims, ok := t.Claims.(*RefreshTokenClaims)
+	if !ok {
+		return RefreshToken{}, errors.New("token missing claims")
 	}
 
-	exp, err := t.Claims.GetExpirationTime()
-	if err != nil {
-		return RefreshToken{}, err
-	}
-
-	iat, err := t.Claims.GetIssuedAt()
+	idCast, err := strconv.Atoi(claims.Subject)
 	if err != nil {
 		return RefreshToken{}, err
 	}
 
 	return RefreshToken{
-		UserId:   idCast,
-		Expiry:   exp.Unix(),
-		IssuedAt: iat.Unix(),
+		UserId:  idCast,
+		Expiry:  claims.ExpiresAt.Unix(),
+		TokenId: claims.ID,
 	}, nil
 }
 

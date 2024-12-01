@@ -36,7 +36,7 @@ func (am AccessTokenManager) Create(tok AccessToken) (jwts.Jwt, error) {
 }
 
 func (am AccessTokenManager) Unmarshall(j jwts.Jwt) (AccessToken, error) {
-	t, err := jwts.ParseToClaims(j, am.Secret)
+	t, err := jwts.ParseToToken(j, jwt.RegisteredClaims{}, am.Secret)
 	if err != nil {
 		return AccessToken{}, err
 	}

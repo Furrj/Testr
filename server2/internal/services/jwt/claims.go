@@ -16,9 +16,9 @@ func CreateFromClaims(t *jwt.Token, sec []byte) (Jwt, error) {
 	return s, nil
 }
 
-func ParseToClaims(j Jwt, sec []byte) (*jwt.Token, error) {
+func ParseToToken(j Jwt, cl jwt.Claims, sec []byte) (*jwt.Token, error) {
 	// Parse the token
-	token, err := jwt.Parse(j, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(j, cl, func(token *jwt.Token) (interface{}, error) {
 		// Make sure that the token's algorithm matches the expected algorithm
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
