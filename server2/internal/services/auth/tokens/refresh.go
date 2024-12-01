@@ -27,7 +27,7 @@ type RefreshTokenManager struct {
 
 type RefreshTokenClaims struct {
 	jwt.RegisteredClaims
-	TokenId TokenId
+	Jti TokenId
 }
 
 func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
@@ -37,7 +37,7 @@ func (rm RefreshTokenManager) Create(tok RefreshToken) (jwts.Jwt, error) {
 			Subject:   strconv.Itoa(tok.UserId),
 			ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(rm.ValidDuration)},
 		},
-		TokenId: "TEST_ID",
+		Jti: uuid.New(),
 	})
 
 	jwt, err := jwts.CreateFromClaims(t, rm.Secret)
@@ -67,7 +67,7 @@ func (rm RefreshTokenManager) Unmarshall(j jwts.Jwt) (RefreshToken, error) {
 	return RefreshToken{
 		UserId:  idCast,
 		Expiry:  claims.ExpiresAt.Unix(),
-		TokenId: claims.ID,
+		TokenId: claims.Jti,
 	}, nil
 }
 
