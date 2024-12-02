@@ -116,7 +116,7 @@ func main() {
 	si := handlers.NewRouteHandler(services)
 	// middleware
 	m := []api.MiddlewareFunc{
-		authentication.HandleAccessToken(log, auth),
+		authentication.ValidateAccessToken(log, auth),
 		classify.Classify,
 		logMw,
 	}

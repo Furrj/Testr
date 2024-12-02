@@ -12,7 +12,7 @@ import (
 
 type AccessToken struct {
 	UserId api.UserId
-	Expiry uint64
+	Expiry int64
 }
 
 type AccessTokenManager struct {
@@ -60,7 +60,7 @@ func (am AccessTokenManager) Unmarshall(j jwts.Jwt) (AccessToken, error) {
 
 	return AccessToken{
 		UserId: idUint,
-		Expiry: uint64(claims.ExpiresAt.Unix()),
+		Expiry: claims.ExpiresAt.Unix(),
 	}, nil
 }
 
