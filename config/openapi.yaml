@@ -61,7 +61,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserInfoForClient"
         "401":
-          description: unauthorized
+          description: bad/missing access token, call /api/refresh
+        "500":
+          description: server error
+
+  /api/refresh:
+    get:
+      operationId: checkRefreshToken
+      tags:
+        - refresh_token
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwt"
+        "401":
+          description: bad/missing access token, call /api/refresh
         "500":
           description: server error
 

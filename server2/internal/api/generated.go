@@ -17,6 +17,9 @@ const (
 	T UserRole = "T"
 )
 
+// Jwt defines model for Jwt.
+type Jwt = string
+
 // LoginRequest defines model for LoginRequest.
 type LoginRequest struct {
 	Password Password `json:"password"`
@@ -75,6 +78,9 @@ type ServerInterface interface {
 	// (POST /api/login)
 	UserLogin(w http.ResponseWriter, r *http.Request)
 
+	// (GET /api/refresh)
+	CheckRefreshToken(w http.ResponseWriter, r *http.Request)
+
 	// (POST /api/register)
 	UserRegister(w http.ResponseWriter, r *http.Request)
 
@@ -96,6 +102,20 @@ func (siw *ServerInterfaceWrapper) UserLogin(w http.ResponseWriter, r *http.Requ
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.UserLogin(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CheckRefreshToken operation middleware
+func (siw *ServerInterfaceWrapper) CheckRefreshToken(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CheckRefreshToken(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -254,6 +274,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	}
 
 	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.UserLogin)
+	m.HandleFunc("GET "+options.BaseURL+"/api/refresh", wrapper.CheckRefreshToken)
 	m.HandleFunc("POST "+options.BaseURL+"/api/register", wrapper.UserRegister)
 	m.HandleFunc("GET "+options.BaseURL+"/api/user", wrapper.GetUserInfoForClient)
 

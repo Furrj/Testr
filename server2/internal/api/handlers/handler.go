@@ -20,10 +20,10 @@ func (h RouteHandler) UserLogin(w http.ResponseWriter, r *http.Request) {
 	login.UserLogin(w, r, h.Services)
 }
 
-func (h RouteHandler) UserRegister(w http.ResponseWriter, r *http.Request) {
-	user.GetUserInfoForClient(w, r, h.Services)
-}
+func (h RouteHandler) UserRegister(w http.ResponseWriter, r *http.Request) {}
 
 func (h RouteHandler) GetUserInfoForClient(w http.ResponseWriter, r *http.Request) {
 	user.GetUserInfoForClient(w, r, h.Services)
 }
+
+func (h RouteHandler) CheckRefreshToken(w http.ResponseWriter, r *http.Request) {}
