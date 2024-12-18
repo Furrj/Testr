@@ -34,23 +34,30 @@ func ValidateAccessToken(log *logrus.Logger, auth auth.Auth) api.MiddlewareFunc 
 			// get AT cookie
 			accTok, err := r.Cookie(cookies.ACCESS_TOKEN_COOKIE_KEY)
 			if errors.Is(err, http.ErrNoCookie) {
-				// run refTok mw if no accTok
-				Refresh(next, w, r, log, ctx, auth)
+				w.WriteHeader(http.StatusUnauthorized)
+				w.Write([]byte("A"))
+				return
 			} else if err != nil {
 				log.Error(err)
-				w.WriteHeader(http.StatusUnauthorized)
+				w.WriteHeader(http.StatusBadRequest)
+				w.Write([]byte("B"))
 				return
 			}
 
 			// parse
 			at, err := auth.Tokens.Access.Unmarshall(accTok.Value)
 			if err != nil {
-				Refresh(next, w, r, log, ctx, auth)
+				log.Errorf("error parsing cookie: %+v\n", err)
+				w.WriteHeader(http.StatusUnauthorized)
+				w.Write([]byte("C"))
+				return
 			}
 
 			// check expiry
 			if at.Expiry <= time.Now().Unix() {
-				Refresh(next, w, r, log, ctx, auth)
+				w.WriteHeader(http.StatusUnauthorized)
+				w.Write([]byte("D"))
+				return
 			}
 
 			ctx.UserId = at.UserId

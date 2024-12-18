@@ -1,7 +1,7 @@
 package middleware
 
 const (
-	PROCESSING_CTX_KEY string = "ROUTE_CTX"
+	PROCESSING_CTX_KEY CtxKey = "ROUTE_CTX"
 
 	AUTH_TYPE_NONE         AuthType = "AUTH_TYPE_NONE"
 	AUTH_TYPE_ACCESS_TOKEN AuthType = "AUTH_TYPE_ACCESS_TOKEN"
@@ -20,4 +20,5 @@ type (
 	RouteType = string
 	RouteUrl  = string
 	AuthType  = string
+	CtxKey    string
 )
