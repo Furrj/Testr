@@ -61,14 +61,34 @@ func UserLogin(w http.ResponseWriter, r *http.Request, s *services.Services) {
 	at, err := s.Auth.Tokens.Access.Create(tokens.AccessToken{
 		UserId: int(user.UserID),
 	})
+	if err != nil {
+		s.Log.Errorf("error creating access token: %+v\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	ac, err := cookies.CreateHTTPCookie(cookies.ACCESS_TOKEN_COOKIE_KEY, at, s.Auth.Tokens.Access.GetValidDuration())
+	if err != nil {
+		s.Log.Errorf("error creating http cookie: %+v\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	http.SetCookie(w, &ac)
 
 	// create and set refresh token
 	rt, err := s.Auth.Tokens.Refresh.Create(tokens.RefreshToken{
 		UserId: int(user.UserID),
 	})
+	if err != nil {
+		s.Log.Errorf("error creating refresh token: %+v\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	rc, err := cookies.CreateHTTPCookie(cookies.REFRESH_TOKEN_COOKIE_KEY, rt, s.Auth.Tokens.Refresh.GetValidDuration())
+	if err != nil {
+		s.Log.Errorf("error creating http cookie: %+v\n", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	http.SetCookie(w, &rc)
 
 	// marshal res
