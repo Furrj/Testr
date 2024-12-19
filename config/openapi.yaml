@@ -43,6 +43,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisterResponse"
+        "401":
+          description: username exists
         "400":
           description: bad request
         "500":
