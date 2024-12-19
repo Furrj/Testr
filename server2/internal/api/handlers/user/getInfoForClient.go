@@ -32,6 +32,7 @@ func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Se
 		UserId:    int(user.UserID),
 		Username:  user.Username.String,
 		UserRole:  api.UserRole(user.Role),
+		Vertical:  user.Vertical.Bool,
 	}
 	if err := serialization.SendStruct(w, res); err != nil {
 		s.Log.Errorf("error in SendStruct: %+v\n", err)

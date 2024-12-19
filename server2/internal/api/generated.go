@@ -58,6 +58,7 @@ type UserInfoForClient struct {
 	UserId    UserId   `json:"user_id"`
 	UserRole  UserRole `json:"user_role"`
 	Username  string   `json:"username"`
+	Vertical  bool     `json:"vertical"`
 }
 
 // UserRole defines model for UserRole.
@@ -74,7 +75,6 @@ type UserRegisterJSONRequestBody = RegisterRequest
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-
 	// (POST /api/login)
 	UserLogin(w http.ResponseWriter, r *http.Request)
 
@@ -99,7 +99,6 @@ type MiddlewareFunc func(http.Handler) http.Handler
 
 // UserLogin operation middleware
 func (siw *ServerInterfaceWrapper) UserLogin(w http.ResponseWriter, r *http.Request) {
-
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.UserLogin(w, r)
 	}))
@@ -113,7 +112,6 @@ func (siw *ServerInterfaceWrapper) UserLogin(w http.ResponseWriter, r *http.Requ
 
 // CheckRefreshToken operation middleware
 func (siw *ServerInterfaceWrapper) CheckRefreshToken(w http.ResponseWriter, r *http.Request) {
-
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CheckRefreshToken(w, r)
 	}))
@@ -127,7 +125,6 @@ func (siw *ServerInterfaceWrapper) CheckRefreshToken(w http.ResponseWriter, r *h
 
 // UserRegister operation middleware
 func (siw *ServerInterfaceWrapper) UserRegister(w http.ResponseWriter, r *http.Request) {
-
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.UserRegister(w, r)
 	}))
@@ -141,7 +138,6 @@ func (siw *ServerInterfaceWrapper) UserRegister(w http.ResponseWriter, r *http.R
 
 // GetUserInfoForClient operation middleware
 func (siw *ServerInterfaceWrapper) GetUserInfoForClient(w http.ResponseWriter, r *http.Request) {
-
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetUserInfoForClient(w, r)
 	}))

@@ -177,9 +177,12 @@ components:
           minLength: 1
         user_role:
           $ref: "#/components/schemas/UserRole"
+        vertical:
+          type: boolean
       required:
         - user_id
         - username
         - first_name
         - last_name
         - user_role
+        - vertical
