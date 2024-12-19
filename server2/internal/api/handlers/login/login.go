@@ -55,8 +55,6 @@ func UserLogin(w http.ResponseWriter, r *http.Request, s *services.Services) {
 		return
 	}
 
-	res.Valid = true
-
 	// create and set access token
 	at, err := s.Auth.Tokens.Access.Create(tokens.AccessToken{
 		UserId: int(user.UserID),
@@ -91,13 +89,8 @@ func UserLogin(w http.ResponseWriter, r *http.Request, s *services.Services) {
 	}
 	http.SetCookie(w, &rc)
 
-	// marshal res
-	bound, err = json.Marshal(res)
-	if err != nil {
-		s.Log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	res.Valid = true
+	if err := serialization.SendStruct(w, res); err != nil {
+		s.Log.Errorf("error in SendStruct: %+v\n", err)
 	}
-
-	w.Write(bound)
 }

@@ -2,11 +2,11 @@ package user
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 
 	"github.com/Furrj/timestrainer/server/internal/api"
 	"github.com/Furrj/timestrainer/server/internal/api/middleware/ctx"
+	"github.com/Furrj/timestrainer/server/internal/api/serialization"
 	"github.com/Furrj/timestrainer/server/internal/services"
 )
 
@@ -33,12 +33,7 @@ func GetUserInfoForClient(w http.ResponseWriter, r *http.Request, s *services.Se
 		Username:  user.Username.String,
 		UserRole:  api.UserRole(user.Role),
 	}
-	b, err := json.Marshal(res)
-	if err != nil {
-		s.Log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	if err := serialization.SendStruct(w, res); err != nil {
+		s.Log.Errorf("error in SendStruct: %+v\n", err)
 	}
-
-	w.Write(b)
 }

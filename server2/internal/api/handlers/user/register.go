@@ -4,7 +4,6 @@ import (
 	"context"
 	crypto "crypto/rand"
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -53,14 +52,9 @@ func UserRegister(w http.ResponseWriter, r *http.Request, s *services.Services) 
 		res := api.RegisterResponse{
 			Valid: false,
 		}
-		bound, err := json.Marshal(res)
-		if err != nil {
-			s.Log.Error(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-
+		if err := serialization.SendStruct(w, res); err != nil {
+			s.Log.Errorf("error in SendStruct: %+v\n", err)
 		}
-		w.Write(bound)
 		return
 	}
 
@@ -163,14 +157,9 @@ func UserRegister(w http.ResponseWriter, r *http.Request, s *services.Services) 
 	res := api.RegisterResponse{
 		Valid: true,
 	}
-	bound, err := json.Marshal(res)
-	if err != nil {
-		s.Log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-
+	if err := serialization.SendStruct(w, res); err != nil {
+		s.Log.Errorf("error in SendStruct: %+v\n", err)
 	}
-	w.Write(bound)
 }
 
 func generateSalt(size int) (string, error) {
