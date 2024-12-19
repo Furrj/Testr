@@ -22,7 +22,7 @@ CREATE TABLE users.data
     role       users.role NOT NULL DEFAULT 'S',
     vertical   BOOLEAN,
     created_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint,
-    updated_at BIGINT
+    updated_at BIGINT     DEFAULT EXTRACT(EPOCH FROM NOW())::bigint
 );
 
 CREATE TABLE users.validation_codes

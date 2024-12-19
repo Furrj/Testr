@@ -12,8 +12,7 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users.ids DEFAULT
-VALUES
+INSERT INTO users.ids DEFAULT VALUES
 RETURNING user_id
 `
 
@@ -70,4 +69,37 @@ func (q *Queries) GetUserDataByUsername(ctx context.Context, username pgtype.Tex
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const insertUserData = `-- name: InsertUserData :one
+INSERT INTO users.data (user_id, username, password, salt, first_name, last_name, role, vertical)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING user_id
+`
+
+type InsertUserDataParams struct {
+	UserID    int32
+	Username  pgtype.Text
+	Password  pgtype.Text
+	Salt      pgtype.Text
+	FirstName pgtype.Text
+	LastName  pgtype.Text
+	Role      UsersRole
+	Vertical  pgtype.Bool
+}
+
+func (q *Queries) InsertUserData(ctx context.Context, arg InsertUserDataParams) (int32, error) {
+	row := q.db.QueryRow(ctx, insertUserData,
+		arg.UserID,
+		arg.Username,
+		arg.Password,
+		arg.Salt,
+		arg.FirstName,
+		arg.LastName,
+		arg.Role,
+		arg.Vertical,
+	)
+	var user_id int32
+	err := row.Scan(&user_id)
+	return user_id, err
 }
